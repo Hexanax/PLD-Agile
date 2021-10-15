@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Segment {
 
+    private Long id;
     private String name;
     private double length;
     private Intersection origin;

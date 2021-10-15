@@ -1,7 +1,8 @@
 package fr.insalyon.pldagile.model;
 
 public class Request {
-    private long id;
+
+    private Long id;
     private PickupAddress pickupAddress;
     private DeliveryAddress deliveryAddress;
 

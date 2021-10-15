@@ -3,7 +3,7 @@ package fr.insalyon.pldagile.model;
 import java.util.List;
 
 public class PlanningRequest {
-    private long id;
+    private Long id;
     private List<Request> requests;
     private DepotAddress depotAddress;
 
