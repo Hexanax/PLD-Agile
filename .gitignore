@@ -110,3 +110,6 @@ build/*
 # idea
 .idea/*
 
+# picky maps
+picky/*
+
