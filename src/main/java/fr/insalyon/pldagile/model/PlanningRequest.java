@@ -1,15 +1,19 @@
 package fr.insalyon.pldagile.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PlanningRequest {
-    private Long id;
     private List<Request> requests;
-    private DepotAddress depotAddress;
+    private Depot depot;
 
-    public PlanningRequest(List<Request> requests, DepotAddress depotAddress) {
+    public PlanningRequest(List<Request> requests, Depot depot) {
         this.requests = requests;
-        this.depotAddress = depotAddress;
+        this.depot = depot;
+    }
+
+    public PlanningRequest() {
+        requests = new ArrayList<Request>();
     }
 
     public List<Request> getRequests() {
@@ -17,15 +21,25 @@ public class PlanningRequest {
         return requests;
     }
 
-    public DepotAddress getDepotAddress() {
-        return depotAddress;
+    public Depot getDepot() {
+        return depot;
     }
 
     public void setRequests(List<Request> requests) {
         this.requests = requests;
     }
 
-    public void setDepotAddress(DepotAddress depotAddress) {
-        this.depotAddress = depotAddress;
+    public void setDepotAddress(Depot depot) {
+        this.depot = depot;
+    }
+
+    public void add(Depot depot) {
+        this.depot = depot;
+    }
+
+    public void add(Request request){
+        Long unorderedId = (long) requests.size();
+        request.setId(unorderedId);
+        requests.add(request);
     }
 }

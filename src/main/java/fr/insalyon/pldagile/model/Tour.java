@@ -6,12 +6,12 @@ public class Tour {
     // An ordered list of requests
     private List<Request> requests;
     private List<Segment> path;
-    private DepotAddress depotAddress;
+    private Depot depot;
 
-    public Tour(List<Request> requests, List<Segment> path, DepotAddress depotAddress) {
+    public Tour(List<Request> requests, List<Segment> path, Depot depot) {
         this.requests = requests;
         this.path = path;
-        this.depotAddress = depotAddress;
+        this.depot = depot;
     }
 
     public List<Request> getRequests() {
@@ -22,8 +22,8 @@ public class Tour {
         return path;
     }
 
-    public DepotAddress getDepotAddress() {
-        return depotAddress;
+    public Depot getDepot() {
+        return depot;
     }
 
     public void setRequests(List<Request> requests) {
@@ -34,7 +34,7 @@ public class Tour {
         this.path = path;
     }
 
-    public void setDepotAddress(DepotAddress depotAddress) {
-        this.depotAddress = depotAddress;
+    public void setDepotAddress(Depot depot) {
+        this.depot = depot;
     }
 }
