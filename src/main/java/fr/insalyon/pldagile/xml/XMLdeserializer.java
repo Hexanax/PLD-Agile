@@ -5,29 +5,36 @@ import fr.insalyon.pldagile.model.*;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.text.SimpleDateFormat;
 
-
+/**
+ * This class allows to read XML map files and XML requests files in order to laod a city map in the application or to load a list of requests
+ * This code is based on the example of the 4IF course - Object Oriented Design and AGILE software development by Mrs Solnon
+ * <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
+ */
 public class XMLdeserializer {
 
+    /**
+     * simple date format to get a time of a day
+     */
     private final static SimpleDateFormat sdf = new SimpleDateFormat("k:m:s");
 
     /**
-     * TODO : javadoc
-     * @param map
+     * Open an XML file and create a city map from this file
+     * Inspired from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
+     * @param map the city map to create from the file
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
@@ -42,6 +49,13 @@ public class XMLdeserializer {
             throw new ExceptionXML("Wrong format");
     }
 
+    /**
+     * Browse the XML map file to fill the city map
+     * Inspired from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
+     * @param noeudDOMRacine the root element of the XML map file
+     * @param map the city map to create from the file
+     * @throws ExceptionXML
+     */
     private static void buildFromDOMXML(Element noeudDOMRacine, CityMap map) throws ExceptionXML {
         NodeList intersectionsList = noeudDOMRacine.getElementsByTagName("intersection");
         for(int i=0; i< intersectionsList.getLength(); i++){
@@ -53,6 +67,13 @@ public class XMLdeserializer {
         }
     }
 
+    /**
+     * Extract from an XML element the information to create a segment of the city map
+     * @param elt the current node in the XML map file which corresponds to a segment
+     * @param intersections list of the intersections of the city map
+     * @return a new segment of the city map
+     * @throws ExceptionXML
+     */
     private static Segment createSegment(Element elt, Map<Long, Intersection> intersections) throws ExceptionXML {
         Long destinationID = Long.parseLong(elt.getAttribute("destination"));
         Long originID = Long.parseLong(elt.getAttribute("origin"));
@@ -79,6 +100,12 @@ public class XMLdeserializer {
         return new Segment(name,length,origin, destination);
     }
 
+    /**
+     * Extract from an XML element the information to create a intersection of the city map
+     * @param elt the current node in the XML map file which corresponds to an intersection
+     * @return a new intersection of the city map
+     * @throws ExceptionXML
+     */
     private static Intersection createIntersection(Element elt) throws ExceptionXML {
         double latitude = Double.parseDouble(elt.getAttribute("latitude"));
         double longitude = Double.parseDouble(elt.getAttribute("longitude"));
@@ -93,7 +120,17 @@ public class XMLdeserializer {
         return new Intersection(id, coordinates);
     }
 
-
+    /**
+     * Open an XML file and planning request from this file
+     * Inspired from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
+     * @param planning the planning request to create from the file
+     * @param map the city map currently used
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws ExceptionXML
+     * @throws ParseException
+     */
     public static void load(PlanningRequest planning, CityMap map) throws ParserConfigurationException, SAXException, IOException, ExceptionXML, ParseException {
         Element root = getRootElement();
         if(root.getNodeName().equals("planningRequest")) {
@@ -103,6 +140,15 @@ public class XMLdeserializer {
             throw new ExceptionXML("Wrong format");
     }
 
+    /**
+     * Browse the XML requests file to fill the planning request
+     * Inspired from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
+     * @param noeudDOMRacine the root element of the XML map file
+     * @param planning the planning request to create from the file
+     * @param map the city map currently used
+     * @throws ExceptionXML
+     * @throws ParseException
+     */
     private static void buildFromDOMXML(Element noeudDOMRacine, PlanningRequest planning, CityMap map) throws ExceptionXML, ParseException {
         NodeList depot = noeudDOMRacine.getElementsByTagName("depot");
         if(depot.getLength() != 1)
@@ -120,6 +166,13 @@ public class XMLdeserializer {
         }
     }
 
+    /**
+     * Extract from an XML element the information to create a request of a planning
+     * @param request the current node in the XML map file which corresponds to a request
+     * @param intersections list of the intersections of the city map
+     * @return a new request of the planning
+     * @throws ExceptionXML
+     */
     private static Request createRequest(Element request, Map<Long, Intersection> intersections) throws ExceptionXML{
         Long pickupAddress = Long.parseLong(request.getAttribute("pickupAddress"));
         Long deliveryAddress = Long.parseLong(request.getAttribute("deliveryAddress"));
@@ -153,6 +206,14 @@ public class XMLdeserializer {
 
     }
 
+    /**
+     * Extract from an XML element the information to create the depot of a planning
+     * @param depot the current node in the XML map file which corresponds to a depot
+     * @param intersections list of the intersections of the city map
+     * @return the depot of the planning
+     * @throws ExceptionXML
+     * @throws ParseException
+     */
     private static Depot createDepot(Element depot, Map<Long, Intersection> intersections) throws ExceptionXML, ParseException {
         Long intersectionID = Long.parseLong(depot.getAttribute("address"));
         Intersection intersection = intersections.get(intersectionID);
@@ -170,6 +231,15 @@ public class XMLdeserializer {
         return new Depot(intersection, departureTime);
     }
 
+    /**
+     * Open an XML file and return its root element
+     * Copied from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
+     * @return the root element of the XML file
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     * @throws IOException
+     * @throws ExceptionXML
+     */
     private static Element getRootElement() throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
         File xml = XMLfileOpener.getInstance().open(true);
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();

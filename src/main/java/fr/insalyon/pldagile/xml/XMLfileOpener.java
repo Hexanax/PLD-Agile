@@ -4,6 +4,12 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.*;
 
+/**
+ * This class allows to open an XML file in order to explore it
+ * @author Mrs Solnon
+ * This code is copied from the example of the 4IF course - Object Oriented Design and AGILE software development by Mrs Solnon
+ * <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
+ */
 public class XMLfileOpener extends FileFilter {// Singleton
 
     private static XMLfileOpener instance = null;
