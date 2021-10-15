@@ -1,5 +1,6 @@
 package fr.insalyon.pldagile;
 
+import fr.insalyon.pldagile.ui.maps.MapView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -12,9 +13,26 @@ public class HelloApplication extends Application {
 
     @Override
     public void start(Stage stage) {
-        StackPane pane = new StackPane();
-        Scene scene = new Scene(pane, 1200, 700);
         stage.setTitle("Picky - INSA Lyon");
+        //Image desktopIcon = new Image(getClass().getResource("desktop-icon.png").toString());
+        //stage.getIcons().add(desktopIcon);
+        MapView view = new MapView();
+        view.setZoom(3);
+        final Label headerLabel = headerLabel();
+        final Group copyright = createCopyright();
+        StackPane bp = new StackPane() {
+            @Override
+            protected void layoutChildren() {
+                super.layoutChildren();
+                headerLabel.setLayoutY(0.0);
+                copyright.setLayoutX(getWidth() - copyright.prefWidth(-1));
+                copyright.setLayoutY(getHeight() - copyright.prefHeight(-1));
+            }
+        };
+        Scene scene = new Scene(bp, 1200, 700);
+        bp.getChildren().addAll(view, headerLabel, copyright);
+        headerLabel.setManaged(false);
+        headerLabel.setVisible(false);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();

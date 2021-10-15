@@ -32,10 +32,12 @@ import javafx.scene.image.Image;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class CachedOsmTileRetriever extends OsmTileRetriever {
@@ -46,30 +48,17 @@ public class CachedOsmTileRetriever extends OsmTileRetriever {
 
     static File cacheRoot;
     static boolean hasFileCache;
+
     static {
-        hasFileCache = false;
-        /*
-        try {
-            Optional<File> storageRoot = Optional.of(new File("/picky"));
-            if (storageRoot.isEmpty()) {
-                cacheRoot = Files.createTempDirectory(".pickymaps").toFile();
-                logger.info("StorageService implementation not found.\n" +
-                        "Tiles will be cached at a temporary directory: " + cacheRoot);
-            } else {
-                cacheRoot = new File(storageRoot.get(), ".pickymaps");
-            }
-            logger.fine("[JVDBG] cacheroot = " + cacheRoot);
-            if (!cacheRoot.isDirectory()) {
-                hasFileCache = cacheRoot.mkdirs();
-            } else {
-                hasFileCache = true;
-            }
-            logger.fine("hasfilecache = " + hasFileCache);
-        } catch (IOException ex) {
-            hasFileCache = false;
-            logger.log(Level.SEVERE, null, ex);
+        Optional<File> storageRoot = Optional.of(new File("./picky"));
+        storageRoot.ifPresent(file -> cacheRoot = new File(file, "pickymaps"));
+        logger.fine("cacheroot = " + cacheRoot);
+        if (!cacheRoot.isDirectory()) {
+            hasFileCache = cacheRoot.mkdirs();
+        } else {
+            hasFileCache = true;
         }
-         */
+        logger.fine("hasfilecache = " + hasFileCache);
     }
 
     @Override
@@ -139,5 +128,5 @@ public class CachedOsmTileRetriever extends OsmTileRetriever {
             return t;
         }
     }
-    
+
 }
