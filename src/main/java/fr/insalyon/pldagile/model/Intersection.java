@@ -4,10 +4,10 @@ import java.util.Objects;
 
 public class Intersection {
 
-    private long id;
+    private Long id;
     private Coordinates coordinates;
 
-    public Intersection(long id, Coordinates coordinates) {
+    public Intersection(Long id, Coordinates coordinates) {
         this.id = id;
         this.coordinates = coordinates;
     }
