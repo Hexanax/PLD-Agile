@@ -35,9 +35,10 @@ public class CityMap {
         intersections.put(id,intersection);
     }
 
+    static int index = 1;
     public void add(Segment segment) throws ExceptionXML {
-        Long id = segment.getDestination().getId() + segment.getOrigin().getId();
-        if(segments.containsKey(id)){
+        Long id = (long) index++;
+        if(segments.containsValue(segment)){
             throw new ExceptionXML("Error when reading file: Double segment exception");
         }
         segments.put(id, segment);

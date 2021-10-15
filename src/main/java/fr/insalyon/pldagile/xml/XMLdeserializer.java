@@ -181,7 +181,7 @@ public class XMLdeserializer {
         }
         Intersection pickup = intersections.get(pickupAddress);
         Intersection delivery = intersections.get(deliveryAddress);
-        //TODO : ask to client if a planning request can have 2 request with the same pickup and the same delivery
+        //TODO : ask to client if a planning request can have 2 requests with the same pickup and the same delivery
         if(pickup ==null){
             throw new ExceptionXML("Error when reading file: The pickup address doesn't match with the current city map");
         }
