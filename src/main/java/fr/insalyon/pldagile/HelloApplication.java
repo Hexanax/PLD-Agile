@@ -1,5 +1,6 @@
 package fr.insalyon.pldagile;
 
+import fr.insalyon.pldagile.ui.maps.MapPoint;
 import fr.insalyon.pldagile.ui.maps.MapView;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -36,7 +37,9 @@ public class HelloApplication extends Application {
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
-        //view.flyTo(1., new MapPoint("", ""), 3.);
+        view.setZoom(6);
+        view.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
+
     }
 
     private Label headerLabel() {
