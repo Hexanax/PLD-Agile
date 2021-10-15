@@ -101,3 +101,12 @@ fabric.properties
 
 # Local History for Visual Studio Code
 .history/
+
+# gradle
+.gradle/*
+gradle/*
+build/*
+
+# idea
+.idea/*
+
