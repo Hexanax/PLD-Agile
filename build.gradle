@@ -11,10 +11,6 @@ repositories {
     mavenCentral()
 }
 
-ext {
-    junitVersion = '5.7.1'
-}
-
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
@@ -23,7 +19,6 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'fr.insalyon.pldagile'
     mainClass = 'fr.insalyon.pldagile.HelloApplication'
 }
 
