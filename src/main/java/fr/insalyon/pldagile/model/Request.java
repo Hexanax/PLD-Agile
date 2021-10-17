@@ -3,13 +3,22 @@ package fr.insalyon.pldagile.model;
 public class Request {
 
     private Long id;
-    private PickupAddress pickupAddress;
-    private DeliveryAddress deliveryAddress;
+    private Pickup pickup;
+    private Delivery delivery;
 
-    public Request(PickupAddress pickupAddress, DeliveryAddress deliveryAddress) {
-        this.pickupAddress = pickupAddress;
-        this.deliveryAddress = deliveryAddress;
+    public Request(Pickup pickup, Delivery delivery) {
+        this.pickup = pickup;
+        this.delivery = delivery;
 
-        // generate id later
+        //by default id is set to null - Use with the tour
+        this.id = null;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return this.id;
     }
 }

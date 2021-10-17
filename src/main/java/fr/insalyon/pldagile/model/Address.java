@@ -1,8 +1,11 @@
 package fr.insalyon.pldagile.model;
 
-public abstract class Address {
-    private Long id;
+public class Address {
     private Intersection intersection;
+
+    public Address(Intersection intersection) {
+        this.intersection = intersection;
+    }
 
     public Intersection getIntersection() {
         return intersection;
@@ -12,11 +15,4 @@ public abstract class Address {
         this.intersection = intersection;
     }
 
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 }
