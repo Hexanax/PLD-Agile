@@ -10,12 +10,13 @@ import javax.swing.filechooser.*;
  * This code is copied from the example of the 4IF course - Object Oriented Design and AGILE software development by Mrs Solnon
  * <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
  */
-public class XMLfileOpener extends FileFilter {// Singleton
+public class XMLFileOpener extends FileFilter {
 
-    private static XMLfileOpener instance = null;
-    private XMLfileOpener(){}
-    protected static XMLfileOpener getInstance(){
-        if (instance == null) instance = new XMLfileOpener();
+    //Singleton
+    private static XMLFileOpener instance = null;
+    private XMLFileOpener(){}
+    protected static XMLFileOpener getInstance(){
+        if (instance == null) instance = new XMLFileOpener();
         return instance;
     }
 
