@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class IntersectionTest {
 
     @Test
-    public void intersectionConstructorAndProperties() {
+    public void intersectionConstructorAndPropertiesTest() {
         Intersection intersect = new Intersection(1L, new Coordinates(11.25, 65.87));
         assertEquals(1, intersect.getId());
         assertEquals(11.25, intersect.getCoordinates().getLatitude());
