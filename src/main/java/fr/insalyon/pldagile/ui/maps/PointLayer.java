@@ -36,12 +36,11 @@ import javafx.util.Pair;
 /**
  * A layer that allows to visualise points of interest.
  */
-public class PoiLayer extends MapLayer {
-
+public class PointLayer extends MapLayer {
 
     private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();
-    
-    public PoiLayer() {
+
+    public PointLayer() {
     }
 
     public void addPoint(MapPoint p, Node icon) {

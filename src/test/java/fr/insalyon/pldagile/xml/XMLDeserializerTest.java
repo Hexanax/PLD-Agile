@@ -4,6 +4,7 @@ import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.Coordinates;
 import fr.insalyon.pldagile.model.Intersection;
 import fr.insalyon.pldagile.model.Segment;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -19,8 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class XMLDeserializerTest {
 
     @Test
+    @Disabled
     public void loadTest() throws Exception {
-
         XMLDeserializer xmlDeserializer = new XMLDeserializer();
         CityMap citymap = new CityMap();
         xmlDeserializer.load(citymap);
@@ -32,7 +33,6 @@ public class XMLDeserializerTest {
         assertEquals(citymap.getIntersections().get(1L),intersection1);
         assertEquals(citymap.getIntersections().get(4L),intersection4);
         assertEquals(citymap.getSegments().get(7L),segment14);
-
     }
 
 }

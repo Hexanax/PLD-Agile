@@ -1,7 +1,11 @@
 package fr.insalyon.pldagile;
 
+import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.ui.maps.MapPoint;
 import fr.insalyon.pldagile.ui.maps.MapView;
+import fr.insalyon.pldagile.xml.ExceptionXML;
+import fr.insalyon.pldagile.xml.XMLDeserializer;
+import fr.insalyon.pldagile.xml.XMLFileOpener;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -9,11 +13,24 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 
 public class HelloApplication extends Application {
 
+    private final static XMLDeserializer xmlDeserializer = new XMLDeserializer();
+    private static Stage mainStage = null;
+
+    public static Stage getMainStage() {
+        return mainStage;
+    }
+
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws ExceptionXML {
+        mainStage = stage;
         stage.setTitle("Picky - INSA Lyon");
         //Image desktopIcon = new Image(getClass().getResource("desktop-icon.png").toString());
         //stage.getIcons().add(desktopIcon);
@@ -39,6 +56,13 @@ public class HelloApplication extends Application {
         stage.show();
         view.setZoom(10);
         view.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
+
+        try {
+            CityMap citymap = new CityMap();
+            xmlDeserializer.load(citymap);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
