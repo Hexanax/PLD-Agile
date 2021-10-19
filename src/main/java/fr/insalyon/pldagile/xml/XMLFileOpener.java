@@ -1,7 +1,10 @@
 package fr.insalyon.pldagile.xml;
 
+import fr.insalyon.pldagile.PickyApplication;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+
 import java.io.File;
-import javax.swing.JFileChooser;
 import javax.swing.filechooser.*;
 
 /**
@@ -15,23 +18,25 @@ public class XMLFileOpener extends FileFilter {
     //Singleton
     private static XMLFileOpener instance = null;
     private XMLFileOpener(){}
-    protected static XMLFileOpener getInstance(){
+    public static XMLFileOpener getInstance(){
         if (instance == null) instance = new XMLFileOpener();
         return instance;
     }
 
-    public File open(boolean read) throws ExceptionXML{
-        int returnVal;
-        JFileChooser jFileChooserXML = new JFileChooser();
-        jFileChooserXML.setFileFilter(this);
-        jFileChooserXML.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        if (read)
-            returnVal = jFileChooserXML.showOpenDialog(null);
-        else
-            returnVal = jFileChooserXML.showSaveDialog(null);
-        if (returnVal != JFileChooser.APPROVE_OPTION)
-            throw new ExceptionXML("Problem when opening file");
-        return new File(jFileChooserXML.getSelectedFile().getAbsolutePath());
+    public File open(FileChooseOption fileChooseOption) {
+        File selectedFile = null;
+        FileChooser fileChooserXML = new FileChooser();
+        fileChooserXML.setTitle("Select a XML file to load");
+        fileChooserXML.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("XML Files", "*.xml")
+        );
+        Stage mainStage = PickyApplication.getMainStage();
+        if (fileChooseOption == FileChooseOption.READ) {
+            selectedFile = fileChooserXML.showOpenDialog(mainStage);
+        } else if (fileChooseOption == FileChooseOption.SAVE) {
+            selectedFile = fileChooserXML.showSaveDialog(null);
+        }
+        return selectedFile;
     }
 
     @Override
