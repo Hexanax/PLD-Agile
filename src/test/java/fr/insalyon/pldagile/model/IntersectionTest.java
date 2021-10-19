@@ -2,10 +2,10 @@ package fr.insalyon.pldagile.model;
 
 import org.junit.jupiter.api.Test;
 
-import fr.insalyon.pldagile.model.Intersection;
-import fr.insalyon.pldagile.model.Coordinates;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class IntersectionTest {
+
     @Test
     public void intersectionConstructorAndProperties() {
         Intersection intersect = new Intersection(1L, new Coordinates(11.25, 65.87));

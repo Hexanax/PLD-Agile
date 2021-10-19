@@ -50,7 +50,7 @@ public class CachedOsmTileRetriever extends OsmTileRetriever {
 
     static {
         Optional<File> storageRoot = Optional.of(new File("./picky"));
-        storageRoot.ifPresent(file -> cacheRoot = new File(file, "pickymaps"));
+        storageRoot.ifPresent(file -> cacheRoot = new File(file, "tiles"));
         logger.fine("cacheroot = " + cacheRoot);
         if (!cacheRoot.isDirectory()) {
             hasFileCache = cacheRoot.mkdirs();
