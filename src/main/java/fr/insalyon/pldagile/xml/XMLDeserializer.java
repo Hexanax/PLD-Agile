@@ -40,8 +40,8 @@ public class XMLDeserializer {
      * @throws IOException
      * @throws ExceptionXML
      */
-    public static void load(CityMap map) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
-        Element root = getRootElement();
+    public static void load(CityMap map, File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
+        Element root = getRootElement(xmlFile);
         if (root.getNodeName().equals("map")) {
             buildFromDOMXML(root, map);
         } else {
@@ -130,8 +130,8 @@ public class XMLDeserializer {
      * @throws ExceptionXML
      * @throws ParseException
      */
-    public static void load(PlanningRequest planning, CityMap map) throws ParserConfigurationException, SAXException, IOException, ExceptionXML, ParseException {
-        Element root = getRootElement();
+    public static void load(PlanningRequest planning, CityMap map, File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML, ParseException {
+        Element root = getRootElement(xmlFile);
         if (root.getNodeName().equals("planningRequest")) {
             buildFromDOMXML(root, planning, map);
         } else {
@@ -231,10 +231,9 @@ public class XMLDeserializer {
      * @throws IOException
      * @throws ExceptionXML
      */
-    private static Element getRootElement() throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
-        File xml = XMLFileOpener.getInstance().open(FileChooseOption.READ);
+    private static Element getRootElement(File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        Document document = docBuilder.parse(xml);
+        Document document = docBuilder.parse(xmlFile);
         return document.getDocumentElement();
     }
 

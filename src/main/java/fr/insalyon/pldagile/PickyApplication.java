@@ -7,6 +7,7 @@ import fr.insalyon.pldagile.ui.maps.MapPoint;
 import fr.insalyon.pldagile.ui.maps.MapView;
 import fr.insalyon.pldagile.ui.maps.PointLayer;
 import fr.insalyon.pldagile.xml.ExceptionXML;
+import fr.insalyon.pldagile.xml.FileChooseOption;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 import fr.insalyon.pldagile.xml.XMLFileOpener;
 import fr.insalyon.pldagile.ui.maps.SidePanel;
@@ -74,9 +75,11 @@ public class PickyApplication extends Application {
 
         CityMap cityMap = new CityMap();
         PlanningRequest planningRequest = new PlanningRequest();
+        File mapXmlFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
+        File requestXmlFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
         try {
-            XMLDeserializer.load(cityMap);
-            XMLDeserializer.load(planningRequest, cityMap);
+            XMLDeserializer.load(cityMap, mapXmlFile);
+            XMLDeserializer.load(planningRequest, cityMap, requestXmlFile);
         } catch(Exception e) {
             e.printStackTrace();
         }

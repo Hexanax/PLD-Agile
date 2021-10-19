@@ -1,19 +1,14 @@
 package fr.insalyon.pldagile.xml;
 
 import fr.insalyon.pldagile.model.*;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -26,22 +21,23 @@ public class XMLDeserializerTest {
     @DisplayName("XML map parsing should work")
     public void loadMapTest() throws Exception {
         //source file : testMap.xml
-        XMLDeserializer xmlDeserializer = new XMLDeserializer();
-        CityMap citymap = new CityMap();
-        xmlDeserializer.load(citymap);
+        CityMap cityMap = new CityMap();
+        URI fileURI = getClass().getClassLoader().getResource("xml/testMap.xml").toURI();
+        File testMapFile = new File(fileURI);
+        XMLDeserializer.load(cityMap, testMapFile);
 
-        assertEquals(citymap.getIntersections().size(),7);
-        assertEquals(citymap.getSegments().size(),7);
+        assertEquals(cityMap.getIntersections().size(),7);
+        assertEquals(cityMap.getSegments().size(),7);
 
-        assertEquals(citymap.getIntersections().get(1L).getId(), 1L);
-        assertEquals(citymap.getIntersections().get(4L).getId(),4L);
-        assertEquals(citymap.getIntersections().get(1L).getCoordinates().getLatitude(),45.5);
-        assertEquals(citymap.getIntersections().get(1L).getCoordinates().getLongitude(),4.8);
+        assertEquals(cityMap.getIntersections().get(1L).getId(), 1L);
+        assertEquals(cityMap.getIntersections().get(4L).getId(),4L);
+        assertEquals(cityMap.getIntersections().get(1L).getCoordinates().getLatitude(),45.5);
+        assertEquals(cityMap.getIntersections().get(1L).getCoordinates().getLongitude(),4.8);
 
-        assertEquals(citymap.getSegments().get(7L).getName(),"Boulevard Belateche");
-        assertEquals(citymap.getSegments().get(7L).getLength(),15590);
-        assertEquals(citymap.getSegments().get(7L).getOrigin().getId(),4L);
-        assertEquals(citymap.getSegments().get(7L).getDestination().getId(),1L);
+        assertEquals(cityMap.getSegments().get(7L).getName(),"Boulevard Belateche");
+        assertEquals(cityMap.getSegments().get(7L).getLength(),15590);
+        assertEquals(cityMap.getSegments().get(7L).getOrigin().getId(),4L);
+        assertEquals(cityMap.getSegments().get(7L).getDestination().getId(),1L);
 
 
 
@@ -53,7 +49,8 @@ public class XMLDeserializerTest {
     @DisplayName("XML Requests parsing should work")
     public void loadRequestsTest() throws Exception{
         //source file : testRequest.xml
-        XMLDeserializer xmlDeserializer = new XMLDeserializer();
+        File testMapFile = new File(getClass().getClassLoader().getResource("xml/testMap.xml").toURI());
+        File testRequestsFile = new File(getClass().getClassLoader().getResource("xml/testRequests.xml").toURI());
 
         CityMap citymap = new CityMap();
         PlanningRequest planningRequest = new PlanningRequest();
@@ -62,8 +59,8 @@ public class XMLDeserializerTest {
         Intersection intersectionDepot = new Intersection(1L, new Coordinates(45.5,4.8));
         Depot depot = new Depot(intersectionDepot,departureTime);
 
-        xmlDeserializer.load(citymap);
-        xmlDeserializer.load(planningRequest,citymap);
+        XMLDeserializer.load(citymap, testMapFile);
+        XMLDeserializer.load(planningRequest, citymap, testRequestsFile);
 
         //Testing the depot parsing
         assertEquals(planningRequest.getDepot().getIntersection().getId(), 1L);
