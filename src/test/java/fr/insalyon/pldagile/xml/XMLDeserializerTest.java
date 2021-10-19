@@ -23,7 +23,7 @@ public class XMLDeserializerTest {
 
 
     @Test
-    @DisplayName("Map parsing should work")
+    @DisplayName("XML map parsing should work")
     public void loadMapTest() throws Exception {
         //source file : testMap.xml
         XMLDeserializer xmlDeserializer = new XMLDeserializer();
@@ -50,7 +50,7 @@ public class XMLDeserializerTest {
     }
 
     @Test
-    @DisplayName("Requests parsing should work")
+    @DisplayName("XML Requests parsing should work")
     public void loadRequestsTest() throws Exception{
         //source file : testRequest.xml
         XMLDeserializer xmlDeserializer = new XMLDeserializer();
