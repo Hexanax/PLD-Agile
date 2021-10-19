@@ -154,8 +154,8 @@ public class XMLDeserializer {
             throw new ExceptionXML("Error when reading file : Depot is undefined");
         }
         Map<Long, Intersection> intersections = map.getIntersections();
-        Depot deport = createDepot((Element) depotNodeList.item(0), intersections);
-        planning.add(deport);
+        Depot depot = createDepot((Element) depotNodeList.item(0), intersections);
+        planning.add(depot);
 
         NodeList requests = rootNode.getElementsByTagName("request");
         for (int i = 0; i < requests.getLength(); i++) {
@@ -178,7 +178,6 @@ public class XMLDeserializer {
         }
         Intersection pickup = intersections.get(pickupAddressId);
         Intersection delivery = intersections.get(deliveryAddressId);
-        //TODO : ask to client if a planning request can have 2 requests with the same pickup and the same delivery
         if (pickup == null) {
             throw new ExceptionXML("Error when reading file: The pickup address doesn't match with the current city map");
         }

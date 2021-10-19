@@ -17,4 +17,5 @@ public class Depot extends Address{
     public void setDepartureTime(Date departureTime) {
         this.departureTime = departureTime;
     }
+
 }

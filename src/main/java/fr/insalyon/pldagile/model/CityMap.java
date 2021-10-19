@@ -42,9 +42,10 @@ public class CityMap {
     static int index = 1;
     public void add(Segment segment) throws ExceptionXML {
         Long id = (long) index++;
-        if(segments.containsValue(segment)){
-            throw new ExceptionXML("Error when reading file: Double segment exception");
-        }
+//        if(segments.containsValue(segment)){
+//            throw new ExceptionXML("Error when reading file: Double segment exception");
+//        }
+        //verif pas de segment sans origine/dest
         segments.put(id, segment);
     }
 }
