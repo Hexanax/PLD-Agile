@@ -67,13 +67,6 @@ public class HelloApplication extends Application {
         view.setZoom(10);
         view.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
 
-        try {
-            CityMap citymap = new CityMap();
-            xmlDeserializer.load(citymap);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
     }
 
     private Label headerLabel() {
