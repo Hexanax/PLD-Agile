@@ -11,10 +11,12 @@ import fr.insalyon.pldagile.xml.XMLDeserializer;
 import fr.insalyon.pldagile.xml.XMLFileOpener;
 import fr.insalyon.pldagile.ui.maps.SidePanel;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -32,6 +34,11 @@ public class PickyApplication extends Application {
     private final static XMLDeserializer xmlDeserializer = new XMLDeserializer();
     private static Stage mainStage = null;
 
+    private static MapView mapView;
+
+    private static CityMap cityMap;
+    private static PlanningRequest planningRequest;
+
     public static Stage getMainStage() {
         return mainStage;
     }
@@ -42,7 +49,9 @@ public class PickyApplication extends Application {
         stage.setTitle("Picky - INSA Lyon");
         //Image desktopIcon = new Image(getClass().getResource("desktop-icon.png").toString());
         //stage.getIcons().add(desktopIcon);
-        MapView mapView = new MapView();
+        cityMap = new CityMap();
+        planningRequest = new PlanningRequest();
+        mapView = new MapView();
         SidePanel sidePanel = new SidePanel();
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
@@ -71,22 +80,6 @@ public class PickyApplication extends Application {
         stage.show();
         mapView.setZoom(10);
         mapView.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
-
-        CityMap cityMap = new CityMap();
-        PlanningRequest planningRequest = new PlanningRequest();
-        try {
-            XMLDeserializer.load(cityMap);
-            XMLDeserializer.load(planningRequest, cityMap);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
-        MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
-        PointLayer pointLayer = new PointLayer();
-        pointLayer.addPoint(depotPoint, new Circle(7, Color.RED));
-
-        mapView.addLayer(pointLayer);
     }
 
     private Label headerLabel() {
@@ -109,4 +102,25 @@ public class PickyApplication extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    public static void updateCityMap() {
+
+    }
+
+    public static void updatePlanningRequest() {
+        Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
+        MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
+        PointLayer pointLayer = new PointLayer();
+        pointLayer.addPoint(depotPoint, new Circle(7, Color.RED));
+        mapView.addLayer(pointLayer);
+    }
+
+    public static PlanningRequest getPlanningRequest() {
+        return planningRequest;
+    }
+
+    public static CityMap getCityMap() {
+        return cityMap;
+    }
+
 }
