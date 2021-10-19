@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile.ui.maps;
+package fr.insalyon.pldagile.ui.menu;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

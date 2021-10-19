@@ -49,6 +49,10 @@ public class PointLayer extends MapLayer {
         this.markDirty();
     }
 
+    public void clearPoints() {
+        points.clear();
+    }
+
     @Override
     protected void layoutLayer() {
         for (Pair<MapPoint, Node> candidate : points) {
@@ -60,5 +64,4 @@ public class PointLayer extends MapLayer {
             icon.setTranslateY(mapPoint.getY());
         }
     }
-
 }

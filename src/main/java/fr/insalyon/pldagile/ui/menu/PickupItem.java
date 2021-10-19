@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile.ui.maps;
+package fr.insalyon.pldagile.ui.menu;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;

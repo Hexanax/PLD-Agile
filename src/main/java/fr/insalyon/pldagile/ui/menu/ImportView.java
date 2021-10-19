@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile.ui.maps;
+package fr.insalyon.pldagile.ui.menu;
 
 import fr.insalyon.pldagile.PickyApplication;
 import fr.insalyon.pldagile.model.CityMap;

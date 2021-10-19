@@ -8,31 +8,31 @@ import fr.insalyon.pldagile.ui.maps.MapPoint;
 import fr.insalyon.pldagile.ui.maps.MapView;
 import fr.insalyon.pldagile.ui.maps.PointLayer;
 import fr.insalyon.pldagile.xml.ExceptionXML;
-import fr.insalyon.pldagile.xml.XMLDeserializer;
-import fr.insalyon.pldagile.xml.XMLFileOpener;
-import fr.insalyon.pldagile.ui.maps.SidePanel;
+import fr.insalyon.pldagile.ui.menu.SidePanel;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
 public class PickyApplication extends Application {
 
-    private final static XMLDeserializer xmlDeserializer = new XMLDeserializer();
     private static Stage mainStage = null;
+
+    private static MapView mapView;
+    private static final PointLayer pointLayer = new PointLayer();
+
+    private static CityMap cityMap;
+    private static PlanningRequest planningRequest;
 
     public static Stage getMainStage() {
         return mainStage;
@@ -42,8 +42,8 @@ public class PickyApplication extends Application {
     public void start(Stage stage) throws ExceptionXML {
         mainStage = stage;
         stage.setTitle("Picky - INSA Lyon");
-        //Image desktopIcon = new Image(getClass().getResource("desktop-icon.png").toString());
-        //stage.getIcons().add(desktopIcon);
+        Image desktopIcon = new Image(getClass().getClassLoader().getResource("global-network.svg").toExternalForm());
+        stage.getIcons().add(desktopIcon);
         cityMap = new CityMap();
         planningRequest = new PlanningRequest();
         mapView = new MapView();
@@ -99,12 +99,11 @@ public class PickyApplication extends Application {
     }
 
     public static void updateCityMap() {
-        PointLayer pointLayer = new PointLayer();
         //Add all the intersections temporarily
         for(Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
             Intersection intersection = entry.getValue();
             MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
-            pointLayer.addPoint(mapPoint, new Circle(7, Color.BLUE));
+            pointLayer.addPoint(mapPoint, new Circle(2, Color.BLUE));
         }
         mapView.addLayer(pointLayer);
     }
