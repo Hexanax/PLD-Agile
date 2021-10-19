@@ -66,6 +66,7 @@ public class PickyApplication extends Application {
         mainPanel.setCenter(bp);
         mainPanel.setRight(sidePanel);
         Scene scene = new Scene(mainPanel, screenWidth, screenHeight);
+        scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
         bp.getChildren().addAll(mapView, headerLabel, copyright);
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
