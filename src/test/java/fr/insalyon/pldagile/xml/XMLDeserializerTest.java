@@ -1,6 +1,8 @@
 package fr.insalyon.pldagile.xml;
 
+
 import fr.insalyon.pldagile.model.*;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,6 +23,7 @@ public class XMLDeserializerTest {
 
 
     @Test
+    @Disabled
     public void loadMapTest() throws Exception {
         //source file : testMap.xml
         XMLDeserializer xmlDeserializer = new XMLDeserializer();
@@ -85,9 +88,6 @@ public class XMLDeserializerTest {
         assertEquals(planningRequest.getRequests().get(0).getPickup().getIntersection().getCoordinates().getLatitude(),pickup1.getIntersection().getCoordinates().getLatitude());
         assertEquals(planningRequest.getRequests().get(0).getPickup().getIntersection().getCoordinates().getLongitude(),pickup1.getIntersection().getCoordinates().getLongitude());
         assertEquals(planningRequest.getRequests().get(0).getPickup().getDuration(),pickup1.getDuration());
-
-
-
 
 
     }
