@@ -37,7 +37,7 @@ public class HelloApplication extends Application {
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.show();
-        view.setZoom(6);
+        view.setZoom(10);
         view.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
 
     }

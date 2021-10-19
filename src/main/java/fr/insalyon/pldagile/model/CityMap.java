@@ -27,6 +27,10 @@ public class CityMap {
         return intersections;
     }
 
+    public Map<Long, Segment> getSegments() {
+        return segments;
+    }
+
     public void add(Intersection intersection) throws ExceptionXML {
         Long id = intersection.getId();
         if(intersections.containsKey(id)){
