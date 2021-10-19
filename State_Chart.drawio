@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2021-10-17T14:03:55.614Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" etag="OPhhZHzQszmqTWVM3lHx" version="15.5.2" type="github">
+<mxfile host="app.diagrams.net" modified="2021-10-18T14:41:27.210Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.81 Safari/537.36" etag="-q0q_nxmM9IRMvA7AMyB" version="15.5.4" type="github">
   <diagram id="4HAEJHKkx17o9lUjrkPe" name="Page-1">
-    <mxGraphModel dx="3216" dy="1631" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="2011" dy="806" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -13,7 +13,7 @@
         <mxCell id="JQ5LjAgzly_YhfliwwbK-26" value="&lt;div&gt;Entry / unlockButton(Load a Map)&lt;br&gt;&lt;/div&gt;&lt;div&gt;Do / incite user to load a map&lt;br&gt;&lt;/div&gt;&lt;div&gt;Exit/ openFileExplorer()&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" parent="JQ5LjAgzly_YhfliwwbK-14" vertex="1">
           <mxGeometry y="90" width="180" as="geometry" />
         </mxCell>
-        <mxCell id="JQ5LjAgzly_YhfliwwbK-21" value="File choosing" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" parent="1" vertex="1">
+        <mxCell id="JQ5LjAgzly_YhfliwwbK-21" value="Map File choosing" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" parent="1" vertex="1">
           <mxGeometry x="400" y="110" width="180" height="90" as="geometry" />
         </mxCell>
         <mxCell id="JQ5LjAgzly_YhfliwwbK-22" value="&lt;div&gt;Entry / open File Explorer&lt;br&gt;&lt;/div&gt;&lt;div&gt;Do / Ask name and path of file&lt;br&gt;&lt;/div&gt;Exit/ close File Explorer" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" parent="JQ5LjAgzly_YhfliwwbK-21" vertex="1">
@@ -71,7 +71,7 @@
             <mxPoint x="370" y="575" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="JQ5LjAgzly_YhfliwwbK-49" value="File choosing" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" parent="1" vertex="1">
+        <mxCell id="JQ5LjAgzly_YhfliwwbK-49" value="Request File choosing" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=0;resizeLast=1;container=0;fontColor=#000000;collapsible=0;rounded=1;arcSize=30;strokeColor=#ff0000;fillColor=#ffffc0;swimlaneFillColor=#ffffc0;dropTarget=0;" parent="1" vertex="1">
           <mxGeometry x="760" y="530" width="180" height="90" as="geometry" />
         </mxCell>
         <mxCell id="JQ5LjAgzly_YhfliwwbK-50" value="&lt;div&gt;Entry / open File Explorer&lt;br&gt;&lt;/div&gt;&lt;div&gt;Do / Ask name and path of file&lt;br&gt;&lt;/div&gt;&lt;div&gt;Exit/ close File Explorer&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;spacingLeft=4;spacingRight=4;whiteSpace=wrap;overflow=hidden;rotatable=0;fontColor=#000000;" parent="JQ5LjAgzly_YhfliwwbK-49" vertex="1">
