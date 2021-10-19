@@ -25,7 +25,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.insalyon.pldagile.ui.maps.tile;
+package fr.insalyon.pldagile.view.maps.tile;
 
 import javafx.scene.image.Image;
 

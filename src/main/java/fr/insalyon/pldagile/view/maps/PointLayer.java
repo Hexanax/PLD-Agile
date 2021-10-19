@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Gluon
+ * Copyright (c) 2016, Gluon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,35 +25,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.insalyon.pldagile.ui.maps.tile;
+package fr.insalyon.pldagile.view.maps;
 
-import fr.insalyon.pldagile.ui.maps.tile.osm.CachedOsmTileRetriever;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.util.Pair;
 
-import java.util.Iterator;
-import java.util.ServiceLoader;
+/**
+ * A layer that allows to visualise points of interest.
+ */
+public class PointLayer extends MapLayer {
 
-public class TileRetrieverProvider {
+    private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();
 
-    private static TileRetrieverProvider provider;
-    public static synchronized TileRetrieverProvider getInstance() {
-        if (provider == null) {
-            provider = new TileRetrieverProvider();
-        }
-        return provider;
+    public PointLayer() {
     }
 
-    private final ServiceLoader<TileRetriever> loader;
-
-    private TileRetrieverProvider() {
-        loader = ServiceLoader.load(TileRetriever.class);
+    public void addPoint(MapPoint p, Node icon) {
+        points.add(new Pair<>(p, icon));
+        this.getChildren().add(icon);
+        this.markDirty();
     }
 
-    public TileRetriever load() {
-        Iterator<TileRetriever> tileRetrievers = loader.iterator();
-        if (tileRetrievers.hasNext()) {
-            return tileRetrievers.next();
-        } else {
-            return new CachedOsmTileRetriever();
+    public void clearPoints() {
+        points.clear();
+    }
+
+    @Override
+    protected void layoutLayer() {
+        for (Pair<MapPoint, Node> candidate : points) {
+            MapPoint point = candidate.getKey();
+            Node icon = candidate.getValue();
+            Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude());
+            icon.setVisible(true);
+            icon.setTranslateX(mapPoint.getX());
+            icon.setTranslateY(mapPoint.getY());
         }
     }
 }

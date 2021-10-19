@@ -1,9 +1,6 @@
-package fr.insalyon.pldagile.ui.menu;
+package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.PickyApplication;
-import fr.insalyon.pldagile.model.CityMap;
-import fr.insalyon.pldagile.model.Coordinates;
-import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,8 +11,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 

@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile.ui.menu;
+package fr.insalyon.pldagile.view.menu;
 
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
