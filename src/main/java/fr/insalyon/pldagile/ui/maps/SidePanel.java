@@ -10,6 +10,14 @@ import javafx.stage.Stage;
 
 public class SidePanel extends Region {
 
+    public ImportView getIview() {
+        return iview;
+    }
+
+    public PickupView getPview() {
+        return pview;
+    }
+
     private ImportView iview;
     private PickupView pview;
 

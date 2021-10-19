@@ -44,7 +44,9 @@ public class PickyApplication extends Application {
         stage.setTitle("Picky - INSA Lyon");
         //Image desktopIcon = new Image(getClass().getResource("desktop-icon.png").toString());
         //stage.getIcons().add(desktopIcon);
-        MapView mapView = new MapView();
+        cityMap = new CityMap();
+        planningRequest = new PlanningRequest();
+        mapView = new MapView();
         SidePanel sidePanel = new SidePanel();
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
@@ -73,27 +75,6 @@ public class PickyApplication extends Application {
         stage.show();
         mapView.setZoom(10);
         mapView.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
-
-        CityMap cityMap = new CityMap();
-        PlanningRequest planningRequest = new PlanningRequest();
-        try {
-            XMLDeserializer.load(cityMap);
-            XMLDeserializer.load(planningRequest, cityMap);
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-
-        Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
-        MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
-        PointLayer pointLayer = new PointLayer();
-        pointLayer.addPoint(depotPoint, new Circle(7, Color.RED));
-        //Add all the intersections temporarily
-        for(Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
-            Intersection intersection = entry.getValue();
-            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
-            pointLayer.addPoint(mapPoint, new Circle(7, Color.BLUE));
-        }
-        mapView.addLayer(pointLayer);
     }
 
     private Label headerLabel() {
@@ -116,4 +97,25 @@ public class PickyApplication extends Application {
     public static void main(String[] args) {
         launch();
     }
+
+    public static void updateCityMap() {
+
+    }
+
+    public static void updatePlanningRequest() {
+        Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
+        MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
+        PointLayer pointLayer = new PointLayer();
+        pointLayer.addPoint(depotPoint, new Circle(7, Color.RED));
+        mapView.addLayer(pointLayer);
+    }
+
+    public static PlanningRequest getPlanningRequest() {
+        return planningRequest;
+    }
+
+    public static CityMap getCityMap() {
+        return cityMap;
+    }
+
 }

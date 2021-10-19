@@ -1,6 +1,8 @@
 package fr.insalyon.pldagile.ui.maps;
 
+import fr.insalyon.pldagile.PickyApplication;
 import fr.insalyon.pldagile.model.CityMap;
+import fr.insalyon.pldagile.model.Coordinates;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 import javafx.event.ActionEvent;
@@ -12,22 +14,22 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class ImportView extends Region {
+
     private Button importMapButton;
     private Button importPickupButton;
     private Button computeButton;
     private Label importMapLabel;
     private Label importPickupLabel;
 
-    private CityMap cityMap;
-    private PlanningRequest planningRequest;
+
 
     public ImportView () {
-        this.cityMap = new CityMap();
-        this.planningRequest = new PlanningRequest();
 
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.CENTER);
@@ -66,7 +68,8 @@ public class ImportView extends Region {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    XMLDeserializer.load(cityMap);
+                    XMLDeserializer.load(PickyApplication.getCityMap());
+                    PickyApplication.updateCityMap();
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -77,7 +80,8 @@ public class ImportView extends Region {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    XMLDeserializer.load(planningRequest, cityMap);
+                    XMLDeserializer.load(PickyApplication.getPlanningRequest(), PickyApplication.getCityMap());
+                    PickyApplication.updatePlanningRequest();
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -93,8 +97,17 @@ public class ImportView extends Region {
 
 
     }
-
-    public CityMap getCityMap() {
-        return this.cityMap;
+    public Button getImportMapButton() {
+        return importMapButton;
     }
+
+    public Button getImportPickupButton() {
+        return importPickupButton;
+    }
+
+    public Button getComputeButton() {
+        return computeButton;
+    }
+
+
 }
