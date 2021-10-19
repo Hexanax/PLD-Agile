@@ -1,6 +1,7 @@
 package fr.insalyon.pldagile.ui.maps;
 
 import fr.insalyon.pldagile.model.CityMap;
+import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -22,9 +23,11 @@ public class ImportView extends Region {
     private Label importPickupLabel;
 
     private CityMap cityMap;
+    private PlanningRequest planningRequest;
 
     public ImportView () {
         this.cityMap = new CityMap();
+        this.planningRequest = new PlanningRequest();
 
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.CENTER);
@@ -73,7 +76,11 @@ public class ImportView extends Region {
         importPickupButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                try {
+                    XMLDeserializer.load(planningRequest, cityMap);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -85,5 +92,9 @@ public class ImportView extends Region {
         });
 
 
+    }
+
+    public CityMap getCityMap() {
+        return this.cityMap;
     }
 }
