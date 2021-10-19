@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
@@ -41,6 +42,7 @@ public class PickupView extends Region {
         , new PickupItem("Rue de la Soie", new Date(), 794258), new PickupItem("Quai du Rhone", new Date(), 123456));
         list.setItems(items);
         list.setOrientation(Orientation.VERTICAL);
+        list.setMaxHeight(Control.USE_PREF_SIZE);
         maingp.add(list, 0, 2, 1, 1);
 
 

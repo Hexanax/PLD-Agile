@@ -6,12 +6,15 @@ import fr.insalyon.pldagile.ui.maps.MapView;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 import fr.insalyon.pldagile.xml.XMLFileOpener;
+import fr.insalyon.pldagile.ui.maps.SidePanel;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
 
@@ -35,6 +38,9 @@ public class HelloApplication extends Application {
         //Image desktopIcon = new Image(getClass().getResource("desktop-icon.png").toString());
         //stage.getIcons().add(desktopIcon);
         MapView view = new MapView();
+        SidePanel sidePanel = new SidePanel();
+        int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
+        int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         view.setZoom(3);
         final Label headerLabel = headerLabel();
         final Group copyright = createCopyright();
@@ -47,12 +53,16 @@ public class HelloApplication extends Application {
                 copyright.setLayoutY(getHeight() - copyright.prefHeight(-1));
             }
         };
-        Scene scene = new Scene(bp, 1200, 700);
+        BorderPane mainPanel = new BorderPane();
+        mainPanel.setCenter(bp);
+        mainPanel.setRight(sidePanel);
+        Scene scene = new Scene(mainPanel, screenWidth, screenHeight);
         bp.getChildren().addAll(view, headerLabel, copyright);
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
+        stage.setFullScreen(true);
         stage.show();
         view.setZoom(10);
         view.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
