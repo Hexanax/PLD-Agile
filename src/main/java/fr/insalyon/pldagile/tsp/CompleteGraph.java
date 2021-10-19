@@ -1,6 +1,6 @@
 package fr.insalyon.pldagile.tsp;
 
-public class CompleteGraph implements Graph {
+public class CompleteGraph implements GraphTemplate {
     private static final int MAX_COST = 40;
     private static final int MIN_COST = 10;
     int nbVertices;
