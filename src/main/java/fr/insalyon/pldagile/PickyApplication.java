@@ -2,6 +2,7 @@ package fr.insalyon.pldagile;
 
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.Coordinates;
+import fr.insalyon.pldagile.model.Intersection;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.ui.maps.MapPoint;
 import fr.insalyon.pldagile.ui.maps.MapView;
@@ -28,6 +29,7 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class PickyApplication extends Application {
 
@@ -104,7 +106,14 @@ public class PickyApplication extends Application {
     }
 
     public static void updateCityMap() {
-
+        PointLayer pointLayer = new PointLayer();
+        //Add all the intersections temporarily
+        for(Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
+            Intersection intersection = entry.getValue();
+            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            pointLayer.addPoint(mapPoint, new Circle(7, Color.BLUE));
+        }
+        mapView.addLayer(pointLayer);
     }
 
     public static void updatePlanningRequest() {
