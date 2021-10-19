@@ -1,6 +1,7 @@
 package fr.insalyon.pldagile.xml;
 
 import fr.insalyon.pldagile.model.*;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -21,6 +22,7 @@ public class XMLDeserializerTest {
 
 
     @Test
+    @DisplayName("Map parsing should work")
     public void loadMapTest() throws Exception {
         //source file : testMap.xml
         XMLDeserializer xmlDeserializer = new XMLDeserializer();
@@ -30,19 +32,15 @@ public class XMLDeserializerTest {
         assertEquals(citymap.getIntersections().size(),7);
         assertEquals(citymap.getSegments().size(),7);
 
-        Intersection intersection1 = new Intersection(1L,new Coordinates(45.5,4.8));
-        Intersection intersection4 = new Intersection(4L, new Coordinates(45.5,5));
-        Segment segment14 = new Segment("Boulevard Belateche",15590,intersection4,intersection1);
+        assertEquals(citymap.getIntersections().get(1L).getId(), 1L);
+        assertEquals(citymap.getIntersections().get(4L).getId(),4L);
+        assertEquals(citymap.getIntersections().get(1L).getCoordinates().getLatitude(),45.5);
+        assertEquals(citymap.getIntersections().get(1L).getCoordinates().getLongitude(),4.8);
 
-        assertEquals(citymap.getIntersections().get(1L).getId(), intersection1.getId());
-        assertEquals(citymap.getIntersections().get(4L).getId(),intersection4.getId());
-        assertEquals(citymap.getIntersections().get(1L).getCoordinates().getLatitude(),intersection1.getCoordinates().getLatitude());
-        assertEquals(citymap.getIntersections().get(1L).getCoordinates().getLongitude(),intersection1.getCoordinates().getLongitude());
-
-        assertEquals(citymap.getSegments().get(7L).getName(),segment14.getName());
-        assertEquals(citymap.getSegments().get(7L).getLength(),segment14.getLength());
-        assertEquals(citymap.getSegments().get(7L).getOrigin().getId(),intersection4.getId());
-        assertEquals(citymap.getSegments().get(7L).getDestination().getId(),intersection1.getId());
+        assertEquals(citymap.getSegments().get(7L).getName(),"Boulevard Belateche");
+        assertEquals(citymap.getSegments().get(7L).getLength(),15590);
+        assertEquals(citymap.getSegments().get(7L).getOrigin().getId(),4L);
+        assertEquals(citymap.getSegments().get(7L).getDestination().getId(),1L);
 
 
 
@@ -51,6 +49,7 @@ public class XMLDeserializerTest {
     }
 
     @Test
+    @DisplayName("Requests parsing should work")
     public void loadRequestsTest() throws Exception{
         //source file : testRequest.xml
         XMLDeserializer xmlDeserializer = new XMLDeserializer();
@@ -66,29 +65,23 @@ public class XMLDeserializerTest {
         xmlDeserializer.load(planningRequest,citymap);
 
         //Testing the depot parsing
-        assertEquals(planningRequest.getDepot().getIntersection().getId(), intersectionDepot.getId());
-        assertEquals(planningRequest.getDepot().getIntersection().getCoordinates().getLongitude(), intersectionDepot.getCoordinates().getLongitude());
-        assertEquals(planningRequest.getDepot().getIntersection().getCoordinates().getLatitude(), intersectionDepot.getCoordinates().getLatitude());
-
+        assertEquals(planningRequest.getDepot().getIntersection().getId(), 1L);
+        assertEquals(planningRequest.getDepot().getIntersection().getCoordinates().getLatitude(),45.5);
+        assertEquals(planningRequest.getDepot().getIntersection().getCoordinates().getLongitude(), 4.8);
         assertEquals(planningRequest.getDepot().getDepartureTime(), departureTime);
-
-        Intersection intersecPickup = new Intersection(2L,new Coordinates(45.6,4.9));
-        Intersection intersecDelivery = new Intersection(5L,new Coordinates(45.6,5));
-        Pickup pickup1 = new Pickup(intersecPickup,420);
-        Delivery delivery1 = new Delivery(intersecDelivery,600);
-        Request request1 = new Request(pickup1,delivery1);
 
         //Testing the requests parsing
         assertEquals(planningRequest.getRequests().size(),2);
 
-        assertEquals(planningRequest.getRequests().get(0).getPickup().getIntersection().getId(),pickup1.getIntersection().getId());
-        assertEquals(planningRequest.getRequests().get(0).getPickup().getIntersection().getCoordinates().getLatitude(),pickup1.getIntersection().getCoordinates().getLatitude());
-        assertEquals(planningRequest.getRequests().get(0).getPickup().getIntersection().getCoordinates().getLongitude(),pickup1.getIntersection().getCoordinates().getLongitude());
-        assertEquals(planningRequest.getRequests().get(0).getPickup().getDuration(),pickup1.getDuration());
+        assertEquals(planningRequest.getRequests().get(0).getPickup().getIntersection().getId(),2L);
+        assertEquals(planningRequest.getRequests().get(0).getPickup().getIntersection().getCoordinates().getLatitude(),45.6);
+        assertEquals(planningRequest.getRequests().get(0).getPickup().getIntersection().getCoordinates().getLongitude(),4.9);
+        assertEquals(planningRequest.getRequests().get(0).getPickup().getDuration(),420);
 
-
-
-
+        assertEquals(planningRequest.getRequests().get(0).getDelivery().getIntersection().getId(),5L);
+        assertEquals(planningRequest.getRequests().get(0).getDelivery().getIntersection().getCoordinates().getLatitude(),45.6);
+        assertEquals(planningRequest.getRequests().get(0).getDelivery().getIntersection().getCoordinates().getLongitude(),5);
+        assertEquals(planningRequest.getRequests().get(0).getDelivery().getDuration(),600);
 
     }
 
