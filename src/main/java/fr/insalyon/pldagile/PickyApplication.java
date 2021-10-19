@@ -99,7 +99,14 @@ public class PickyApplication extends Application {
     }
 
     public static void updateCityMap() {
-
+        PointLayer pointLayer = new PointLayer();
+        //Add all the intersections temporarily
+        for(Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
+            Intersection intersection = entry.getValue();
+            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            pointLayer.addPoint(mapPoint, new Circle(7, Color.BLUE));
+        }
+        mapView.addLayer(pointLayer);
     }
 
     public static void updatePlanningRequest() {
