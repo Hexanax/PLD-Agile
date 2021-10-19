@@ -7,14 +7,16 @@ import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.ui.maps.MapPoint;
 import fr.insalyon.pldagile.ui.maps.MapView;
 import fr.insalyon.pldagile.ui.maps.PointLayer;
-import fr.insalyon.pldagile.xml.ExceptionXML;
 import fr.insalyon.pldagile.ui.menu.SidePanel;
+import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -42,7 +44,7 @@ public class PickyApplication extends Application {
     public void start(Stage stage) throws ExceptionXML {
         mainStage = stage;
         stage.setTitle("Picky - INSA Lyon");
-        Image desktopIcon = new Image(getClass().getClassLoader().getResource("global-network.svg").toExternalForm());
+        Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
         cityMap = new CityMap();
         planningRequest = new PlanningRequest();
@@ -70,12 +72,15 @@ public class PickyApplication extends Application {
         bp.getChildren().addAll(mapView, headerLabel, copyright);
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
-        scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+        scene.getStylesheets().add("/style.css");
         stage.setScene(scene);
         stage.setFullScreen(true);
+        MapPoint mapCenter = new MapPoint(46.75, 2.80);
+        mapView.setCenter(mapCenter);
+        mapView.setZoom(7);
+        LoadingImageSupplier loadingImageSupplier = new LoadingImageSupplier();
+        MapView.setPlaceholderImageSupplier(loadingImageSupplier);
         stage.show();
-        mapView.setZoom(10);
-        mapView.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
     }
 
     private Label headerLabel() {
