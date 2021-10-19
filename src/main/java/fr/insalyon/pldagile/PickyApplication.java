@@ -1,8 +1,11 @@
 package fr.insalyon.pldagile;
 
 import fr.insalyon.pldagile.model.CityMap;
+import fr.insalyon.pldagile.model.Coordinates;
+import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.ui.maps.MapPoint;
 import fr.insalyon.pldagile.ui.maps.MapView;
+import fr.insalyon.pldagile.ui.maps.PointLayer;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 import fr.insalyon.pldagile.xml.XMLFileOpener;
@@ -14,6 +17,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.xml.sax.SAXException;
@@ -22,7 +27,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 
-public class HelloApplication extends Application {
+public class PickyApplication extends Application {
 
     private final static XMLDeserializer xmlDeserializer = new XMLDeserializer();
     private static Stage mainStage = null;
@@ -37,11 +42,11 @@ public class HelloApplication extends Application {
         stage.setTitle("Picky - INSA Lyon");
         //Image desktopIcon = new Image(getClass().getResource("desktop-icon.png").toString());
         //stage.getIcons().add(desktopIcon);
-        MapView view = new MapView();
+        MapView mapView = new MapView();
         SidePanel sidePanel = new SidePanel();
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
-        view.setZoom(3);
+        mapView.setZoom(3);
         final Label headerLabel = headerLabel();
         final Group copyright = createCopyright();
         StackPane bp = new StackPane() {
@@ -57,16 +62,31 @@ public class HelloApplication extends Application {
         mainPanel.setCenter(bp);
         mainPanel.setRight(sidePanel);
         Scene scene = new Scene(mainPanel, screenWidth, screenHeight);
-        bp.getChildren().addAll(view, headerLabel, copyright);
+        bp.getChildren().addAll(mapView, headerLabel, copyright);
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
         scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
         stage.setScene(scene);
         stage.setFullScreen(true);
         stage.show();
-        view.setZoom(10);
-        view.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
+        mapView.setZoom(10);
+        mapView.flyTo(0, new MapPoint(46.227638, 4.8357), 1.);
 
+        CityMap cityMap = new CityMap();
+        PlanningRequest planningRequest = new PlanningRequest();
+        try {
+            XMLDeserializer.load(cityMap);
+            XMLDeserializer.load(planningRequest, cityMap);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
+        MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
+        PointLayer pointLayer = new PointLayer();
+        pointLayer.addPoint(depotPoint, new Circle(7, Color.RED));
+
+        mapView.addLayer(pointLayer);
     }
 
     private Label headerLabel() {
