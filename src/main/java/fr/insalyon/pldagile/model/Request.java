@@ -14,6 +14,14 @@ public class Request {
         this.id = null;
     }
 
+    public Pickup getPickup() {
+        return pickup;
+    }
+
+    public Delivery getDelivery() {
+        return delivery;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
