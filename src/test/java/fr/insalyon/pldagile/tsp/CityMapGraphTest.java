@@ -44,19 +44,20 @@ public class CityMapGraphTest {
     @DisplayName("Test getCost works")
     public void testGetCost() {
         class TestCase {
-            Double expectedResult;
-            Long originId;
-            Long destinationId;
+            final Double expectedResult;
+            final Long originId;
+            final Long destinationId;
 
             public TestCase(Double expectedResult, Long originId, Long destinationId) {
                 this.expectedResult = expectedResult;
                 this.originId = originId;
                 this.destinationId = destinationId;
             }
-        };
+        }
         TestCase[] tests = {new TestCase(5.8D, 1L, 2L),
                 new TestCase(-1D, 1L, 3L),
-                new TestCase(-1D, 2L, 3L)};
+                new TestCase(-1D, 2L, 3L),
+                new TestCase(-1D, 3L, 1L)};
         for (TestCase tc: tests) {
             Double actualResult = cityMapGraph.getCost(tc.originId,tc.destinationId);
             assertEquals(tc.expectedResult,actualResult);
@@ -67,16 +68,16 @@ public class CityMapGraphTest {
     @DisplayName("Test isArc works")
     public void testIsArc() {
         class TestCase {
-            boolean expectedResult;
-            Long originId;
-            Long destinationId;
+            final boolean expectedResult;
+            final Long originId;
+            final Long destinationId;
 
             public TestCase(boolean expectedResult, Long originId, Long destinationId) {
                 this.expectedResult = expectedResult;
                 this.originId = originId;
                 this.destinationId = destinationId;
             }
-        };
+        }
         TestCase[] tests = {new TestCase(true, 1L, 2L),
                 new TestCase(false, 1L, 3L),
                 new TestCase(false, 2L, 3L)};
