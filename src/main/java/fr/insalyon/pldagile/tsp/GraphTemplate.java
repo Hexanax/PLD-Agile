@@ -1,6 +1,6 @@
 package fr.insalyon.pldagile.tsp;
 
-public interface Graph {
+public interface GraphTemplate {
     /**
      * @return the number of vertices in <code>this</code>
      */
