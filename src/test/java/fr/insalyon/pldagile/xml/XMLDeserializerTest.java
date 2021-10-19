@@ -1,6 +1,7 @@
 package fr.insalyon.pldagile.xml;
 
 import fr.insalyon.pldagile.model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
