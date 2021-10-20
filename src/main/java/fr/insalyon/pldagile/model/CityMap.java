@@ -10,6 +10,7 @@ import java.util.Objects;
 //TODO : switch to hashMap
 
 public class CityMap {
+
     private Map<Long, Intersection> intersections;
     private Map<Long, Segment> segments;
 
@@ -18,7 +19,7 @@ public class CityMap {
         this.segments = segments;
     }
 
-    public CityMap(){
+    public CityMap() {
         this.intersections = new HashMap<Long, Intersection>();
         this.segments = new HashMap<Long, Segment>();
     }
@@ -33,16 +34,17 @@ public class CityMap {
 
     public void add(Intersection intersection) throws ExceptionXML {
         Long id = intersection.getId();
-        if(intersections.containsKey(id)){
+        if (intersections.containsKey(id)) {
             throw new ExceptionXML("Error when reading file : Double intersection exception");
         }
-        intersections.put(id,intersection);
+        intersections.put(id, intersection);
     }
 
     static int index = 1;
+
     public void add(Segment segment) throws ExceptionXML {
         Long id = (long) index++;
-        if(segments.containsValue(segment)){
+        if (segments.containsValue(segment)) {
             throw new ExceptionXML("Error when reading file: Double segment exception");
         }
         segments.put(id, segment);

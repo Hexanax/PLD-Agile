@@ -1,12 +1,11 @@
 package fr.insalyon.pldagile;
 
-import fr.insalyon.pldagile.model.CityMap;
-import fr.insalyon.pldagile.model.Coordinates;
-import fr.insalyon.pldagile.model.Intersection;
-import fr.insalyon.pldagile.model.PlanningRequest;
+import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.MapPoint;
 import fr.insalyon.pldagile.view.maps.MapView;
 import fr.insalyon.pldagile.view.maps.PointLayer;
+import fr.insalyon.pldagile.view.menu.RequestItem;
+import fr.insalyon.pldagile.view.menu.RequestView;
 import fr.insalyon.pldagile.view.menu.SidePanel;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.application.Application;
@@ -22,17 +21,18 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public class PickyApplication extends Application {
 
     private static Stage mainStage = null;
 
+    private static PlanningRequest planningRequest;
+    private static CityMap cityMap;
     private static MapView mapView;
     private static final PointLayer pointLayer = new PointLayer();
-
-    private static CityMap cityMap;
-    private static PlanningRequest planningRequest;
 
     public static Stage getMainStage() {
         return mainStage;
@@ -115,9 +115,20 @@ public class PickyApplication extends Application {
     public static void updatePlanningRequest() {
         Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
         MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
-        PointLayer pointLayer = new PointLayer();
+        //PointLayer pointLayer = new PointLayer();
+        //pointLayer.addPoint(depotPoint, new Circle(7, Color.RED));
+        //mapView.addLayer(pointLayer);
+        ArrayList<RequestItem> items = new ArrayList<>();
+        planningRequest.getRequests().forEach(request -> {
+            Pickup pickup = request.getPickup();
+            RequestItem pickupItem = new RequestItem("Id : " + pickup.getIntersection().getId(), new Date(), 0);
+            Delivery delivery = request.getDelivery();
+            RequestItem deliveryItem = new RequestItem("Id : " + delivery.getIntersection().getId(), new Date(), 0);
+            items.add(pickupItem);
+            items.add(deliveryItem);
+        });
+        RequestView.setPickupItems(items);
         pointLayer.addPoint(depotPoint, new Circle(7, Color.RED));
-        mapView.addLayer(pointLayer);
     }
 
     public static PlanningRequest getPlanningRequest() {

@@ -1,6 +1,7 @@
 package fr.insalyon.pldagile.model;
 
 public class Address {
+
     private Intersection intersection;
 
     public Address(Intersection intersection) {

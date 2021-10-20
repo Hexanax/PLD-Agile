@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlanningRequest {
+
     private List<Request> requests;
     private Depot depot;
 
@@ -37,7 +38,7 @@ public class PlanningRequest {
         this.depot = depot;
     }
 
-    public void add(Request request){
+    public void add(Request request) {
         Long unorderedId = (long) requests.size();
         request.setId(unorderedId);
         requests.add(request);

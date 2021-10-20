@@ -2,7 +2,8 @@ package fr.insalyon.pldagile.model;
 
 import java.util.Date;
 
-public class Depot extends Address{
+public class Depot extends Address {
+
     private Date departureTime;
 
     public Depot(Intersection intersection, Date departureTime) {

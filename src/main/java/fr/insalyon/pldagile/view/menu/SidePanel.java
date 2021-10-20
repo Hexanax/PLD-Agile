@@ -9,16 +9,16 @@ public class SidePanel extends Region {
         return importView;
     }
 
-    public PickupView getPickupView() {
+    public RequestView getPickupView() {
         return pickupView;
     }
 
     private final ImportView importView;
-    private final PickupView pickupView;
+    private final RequestView pickupView;
 
     public SidePanel() {
         importView = new ImportView();
-        pickupView = new PickupView();
+        pickupView = new RequestView();
         BorderPane mainBorderPane = new BorderPane();
         mainBorderPane.setTop(importView);
         mainBorderPane.setCenter(pickupView);
