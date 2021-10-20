@@ -18,7 +18,6 @@ public class PlanningRequest {
     }
 
     public List<Request> getRequests() {
-
         return requests;
     }
 

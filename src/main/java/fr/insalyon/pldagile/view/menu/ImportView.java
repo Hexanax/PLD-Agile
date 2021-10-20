@@ -2,8 +2,6 @@ package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.PickyApplication;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -60,6 +58,7 @@ public class ImportView extends Region {
         //TODO Move in controller for handling and action setup
         importMapButton.setOnAction(event -> {
             try {
+                PickyApplication.emptyCityMap();
                 XMLDeserializer.load(PickyApplication.getCityMap());
                 PickyApplication.updateCityMap();
             } catch(Exception e) {
@@ -67,15 +66,18 @@ public class ImportView extends Region {
             }
         });
 
+        //TODO Move in controller for handling and action setup
         importPickupButton.setOnAction(event -> {
             try {
+                PickyApplication.emptyPlanningRequest();
                 XMLDeserializer.load(PickyApplication.getPlanningRequest(), PickyApplication.getCityMap());
-                PickyApplication.updatePlanningRequest();
+                PickyApplication.renderPlanningRequest();
             } catch(Exception e) {
                 e.printStackTrace();
             }
         });
 
+        //TODO Start algorithm
         computeButton.setOnAction(event -> {
 
         });
