@@ -14,10 +14,11 @@ public class CityMapGraph implements Graph {
 
     private final int nbVertices;
     private final Map<Long, Segment> segments;
+    private final Set<Long> vertexIds;
     public static Double NO_ARC_COST = -1D;
 
     /*
-    Map< originId, ArrayList<Pair<destinationId, length, segmentId>>>
+    Map< vertexId, ArrayList<Pair<adjacentVertexId, length>>>
     "Adjacency list", for each Intersection, the list contains a pair of (origin
     and length between origin and destination)
     */
@@ -27,6 +28,7 @@ public class CityMapGraph implements Graph {
         Map<Long, Intersection> intersections = cityMap.getIntersections();
         segments = cityMap.getSegments();
         nbVertices = intersections.size();
+        vertexIds = new HashSet<>(intersections.keySet());
         graph = new HashMap<>();
         buildGraph();
     }
@@ -95,11 +97,9 @@ public class CityMapGraph implements Graph {
     @Override
     public Double getShortestPathCost(Long originId, Long destinationId) {
         // Algorithm inspired by https://www.baeldung.com/java-dijkstra
-        Set<Long> allVertices = this.getGraph().keySet();
-
         // Set up the map which stores the distances of nodes from the originId
         Map<Long, Double> distancesFromOrigin = new HashMap<>();
-        for (Long v : allVertices) {
+        for (Long v : this.vertexIds) {
             distancesFromOrigin.put(v, POSITIVE_INFINITY);
         }
         // the origin is at a distance of 0 from itself
@@ -121,7 +121,11 @@ public class CityMapGraph implements Graph {
             }
             // Calculate new distances to direct neighbors by keeping the lowest distance at each evaluation.
             Double costToCurrentVertex;
-            for (Pair<Long, Double> adjacencyPair : this.getGraph().get(currentVertexId)) {
+            List<Pair<Long, Double>>  adjacencyPairs = this.getGraph().get(currentVertexId);
+            if (adjacencyPairs == null){
+                continue;
+            }
+            for (Pair<Long, Double> adjacencyPair : adjacencyPairs) {
                 Long adjacentVertexId = adjacencyPair.getKey();
                 if (!settledVertices.contains(adjacentVertexId)) {
                     costToCurrentVertex = distancesFromOrigin.get(currentVertexId);

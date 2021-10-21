@@ -16,27 +16,41 @@ public class CityMapGraphTest {
     CityMapGraph cityMapGraph;
     @BeforeEach
     void setup() throws ExceptionXML {
-        Intersection[] intersections = {new Intersection(1L,new Coordinates(45,5)),
-                                        new Intersection(2L,new Coordinates(50,8)),
-                                        new Intersection(3L,new Coordinates(55,9))
+        Intersection[] intersections = {
+                new Intersection(1L,new Coordinates(4,5)),
+                new Intersection(2L,new Coordinates(5,8)),
+                new Intersection(3L,new Coordinates(6,9)),
+                new Intersection(4L,new Coordinates(6,3)),
+                new Intersection(5L,new Coordinates(2,7)),
+                new Intersection(6L,new Coordinates(3,3)),
+                new Intersection(7L,new Coordinates(5,1)),
+                new Intersection(8L,new Coordinates(1,3)),
+
         };
-
-        Segment segment = new Segment("rue VL 25", 5.8,intersections[0], intersections[1]);
-
+        Segment[] segments = {
+                new Segment("1to2", 3, intersections[0], intersections[1]),
+                new Segment("2to3", 1, intersections[1], intersections[2]),
+                new Segment("4to3", 10, intersections[3], intersections[2]),
+                new Segment("4to1", 3, intersections[3], intersections[0]),
+                new Segment("6to5", 4.5, intersections[5], intersections[4]),
+                new Segment("7to4", 2.5, intersections[6], intersections[3]),
+        };
         cityMap = new CityMap();
         for (Intersection i :intersections) {
             cityMap.add(i);
         }
-        cityMap.add(segment);
+        for (Segment s : segments) {
+            cityMap.add(s);
+        }
         cityMapGraph = new CityMapGraph(cityMap);
     }
 
 
     @Test
     @DisplayName("Test getNbVertices works")
-    public void testGetNbVertices() {
+    public void test_getNbVertices() {
         int nbVertices = cityMapGraph.getNbVertices();
-        int expectedNbVertices = 3;
+        int expectedNbVertices = 8;
         assertEquals(expectedNbVertices, nbVertices);
     }
 
@@ -54,10 +68,10 @@ public class CityMapGraphTest {
                 this.destinationId = destinationId;
             }
         }
-        TestCase[] tests = {new TestCase(5.8D, 1L, 2L),
+        TestCase[] tests = {new TestCase(3D, 1L, 2L),
                 new TestCase(-1D, 1L, 3L),
-                new TestCase(-1D, 2L, 3L),
-                new TestCase(-1D, 3L, 1L)};
+                new TestCase(1D, 2L, 3L),
+        };
         for (TestCase tc: tests) {
             Double actualResult = cityMapGraph.getCost(tc.originId,tc.destinationId);
             assertEquals(tc.expectedResult,actualResult);
@@ -66,7 +80,7 @@ public class CityMapGraphTest {
 
     @Test
     @DisplayName("Test isArc works")
-    public void testIsArc() {
+    public void test_isArc() {
         class TestCase {
             final boolean expectedResult;
             final Long originId;
@@ -80,9 +94,35 @@ public class CityMapGraphTest {
         }
         TestCase[] tests = {new TestCase(true, 1L, 2L),
                 new TestCase(false, 1L, 3L),
-                new TestCase(false, 2L, 3L)};
+        };
         for (TestCase tc: tests) {
             boolean actualResult = cityMapGraph.isArc(tc.originId,tc.destinationId);
+            assertEquals(tc.expectedResult,actualResult);
+        }
+    }
+
+    @Test
+    @DisplayName("Test isArc works")
+    public void test_getShortestPathCost() {
+        class TestCase {
+            final Double expectedResult;
+            final Long originId;
+            final Long destinationId;
+
+            public TestCase(Double expectedResult, Long originId, Long destinationId) {
+                this.expectedResult = expectedResult;
+                this.originId = originId;
+                this.destinationId = destinationId;
+            }
+        }
+        TestCase[] tests = {
+                new TestCase(3D, 1L, 2L),
+                new TestCase(Double.POSITIVE_INFINITY, 6L, 8L),
+                new TestCase(4D, 1L, 3L),
+                new TestCase(7D, 4L, 3L),
+        };
+        for (TestCase tc: tests) {
+            Double actualResult = cityMapGraph.getShortestPathCost(tc.originId,tc.destinationId);
             assertEquals(tc.expectedResult,actualResult);
         }
     }
