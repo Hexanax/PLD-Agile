@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.model;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 //TODO : switch to hashMap
@@ -43,6 +44,12 @@ public class CityMap {
     }
 
     static int index = 1;
+
+    public void addAll(List<Segment> segments) throws ExceptionXML {
+        for (Segment segment : segments) {
+            add(segment);
+        }
+    }
 
     public void add(Segment segment) throws ExceptionXML {
         Long id = (long) index++;

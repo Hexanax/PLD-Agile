@@ -16,17 +16,18 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CityMapGraphTest {
     CityMap cityMap;
     CityMapGraph cityMapGraph;
+
     @BeforeEach
     void setup() throws ExceptionXML {
         Intersection[] intersections = {
-                new Intersection(1L,new Coordinates(4,5)),
-                new Intersection(2L,new Coordinates(5,8)),
-                new Intersection(3L,new Coordinates(6,9)),
-                new Intersection(4L,new Coordinates(6,3)),
-                new Intersection(5L,new Coordinates(2,7)),
-                new Intersection(6L,new Coordinates(3,3)),
-                new Intersection(7L,new Coordinates(5,1)),
-                new Intersection(8L,new Coordinates(1,3)),
+                new Intersection(1L, new Coordinates(4, 5)),
+                new Intersection(2L, new Coordinates(5, 8)),
+                new Intersection(3L, new Coordinates(6, 9)),
+                new Intersection(4L, new Coordinates(6, 3)),
+                new Intersection(5L, new Coordinates(2, 7)),
+                new Intersection(6L, new Coordinates(3, 3)),
+                new Intersection(7L, new Coordinates(5, 1)),
+                new Intersection(8L, new Coordinates(1, 3)),
 
         };
         Segment[] segments = {
@@ -38,7 +39,7 @@ public class CityMapGraphTest {
                 new Segment("7to4", 2.5, intersections[6], intersections[3]),
         };
         cityMap = new CityMap();
-        for (Intersection i :intersections) {
+        for (Intersection i : intersections) {
             cityMap.add(i);
         }
         for (Segment s : segments) {
@@ -74,9 +75,9 @@ public class CityMapGraphTest {
                 new TestCase(-1D, 1L, 3L),
                 new TestCase(1D, 2L, 3L),
         };
-        for (TestCase tc: tests) {
-            Double actualResult = cityMapGraph.getCost(tc.originId,tc.destinationId);
-            assertEquals(tc.expectedResult,actualResult);
+        for (TestCase tc : tests) {
+            Double actualResult = cityMapGraph.getCost(tc.originId, tc.destinationId);
+            assertEquals(tc.expectedResult, actualResult);
         }
     }
 
@@ -94,17 +95,18 @@ public class CityMapGraphTest {
                 this.destinationId = destinationId;
             }
         }
-        TestCase[] tests = {new TestCase(true, 1L, 2L),
+        TestCase[] tests = {
+                new TestCase(true, 1L, 2L),
                 new TestCase(false, 1L, 3L),
         };
-        for (TestCase tc: tests) {
-            boolean actualResult = cityMapGraph.isArc(tc.originId,tc.destinationId);
-            assertEquals(tc.expectedResult,actualResult);
+        for (TestCase tc : tests) {
+            boolean actualResult = cityMapGraph.isArc(tc.originId, tc.destinationId);
+            assertEquals(tc.expectedResult, actualResult);
         }
     }
 
     @Test
-    @DisplayName("Test isArc works")
+    @DisplayName("Test shortest path cost works")
     public void test_getShortestPathCost() {
         class TestCase {
             final Double expectedResult;
@@ -123,14 +125,14 @@ public class CityMapGraphTest {
                 new TestCase(4D, 1L, 3L),
                 new TestCase(7D, 4L, 3L),
         };
-        for (TestCase tc: tests) {
-            Double actualResult = cityMapGraph.getShortestPathCost(tc.originId,tc.destinationId);
-            assertEquals(tc.expectedResult,actualResult);
+        for (TestCase tc : tests) {
+            Double actualResult = cityMapGraph.getShortestPathCost(tc.originId, tc.destinationId);
+            assertEquals(tc.expectedResult, actualResult);
         }
     }
 
     @Test
-    @DisplayName("Test isArc works")
+    @DisplayName("Test get shortest path works")
     public void test_getShortestPath() {
         class TestCase {
             final Double expectedResult;
@@ -149,9 +151,10 @@ public class CityMapGraphTest {
                 new TestCase(4D, 1L, 3L),
                 new TestCase(7D, 4L, 3L),
         };
-        for (TestCase tc: tests) {
-            ArrayList<Long> actualResult = (ArrayList<Long>) cityMapGraph.getShortestPath(tc.originId,tc.destinationId);
-            assertEquals(tc.expectedResult,actualResult);
+        for (TestCase tc : tests) {
+            ArrayList<Long> actualResult = (ArrayList<Long>) cityMapGraph.getShortestPath(tc.originId, tc.destinationId);
+            assertEquals(tc.expectedResult, actualResult);
         }
     }
+
 }

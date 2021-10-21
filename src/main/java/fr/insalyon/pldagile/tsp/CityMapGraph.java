@@ -18,7 +18,6 @@ public class CityMapGraph implements Graph {
     public static Double NO_ARC_COST = -1D;
     private List<Long> pathIds;
 
-
     /*
         Map< vertexId, ArrayList<Pair<adjacentVertexId, length>>>
         "Adjacency list", for each Intersection, the list contains a pair of (origin
@@ -128,8 +127,8 @@ public class CityMapGraph implements Graph {
             }
             // Calculate new distances to direct neighbors by keeping the lowest distance at each evaluation.
             Double costToCurrentVertex;
-            List<Pair<Long, Double>>  adjacencyPairs = this.getGraph().get(currentVertexId);
-            if (adjacencyPairs == null){
+            List<Pair<Long, Double>> adjacencyPairs = this.getGraph().get(currentVertexId);
+            if (adjacencyPairs == null) {
                 continue;
             }
             for (Pair<Long, Double> adjacencyPair : adjacencyPairs) {
@@ -166,14 +165,14 @@ public class CityMapGraph implements Graph {
         // compute the new edge cost
         Double newWeight = costToCurrentVertex + edgeDistance;
         // if the new cost is lower, update it
-        if( newWeight < distancesFromOrigin.get(adjacentVertexId)){
+        if (newWeight < distancesFromOrigin.get(adjacentVertexId)) {
             distancesFromOrigin.replace(adjacentVertexId, newWeight);
         }
     }
 
     @Override
     public List<Long> getShortestPath(Long originId, Long destinationId) {
-        getShortestPathCost(originId,destinationId);
+        getShortestPathCost(originId, destinationId);
         return getPathIds();
     }
 
