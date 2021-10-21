@@ -16,12 +16,14 @@ public class CityMapGraph implements Graph {
     private final Map<Long, Segment> segments;
     private final Set<Long> vertexIds;
     public static Double NO_ARC_COST = -1D;
+    private List<Long> pathIds;
+
 
     /*
-    Map< vertexId, ArrayList<Pair<adjacentVertexId, length>>>
-    "Adjacency list", for each Intersection, the list contains a pair of (origin
-    and length between origin and destination)
-    */
+        Map< vertexId, ArrayList<Pair<adjacentVertexId, length>>>
+        "Adjacency list", for each Intersection, the list contains a pair of (origin
+        and length between origin and destination)
+        */
     private final Map<Long, ArrayList<Pair<Long, Double>>> graph;
 
     public CityMapGraph(CityMap cityMap) {
@@ -30,6 +32,7 @@ public class CityMapGraph implements Graph {
         nbVertices = intersections.size();
         vertexIds = new HashSet<>(intersections.keySet());
         graph = new HashMap<>();
+        pathIds = new ArrayList<>();
         buildGraph();
     }
 
@@ -114,6 +117,10 @@ public class CityMapGraph implements Graph {
         while (unsettledVertices.size() != 0) {
             // Choose an evaluation node from the unsettled nodes set, the evaluation node should be the one with the lowest distance from the source.
             Long currentVertexId = getNextUnsettledVertex(unsettledVertices, distancesFromOrigin);
+            /*
+                As we are using Dijkstra, a Greedy Algorithm, currentVertexId is part of the solution path
+             */
+            pathIds.add(currentVertexId);
             unsettledVertices.remove(currentVertexId);
             settledVertices.add(currentVertexId);
             if (currentVertexId == null) {
@@ -165,9 +172,13 @@ public class CityMapGraph implements Graph {
 
 
     @Override
-    public List<Segment> getShortestPath(Long originId, Long destinationId) {
-        return null;
+    public List<Long> getShortestPath(Long originId, Long destinationId) {
+        getShortestPathCost(originId,destinationId);
+        return getPathIds();
     }
 
+    public List<Long> getPathIds() {
+        return pathIds;
+    }
 
 }

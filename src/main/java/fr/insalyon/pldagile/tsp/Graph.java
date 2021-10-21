@@ -1,7 +1,5 @@
 package fr.insalyon.pldagile.tsp;
 
-import fr.insalyon.pldagile.model.Segment;
-
 import java.util.List;
 
 public interface Graph {
@@ -41,7 +39,7 @@ public interface Graph {
      * @param destinationId the id of the destination vertex
      * @return returns the segments that make the shortest path between two vertices, if the list is empty there are no paths between those vertices
      */
-    List<Segment> getShortestPath(Long originId, Long destinationId);
+    List<Long> getShortestPath(Long originId, Long destinationId);
 
 
 }
