@@ -2,10 +2,8 @@ package fr.insalyon.pldagile.model;
 
 import fr.insalyon.pldagile.xml.ExceptionXML;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 //TODO : switch to hashMap
 

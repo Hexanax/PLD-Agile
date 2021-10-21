@@ -30,12 +30,4 @@ public class Request {
         return this.id;
     }
 
-    public Pickup getPickup() {
-        return pickup;
-    }
-
-    public Delivery getDelivery() {
-        return delivery;
-    }
-
 }

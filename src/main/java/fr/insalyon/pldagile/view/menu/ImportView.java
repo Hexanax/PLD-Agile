@@ -1,7 +1,9 @@
 package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.PickyApplication;
+import fr.insalyon.pldagile.xml.FileChooseOption;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
+import fr.insalyon.pldagile.xml.XMLFileOpener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,6 +13,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+
+import java.io.File;
 
 public class ImportView extends Region {
 
@@ -58,8 +62,9 @@ public class ImportView extends Region {
         //TODO Move in controller for handling and action setup
         importMapButton.setOnAction(event -> {
             try {
+                File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
                 PickyApplication.emptyCityMap();
-                XMLDeserializer.load(PickyApplication.getCityMap());
+                XMLDeserializer.load(PickyApplication.getCityMap(), importFile);
                 PickyApplication.updateCityMap();
             } catch(Exception e) {
                 e.printStackTrace();
@@ -69,8 +74,9 @@ public class ImportView extends Region {
         //TODO Move in controller for handling and action setup
         importPickupButton.setOnAction(event -> {
             try {
+                File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
                 PickyApplication.emptyPlanningRequest();
-                XMLDeserializer.load(PickyApplication.getPlanningRequest(), PickyApplication.getCityMap());
+                XMLDeserializer.load(PickyApplication.getPlanningRequest(), PickyApplication.getCityMap(), importFile);
                 PickyApplication.renderPlanningRequest();
             } catch(Exception e) {
                 e.printStackTrace();
