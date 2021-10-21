@@ -156,6 +156,7 @@ public class CityMapGraph implements Graph {
                 lowestDistanceVertexId = vertexID;
             }
         }
+
         return lowestDistanceVertexId;
     }
 
@@ -169,7 +170,6 @@ public class CityMapGraph implements Graph {
             distancesFromOrigin.replace(adjacentVertexId, newWeight);
         }
     }
-
 
     @Override
     public List<Long> getShortestPath(Long originId, Long destinationId) {
