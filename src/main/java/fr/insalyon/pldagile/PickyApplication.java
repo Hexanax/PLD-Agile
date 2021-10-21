@@ -121,6 +121,7 @@ public class PickyApplication extends Application {
         planningRequest.getRequests().clear();
     }
 
+    private static int count = 1; //TODO Delete this ugly counter
     public static void renderPlanningRequest() {
         Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
         MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
@@ -128,9 +129,9 @@ public class PickyApplication extends Application {
         planningRequest.getRequests().forEach(request -> {
             //Items in list
             Pickup pickup = request.getPickup();
-            RequestItem pickupItem = new RequestItem("Id : " + pickup.getIntersection().getId(), new Date(), 0);
+            RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), count++);
             Delivery delivery = request.getDelivery();
-            RequestItem deliveryItem = new RequestItem("Id : " + delivery.getIntersection().getId(), new Date(), 0);
+            RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), count++);
             items.add(pickupItem);
             items.add(deliveryItem);
             //Map points

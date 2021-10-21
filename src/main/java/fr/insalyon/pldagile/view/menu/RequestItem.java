@@ -15,17 +15,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RequestItem extends Region {
-    private String intersectionName;
-    private Date pickupTime;
     private int requestNumber;
     private Button destroy;
     private Button up;
     private Button down;
 
-    public RequestItem(String intersectionName, Date pickupTime, int requestNumber) {
-        this.intersectionName = intersectionName;
-        this.pickupTime = pickupTime;
-        this.requestNumber = requestNumber;
+    public RequestItem(String requestName, String requestCommentary, int requestNumber) {
 
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.BASELINE_CENTER);
@@ -33,7 +28,7 @@ public class RequestItem extends Region {
         maingp.setHgap(5);
         maingp.setVgap(5);
 
-        Label titleLabel = new Label("Pickup at " + intersectionName);
+        Label titleLabel = new Label(requestName);
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         maingp.add(titleLabel, 0,0,4,1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
@@ -41,7 +36,7 @@ public class RequestItem extends Region {
 
         DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
 
-        Label timeLabel = new Label("Pickup time : " + dateFormat.format(pickupTime));
+        Label timeLabel = new Label(requestCommentary); //TODO Display time: dateFormat.format(pickupTime)
         timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
         maingp.add(timeLabel, 0,1,1,1);
         GridPane.setHalignment(timeLabel, HPos.LEFT);
