@@ -29,7 +29,7 @@ public class PlanningRequest {
         this.requests = requests;
     }
 
-    public void setDepotAddress(Depot depot) {
+    public void setDepot(Depot depot) {
         this.depot = depot;
     }
 

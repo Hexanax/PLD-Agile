@@ -64,11 +64,13 @@ public class ImportView extends Region {
             try {
                 File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
                 PickyApplication.emptyCityMap();
-                XMLDeserializer.load(PickyApplication.getCityMap(), importFile);
-                PickyApplication.clearMap();
-                PickyApplication.renderMapAndRequests();
+                PickyApplication.emptyPlanningRequest(); //New loaded map means we reset the requests too
+                XMLDeserializer.load(PickyApplication.getCityMap(), importFile); //TODO Handle empty city & requests as load file success callback to prevent the "cancel" and invalid format from resetting
             } catch(Exception e) {
                 e.printStackTrace();
+            } finally {
+                PickyApplication.clearMap();
+                PickyApplication.renderMapAndRequests();
             }
         });
 
@@ -77,15 +79,16 @@ public class ImportView extends Region {
             try {
                 File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
                 PickyApplication.emptyPlanningRequest();
-                XMLDeserializer.load(PickyApplication.getPlanningRequest(), PickyApplication.getCityMap(), importFile);
-                PickyApplication.clearMap();
-                PickyApplication.renderMapAndRequests();
+                XMLDeserializer.load(PickyApplication.getPlanningRequest(), PickyApplication.getCityMap(), importFile); //TODO Handle emptyPlanningRequest as load file success callback to prevent the "cancel" and invalid format from resetting
             } catch(Exception e) {
                 e.printStackTrace();
+            } finally {
+                PickyApplication.clearMap();
+                PickyApplication.renderMapAndRequests();
             }
         });
 
-        //TODO Start algorithm
+        //TODO Start TSP resolution algorithm
         computeButton.setOnAction(event -> {
 
         });

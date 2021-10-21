@@ -113,6 +113,7 @@ public class PickyApplication extends Application {
 
     public static void emptyPlanningRequest() {
         planningRequest.getRequests().clear();
+        planningRequest.setDepot(null);
     }
 
     public static void renderMapAndRequests() {
@@ -131,37 +132,39 @@ public class PickyApplication extends Application {
 
     private static int count = 1; //TODO Delete this ugly counter
     public static void renderPlanningRequest() {
-        //Render the planning request
-        Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
-        MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
-        ArrayList<RequestItem> items = new ArrayList<>();
-        planningRequest.getRequests().forEach(request -> {
-            //Items in list
-            Pickup pickup = request.getPickup();
-            RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), count++);
-            Delivery delivery = request.getDelivery();
-            RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), count++);
-            items.add(pickupItem);
-            items.add(deliveryItem);
-            //Map points
-            pointLayer.addPoint(
-                    new MapPoint(
-                            pickup.getIntersection().getCoordinates().getLatitude(),
-                            pickup.getIntersection().getCoordinates().getLongitude()
-                    ),
-                    new Circle(7, Color.RED)
-            );
-            pointLayer.addPoint(
-                    new MapPoint(
-                            delivery.getIntersection().getCoordinates().getLatitude(),
-                            delivery.getIntersection().getCoordinates().getLongitude()
-                    ),
-                    new Circle(7, Color.GREEN)
-            );
-        });
-        RequestView.setPickupItems(items);
-        pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
-        //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
+        if(!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
+            //Render the planning request
+            Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
+            MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
+            ArrayList<RequestItem> items = new ArrayList<>();
+            planningRequest.getRequests().forEach(request -> {
+                //Items in list
+                Pickup pickup = request.getPickup();
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), count++);
+                Delivery delivery = request.getDelivery();
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), count++);
+                items.add(pickupItem);
+                items.add(deliveryItem);
+                //Map points
+                pointLayer.addPoint(
+                        new MapPoint(
+                                pickup.getIntersection().getCoordinates().getLatitude(),
+                                pickup.getIntersection().getCoordinates().getLongitude()
+                        ),
+                        new Circle(7, Color.RED)
+                );
+                pointLayer.addPoint(
+                        new MapPoint(
+                                delivery.getIntersection().getCoordinates().getLatitude(),
+                                delivery.getIntersection().getCoordinates().getLongitude()
+                        ),
+                        new Circle(7, Color.GREEN)
+                );
+            });
+            RequestView.setPickupItems(items);
+            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+            //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
+        }
     }
 
     public static PlanningRequest getPlanningRequest() {
