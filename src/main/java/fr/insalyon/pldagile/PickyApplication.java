@@ -1,9 +1,7 @@
 package fr.insalyon.pldagile;
 
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.view.maps.MapPoint;
-import fr.insalyon.pldagile.view.maps.MapView;
-import fr.insalyon.pldagile.view.maps.PointLayer;
+import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.RequestItem;
 import fr.insalyon.pldagile.view.menu.RequestView;
 import fr.insalyon.pldagile.view.menu.SidePanel;
@@ -18,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Line;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -31,7 +30,8 @@ public class PickyApplication extends Application {
     private static PlanningRequest planningRequest;
     private static CityMap cityMap;
     private static MapView mapView;
-    private static final PointLayer pointLayer = new PointLayer();
+    private static final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
+    private static final LineLayer lineLayer = new LineLayer();
 
     public static Stage getMainStage() {
         return mainStage;
@@ -47,6 +47,7 @@ public class PickyApplication extends Application {
         planningRequest = new PlanningRequest();
         mapView = new MapView();
         mapView.addLayer(pointLayer); //Add the map layer
+        mapView.addLayer(lineLayer); //Add the line (tour) layer
         SidePanel sidePanel = new SidePanel();
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
@@ -165,6 +166,17 @@ public class PickyApplication extends Application {
             pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
             //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
         }
+    }
+
+    public static void renderTour() {
+        System.out.println("Render tour called");
+        Intersection origin = cityMap.getIntersection(25175791L);
+        Intersection destination = cityMap.getIntersection(25175778L);
+        MapPoint originPoint = new MapPoint(origin.getCoordinates().getLatitude(), origin.getCoordinates().getLongitude());
+        MapPoint destinationPoint = new MapPoint(destination.getCoordinates().getLatitude(), destination.getCoordinates().getLongitude());
+        pointLayer.addPoint(originPoint, new Circle(5, Color.PURPLE));
+        pointLayer.addPoint(destinationPoint, new Circle(5, Color.PURPLE));
+        lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Color.YELLOW);
     }
 
     public static PlanningRequest getPlanningRequest() {

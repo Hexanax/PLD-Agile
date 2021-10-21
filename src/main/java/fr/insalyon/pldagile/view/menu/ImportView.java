@@ -57,6 +57,13 @@ public class ImportView extends Region {
         GridPane.setHalignment(computeButton, HPos.CENTER);
         GridPane.setMargin(computeButton, new Insets(10, 0,0,0));
 
+        //TODO Start TSP resolution algorithm
+        //TODO Move in controller for handling and action setup
+        computeButton.setOnAction(event -> {
+            System.out.println("Computing tour...");
+            PickyApplication.renderTour();
+        });
+
         this.getChildren().add(gridPane);
 
         //TODO Move in controller for handling and action setup
@@ -86,11 +93,6 @@ public class ImportView extends Region {
                 PickyApplication.clearMap();
                 PickyApplication.renderMapAndRequests();
             }
-        });
-
-        //TODO Start TSP resolution algorithm
-        computeButton.setOnAction(event -> {
-
         });
 
     }

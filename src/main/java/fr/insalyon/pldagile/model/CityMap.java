@@ -26,6 +26,10 @@ public class CityMap {
         return intersections;
     }
 
+    public Intersection getIntersection(Long id) {
+        return intersections.get(id);
+    }
+
     public Map<Long, Segment> getSegments() {
         return segments;
     }
