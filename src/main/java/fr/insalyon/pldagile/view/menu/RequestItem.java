@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile.ui.maps;
+package fr.insalyon.pldagile.view.menu;
 
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -14,7 +14,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class PickupItem extends Region {
+public class RequestItem extends Region {
     private String intersectionName;
     private Date pickupTime;
     private int requestNumber;
@@ -22,7 +22,7 @@ public class PickupItem extends Region {
     private Button up;
     private Button down;
 
-    public PickupItem(String intersectionName, Date pickupTime, int requestNumber) {
+    public RequestItem(String intersectionName, Date pickupTime, int requestNumber) {
         this.intersectionName = intersectionName;
         this.pickupTime = pickupTime;
         this.requestNumber = requestNumber;

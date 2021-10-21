@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, 2020, Gluon
+ * Copyright (c) 2016, Gluon
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -25,23 +25,43 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.insalyon.pldagile.ui.maps.tile;
+package fr.insalyon.pldagile.view.maps;
 
-import javafx.scene.image.Image;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.util.Pair;
 
-import java.util.concurrent.CompletableFuture;
+/**
+ * A layer that allows to visualise points of interest.
+ */
+public class PointLayer extends MapLayer {
 
-public interface TileRetriever {
+    private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();
 
-    /**
-     * Loads a tile at the specified zoom level and coordinates and returns it
-     * as an {@link Image}.
-     *
-     * @param zoom the desired zoom level for the tile to load
-     * @param i the horizontal position of the tile to load
-     * @param j the vertical position of the tile to load
-     * @return a completableFuture with the image representing the tile
-     */
-    CompletableFuture<Image> loadTile(int zoom, long i, long j);
+    public PointLayer() {
+    }
 
+    public void addPoint(MapPoint p, Node icon) {
+        points.add(new Pair<>(p, icon));
+        this.getChildren().add(icon);
+        this.markDirty();
+    }
+
+    public void clearPoints() {
+        points.clear();
+    }
+
+    @Override
+    protected void layoutLayer() {
+        for (Pair<MapPoint, Node> candidate : points) {
+            MapPoint point = candidate.getKey();
+            Node icon = candidate.getValue();
+            Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude());
+            icon.setVisible(true);
+            icon.setTranslateX(mapPoint.getX());
+            icon.setTranslateY(mapPoint.getY());
+        }
+    }
 }

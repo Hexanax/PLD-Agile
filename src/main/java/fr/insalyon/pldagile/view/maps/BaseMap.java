@@ -25,7 +25,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package fr.insalyon.pldagile.ui.maps;
+package fr.insalyon.pldagile.view.maps;
 
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
@@ -66,14 +66,13 @@ public class BaseMap extends Group {
     /**
      * The maximum zoom level this map supports.
      */
-    public static final int MAX_ZOOM = 20;
+    public static final int MAX_ZOOM = 19;
     private final Map<Long, SoftReference<MapTile>>[] tiles = new HashMap[MAX_ZOOM];
 
     private double lat;
     private double lon;
     private boolean abortedTileLoad;
 
-//    static final boolean DEBUG = false;
     private final Rectangle area;
     private final ReadOnlyDoubleWrapper centerLon = new ReadOnlyDoubleWrapper();
     private final ReadOnlyDoubleWrapper centerLat = new ReadOnlyDoubleWrapper();
@@ -84,8 +83,6 @@ public class BaseMap extends Group {
     private final DoubleProperty prefZoom = new SimpleDoubleProperty();
     
     private double zoomValue;
-
-
 
     public double x0, y0;
     private boolean dirty = true;
@@ -210,7 +207,6 @@ public class BaseMap extends Group {
     public void setZoom(double z) {
         logger.fine("setZoom called");
         prefZoom.set(z);
-        
     }
 
     /**

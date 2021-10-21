@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.model;
 import java.util.List;
 
 public class Tour {
+
     // An ordered list of requests
     private List<Request> requests;
     private List<Segment> path;

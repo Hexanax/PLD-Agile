@@ -1,5 +1,6 @@
-package fr.insalyon.pldagile.ui.maps;
+package fr.insalyon.pldagile.view.menu;
 
+import fr.insalyon.pldagile.model.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,13 +18,14 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.util.Date;
+import java.util.List;
 
-public class PickupView extends Region {
+public class RequestView extends Region {
 
+    private static final ObservableList<RequestItem> pickupItems = FXCollections.observableArrayList();
     private Button addRequestButton;
 
-    public PickupView() {
+    public RequestView() {
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.CENTER);
         maingp.setPadding(new Insets(40, 40, 40, 40));
@@ -32,18 +34,15 @@ public class PickupView extends Region {
 
         Label titleLabel = new Label("Requests");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        maingp.add(titleLabel, 0,0,1,1);
+        maingp.add(titleLabel, 0, 0, 1, 1);
         GridPane.setHalignment(titleLabel, HPos.CENTER);
-        GridPane.setMargin(titleLabel, new Insets(20, 0,20,0));
+        GridPane.setMargin(titleLabel, new Insets(20, 0, 20, 0));
 
-
-        ListView<PickupItem> list = new ListView<PickupItem>();
-        ObservableList<PickupItem> items = FXCollections.observableArrayList (new PickupItem("Avenue des boulangers", new Date(), 65487)
-        , new PickupItem("Rue de la Soie", new Date(), 794258), new PickupItem("Quai du Rhone", new Date(), 123456));
-        list.setItems(items);
-        list.setOrientation(Orientation.VERTICAL);
-        list.setMaxHeight(Control.USE_PREF_SIZE);
-        maingp.add(list, 0, 2, 1, 1);
+        ListView<RequestItem> pickupList = new ListView<RequestItem>();
+        pickupList.setItems(pickupItems);
+        pickupList.setOrientation(Orientation.VERTICAL);
+        pickupList.setMaxHeight(Control.USE_PREF_SIZE);
+        maingp.add(pickupList, 0, 2, 1, 1);
 
 
         addRequestButton = new Button("Add Request");
@@ -52,7 +51,7 @@ public class PickupView extends Region {
         addRequestButton.setPrefWidth(100);
         maingp.add(addRequestButton, 0, 3, 1, 1);
         GridPane.setHalignment(addRequestButton, HPos.CENTER);
-        GridPane.setMargin(addRequestButton, new Insets(20, 0,20,0));
+        GridPane.setMargin(addRequestButton, new Insets(20, 0, 20, 0));
 
         this.getChildren().add(maingp);
 
@@ -63,4 +62,10 @@ public class PickupView extends Region {
             }
         });
     }
+
+    public static void setPickupItems(List<RequestItem> requestList) {
+        pickupItems.clear();
+        pickupItems.addAll(requestList);
+    }
+
 }

@@ -1,9 +1,10 @@
 package fr.insalyon.pldagile.model;
 
 public class Delivery extends Address {
+
     private int duration;
 
-    public Delivery(Intersection intersection,int duration) {
+    public Delivery(Intersection intersection, int duration) {
         super(intersection);
         this.duration = duration;
     }
