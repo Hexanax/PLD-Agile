@@ -66,7 +66,7 @@ public class ImportView extends Region {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    XMLDeserializer.load(cityMap);
+                    //XMLDeserializer.load(cityMap);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -77,7 +77,7 @@ public class ImportView extends Region {
             @Override
             public void handle(ActionEvent event) {
                 try {
-                    XMLDeserializer.load(planningRequest, cityMap);
+                    //XMLDeserializer.load(planningRequest, cityMap);
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
