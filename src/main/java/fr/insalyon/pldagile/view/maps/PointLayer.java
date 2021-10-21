@@ -51,6 +51,8 @@ public class PointLayer extends MapLayer {
 
     public void clearPoints() {
         points.clear();
+        this.getChildren().clear();
+        this.markDirty();
     }
 
     @Override

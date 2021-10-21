@@ -65,7 +65,8 @@ public class ImportView extends Region {
                 File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
                 PickyApplication.emptyCityMap();
                 XMLDeserializer.load(PickyApplication.getCityMap(), importFile);
-                PickyApplication.updateCityMap();
+                PickyApplication.clearMap();
+                PickyApplication.renderMapAndRequests();
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -77,7 +78,8 @@ public class ImportView extends Region {
                 File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
                 PickyApplication.emptyPlanningRequest();
                 XMLDeserializer.load(PickyApplication.getPlanningRequest(), PickyApplication.getCityMap(), importFile);
-                PickyApplication.renderPlanningRequest();
+                PickyApplication.clearMap();
+                PickyApplication.renderMapAndRequests();
             } catch(Exception e) {
                 e.printStackTrace();
             }

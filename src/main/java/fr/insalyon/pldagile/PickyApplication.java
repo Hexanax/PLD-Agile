@@ -22,7 +22,6 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Map;
 
 public class PickyApplication extends Application {
@@ -47,6 +46,7 @@ public class PickyApplication extends Application {
         cityMap = new CityMap();
         planningRequest = new PlanningRequest();
         mapView = new MapView();
+        mapView.addLayer(pointLayer); //Add the map layer
         SidePanel sidePanel = new SidePanel();
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
@@ -107,22 +107,31 @@ public class PickyApplication extends Application {
         cityMap.getSegments().clear();
     }
 
-    public static void updateCityMap() {
-        //Add all the intersections temporarily
-        for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
-            Intersection intersection = entry.getValue();
-            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
-            pointLayer.addPoint(mapPoint, new Circle(2, Color.BLUE));
-        }
-        mapView.addLayer(pointLayer);
+    public static void clearMap() {
+        pointLayer.clearPoints();
     }
 
     public static void emptyPlanningRequest() {
         planningRequest.getRequests().clear();
     }
 
+    public static void renderMapAndRequests() {
+        renderCityMap();
+        renderPlanningRequest();
+    }
+
+    public static void renderCityMap() {
+        //Add all the intersections temporarily
+        for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
+            Intersection intersection = entry.getValue();
+            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            pointLayer.addPoint(mapPoint, new Circle(2, Color.BLUE));
+        }
+    }
+
     private static int count = 1; //TODO Delete this ugly counter
     public static void renderPlanningRequest() {
+        //Render the planning request
         Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
         MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
         ArrayList<RequestItem> items = new ArrayList<>();
