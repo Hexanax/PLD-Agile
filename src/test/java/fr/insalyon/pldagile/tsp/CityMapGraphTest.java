@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -135,25 +136,24 @@ public class CityMapGraphTest {
     @DisplayName("Test get shortest path works")
     public void test_getShortestPath() {
         class TestCase {
-            final Double expectedResult;
+            final List<Long> expectedResult;
             final Long originId;
             final Long destinationId;
 
-            public TestCase(Double expectedResult, Long originId, Long destinationId) {
+            public TestCase(List<Long> expectedResult, Long originId, Long destinationId) {
                 this.expectedResult = expectedResult;
                 this.originId = originId;
                 this.destinationId = destinationId;
             }
         }
         TestCase[] tests = {
-                new TestCase(3D, 1L, 2L),
-                new TestCase(Double.POSITIVE_INFINITY, 6L, 8L),
-                new TestCase(4D, 1L, 3L),
-                new TestCase(7D, 4L, 3L),
+                new TestCase(List.of(1L, 2L), 1L, 2L)
         };
         for (TestCase tc : tests) {
             ArrayList<Long> actualResult = (ArrayList<Long>) cityMapGraph.getShortestPath(tc.originId, tc.destinationId);
-            assertEquals(tc.expectedResult, actualResult);
+            assertEquals(tc.expectedResult.size(), actualResult.size());
+            assertEquals(tc.expectedResult.get(0), actualResult.get(0));
+            assertEquals(tc.expectedResult.get(1), actualResult.get(1));
         }
     }
 

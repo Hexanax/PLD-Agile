@@ -38,11 +38,6 @@ public class XMLDeserializerTest {
         assertEquals(cityMap.getSegments().get(7L).getLength(),15590);
         assertEquals(cityMap.getSegments().get(7L).getOrigin().getId(),4L);
         assertEquals(cityMap.getSegments().get(7L).getDestination().getId(),1L);
-
-
-
-
-
     }
 
     @Test
