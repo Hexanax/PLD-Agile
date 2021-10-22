@@ -174,6 +174,7 @@ public class PickyApplication extends Application {
         System.out.println("Render tour called");
         TourBuilderV1 tourBuilderV1 = new TourBuilderV1();
         List<Long> intersectionIds = tourBuilderV1.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
+
 //        Intersection origin = cityMap.getIntersection(25175791L);
 //        Intersection destination = cityMap.getIntersection(25175778L);
 

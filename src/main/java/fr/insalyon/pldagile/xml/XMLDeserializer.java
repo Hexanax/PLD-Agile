@@ -63,7 +63,7 @@ public class XMLDeserializer {
             map.add(intersection);
         }
         NodeList segmentsList = rootNode.getElementsByTagName("segment");
-        for (int i = 0; i < intersectionsList.getLength(); i++) {
+        for (int i = 0; i < segmentsList.getLength(); i++) {
             Segment segment = createSegment((Element) segmentsList.item(i), map.getIntersections());
             map.add(segment);
         }
