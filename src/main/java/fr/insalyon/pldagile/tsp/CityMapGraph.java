@@ -165,7 +165,7 @@ public class CityMapGraph implements Graph {
             distancesFromOrigin.replace(adjacentVertexId, newWeight);
             return true;
         }
-        reutrn false;
+        return false;
     }
 
     @Override
@@ -173,12 +173,18 @@ public class CityMapGraph implements Graph {
         // Algorithm inspired by https://www.baeldung.com/java-dijkstra
         // Set up the map which stores the distances of nodes from the originId
         Map<Long, Double> distancesFromOrigin = new HashMap<>();
-        Malp <Long, List> pathsFromOrigin;
+        Map <Long, List> pathsFromOrigin = new HashMap <>();
         for (Long v : this.vertexIds) {
             distancesFromOrigin.put(v, POSITIVE_INFINITY);
         }
+        for (Long v : this.vertexIds) {
+            pathsFromOrigin.put(v,  new LinkedList<>());
+        }
         // the origin is at a distance of 0 from itself
         distancesFromOrigin.put(originId, 0D);
+        List<Long> starterList= new LinkedList<>();
+        starterList.add(originId);
+        pathsFromOrigin.replace(originId,starterList);
 
         // Create the list of unsettled and settled vertices and add the originId as unsettled
         Set<Long> settledVertices = new HashSet<>();
@@ -208,15 +214,15 @@ public class CityMapGraph implements Graph {
                     boolean isUpdate = updateMinimumDistance(costToCurrentVertex, adjacencyPair, distancesFromOrigin);
                     if(isUpdate){
                         List<Long> newPathToVertex= pathsFromOrigin.get(currentVertexId);
-                        newPathToVertex.put(adjacentVertexId);
-                        pathsFromOrigin.put(adjacentVertexId, newPathToVertex);
+                        newPathToVertex.add(adjacentVertexId);
+                        pathsFromOrigin.replace(adjacentVertexId, newPathToVertex);
                     }
                     // Add neighbors that are not yet settled to the unsettled nodes set.
                     unsettledVertices.add(adjacentVertexId);
                 }
             }
         }
-        return distancesFromOrigin.get(destinationId);
+        return pathsFromOrigin.get(destinationId);
     }
 
     public List<Long> getPathIds() {
