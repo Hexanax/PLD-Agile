@@ -205,10 +205,6 @@ public class CityMapGraph implements Graph {
         while (unsettledVertices.size() != 0) {
             // Choose an evaluation node from the unsettled nodes set, the evaluation node should be the one with the lowest distance from the source.
             Long currentVertexId = getNextUnsettledVertex(unsettledVertices, distancesFromOrigin);
-            /*
-                As we are using Dijkstra, a Greedy Algorithm, currentVertexId is part of the solution path
-             */
-            pathIds.add(currentVertexId);
             unsettledVertices.remove(currentVertexId);
             settledVertices.add(currentVertexId);
             if (currentVertexId == null) {
@@ -248,7 +244,7 @@ public class CityMapGraph implements Graph {
         return lowestDistanceVertexId;
     }
 
-    private void updateMinimumDistance(Double costToCurrentVertex, Pair<Long, Double> adjacencyPair, Map<Long, Double> distancesFromOrigin) {
+    private boolean updateMinimumDistance(Double costToCurrentVertex, Pair<Long, Double> adjacencyPair, Map<Long, Double> distancesFromOrigin) {
         Long adjacentVertexId = adjacencyPair.getKey();
         Double edgeDistance = adjacencyPair.getValue();
         // compute the new edge cost
@@ -256,13 +252,16 @@ public class CityMapGraph implements Graph {
         // if the new cost is lower, update it
         if (newWeight < distancesFromOrigin.get(adjacentVertexId)) {
             distancesFromOrigin.replace(adjacentVertexId, newWeight);
+            return true;
         }
+        return false;
     }
 
     @Override
     public List<Long> getShortestPath(Long originId, Long destinationId) {
         //Double res = Dijkstra(originId, destinationId);
         return Dijkstra(originId, destinationId);
+
     }
 
     public List<Long> getPathIds() {
