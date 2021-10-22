@@ -39,26 +39,26 @@ public class ImportView extends Region {
 
         Label titleLabel = new Label("Import");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        maingp.add(titleLabel, 0,0,2,1);
+        maingp.add(titleLabel, 0,0,3,1);
         GridPane.setHalignment(titleLabel, HPos.CENTER);
         GridPane.setMargin(titleLabel, new Insets(0, 0,10,0));
 
         importMapButton = new Button("Import map");
         importPickupButton = new Button("Import Requests");
         maingp.add(importMapButton, 0, 1, 1, 1);
-        maingp.add(importPickupButton, 1, 1, 1, 1);
+        maingp.add(importPickupButton, 2, 1, 1, 1);
 
         importMapLabel = new Label("No file imported yet");
         importPickupLabel = new Label("No file imported yet");
         maingp.add(importMapLabel, 0, 2, 1, 1);
-        maingp.add(importPickupLabel, 1, 2, 1, 1);
+        maingp.add(importPickupLabel, 2, 2, 1, 1);
 
 
         computeButton = new Button("Compute tour");
         computeButton.setPrefHeight(40);
         computeButton.setDefaultButton(true);
         computeButton.setPrefWidth(100);
-        maingp.add(computeButton, 0, 3, 2, 1);
+        maingp.add(computeButton, 0, 3, 3, 1);
         GridPane.setHalignment(computeButton, HPos.CENTER);
         GridPane.setMargin(computeButton, new Insets(10, 0,0,0));
 
@@ -70,6 +70,7 @@ public class ImportView extends Region {
                 try {
                     XMLDeserializer.load(PickyApplication.getCityMap());
                     PickyApplication.updateCityMap();
+                    importMapLabel.setText("");
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
