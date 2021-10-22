@@ -116,10 +116,6 @@ public class CityMapGraph implements Graph {
         while (unsettledVertices.size() != 0) {
             // Choose an evaluation node from the unsettled nodes set, the evaluation node should be the one with the lowest distance from the source.
             Long currentVertexId = getNextUnsettledVertex(unsettledVertices, distancesFromOrigin);
-            /*
-                As we are using Dijkstra, a Greedy Algorithm, currentVertexId is part of the solution path
-             */
-            pathIds.add(currentVertexId);
             unsettledVertices.remove(currentVertexId);
             settledVertices.add(currentVertexId);
             if (currentVertexId == null) {
@@ -159,7 +155,7 @@ public class CityMapGraph implements Graph {
         return lowestDistanceVertexId;
     }
 
-    private void updateMinimumDistance(Double costToCurrentVertex, Pair<Long, Double> adjacencyPair, Map<Long, Double> distancesFromOrigin) {
+    private boolean updateMinimumDistance(Double costToCurrentVertex, Pair<Long, Double> adjacencyPair, Map<Long, Double> distancesFromOrigin) {
         Long adjacentVertexId = adjacencyPair.getKey();
         Double edgeDistance = adjacencyPair.getValue();
         // compute the new edge cost
@@ -167,13 +163,60 @@ public class CityMapGraph implements Graph {
         // if the new cost is lower, update it
         if (newWeight < distancesFromOrigin.get(adjacentVertexId)) {
             distancesFromOrigin.replace(adjacentVertexId, newWeight);
+            return true;
         }
+        reutrn false;
     }
 
     @Override
     public List<Long> getShortestPath(Long originId, Long destinationId) {
-        getShortestPathCost(originId, destinationId);
-        return getPathIds();
+        // Algorithm inspired by https://www.baeldung.com/java-dijkstra
+        // Set up the map which stores the distances of nodes from the originId
+        Map<Long, Double> distancesFromOrigin = new HashMap<>();
+        Malp <Long, List> pathsFromOrigin;
+        for (Long v : this.vertexIds) {
+            distancesFromOrigin.put(v, POSITIVE_INFINITY);
+        }
+        // the origin is at a distance of 0 from itself
+        distancesFromOrigin.put(originId, 0D);
+
+        // Create the list of unsettled and settled vertices and add the originId as unsettled
+        Set<Long> settledVertices = new HashSet<>();
+        Set<Long> unsettledVertices = new HashSet<>();
+        unsettledVertices.add(originId);
+
+        // While the unsettled nodes set is not empty we:
+        while (unsettledVertices.size() != 0) {
+            // Choose an evaluation node from the unsettled nodes set, the evaluation node should be the one with the lowest distance from the source.
+            Long currentVertexId = getNextUnsettledVertex(unsettledVertices, distancesFromOrigin);
+
+            unsettledVertices.remove(currentVertexId);
+            settledVertices.add(currentVertexId);
+            if (currentVertexId == null) {
+                break;
+            }
+            // Calculate new distances to direct neighbors by keeping the lowest distance at each evaluation.
+            Double costToCurrentVertex;
+            List<Pair<Long, Double>> adjacencyPairs = this.getGraph().get(currentVertexId);
+            if (adjacencyPairs == null) {
+                continue;
+            }
+            for (Pair<Long, Double> adjacencyPair : adjacencyPairs) {
+                Long adjacentVertexId = adjacencyPair.getKey();
+                if (!settledVertices.contains(adjacentVertexId)) {
+                    costToCurrentVertex = distancesFromOrigin.get(currentVertexId);
+                    boolean isUpdate = updateMinimumDistance(costToCurrentVertex, adjacencyPair, distancesFromOrigin);
+                    if(isUpdate){
+                        List<Long> newPathToVertex= pathsFromOrigin.get(currentVertexId);
+                        newPathToVertex.put(adjacentVertexId);
+                        pathsFromOrigin.put(adjacentVertexId, newPathToVertex);
+                    }
+                    // Add neighbors that are not yet settled to the unsettled nodes set.
+                    unsettledVertices.add(adjacentVertexId);
+                }
+            }
+        }
+        return distancesFromOrigin.get(destinationId);
     }
 
     public List<Long> getPathIds() {
