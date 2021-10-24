@@ -22,11 +22,11 @@ public class TourBuilderV1 { //TODO Implement TourBuilder
 //        travels.forEach(id -> System.out.println("Id = " + id));
         //------
 
-        for (int i = 0; i < planningRequest.getRequests().size() - 1; i++) {
-            Request firstRequest = planningRequest.getRequests().get(i);
-            Request secondRequest = planningRequest.getRequests().get(i+1);
-
-        }
+//        for (int i = 0; i < planningRequest.getRequests().size() - 1; i++) {
+//            Request firstRequest = planningRequest.getRequests().get(i);
+//            Request secondRequest = planningRequest.getRequests().get(i+1);
+//
+//        }
 
         Intersection previousIntersection = planningRequest.getDepot().getIntersection();
 
