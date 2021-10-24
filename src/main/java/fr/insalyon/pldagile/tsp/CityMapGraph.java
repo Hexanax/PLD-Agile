@@ -19,11 +19,13 @@ public class CityMapGraph implements Graph {
     private List<Long> pathIds;
 
     /*
-     * Map< vertexId, ArrayList<Pair<adjacentVertexId, length>>> "Adjacency list",
-     * for each Intersection, the list contains a pair of (origin and length between
-     * origin and destination)
-     */
+        Map< vertexId, ArrayList<Pair<adjacentVertexId, length>>>
+        "Adjacency list", for each Intersection, the list contains a pair of (origin
+        and length between origin and destination)
+        */
     private final Map<Long, ArrayList<Pair<Long, Double>>> graph;
+
+
 
     public CityMapGraph(CityMap cityMap) {
         Map<Long, Intersection> intersections = cityMap.getIntersections();
@@ -83,8 +85,7 @@ public class CityMapGraph implements Graph {
         }
         ArrayList<Pair<Long, Double>> adjacentVertices = graph.get(originId);
         // Find the cost of traveling to the destination vertex
-        // Note: this process could be made faster by storing the adjacent vertices
-        // using a map
+        // Note: this process could be made faster by storing the adjacent vertices using a map
         for (Pair<Long, Double> a : adjacentVertices) {
             if (a.getKey().equals(destinationId)) {
                 return a.getValue();
