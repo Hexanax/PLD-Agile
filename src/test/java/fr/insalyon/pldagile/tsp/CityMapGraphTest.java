@@ -28,7 +28,7 @@ public class CityMapGraphTest {
                 new Intersection(5L, new Coordinates(2, 7)),
                 new Intersection(6L, new Coordinates(3, 3)),
                 new Intersection(7L, new Coordinates(5, 1)),
-                new Intersection(8L, new Coordinates(1, 3)),
+                //new Intersection(8L, new Coordinates(1, 3)),
 
         };
         Segment[] segments = {
@@ -114,7 +114,7 @@ public class CityMapGraphTest {
             final Long originId;
             final Long destinationId;
 
-            public TestCase(Double expectedResult, Long originId, Long destinationId) {
+            public TestCase(List<Long> expectedResult, Long originId, Long destinationId) {
                 this.expectedResult = expectedResult;
                 this.originId = originId;
                 this.destinationId = destinationId;
@@ -128,7 +128,25 @@ public class CityMapGraphTest {
         };
         for (TestCase tc : tests) {
             Double actualResult = cityMapGraph.getShortestPathCost(tc.originId, tc.destinationId);
-            assertEquals(tc.expectedResult, actualResult);
+            assertEquals(tc.expectedResult.size(), actualResult.size());
+            assertEquals(tc.expectedResult.get(0), actualResult.get(0));
+            assertEquals(tc.expectedResult.get(1), actualResult.get(1));
+        }
+    }
+
+    @Test
+    @DisplayName("Test get shortest path works")
+    public void testabc() {
+        class TestCase {
+            final List<Long> expectedResult;
+            final Long originId;
+            final Long destinationId;
+
+            public TestCase(List<Long> expectedResult, Long originId, Long destinationId) {
+                this.expectedResult = expectedResult;
+                this.originId = originId;
+                this.destinationId = destinationId;
+            }
         }
     }
 
@@ -155,6 +173,17 @@ public class CityMapGraphTest {
             assertEquals(tc.expectedResult.get(0), actualResult.get(0));
             assertEquals(tc.expectedResult.get(1), actualResult.get(1));
         }
+        TestCase[] tests = {
+                new TestCase(List.of(1L, 2L), 1L, 2L)
+        };
+        for (TestCase tc : tests) {
+            ArrayList<Long> actualResult = (ArrayList<Long>) cityMapGraph.getShortestPath(tc.originId, tc.destinationId);
+            assertEquals(tc.expectedResult.size(), actualResult.size());
+            assertEquals(tc.expectedResult.get(0), actualResult.get(0));
+            assertEquals(tc.expectedResult.get(1), actualResult.get(1));
+        }
     }
+
+
 
 }
