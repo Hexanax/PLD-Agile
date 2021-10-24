@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,12 +52,11 @@ public class CityMapGraphTest {
         cityMapGraph = new CityMapGraph(cityMap);
     }
 
-
     @Test
     @DisplayName("Test getNbVertices works")
     public void test_getNbVertices() {
         int nbVertices = cityMapGraph.getNbVertices();
-        int expectedNbVertices = 8;
+        int expectedNbVertices = 7;
         assertEquals(expectedNbVertices, nbVertices);
     }
 
@@ -98,10 +98,7 @@ public class CityMapGraphTest {
                 this.destinationId = destinationId;
             }
         }
-        TestCase[] tests = {
-                new TestCase(true, 1L, 2L),
-                new TestCase(false, 1L, 3L),
-        };
+        TestCase[] tests = { new TestCase(true, 1L, 2L), new TestCase(false, 1L, 3L), };
         for (TestCase tc : tests) {
             boolean actualResult = cityMapGraph.isArc(tc.originId, tc.destinationId);
             assertEquals(tc.expectedResult, actualResult);
@@ -137,7 +134,7 @@ public class CityMapGraphTest {
 
 
     @Test
-    @DisplayName("Test get shortest path works")
+    @DisplayName("Test getShortestPath()")
     public void test_getShortestPath() {
         class TestCase {
             final List<Long> expectedResult;
@@ -166,5 +163,6 @@ public class CityMapGraphTest {
     }
 
 
+    }
 
 }
