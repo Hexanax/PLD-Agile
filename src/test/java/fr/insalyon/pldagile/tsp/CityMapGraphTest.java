@@ -28,16 +28,18 @@ public class CityMapGraphTest {
                 new Intersection(5L, new Coordinates(2, 7)),
                 new Intersection(6L, new Coordinates(3, 3)),
                 new Intersection(7L, new Coordinates(5, 1)),
-                //new Intersection(8L, new Coordinates(1, 3)),
+                new Intersection(8L, new Coordinates(1, 3)),
 
         };
         Segment[] segments = {
                 new Segment("1to2", 3, intersections[0], intersections[1]),
-                new Segment("2to3", 1, intersections[1], intersections[2]),
+                new Segment("2to3", 7, intersections[1], intersections[2]),
                 new Segment("3to4", 10, intersections[2], intersections[3]),
                 new Segment("4to1", 3, intersections[3], intersections[0]),
                 new Segment("1to5", 4.5, intersections[0], intersections[4]),
                 new Segment("5to6", 2.5, intersections[4], intersections[5]),
+                new Segment("6to3", 2.0, intersections[5], intersections[2]),
+
         };
         cityMap = new CityMap();
         for (Intersection i : intersections) {
@@ -74,7 +76,7 @@ public class CityMapGraphTest {
         }
         TestCase[] tests = {new TestCase(3D, 1L, 2L),
                 new TestCase(-1D, 1L, 3L),
-                new TestCase(1D, 2L, 3L),
+                new TestCase(7D, 2L, 3L),
         };
         for (TestCase tc : tests) {
             Double actualResult = cityMapGraph.getCost(tc.originId, tc.destinationId);
@@ -114,7 +116,7 @@ public class CityMapGraphTest {
             final Long originId;
             final Long destinationId;
 
-            public TestCase(List<Long> expectedResult, Long originId, Long destinationId) {
+            public TestCase(Double expectedResult, Long originId, Long destinationId) {
                 this.expectedResult = expectedResult;
                 this.originId = originId;
                 this.destinationId = destinationId;
@@ -123,32 +125,15 @@ public class CityMapGraphTest {
         TestCase[] tests = {
                 new TestCase(3D, 1L, 2L),
                 new TestCase(Double.POSITIVE_INFINITY, 6L, 8L),
-                new TestCase(4D, 1L, 3L),
-                new TestCase(7D, 4L, 3L),
+                new TestCase(9D, 1L, 3L),
+                new TestCase(12D, 4L, 3L),
         };
         for (TestCase tc : tests) {
             Double actualResult = cityMapGraph.getShortestPathCost(tc.originId, tc.destinationId);
-            assertEquals(tc.expectedResult.size(), actualResult.size());
-            assertEquals(tc.expectedResult.get(0), actualResult.get(0));
-            assertEquals(tc.expectedResult.get(1), actualResult.get(1));
+            assertEquals(tc.expectedResult, actualResult);
         }
     }
 
-    @Test
-    @DisplayName("Test get shortest path works")
-    public void testabc() {
-        class TestCase {
-            final List<Long> expectedResult;
-            final Long originId;
-            final Long destinationId;
-
-            public TestCase(List<Long> expectedResult, Long originId, Long destinationId) {
-                this.expectedResult = expectedResult;
-                this.originId = originId;
-                this.destinationId = destinationId;
-            }
-        }
-    }
 
     @Test
     @DisplayName("Test get shortest path works")
@@ -165,16 +150,10 @@ public class CityMapGraphTest {
             }
         }
         TestCase[] tests = {
-                new TestCase(List.of(1L, 2L, 3L), 1L, 3L)
-        };
-        for (TestCase tc : tests) {
-            ArrayList<Long> actualResult = (ArrayList<Long>) cityMapGraph.getShortestPath(tc.originId, tc.destinationId);
-            assertEquals(tc.expectedResult.size(), actualResult.size());
-            assertEquals(tc.expectedResult.get(0), actualResult.get(0));
-            assertEquals(tc.expectedResult.get(1), actualResult.get(1));
-        }
-        TestCase[] tests = {
-                new TestCase(List.of(1L, 2L), 1L, 2L)
+                new TestCase(List.of(1L, 5L, 6L, 3L), 1L, 3L),
+                new TestCase(List.of(4L, 1L, 5L), 4L, 5L),
+                new TestCase(List.of(3L, 4L, 1L), 3L, 1L),
+
         };
         for (TestCase tc : tests) {
             ArrayList<Long> actualResult = (ArrayList<Long>) cityMapGraph.getShortestPath(tc.originId, tc.destinationId);

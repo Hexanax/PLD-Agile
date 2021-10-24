@@ -7,11 +7,18 @@
 <intersection id="5" latitude="45.6" longitude="5"/>
 <intersection id="6" latitude="45.8" longitude="4.8"/>
 <intersection id="7" latitude="45.8" longitude="5"/>
+<intersection id="8" latitude ="45.9" longitude="5.1"/>
+<intersection id="9" latitude ="45.1" longitude="5.2"/>
 <segment destination="6" length="33360" name="Rue Matthieu Roux" origin="1"/>
 <segment destination="7" length="15500" name="Rue de l'église" origin="6"/>
 <segment destination="3" length="11120" name="Boulevard Belateche" origin="7"/>
 <segment destination="5" length="11120" name="Boulevard Belateche" origin="3"/>
 <segment destination="2" length="7780" name="Chemin Metwalli" origin="5"/>
 <segment destination="4" length="11120" name="Boulevard Belateche" origin="5"/>
-<segment destination="1" length="15590" name="Boulevard Belateche" origin="4"/>
+<segment destination="8" length="15590" name="Boulevard Belateche" origin="1"/>
+<segment destination="9" length="12569" name="Boulevard Roux" origin="1"/>
+<segment destination="2" length="32569" name="Boulevard Belateche" origin="8"/>
+<segment destination="7" length="11111" name="Boulevard Belateche" origin="9"/>
+<segment destination="1" length="12345" name="Boulevard Belateche" origin="8"/>
+
 </map>
