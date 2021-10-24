@@ -51,7 +51,9 @@ public class CityMapGraph implements Graph {
         for (Segment s : segments.values()) {
             originId = s.getOrigin().getId();
             destinationId = s.getDestination().getId();
+//            System.out.println("DESTINATION" + destinationId);
             length = s.getLength();
+//            System.out.println("LENGTH " + length);
             adjacentVertex = new Pair<>(destinationId, length);
 
             // Load the pre-existing adjacent vertices if they exist
@@ -65,6 +67,8 @@ public class CityMapGraph implements Graph {
             } else {
                 graph.put(originId, adjacentVertices);
             }
+//            System.out.println(graph.toString());
+
         }
     }
 
@@ -95,6 +99,91 @@ public class CityMapGraph implements Graph {
     public boolean isArc(Long originId, Long destinationId) {
         return !(Objects.equals(this.getCost(originId, destinationId), NO_ARC_COST));
     }
+
+
+    public List<Long> Dijkstra(Long originId, Long destinationId) {
+
+        Map<Long, Double> distancesFromOrigin = new HashMap<>();
+        Map<Long, Long> predecessor = new HashMap<>();
+        Map<Long, Integer> color = new HashMap<>();
+        Map<Long,Double> grey = new HashMap<>();
+
+        for (Long v : this.vertexIds) {
+            distancesFromOrigin.put(v, POSITIVE_INFINITY);
+            predecessor.put(v, null);
+            color.put(v, 0);
+        }
+        distancesFromOrigin.put(originId, 0D);
+        color.put(originId,1);
+        grey.put(originId,0D);
+        while(grey.size() != 0)
+        {
+            Long ref = searchMin(grey);
+            System.out.println("REF"+ref.toString());
+            ArrayList<Pair<Long, Double>> adjacentVertices = graph.get(ref);
+            if(adjacentVertices != null){
+                System.out.println("ADJACENT" + adjacentVertices.toString());
+                for(Pair<Long, Double> pair : adjacentVertices){
+                    if(color.get(pair.getKey()) != 2){
+                        if(distancesFromOrigin.get(pair.getKey()) > distancesFromOrigin.get(ref) + pair.getValue()){
+                            distancesFromOrigin.put(pair.getKey(), distancesFromOrigin.get(ref) + pair.getValue());
+                            predecessor.put(pair.getKey(), ref);
+                        }
+                        if(color.get(pair.getKey()) ==0){
+                            color.put(pair.getKey(),1);
+                            grey.put(pair.getKey(), distancesFromOrigin.get(pair.getKey()));
+                        }
+                    }
+                }
+            }
+            color.put(ref, 2);
+            grey.remove(ref);
+
+        }
+
+        System.out.println(distancesFromOrigin.toString());
+
+        List<Long> seq = new ArrayList<>();
+        System.out.println("Destination = " + destinationId);
+        seq.add(destinationId);
+        Long currentID = destinationId;
+        while (!Objects.equals(currentID, originId))
+        {
+            currentID = predecessor.get(currentID);
+            if (currentID==null){
+                break;
+            }
+            seq.add(currentID);
+        }
+
+        Collections.reverse(seq);
+        System.out.println(seq.toString());
+
+        return seq;
+
+
+    }
+
+
+
+    public Long searchMin(Map<Long,Double> grey)
+    {
+        Double min = POSITIVE_INFINITY;
+        Long ref = null;
+        Iterator it = grey.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Long,Double> entry = (Map.Entry)it.next();
+            System.out.println(entry.getKey() + " = " + entry.getValue());
+            if(entry.getValue()<min)
+            {
+                min = entry.getValue();
+                ref = entry.getKey();
+            }
+        }
+        return ref;
+    }
+
+
 
     @Override
     public Double getShortestPathCost(Long originId, Long destinationId) {
@@ -170,59 +259,9 @@ public class CityMapGraph implements Graph {
 
     @Override
     public List<Long> getShortestPath(Long originId, Long destinationId) {
-        // Algorithm inspired by https://www.baeldung.com/java-dijkstra
-        // Set up the map which stores the distances of nodes from the originId
-        Map<Long, Double> distancesFromOrigin = new HashMap<>();
-        Map <Long, List> pathsFromOrigin = new HashMap <>();
-        for (Long v : this.vertexIds) {
-            distancesFromOrigin.put(v, POSITIVE_INFINITY);
-        }
-        for (Long v : this.vertexIds) {
-            pathsFromOrigin.put(v,  new LinkedList<>());
-        }
-        // the origin is at a distance of 0 from itself
-        distancesFromOrigin.put(originId, 0D);
-        List<Long> starterList= new LinkedList<>();
-        starterList.add(originId);
-        pathsFromOrigin.replace(originId,starterList);
+        //Double res = Dijkstra(originId, destinationId);
+        return Dijkstra(originId, destinationId);
 
-        // Create the list of unsettled and settled vertices and add the originId as unsettled
-        Set<Long> settledVertices = new HashSet<>();
-        Set<Long> unsettledVertices = new HashSet<>();
-        unsettledVertices.add(originId);
-
-        // While the unsettled nodes set is not empty we:
-        while (unsettledVertices.size() != 0) {
-            // Choose an evaluation node from the unsettled nodes set, the evaluation node should be the one with the lowest distance from the source.
-            Long currentVertexId = getNextUnsettledVertex(unsettledVertices, distancesFromOrigin);
-
-            unsettledVertices.remove(currentVertexId);
-            settledVertices.add(currentVertexId);
-            if (currentVertexId == null) {
-                break;
-            }
-            // Calculate new distances to direct neighbors by keeping the lowest distance at each evaluation.
-            Double costToCurrentVertex;
-            List<Pair<Long, Double>> adjacencyPairs = this.getGraph().get(currentVertexId);
-            if (adjacencyPairs == null) {
-                continue;
-            }
-            for (Pair<Long, Double> adjacencyPair : adjacencyPairs) {
-                Long adjacentVertexId = adjacencyPair.getKey();
-                if (!settledVertices.contains(adjacentVertexId)) {
-                    costToCurrentVertex = distancesFromOrigin.get(currentVertexId);
-                    boolean isUpdate = updateMinimumDistance(costToCurrentVertex, adjacencyPair, distancesFromOrigin);
-                    if(isUpdate){
-                        List<Long> newPathToVertex= pathsFromOrigin.get(currentVertexId);
-                        newPathToVertex.add(adjacentVertexId);
-                        pathsFromOrigin.replace(adjacentVertexId, newPathToVertex);
-                    }
-                    // Add neighbors that are not yet settled to the unsettled nodes set.
-                    unsettledVertices.add(adjacentVertexId);
-                }
-            }
-        }
-        return pathsFromOrigin.get(destinationId);
     }
 
     public List<Long> getPathIds() {

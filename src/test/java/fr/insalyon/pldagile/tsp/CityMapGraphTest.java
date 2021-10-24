@@ -34,10 +34,10 @@ public class CityMapGraphTest {
         Segment[] segments = {
                 new Segment("1to2", 3, intersections[0], intersections[1]),
                 new Segment("2to3", 1, intersections[1], intersections[2]),
-                new Segment("4to3", 10, intersections[3], intersections[2]),
+                new Segment("3to4", 10, intersections[2], intersections[3]),
                 new Segment("4to1", 3, intersections[3], intersections[0]),
-                new Segment("6to5", 4.5, intersections[5], intersections[4]),
-                new Segment("7to4", 2.5, intersections[6], intersections[3]),
+                new Segment("1to5", 4.5, intersections[0], intersections[4]),
+                new Segment("5to6", 2.5, intersections[4], intersections[5]),
         };
         cityMap = new CityMap();
         for (Intersection i : intersections) {
@@ -165,7 +165,7 @@ public class CityMapGraphTest {
             }
         }
         TestCase[] tests = {
-                new TestCase(List.of(1L, 2L), 1L, 2L)
+                new TestCase(List.of(1L, 2L, 3L), 1L, 3L)
         };
         for (TestCase tc : tests) {
             ArrayList<Long> actualResult = (ArrayList<Long>) cityMapGraph.getShortestPath(tc.originId, tc.destinationId);
