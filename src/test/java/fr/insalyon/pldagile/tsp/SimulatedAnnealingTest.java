@@ -5,6 +5,7 @@ import fr.insalyon.pldagile.xml.ExceptionXML;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -125,8 +126,9 @@ public class SimulatedAnnealingTest {
     }
 
     /**
-     *
+     * Disabled because the swaps are already done at init  -
      */
+    @Disabled
     @Test
     @DisplayName("swapStepsTest")
     public void swapSteps() {

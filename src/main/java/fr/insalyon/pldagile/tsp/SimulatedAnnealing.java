@@ -41,7 +41,7 @@ public class SimulatedAnnealing {
         this.stepsIdentifiers = new ArrayList<>();
         this.stepsIntersectionId = new ArrayList<>();
         computeAllShortestPaths();
-        runSimulatedAnnealing(50.0,100,0.9);
+        runSimulatedAnnealing(25.0,1000,0.99);
     }
 
     public void computeAllShortestPaths() {
@@ -103,7 +103,6 @@ public class SimulatedAnnealing {
                     //Generates random number between zero and stepsSize-1
                     int swapFirstIndex = 1 + (int) (Math.random() * (stepsSize-1));
                     int swapSecondIndex = 1 + (int) (Math.random() * (stepsSize-1));
-                    System.out.println("Swapping...");
                     swapResult = swapSteps(swapFirstIndex,swapSecondIndex);
                 } while (swapResult == false);
                 double currentDistance = getTotalDistance();
@@ -150,7 +149,7 @@ public class SimulatedAnnealing {
         //int swapFirstIndex = 1 + (int) (Math.random() * stepsSize);
         //int swapSecondIndex = 1 + (int) (Math.random() * stepsSize);
         if (swapFirstIndex == 0 || swapFirstIndex == stepsSize - 1 || swapSecondIndex == 0 || swapSecondIndex == stepsSize - 1) {
-            System.out.println("cant swap depot");
+//            System.out.println("cant swap depot");
             return false;
         }
         Pair<Long, String> temp = cloneIdentifier.get(swapFirstIndex);
@@ -182,7 +181,6 @@ public class SimulatedAnnealing {
         }
 
         identifierObject = cloneIdentifier.get(swapSecondIndex);
-        System.out.println(identifierObject);
         objectId = identifierObject.getKey();
         objectValue = identifierObject.getValue();
         //search for the delivery
