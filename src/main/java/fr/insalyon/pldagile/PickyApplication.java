@@ -2,6 +2,7 @@ package fr.insalyon.pldagile;
 
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.TourBuilderV1;
+import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.RequestItem;
 import fr.insalyon.pldagile.view.menu.RequestView;
@@ -134,7 +135,7 @@ public class PickyApplication extends Application {
     }
 
     private static int count = 1; //TODO Delete this ugly counter
-    public static void renderPlanningRequest() {
+    public static void renderPlanningRequest() { //TODO render planning according to TSP
         if(!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             //Render the planning request
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
@@ -173,7 +174,10 @@ public class PickyApplication extends Application {
     public static void renderTour() {
         System.out.println("Render tour called");
         TourBuilderV1 tourBuilderV1 = new TourBuilderV1();
-        List<Long> intersectionIds = tourBuilderV1.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
+        TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
+
+//        List<Long> intersectionIds = tourBuilderV1.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
+        List<Long> intersectionIds = tourBuilderV2.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
 
 //        Intersection origin = cityMap.getIntersection(25175791L);
 //        Intersection destination = cityMap.getIntersection(25175778L);

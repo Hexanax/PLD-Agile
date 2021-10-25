@@ -8,7 +8,7 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class SimulatedAnnealing {
+public class SimulatedAnnealing { //TODO ideally, planningRequest is updated with the new order.
 
 
     //Parameters of our Simulated Annealing algorithm
@@ -56,7 +56,7 @@ public class SimulatedAnnealing {
 
         //start the travel with the depot
 
-        stepsIdentifiers.add(new Pair(-1, "begin"));
+        stepsIdentifiers.add(new Pair(-1L, "begin"));
         stepsIntersectionId.add(depotId);
 
         for (Request request : planningRequest.getRequests()) {
@@ -65,8 +65,12 @@ public class SimulatedAnnealing {
             Pickup pickup = request.getPickup();
             Delivery delivery = request.getDelivery();
 
-            dijkstraData = new Dijkstra(cityMapGraph, pickup.getIntersection().getId());
-            bestPaths.put(dijkstraData.getOriginId(), dijkstraData);
+            //check if the Dijkstra has already been run from this intersection
+            //to avoid re-computing for nothing...
+            if(!bestPaths.containsKey(pickup.getIntersection().getId())) {
+                dijkstraData = new Dijkstra(cityMapGraph, pickup.getIntersection().getId());
+                bestPaths.put(pickup.getIntersection().getId(), dijkstraData);
+            }
 
             stepsIdentifiers.add(new Pair(requestId, "pickup"));
             stepsIntersectionId.add(dijkstraData.getOriginId());
@@ -155,7 +159,6 @@ public class SimulatedAnnealing {
         //int swapFirstIndex = 1 + (int) (Math.random() * stepsSize);
         //int swapSecondIndex = 1 + (int) (Math.random() * stepsSize);
         if (swapFirstIndex == 0 || swapFirstIndex == stepsSize - 1 || swapSecondIndex == 0 || swapSecondIndex == stepsSize - 1) {
-//            System.out.println("cant swap depot");
             return false;
         }
         Pair<Long, String> temp = cloneIdentifier.get(swapFirstIndex);
@@ -220,6 +223,12 @@ public class SimulatedAnnealing {
     public void revertSwapSteps(ArrayList<Pair<Long,String>> oldStepsIdentifiers, ArrayList<Long> oldIntersectionIds) {
         stepsIdentifiers = oldStepsIdentifiers;
         stepsIntersectionId = oldIntersectionIds;
+    }
+
+    public void updatePlanningRequest(){ //TODO : WIP
+        PlanningRequest newPlanning = new PlanningRequest();
+        newPlanning.setDepot(planningRequest.getDepot());
+
     }
 
     public ArrayList<Pair<Long, String>> getStepsIdentifiers() {
