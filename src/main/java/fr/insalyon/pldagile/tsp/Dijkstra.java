@@ -150,7 +150,6 @@ public class Dijkstra {
         }
 
         Collections.reverse(shortestPath);
-//        System.out.println(shortestPath.toString());
 
         return shortestPath;
     }
