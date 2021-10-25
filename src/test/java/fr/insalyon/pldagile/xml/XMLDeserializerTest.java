@@ -26,8 +26,8 @@ public class XMLDeserializerTest {
         File testMapFile = new File(fileURI);
         XMLDeserializer.load(cityMap, testMapFile);
 
-        assertEquals(cityMap.getIntersections().size(),7);
-        assertEquals(cityMap.getSegments().size(),7);
+        assertEquals(cityMap.getIntersections().size(),9);
+        assertEquals(cityMap.getSegments().size(),11);
 
         assertEquals(cityMap.getIntersections().get(1L).getId(), 1L);
         assertEquals(cityMap.getIntersections().get(4L).getId(),4L);
@@ -36,8 +36,8 @@ public class XMLDeserializerTest {
 
         assertEquals(cityMap.getSegments().get(7L).getName(),"Boulevard Belateche");
         assertEquals(cityMap.getSegments().get(7L).getLength(),15590);
-        assertEquals(cityMap.getSegments().get(7L).getOrigin().getId(),4L);
-        assertEquals(cityMap.getSegments().get(7L).getDestination().getId(),1L);
+        assertEquals(cityMap.getSegments().get(7L).getOrigin().getId(),1L);
+        assertEquals(cityMap.getSegments().get(7L).getDestination().getId(),8L);
     }
 
     @Test
