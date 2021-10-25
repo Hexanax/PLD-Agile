@@ -12,13 +12,12 @@
 <segment destination="6" length="33360" name="Rue Matthieu Roux" origin="1"/>
 <segment destination="7" length="15500" name="Rue de l'église" origin="6"/>
 <segment destination="3" length="11120" name="Boulevard Belateche" origin="7"/>
-<segment destination="5" length="11120" name="Boulevard Belateche" origin="3"/>
+<segment destination="5" length="11120" name="Boulevard Delpech" origin="3"/>
 <segment destination="2" length="7780" name="Chemin Metwalli" origin="5"/>
-<segment destination="4" length="11120" name="Boulevard Belateche" origin="5"/>
+<segment destination="4" length="11120" name="Avenue Saugier" origin="5"/>
 <segment destination="8" length="15590" name="Boulevard Belateche" origin="1"/>
-<segment destination="9" length="12569" name="Boulevard Roux" origin="1"/>
-<segment destination="2" length="32569" name="Boulevard Belateche" origin="8"/>
-<segment destination="7" length="11111" name="Boulevard Belateche" origin="9"/>
-<segment destination="1" length="12345" name="Boulevard Belateche" origin="8"/>
-
+<segment destination="9" length="12569" name="Place SGBD" origin="1"/>
+<segment destination="2" length="32569" name="Chemin des pointeurs" origin="8"/>
+<segment destination="7" length="11111" name="Impasse des partiels" origin="9"/>
+<segment destination="1" length="12345" name="Avenue de la Paix" origin="8"/>
 </map>

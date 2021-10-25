@@ -15,6 +15,9 @@ public class Dijkstra {
 
     //We'll store our data in 4 structures
     private Map<Long, Double> distancesFromOrigin;
+
+
+
     private Map<Long, Long> predecessor;
     //Maps a vertice ID to an integer such that { 0 => white, 1 => grey, 2 => black}
     private Map<Long, Integer> color;
@@ -53,8 +56,7 @@ public class Dijkstra {
         color.put(originId,1);
         //and add it in the grey hashmap.
         grey.put(originId,0D);
-
-
+        runDijkstra();
 
     }
 
@@ -62,7 +64,7 @@ public class Dijkstra {
      * Implementation of Dijkstra's algorithm based on 3IF-AAIA course by Christine Solnon
      * @return
      */
-    public void runDijkstra() {
+    private void runDijkstra() {
 
         Map<String, Object> returnedObject = new HashMap<>();
 
@@ -152,6 +154,10 @@ public class Dijkstra {
         System.out.println(shortestPath.toString());
 
         return shortestPath;
+    }
+
+    public Map<Long, Double> getDistancesFromOrigin() {
+        return distancesFromOrigin;
     }
 
 

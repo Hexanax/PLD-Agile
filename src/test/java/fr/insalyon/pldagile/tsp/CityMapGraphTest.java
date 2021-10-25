@@ -129,7 +129,8 @@ public class CityMapGraphTest {
                 new TestCase(12D, 4L, 3L),
         };
         for (TestCase tc : tests) {
-            Double actualResult = cityMapGraph.getShortestPathCost(tc.originId, tc.destinationId);
+            Dijkstra dijkstra = new Dijkstra(cityMapGraph,tc.originId);
+            Double actualResult = dijkstra.getDistancesFromOrigin().get(tc.destinationId);
             assertEquals(tc.expectedResult, actualResult);
         }
     }
@@ -156,7 +157,8 @@ public class CityMapGraphTest {
 
         };
         for (TestCase tc : tests) {
-            ArrayList<Long> actualResult = (ArrayList<Long>) cityMapGraph.getShortestPath(tc.originId, tc.destinationId);
+            Dijkstra dijkstra = new Dijkstra(cityMapGraph,tc.originId);
+            ArrayList<Long> actualResult = (ArrayList<Long>) dijkstra.getShortestPath(tc.destinationId);
             assertEquals(tc.expectedResult.size(), actualResult.size());
             assertEquals(tc.expectedResult.get(0), actualResult.get(0));
             assertEquals(tc.expectedResult.get(1), actualResult.get(1));
