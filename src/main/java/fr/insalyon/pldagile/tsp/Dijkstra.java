@@ -121,7 +121,6 @@ public class Dijkstra {
         Iterator it = grey.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Long,Double> entry = (Map.Entry)it.next();
-//            System.out.println(entry.getKey() + " = " + entry.getValue());
             if(entry.getValue()<min)
             {
                 min = entry.getValue();
@@ -151,7 +150,6 @@ public class Dijkstra {
         }
 
         Collections.reverse(shortestPath);
-//        System.out.println(shortestPath.toString());
 
         return shortestPath;
     }
