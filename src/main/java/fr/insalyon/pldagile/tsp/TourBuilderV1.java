@@ -5,6 +5,7 @@ import fr.insalyon.pldagile.tsp.Dijkstra;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class TourBuilderV1 { //TODO Implement TourBuilder
 
@@ -12,8 +13,11 @@ public class TourBuilderV1 { //TODO Implement TourBuilder
     public List<Long> buildTour(PlanningRequest planningRequest, CityMap cityMap) {
         List<Long> tourIntersections = new ArrayList<>();
         CityMapGraph cityMapGraph = new CityMapGraph(cityMap);
-
+        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(planningRequest,cityMapGraph);
         System.out.println("CityMapGraph vertices = " + cityMapGraph.getNbVertices());
+        System.out.println(simulatedAnnealing.getStepsIntersectionId());
+
+        Map<Long,Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
         //TEST
 //        long pickupId = planningRequest.getDepot().getIntersection().getId();
 //        long deliveryId = planningRequest.getRequests().get(0).getPickup().getIntersection().getId();
@@ -29,21 +33,27 @@ public class TourBuilderV1 { //TODO Implement TourBuilder
 //
 //        }
 
-        Intersection previousIntersection = planningRequest.getDepot().getIntersection();
+        ArrayList<Long> intersectionSteps = new ArrayList<>(simulatedAnnealing.getStepsIntersectionId());
+        Long previousIntersection = intersectionSteps.get(0);
 
-        for (Request request : planningRequest.getRequests()) {
-            Pickup pickup = request.getPickup();
-            Delivery delivery = request.getDelivery();
-            Dijkstra dijkstraFirstTravel = new Dijkstra(cityMapGraph, previousIntersection.getId());
-            List<Long> firstTravel = dijkstraFirstTravel.getShortestPath(pickup.getIntersection().getId());
-//            firstTravel.forEach(id -> System.out.println("First Id = " + id));
+        for (Long id : intersectionSteps.subList(1,intersectionSteps.size()-1)) {
 
-            Dijkstra dijkstraSecondTravel = new Dijkstra(cityMapGraph,pickup.getIntersection().getId());
-            List<Long> secondTravel = dijkstraSecondTravel.getShortestPath(delivery.getIntersection().getId());
-//            firstTravel.forEach(id -> System.out.println("Last Id = " + id));
+            Dijkstra bestPathsFromOrigin = bestPaths.get(previousIntersection);
+//            int currentIndex = intersectionSteps.indexOf(id);
+//
+            List<Long> firstTravel = bestPathsFromOrigin.getShortestPath(id);
+//            firstTravel.forEach(travelId -> System.out.println("First Id = " + travelId));
+            System.out.println(firstTravel.toString());
             tourIntersections.addAll(firstTravel);
-            tourIntersections.addAll(secondTravel);
-            previousIntersection = delivery.getIntersection();
+            previousIntersection = id;
+
+
+
+//            Dijkstra dijkstraSecondTravel = new Dijkstra(cityMapGraph,pickup.getIntersection().getId());
+//            List<Long> secondTravel = dijkstraSecondTravel.getShortestPath(delivery.getIntersection().getId());
+////            firstTravel.forEach(id -> System.out.println("Last Id = " + id));
+//            tourIntersections.addAll(firstTravel);
+//            tourIntersections.addAll(secondTravel);
         }
 
         return tourIntersections;

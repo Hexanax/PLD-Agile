@@ -32,6 +32,8 @@ public class SimulatedAnnealing {
     private ArrayList<Pair<Long, String>> oldStepsIdentifiers;
     private ArrayList<Long> oldIntersectionIds;
 
+
+
     public SimulatedAnnealing(PlanningRequest planningRequest, CityMapGraph cityMapGraph) {
         this.planningRequest = planningRequest;
         this.cityMapGraph = cityMapGraph;
@@ -39,6 +41,7 @@ public class SimulatedAnnealing {
         this.stepsIdentifiers = new ArrayList<>();
         this.stepsIntersectionId = new ArrayList<>();
         computeAllShortestPaths();
+        runSimulatedAnnealing(50.0,100,0.9);
     }
 
     public void computeAllShortestPaths() {
@@ -77,7 +80,7 @@ public class SimulatedAnnealing {
         }
 
         //end the travel with the depot
-        stepsIdentifiers.add(new Pair(stepsIdentifiers.size(), "end"));
+        stepsIdentifiers.add(new Pair(new Long(stepsIdentifiers.size()), "end"));
         stepsIntersectionId.add(depotId);
 
 
@@ -89,14 +92,18 @@ public class SimulatedAnnealing {
         double bestDistance = getTotalDistance();
         double t = startingTemperature;
 
+        System.out.println(stepsIntersectionId.toString());
+        System.out.println(stepsIdentifiers.toString());
         for (int i = 0; i < numberOfIterations; i++) {
             if (t > 0.1) {
                 oldStepsIdentifiers = (ArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
                 oldIntersectionIds = (ArrayList<Long>) stepsIntersectionId.clone();
                 do {
                     int stepsSize = stepsIntersectionId.size();
-                    int swapFirstIndex = 1 + (int) (Math.random() * stepsSize);
-                    int swapSecondIndex = 1 + (int) (Math.random() * stepsSize);
+                    //Generates random number between zero and stepsSize-1
+                    int swapFirstIndex = 1 + (int) (Math.random() * (stepsSize-1));
+                    int swapSecondIndex = 1 + (int) (Math.random() * (stepsSize-1));
+                    System.out.println("Swapping...");
                     swapResult = swapSteps(swapFirstIndex,swapSecondIndex);
                 } while (swapResult == false);
                 double currentDistance = getTotalDistance();
@@ -112,19 +119,17 @@ public class SimulatedAnnealing {
 
 
         }
+
+        System.out.println(stepsIntersectionId.toString());
+        System.out.println(stepsIdentifiers.toString());
     }
 
     public double getTotalDistance() {
         Double totalDistance = 0.0;
         //for all entries in the stepsLocation
         //We get the shortest path cost between entry i and i+1
-        System.out.println(stepsIntersectionId.toString());
-        System.out.println(stepsIntersectionId.size());
         for (int i = 0; i < stepsIntersectionId.size() - 1; i++) {
             Double localDistance = bestPaths.get(stepsIntersectionId.get(i)).getShortestPathCost(stepsIntersectionId.get(i + 1));
-            System.out.println(stepsIntersectionId.get(i)+"ET"+stepsIntersectionId.get(i+1));
-            System.out.println(bestPaths.get(stepsIntersectionId.get(i)).getShortestPath(stepsIntersectionId.get(i+1)));
-            System.out.println("="+localDistance);
             totalDistance += localDistance;
         }
         return totalDistance;
@@ -144,7 +149,7 @@ public class SimulatedAnnealing {
         int stepsSize = stepsIntersectionId.size();
         //int swapFirstIndex = 1 + (int) (Math.random() * stepsSize);
         //int swapSecondIndex = 1 + (int) (Math.random() * stepsSize);
-        if (swapFirstIndex == 0 || swapSecondIndex == stepsSize - 1 || swapSecondIndex == 0 || swapSecondIndex == stepsSize - 1) {
+        if (swapFirstIndex == 0 || swapFirstIndex == stepsSize - 1 || swapSecondIndex == 0 || swapSecondIndex == stepsSize - 1) {
             System.out.println("cant swap depot");
             return false;
         }
@@ -177,6 +182,7 @@ public class SimulatedAnnealing {
         }
 
         identifierObject = cloneIdentifier.get(swapSecondIndex);
+        System.out.println(identifierObject);
         objectId = identifierObject.getKey();
         objectValue = identifierObject.getValue();
         //search for the delivery
@@ -224,5 +230,8 @@ public class SimulatedAnnealing {
         return 0.0;
     }
 
+    public Map<Long, Dijkstra> getBestPaths() {
+        return bestPaths;
+    }
 
 }

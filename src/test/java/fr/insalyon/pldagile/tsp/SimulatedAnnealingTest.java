@@ -119,7 +119,7 @@ public class SimulatedAnnealingTest {
         }
 
         TestCase test = new TestCase(325.0);
-        //! actuellement ça utilise ce que dijkstra renvoie, à update ensuite.
+        //! actuellement ça peut avoir des retours aleatoires dû a l'algo...
         Double actualResult = test.simulatedAnnealing.getTotalDistance();
         assertEquals(test.expectedResult,actualResult);
     }
