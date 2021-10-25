@@ -25,6 +25,8 @@ public class CityMapGraph implements Graph {
         */
     private final Map<Long, ArrayList<Pair<Long, Double>>> graph;
 
+
+
     public CityMapGraph(CityMap cityMap) {
         Map<Long, Intersection> intersections = cityMap.getIntersections();
         segments = cityMap.getSegments();
@@ -312,6 +314,10 @@ public class CityMapGraph implements Graph {
 
     public List<Long> getPathIds() {
         return pathIds;
+    }
+
+    public Set<Long> getVertexIds() {
+        return vertexIds;
     }
 
 }
