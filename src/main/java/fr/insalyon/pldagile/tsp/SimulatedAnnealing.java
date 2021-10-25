@@ -87,6 +87,12 @@ public class SimulatedAnnealing {
         //at this point, initialTravel = visitedSteps, and requests are delivered sequentially
     }
 
+    /**
+     * Inspired from https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman
+     * @param startingTemperature
+     * @param numberOfIterations
+     * @param coolingRate
+     */
     public void runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate) {
         boolean swapResult;
         double bestDistance = getTotalDistance();
