@@ -9,39 +9,23 @@ import fr.insalyon.pldagile.xml.XMLDeserializer;
 
 import java.util.List;
 
+
+
 public class RequestsDisplayedState implements State{
     @Override
     public void loadMap(Controller controller, CityMap citymap, Window window) {
-        //TODO : Ask for confirmation
-        try {
-            //TODO : Deal with cancel button
-            XMLDeserializer.load(citymap);
-        } catch(Exception e) {
-            //TODO : Display alert Message
-            e.printStackTrace();
-        } finally {
-            //TODO : Delete current request
-            Window.clearMap();
-            Window.renderMapAndRequests();
-            controller.setCurrentState(controller.mapDisplayedState);
-        }
+        controller.setCurrentState(controller.mapOverwrite2State);
+        window.showValidationAlert("Load a new map",
+                "Are you sure you want to load a new map? ",
+                "This will remove the requests already loaded");
     }
 
     @Override
     public void loadRequests(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window) {
-        //TODO : Ask for confirmation
-        try {
-            //TODO : Deal with cancel button
-            XMLDeserializer.load(planningRequest, cityMap);
-        } catch(Exception e) {
-            //TODO : Display alert Message
-            e.printStackTrace();
-        } finally {
-            //TODO : delete current request and load news
-            Window.clearMap();
-            Window.renderMapAndRequests();
-            controller.setCurrentState(controller.requestsDisplayedState);
-        }
+        controller.setCurrentState(controller.requestsOverwrite1State);
+        window.showValidationAlert("Load new requests",
+                "Are you sure you want to load new requests ? ",
+                "This will remove the requests already loaded");
     }
 
     @Override
@@ -50,7 +34,7 @@ public class RequestsDisplayedState implements State{
         System.out.println("Render tour called");
         TourBuilderV1 tourBuilderV1 = new TourBuilderV1();
         List<Long> intersectionIds = tourBuilderV1.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
-        Window.renderTour(intersectionIds);
+        window.renderTour(intersectionIds,cityMap);
         controller.setCurrentState(controller.tourComputedState);
     }
 }

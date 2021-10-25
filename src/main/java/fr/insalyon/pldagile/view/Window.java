@@ -13,6 +13,8 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -25,21 +27,20 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Window  {
 
-    private static Stage mainStage = null;
-    private static Controller controller = null;
-    private static PlanningRequest planningRequest;
-    private static CityMap cityMap;
-    private static MapView mapView;
-    private static final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
-    private static final LineLayer lineLayer = new LineLayer();
+    private Stage mainStage = null;
+    private Controller controller = null;
+    private MapView mapView;
+    private SidePanel sidePanel;
+    private final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
+    private final LineLayer lineLayer = new LineLayer();
 
-    public Window(CityMap citymap,PlanningRequest planningRequest, Controller controller) {
+    public Window( Controller controller) {
         this.controller = controller;
-        this.cityMap = citymap;
-        this.planningRequest = planningRequest;
+
         this.controller.initWindow(this);
     }
 
@@ -54,7 +55,7 @@ public class Window  {
         mapView = new MapView();
         mapView.addLayer(pointLayer); //Add the map layer
         mapView.addLayer(lineLayer); //Add the line (tour) layer
-        SidePanel sidePanel = new SidePanel(controller);
+        sidePanel = new SidePanel(controller);
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
@@ -105,16 +106,16 @@ public class Window  {
         return new Group(copyright);
     }
 
-    public static void clearMap() {
+    public void clearMap() {
         pointLayer.clearPoints();
     }
 
-    public static void renderMapAndRequests() {
-        renderCityMap();
-        renderPlanningRequest();
+    public void renderMapAndRequests(CityMap cityMap, PlanningRequest planningRequest) {
+        renderCityMap(cityMap);
+        renderPlanningRequest(planningRequest);
     }
 
-    public static void renderCityMap() {
+    public void renderCityMap(CityMap cityMap) {
         //Add all the intersections temporarily
         for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
             Intersection intersection = entry.getValue();
@@ -124,7 +125,7 @@ public class Window  {
     }
 
     private static int count = 1; //TODO Delete this ugly counter
-    public static void renderPlanningRequest() {
+    public void renderPlanningRequest(PlanningRequest planningRequest) {
         if(!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             //Render the planning request
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
@@ -160,7 +161,7 @@ public class Window  {
         }
     }
 
-    public static void renderTour(List<Long> intersectionIds) {
+    public void renderTour(List<Long> intersectionIds, CityMap cityMap) {
 
 
         Intersection previousIntersection = cityMap.getIntersection(intersectionIds.get(0));
@@ -176,5 +177,37 @@ public class Window  {
             previousIntersection = intersection;
         }
         ;
+    }
+
+
+    public void showWarningAlert(String title, String header, String text){
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(text);
+        alert.showAndWait();
+    }
+
+    public void showValidationAlert(String title, String header, String text){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(header);
+        alert.setContentText(text);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(!result.isPresent() || result.get() != ButtonType.OK) {
+            controller.cancel();
+        } else {
+            controller.confirm();
+        }
+    }
+
+    public void clearRequest() {
+        lineLayer.clearPoints();
+        RequestView.clearItems();
+    }
+
+    public void clearTour() {
+        //TODO : Implements
     }
 }

@@ -13,15 +13,16 @@ public class InitialState implements State{
     @Override
     public void loadMap(Controller controller, CityMap citymap, Window window) {
         try {
-            //TODO : Deal with cancel button
             XMLDeserializer.load(citymap);
-        } catch(Exception e) {
-            //TODO : Display alert Message
-            e.printStackTrace();
-        } finally {
-            Window.clearMap();
-            Window.renderMapAndRequests();
+            window.clearMap();
+            window.renderCityMap(citymap);
             controller.setCurrentState(controller.mapDisplayedState);
+        } catch(Exception e) {
+            if(e.getMessage().equals("cancel")){
+                controller.setCurrentState(controller.initialState);
+            } else {
+                window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            }
         }
     }
 }

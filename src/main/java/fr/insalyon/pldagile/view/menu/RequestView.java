@@ -65,8 +65,11 @@ public class RequestView extends Region {
     }
 
     public static void setPickupItems(List<RequestItem> requestList) {
-        pickupItems.clear();
+        clearItems();
         pickupItems.addAll(requestList);
     }
 
+    public static void clearItems() {
+        pickupItems.clear();
+    }
 }

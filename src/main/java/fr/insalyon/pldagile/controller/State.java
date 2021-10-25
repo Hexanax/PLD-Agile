@@ -13,4 +13,8 @@ public interface State {
     public default void loadRequests(Controller controller,CityMap cityMap, PlanningRequest planningRequest, Window window){};
 
     public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Tour tour, Window window){};
+
+    public default void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Window window){};
+
+    public default void cancel(Controller controller){};
 }

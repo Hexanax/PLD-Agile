@@ -16,7 +16,7 @@ public class Picky extends Application {
         CityMap citymap = new CityMap();
         PlanningRequest planningRequest = new PlanningRequest();
         Controller controller = new Controller(citymap, planningRequest);
-        Window window = new Window(citymap, planningRequest, controller);
+        Window window = new Window(controller);
         window.start(stage);
 
         stage.show();

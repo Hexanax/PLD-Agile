@@ -15,6 +15,10 @@ public class Tour {
         this.depot = depot;
     }
 
+    public Tour() {
+
+    }
+
     public List<Request> getRequests() {
         return requests;
     }

@@ -8,32 +8,29 @@ import fr.insalyon.pldagile.xml.XMLDeserializer;
 public class MapDisplayedState implements State{
     @Override
     public void loadMap(Controller controller, CityMap citymap, Window window) {
-        //TODO : Ask for confirmation
-        try {
-            //TODO : Deal with cancel button
-            XMLDeserializer.load(citymap);
-        } catch(Exception e) {
-            //TODO : Display alert Message
-            e.printStackTrace();
-        } finally {
-            Window.clearMap();
-            Window.renderMapAndRequests();
-            controller.setCurrentState(controller.mapDisplayedState);
-        }
+        controller.setCurrentState(controller.mapOverwrite1State);
+        window.showValidationAlert("Load a new map",
+                "Are you sure you want to load a new map? ",
+                null);
+
     }
 
     @Override
     public void loadRequests(Controller controller,CityMap cityMap, PlanningRequest planningRequest, Window window) {
         try {
-            //TODO : Deal with cancel button
             XMLDeserializer.load(planningRequest, cityMap);
-        } catch(Exception e) {
-            //TODO : Display alert Message
-            e.printStackTrace();
-        } finally {
-            Window.clearMap();
-            Window.renderMapAndRequests();
+            window.renderPlanningRequest(planningRequest);
             controller.setCurrentState(controller.requestsDisplayedState);
+        } catch(Exception e) {
+            if(e.getMessage().equals("cancel")){
+                controller.setCurrentState(controller.initialState);
+            } else {
+                window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            }
+            controller.setCurrentState(controller.mapDisplayedState);
         }
     }
+
+
+
 }

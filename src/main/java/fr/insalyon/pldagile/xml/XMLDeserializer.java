@@ -233,6 +233,9 @@ public class XMLDeserializer {
      */
     private static Element getRootElement() throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
         File xml = XMLFileOpener.getInstance().open(FileChooseOption.READ);
+        if(xml == null){
+            throw new ExceptionXML("cancel");
+        }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document document = docBuilder.parse(xml);
         return document.getDocumentElement();
