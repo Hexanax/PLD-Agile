@@ -19,7 +19,7 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainClass = 'fr.insalyon.pldagile.PickyApplication'
+    mainClass = 'fr.insalyon.pldagile.picky.Picky'
 }
 
 javafx {

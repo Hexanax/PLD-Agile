@@ -1,12 +1,12 @@
 package fr.insalyon.pldagile.view;
 
 import fr.insalyon.pldagile.LoadingImageSupplier;
-import fr.insalyon.pldagile.model.CityMap;
-import fr.insalyon.pldagile.model.PlanningRequest;
-import fr.insalyon.pldagile.view.maps.LineLayer;
-import fr.insalyon.pldagile.view.maps.MapPoint;
-import fr.insalyon.pldagile.view.maps.MapView;
-import fr.insalyon.pldagile.view.maps.PointLayer;
+import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.tsp.TourBuilderV1;
+import fr.insalyon.pldagile.view.maps.*;
+import fr.insalyon.pldagile.view.menu.RequestItem;
+import fr.insalyon.pldagile.view.menu.RequestView;
 import fr.insalyon.pldagile.view.menu.SidePanel;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.application.Application;
@@ -17,35 +17,44 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-public class Window extends Application {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class Window  {
 
     private static Stage mainStage = null;
+    private static Controller controller = null;
     private static PlanningRequest planningRequest;
     private static CityMap cityMap;
     private static MapView mapView;
     private static final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
     private static final LineLayer lineLayer = new LineLayer();
 
-    public Window() {
-        //TODO : resolve multiple launch() call
-        launch();
+    public Window(CityMap citymap,PlanningRequest planningRequest, Controller controller) {
+        this.controller = controller;
+        this.cityMap = citymap;
+        this.planningRequest = planningRequest;
+        this.controller.initWindow(this);
     }
 
-    @Override
+
     public void start(Stage stage) throws Exception {
         mainStage = stage;
         stage.setTitle("Picky - INSA Lyon");
         Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
-        cityMap = new CityMap();
-        planningRequest = new PlanningRequest();
+        //cityMap = new CityMap();
+        //planningRequest = new PlanningRequest();
         mapView = new MapView();
         mapView.addLayer(pointLayer); //Add the map layer
         mapView.addLayer(lineLayer); //Add the line (tour) layer
-        SidePanel sidePanel = new SidePanel();
+        SidePanel sidePanel = new SidePanel(controller);
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
@@ -94,5 +103,78 @@ public class Window extends Application {
         copyright.setAlignment(Pos.CENTER);
         copyright.setMaxWidth(Double.MAX_VALUE);
         return new Group(copyright);
+    }
+
+    public static void clearMap() {
+        pointLayer.clearPoints();
+    }
+
+    public static void renderMapAndRequests() {
+        renderCityMap();
+        renderPlanningRequest();
+    }
+
+    public static void renderCityMap() {
+        //Add all the intersections temporarily
+        for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
+            Intersection intersection = entry.getValue();
+            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            pointLayer.addPoint(mapPoint, new Circle(2, Color.BLUE));
+        }
+    }
+
+    private static int count = 1; //TODO Delete this ugly counter
+    public static void renderPlanningRequest() {
+        if(!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
+            //Render the planning request
+            Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
+            MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
+            ArrayList<RequestItem> items = new ArrayList<>();
+            planningRequest.getRequests().forEach(request -> {
+                //Items in list
+                Pickup pickup = request.getPickup();
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), count++);
+                Delivery delivery = request.getDelivery();
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), count++);
+                items.add(pickupItem);
+                items.add(deliveryItem);
+                //Map points
+                pointLayer.addPoint(
+                        new MapPoint(
+                                pickup.getIntersection().getCoordinates().getLatitude(),
+                                pickup.getIntersection().getCoordinates().getLongitude()
+                        ),
+                        new Circle(7, Color.RED)
+                );
+                pointLayer.addPoint(
+                        new MapPoint(
+                                delivery.getIntersection().getCoordinates().getLatitude(),
+                                delivery.getIntersection().getCoordinates().getLongitude()
+                        ),
+                        new Circle(7, Color.GREEN)
+                );
+            });
+            RequestView.setPickupItems(items);
+            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+            //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
+        }
+    }
+
+    public static void renderTour(List<Long> intersectionIds) {
+
+
+        Intersection previousIntersection = cityMap.getIntersection(intersectionIds.get(0));
+        for (Long intersectionId : intersectionIds) {
+            Intersection intersection = cityMap.getIntersection(intersectionId);
+            //Create line and add it
+            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
+            MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            pointLayer.addPoint(originPoint, new Circle(5, Color.PURPLE));
+            pointLayer.addPoint(destinationPoint, new Circle(5, Color.PURPLE));
+            lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Color.YELLOW);
+            //Update prev intersection
+            previousIntersection = intersection;
+        }
+        ;
     }
 }
