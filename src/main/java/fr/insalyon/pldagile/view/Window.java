@@ -31,10 +31,10 @@ import java.util.Optional;
 
 public class Window  {
 
-    private Stage mainStage = null;
+    private static Stage mainStage = null;
     private Controller controller = null;
     private MapView mapView;
-    private SidePanel sidePanel;
+    private static SidePanel sidePanel;
     private final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
 
@@ -42,6 +42,10 @@ public class Window  {
         this.controller = controller;
 
         this.controller.initWindow(this);
+    }
+
+    public static Stage getMainStage() {
+        return mainStage;
     }
 
 
@@ -56,6 +60,7 @@ public class Window  {
         mapView.addLayer(pointLayer); //Add the map layer
         mapView.addLayer(lineLayer); //Add the line (tour) layer
         sidePanel = new SidePanel(controller);
+        sidePanel.MainSidePanel();
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
@@ -209,5 +214,9 @@ public class Window  {
 
     public void clearTour() {
         //TODO : Implements
+    }
+
+    public void showModifyMenu() {
+        sidePanel.ModifyPanel();
     }
 }

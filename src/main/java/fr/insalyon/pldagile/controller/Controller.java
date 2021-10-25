@@ -23,6 +23,7 @@ public class Controller {
     protected final RequestsOverwrite1State requestsOverwrite1State = new RequestsOverwrite1State();
     protected final RequestsOverwrite2State requestsOverwrite2State = new RequestsOverwrite2State();
     protected final TourComputedState tourComputedState = new TourComputedState();
+    protected final ModifyTourState modifyTourState = new ModifyTourState();
 
     public Controller(CityMap citymap, PlanningRequest planningRequest) {
         this.citymap = citymap;
@@ -56,4 +57,6 @@ public class Controller {
     public void cancel() { currentState.cancel(this);}
 
     public void confirm() { currentState.confirm(this,citymap,planningRequest,window);}
+
+    public void modify() { currentState.modify(this,window);}
 }

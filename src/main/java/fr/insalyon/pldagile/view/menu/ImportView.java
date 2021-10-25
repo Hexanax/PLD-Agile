@@ -78,20 +78,6 @@ public class ImportView extends Region {
 
 
         importMapButton.setOnAction(this::actionPerformed);
-
-        /*importPickupButton.setOnAction(event -> {
-            try {
-                File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
-                PickyApplication.emptyPlanningRequest();
-                XMLDeserializer.load(PickyApplication.getPlanningRequest(), PickyApplication.getCityMap(), importFile); //TODO Handle emptyPlanningRequest as load file success callback to prevent the "cancel" and invalid format from resetting
-            } catch(Exception e) {
-                e.printStackTrace();
-            } finally {
-                PickyApplication.clearMap();
-                PickyApplication.renderMapAndRequests();
-            }
-        });*/
-
         importPickupButton.setOnAction(this::actionPerformed);
 
     }

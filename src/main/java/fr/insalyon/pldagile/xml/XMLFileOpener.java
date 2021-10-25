@@ -1,6 +1,7 @@
 package fr.insalyon.pldagile.xml;
 
-import fr.insalyon.pldagile.PickyApplication;
+
+import fr.insalyon.pldagile.view.Window;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -30,7 +31,7 @@ public class XMLFileOpener extends FileFilter {
         fileChooserXML.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("XML Files", "*.xml")
         );
-        Stage mainStage = PickyApplication.getMainStage();
+        Stage mainStage = Window.getMainStage();
         if (fileChooseOption == FileChooseOption.READ) {
             selectedFile = fileChooserXML.showOpenDialog(mainStage);
         } else if (fileChooseOption == FileChooseOption.SAVE) {

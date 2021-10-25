@@ -22,4 +22,11 @@ public class TourComputedState implements State{
                 "Are you sure you want to load new requests ? ",
                 "This will remove the requests already loaded and lose the calculated tour");
     }
+
+    @Override
+    public void modify(Controller controller, Window window) {
+        controller.setCurrentState(controller.modifyTourState);
+        System.out.println("modify");
+        window.showModifyMenu();
+    }
 }

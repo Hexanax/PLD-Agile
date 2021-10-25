@@ -46,7 +46,7 @@ public class RequestView extends Region {
         maingp.add(pickupList, 0, 2, 1, 1);
 
 
-        addRequestButton = new Button("Add Request");
+        addRequestButton = new Button("Modify the tour");
         addRequestButton.setPrefHeight(40);
         addRequestButton.setDefaultButton(true);
         addRequestButton.setPrefWidth(100);
@@ -56,11 +56,8 @@ public class RequestView extends Region {
 
         this.getChildren().add(maingp);
 
-        addRequestButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-            }
+        addRequestButton.setOnAction(event -> {
+            controller.modify();
         });
     }
 

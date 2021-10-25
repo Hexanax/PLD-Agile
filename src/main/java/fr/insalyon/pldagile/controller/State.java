@@ -17,4 +17,6 @@ public interface State {
     public default void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Window window){};
 
     public default void cancel(Controller controller){};
+
+    public default void modify(Controller controller, Window window){};
 }
