@@ -36,11 +36,11 @@ public class TourBuilderV1 { //TODO Implement TourBuilder
             Delivery delivery = request.getDelivery();
             Dijkstra dijkstraFirstTravel = new Dijkstra(cityMapGraph, previousIntersection.getId());
             List<Long> firstTravel = dijkstraFirstTravel.getShortestPath(pickup.getIntersection().getId());
-            firstTravel.forEach(id -> System.out.println("First Id = " + id));
+//            firstTravel.forEach(id -> System.out.println("First Id = " + id));
 
             Dijkstra dijkstraSecondTravel = new Dijkstra(cityMapGraph,pickup.getIntersection().getId());
             List<Long> secondTravel = dijkstraSecondTravel.getShortestPath(delivery.getIntersection().getId());
-            firstTravel.forEach(id -> System.out.println("Last Id = " + id));
+//            firstTravel.forEach(id -> System.out.println("Last Id = " + id));
             tourIntersections.addAll(firstTravel);
             tourIntersections.addAll(secondTravel);
             previousIntersection = delivery.getIntersection();
