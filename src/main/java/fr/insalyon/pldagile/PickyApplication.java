@@ -50,7 +50,7 @@ public class PickyApplication extends Application {
         mapView = new MapView();
         mapView.addLayer(pointLayer); //Add the map layer
         mapView.addLayer(lineLayer); //Add the line (tour) layer
-        SidePanel sidePanel = new SidePanel();
+        SidePanel sidePanel = new SidePanel(null);
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);

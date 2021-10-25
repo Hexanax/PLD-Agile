@@ -1,9 +1,11 @@
 package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.PickyApplication;
+import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.xml.FileChooseOption;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 import fr.insalyon.pldagile.xml.XMLFileOpener;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -18,13 +20,25 @@ import java.io.File;
 
 public class ImportView extends Region {
 
+    private static Controller controller = null;
+
     private Button importMapButton;
     private Button importPickupButton;
     private Button computeButton;
     private Label importMapLabel;
     private Label importPickupLabel;
 
-    public ImportView () {
+    protected static final String LOAD_MAP = "Import map";
+    protected static final String LOAD_REQUESTS = "Import Requests";
+    protected static final String COMPUTE_TOUR = "Compute tour";
+
+
+    private final String[] buttonTexts = new String[]{LOAD_MAP, LOAD_REQUESTS, COMPUTE_TOUR};
+
+    public ImportView (Controller controller) {
+        ImportView.controller = controller;
+
+
         //TODO Move outside of constructor with function calls
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
@@ -38,8 +52,8 @@ public class ImportView extends Region {
         GridPane.setHalignment(titleLabel, HPos.CENTER);
         GridPane.setMargin(titleLabel, new Insets(0, 0,10,0));
 
-        importMapButton = new Button("Import map");
-        importPickupButton = new Button("Import Requests");
+        importMapButton = new Button(LOAD_MAP);
+        importPickupButton = new Button(LOAD_REQUESTS);
         gridPane.add(importMapButton, 0, 1, 1, 1);
         gridPane.add(importPickupButton, 1, 1, 1, 1);
 
@@ -49,7 +63,7 @@ public class ImportView extends Region {
         gridPane.add(importPickupLabel, 1, 2, 1, 1);
 
 
-        computeButton = new Button("Compute tour");
+        computeButton = new Button(COMPUTE_TOUR);
         computeButton.setPrefHeight(40);
         computeButton.setDefaultButton(true);
         computeButton.setPrefWidth(100);
@@ -58,31 +72,14 @@ public class ImportView extends Region {
         GridPane.setMargin(computeButton, new Insets(10, 0,0,0));
 
         //TODO Start TSP resolution algorithm
-        //TODO Move in controller for handling and action setup
-        computeButton.setOnAction(event -> {
-            System.out.println("Computing tour...");
-            PickyApplication.renderTour();
-        });
+        computeButton.setOnAction(this::actionPerformed);
 
         this.getChildren().add(gridPane);
 
-        //TODO Move in controller for handling and action setup
-        importMapButton.setOnAction(event -> {
-            try {
-                File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
-                PickyApplication.emptyCityMap();
-                PickyApplication.emptyPlanningRequest(); //New loaded map means we reset the requests too
-                XMLDeserializer.load(PickyApplication.getCityMap(), importFile); //TODO Handle empty city & requests as load file success callback to prevent the "cancel" and invalid format from resetting
-            } catch(Exception e) {
-                e.printStackTrace();
-            } finally {
-                PickyApplication.clearMap();
-                PickyApplication.renderMapAndRequests();
-            }
-        });
 
-        //TODO Move in controller for handling and action setup
-        importPickupButton.setOnAction(event -> {
+        importMapButton.setOnAction(this::actionPerformed);
+
+        /*importPickupButton.setOnAction(event -> {
             try {
                 File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
                 PickyApplication.emptyPlanningRequest();
@@ -93,7 +90,9 @@ public class ImportView extends Region {
                 PickyApplication.clearMap();
                 PickyApplication.renderMapAndRequests();
             }
-        });
+        });*/
+
+        importPickupButton.setOnAction(this::actionPerformed);
 
     }
     public Button getImportMapButton() {
@@ -106,6 +105,18 @@ public class ImportView extends Region {
 
     public Button getComputeButton() {
         return computeButton;
+    }
+
+    private void actionPerformed(ActionEvent event){
+        switch (((Button) event.getTarget()).getText()){
+            case LOAD_MAP:
+                controller.loadMap(); break;
+            case LOAD_REQUESTS:
+                controller.loadRequests(); break;
+            case COMPUTE_TOUR:
+                controller.computeTour(); break;
+        }
+
     }
 
 }

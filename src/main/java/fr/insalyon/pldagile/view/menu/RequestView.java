@@ -1,5 +1,6 @@
 package fr.insalyon.pldagile.view.menu;
 
+import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +26,7 @@ public class RequestView extends Region {
     private static final ObservableList<RequestItem> pickupItems = FXCollections.observableArrayList();
     private Button addRequestButton;
 
-    public RequestView() {
+    public RequestView(Controller controller) {
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.CENTER);
         maingp.setPadding(new Insets(40, 40, 40, 40));
