@@ -45,7 +45,7 @@ public class PlanningRequestTest {
     }
 
     @Test
-    @DisplayName("Test getNbVertices works")
+    @DisplayName("Test getRequests works")
     public void test_getRequests(){
         List<Request> expectedRequests = this.requests;
         List<Request> actualRequests = planningRequest.getRequests();
@@ -53,7 +53,7 @@ public class PlanningRequestTest {
     }
 
     @Test
-    @DisplayName("Test getNbVertices works")
+    @DisplayName("Test getDepot works")
     public void test_getDepot(){
         Depot expectedRequests = this.depot;
         Depot actualRequests = planningRequest.getDepot();
@@ -61,7 +61,7 @@ public class PlanningRequestTest {
     }
 
     @Test
-    @DisplayName("Test getNbVertices works")
+    @DisplayName("Test addRequest works")
     public void test_addRequest(){
         this.planningRequest = new PlanningRequest();
         Request request =           new Request(
