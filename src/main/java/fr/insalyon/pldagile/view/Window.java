@@ -37,6 +37,8 @@ public class Window  {
     private SidePanel sidePanel;
     private final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
+    private final int centeredZoomValue = 12;
+
 
     public Window( Controller controller) {
         this.controller = controller;
@@ -137,7 +139,7 @@ public class Window  {
         // center the map around the calculated center coordinates
         mapView.setCenter(mapCenter);
         // sets the zoom at level 12: approximately the level of a city in our case
-        mapView.setZoom(12);
+        mapView.setZoom(centeredZoomValue);
     }
 
 
