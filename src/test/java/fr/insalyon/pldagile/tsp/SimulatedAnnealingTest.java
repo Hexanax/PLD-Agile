@@ -1,97 +1,54 @@
 package fr.insalyon.pldagile.tsp;
 
+import fr.insalyon.pldagile.helpers.FakeCityMapProvider;
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.xml.ExceptionXML;
-import fr.insalyon.pldagile.xml.XMLDeserializer;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class SimulatedAnnealingTest {
 
-    private CityMap cityMap;
     private CityMapGraph cityMapGraph;
     private PlanningRequest planningRequest;
-    private SimulatedAnnealing simulatedAnnealing;
 
     private final static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("k:m:s");
 
-//    @BeforeEach
-//    void setup() throws ExceptionXML {
-//        Intersection[] intersections = {
-//                new Intersection(1L, new Coordinates(4, 5)),
-//                new Intersection(2L, new Coordinates(5, 8)),
-//                new Intersection(3L, new Coordinates(6, 9)),
-//                new Intersection(4L, new Coordinates(6, 3)),
-//                new Intersection(5L, new Coordinates(2, 7)),
-//                new Intersection(6L, new Coordinates(3, 3)),
-//                new Intersection(7L, new Coordinates(5, 1)),
-//                new Intersection(8L, new Coordinates(1, 3)),
-//
-//        };
-//        Segment[] segments = {
-//                new Segment("1to2", 3, intersections[0], intersections[1]),
-//                new Segment("2to3", 7, intersections[1], intersections[2]),
-//                new Segment("3to4", 10, intersections[2], intersections[3]),
-//                new Segment("4to1", 3, intersections[3], intersections[0]),
-//                new Segment("1to5", 4.5, intersections[0], intersections[4]),
-//                new Segment("5to6", 2.5, intersections[4], intersections[5]),
-//                new Segment("6to3", 2.0, intersections[5], intersections[2]),
-//
-//        };
-//
-//        Request[] requests = {
-//                new Request(
-//                        new Pickup(intersections[0],100),
-//                        new Delivery(intersections[2],120)
-//                ),
-//                new Request(
-//                        new Pickup(intersections[0],100),
-//                        new Delivery(intersections[5],150)
-//                )
-//        };
-//
-//        cityMap = new CityMap();
-//        for (Intersection i : intersections) {
-//            cityMap.add(i);
-//        }
-//        for (Segment s : segments) {
-//            cityMap.add(s);
-//        }
-//        cityMapGraph = new CityMapGraph(cityMap);
-//
-//        PlanningRequest planningRequest = new PlanningRequest();
-//        planningRequest.add(new Depot(intersections[0],new Date(simpleDateFormat.parse("8:0:0")))));
-//    }
 
     @BeforeEach
     void setup() throws Exception{
 
-        //Load map & requests from file
-        File testMapFile = new File(getClass().getClassLoader().getResource("xml/testMap.xml").toURI());
-        File testRequestsFile = new File(getClass().getClassLoader().getResource("xml/testRequests.xml").toURI());
+        CityMap cityMap = FakeCityMapProvider.getMediumMap();
 
-        cityMap = new CityMap();
-        planningRequest = new PlanningRequest();
+        // Request creation
+        Request[] requests = {
+                new Request(
+                        new Pickup(cityMap.getIntersection(2L) , 420),
+                        new Delivery(cityMap.getIntersection(5L), 600)
+                ),
+                new Request(
+                        new Pickup(cityMap.getIntersection(4L) , 420),
+                        new Delivery(cityMap.getIntersection(7L), 480)
+                ),
+                new Request(
+                        new Pickup(cityMap.getIntersection(2L) , 420),
+                        new Delivery(cityMap.getIntersection(7L), 600)
+                ),
 
+        };
         Date departureTime = simpleDateFormat.parse("8:0:0");
-        Intersection intersectionDepot = new Intersection(1L, new Coordinates(45.5,4.8));
-        Depot depot = new Depot(intersectionDepot,departureTime);
+        Depot depot = new Depot(cityMap.getIntersection(1L),departureTime);
 
-        XMLDeserializer.load(cityMap, testMapFile);
-        XMLDeserializer.load(planningRequest, cityMap, testRequestsFile);
+        planningRequest = new PlanningRequest(List.of(requests), depot);
+
 
         cityMapGraph= new CityMapGraph(cityMap);
 
@@ -109,8 +66,8 @@ public class SimulatedAnnealingTest {
     @Test
     void getTotalDistance() {
         class TestCase {
-            Double expectedResult;
-            SimulatedAnnealing simulatedAnnealing;
+            final Double expectedResult;
+            final SimulatedAnnealing simulatedAnnealing;
 
             public TestCase(Double expectedResult) {
                 this.expectedResult = expectedResult;
@@ -120,7 +77,7 @@ public class SimulatedAnnealingTest {
         }
 
         TestCase test = new TestCase(325.0);
-        //! actuellement ça peut avoir des retours aleatoires dû a l'algo...
+        // /!\ Could have random results due to the random nature of the algorithm
         Double actualResult = test.simulatedAnnealing.getTotalDistance();
         assertEquals(test.expectedResult,actualResult);
     }
@@ -134,10 +91,10 @@ public class SimulatedAnnealingTest {
     public void swapSteps() {
 
         class TestCase {
-            boolean expectedResult;
-            SimulatedAnnealing simulatedAnnealing;
-            int swapFirstIndex;
-            int swapSecondIndex;
+            final boolean expectedResult;
+            final SimulatedAnnealing simulatedAnnealing;
+            final int swapFirstIndex;
+            final int swapSecondIndex;
 
             public TestCase(boolean expectedResult, int swapFirstIndex, int swapSecondIndex) {
                 this.expectedResult = expectedResult;
@@ -176,18 +133,18 @@ public class SimulatedAnnealingTest {
 
     @Test
     void revertSwapSteps() {
-        simulatedAnnealing = new SimulatedAnnealing(planningRequest,cityMapGraph);
+        SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(planningRequest, cityMapGraph);
 
         ArrayList<Pair<Long, String>> testCopyOfIdentifiers = (ArrayList<Pair<Long, String>>) simulatedAnnealing.getStepsIdentifiers().clone();
         ArrayList<Long> testCopyOfIntersectionId = (ArrayList<Long>) simulatedAnnealing.getStepsIntersectionId().clone();
 
         simulatedAnnealing.swapSteps(2,3);
 
-        assertFalse(simulatedAnnealing.getStepsIdentifiers().equals(testCopyOfIdentifiers));
-        assertFalse(simulatedAnnealing.getStepsIntersectionId().equals(testCopyOfIntersectionId));
+        assertNotEquals(simulatedAnnealing.getStepsIdentifiers(), testCopyOfIdentifiers);
+        assertNotEquals(simulatedAnnealing.getStepsIntersectionId(), testCopyOfIntersectionId);
         simulatedAnnealing.revertSwapSteps(testCopyOfIdentifiers,testCopyOfIntersectionId);
-        assertTrue(simulatedAnnealing.getStepsIdentifiers().equals(testCopyOfIdentifiers));
-        assertTrue(simulatedAnnealing.getStepsIntersectionId().equals(testCopyOfIntersectionId));
+        assertEquals(simulatedAnnealing.getStepsIdentifiers(), testCopyOfIdentifiers);
+        assertEquals(simulatedAnnealing.getStepsIntersectionId(), testCopyOfIntersectionId);
 
     }
 }
