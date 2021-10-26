@@ -139,7 +139,7 @@ public class Window  {
      * @param cityMap
      */
     public void centerMap(CityMap cityMap) throws ExceptionXML {
-        Coordinates coord = cityMap.getCenter(cityMap.getIntersections());
+        Coordinates coord = cityMap.getCenter();
         MapPoint mapCenter = new MapPoint(coord.getLatitude(), coord.getLongitude());
         // center the map around the calculated center coordinates
         mapView.setCenter(mapCenter);

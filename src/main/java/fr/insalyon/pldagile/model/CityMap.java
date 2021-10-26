@@ -60,9 +60,8 @@ public class CityMap {
 
     /**
      * Calculates the central coordinates of the map based on the intersections loaded from the XML file
-     * @param intersections
      */
-    public Coordinates getCenter(Map<Long, Intersection> intersections) throws ExceptionXML {
+    public Coordinates getCenter() {
 
         double totalCoordinates = 0;
         double latitudeIntermed = 0;
