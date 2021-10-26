@@ -124,6 +124,23 @@ public class Window  {
         }
     }
 
+
+
+    /**
+     * Centers the map around the central coordinates of the city map
+     * sets the zoom the level of a city in the map
+     * @param cityMap
+     */
+    public void centerMap(CityMap cityMap) throws ExceptionXML {
+        Coordinates coord = cityMap.getCenter(cityMap.getIntersections());
+        MapPoint mapCenter = new MapPoint(coord.getLatitude(), coord.getLongitude());
+        // center the map around the calculated center coordinates
+        mapView.setCenter(mapCenter);
+        // sets the zoom at level 12: approximately the level of a city in our case
+        mapView.setZoom(12);
+    }
+
+
     private static int count = 1; //TODO Delete this ugly counter
     public void renderPlanningRequest(PlanningRequest planningRequest) {
         if(!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {

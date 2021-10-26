@@ -14,6 +14,7 @@ public class MapOverwrite1State implements State{
             controller.setCitymap(newMap);
             window.clearMap();
             window.renderCityMap(newMap);
+            window.centerMap(newMap);
         } catch(Exception e) {
             if(!e.getMessage().equals("cancel")){
                 window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);

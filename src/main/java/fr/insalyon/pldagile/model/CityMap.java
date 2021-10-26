@@ -59,4 +59,45 @@ public class CityMap {
         //verif pas de segment sans origine/dest
         segments.put(id, segment);
     }
+
+
+    /**
+     * Calculates the central coordinates of the map based on the intersections loaded from the XML file
+     * @param intersections
+     */
+    public Coordinates getCenter(Map<Long, Intersection> intersections) throws ExceptionXML {
+
+        double totalCoordinates = 0;
+        double latitudeIntermed = 0;
+        double longitudeIntermed = 0;
+        double z = 0;
+        for (Intersection intersection : intersections.values()) {
+
+            // Convert each pair lat/long to a 3D vector
+            double latitude = (intersection.getCoordinates().getLatitude()*Math.PI) / 180;
+            double longitude = (intersection.getCoordinates().getLongitude()*Math.PI) / 180;
+
+            // sum the vectors
+            latitudeIntermed += Math.cos(latitude) * Math.cos(longitude);
+            longitudeIntermed += Math.cos(latitude) * Math.sin(longitude);
+            z += Math.sin(latitude);
+
+        }
+        totalCoordinates = intersections.values().size();
+
+        // normalize the resulting vector
+        latitudeIntermed = latitudeIntermed/totalCoordinates;
+        longitudeIntermed = longitudeIntermed/totalCoordinates;
+        z = z/totalCoordinates;
+
+        // reconvert to spherical coordinates
+        double  longitudeCentral = Math.atan2(longitudeIntermed, latitudeIntermed);
+        double squareCentral = Math.sqrt(latitudeIntermed*latitudeIntermed + longitudeIntermed*longitudeIntermed);
+        double latitudeCentral = Math.atan2(z, squareCentral);
+
+        // Create the central coordinates
+        return new Coordinates(latitudeCentral*180/Math.PI,longitudeCentral*180/Math.PI);
+
+    }
+
 }
