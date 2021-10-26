@@ -77,7 +77,7 @@ public class CityMap {
             double latitude = intersection.getCoordinates().getLatitude()*Math.PI / 180;
             double longitude = intersection.getCoordinates().getLongitude()*Math.PI / 180;
 
-            // sum the vectors
+            // Sum the vectors
             latitudeIntermed += Math.cos(latitude) * Math.cos(longitude);
             longitudeIntermed += Math.cos(latitude) * Math.sin(longitude);
             z += Math.sin(latitude);
@@ -85,12 +85,12 @@ public class CityMap {
         }
         totalCoordinates = intersections.values().size();
 
-        // normalize the resulting vector
+        // Normalize the resulting vector
         latitudeIntermed = latitudeIntermed/totalCoordinates;
         longitudeIntermed = longitudeIntermed/totalCoordinates;
         z = z/totalCoordinates;
 
-        // reconvert to spherical coordinates
+        // Reconvert to spherical coordinates
         double  longitudeCentral = Math.atan2(longitudeIntermed, latitudeIntermed);
         double squareCentral = Math.sqrt(latitudeIntermed*latitudeIntermed + longitudeIntermed*longitudeIntermed);
         double latitudeCentral = Math.atan2(z, squareCentral);
