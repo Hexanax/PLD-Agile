@@ -25,10 +25,10 @@ public class Controller {
     protected final TourComputedState tourComputedState = new TourComputedState();
     protected final ModifyTourState modifyTourState = new ModifyTourState();
 
-    public Controller(CityMap citymap, PlanningRequest planningRequest) {
+    public Controller(CityMap citymap, PlanningRequest planningRequest, Tour tour) {
         this.citymap = citymap;
         this.planningRequest = planningRequest;
-        this.tour = null;
+        this.tour = tour;
         currentState = initialState;
 
     }
@@ -52,11 +52,14 @@ public class Controller {
 
     public void loadRequests() { currentState.loadRequests(this,citymap, planningRequest,window);}
 
-    public void computeTour() { currentState.computeTour(this,citymap, planningRequest,tour, window);}
+    public void computeTour() { currentState.computeTour(this,citymap, planningRequest, window);}
 
     public void cancel() { currentState.cancel(this);}
 
     public void confirm() { currentState.confirm(this,citymap,planningRequest,window);}
 
     public void modify() { currentState.modify(this,window);}
+
+    public void generateRoadMap() { currentState.generateRoadMap(this,tour,window);}
+
 }

@@ -1,10 +1,12 @@
 package fr.insalyon.pldagile.model;
 
+import javafx.util.Pair;
+
 import java.util.Objects;
 
 public class Segment {
 
-    private Long id;
+    private Pair<Long, Long> id;
     private String name;
     private double length;
     private Intersection origin;
@@ -15,11 +17,14 @@ public class Segment {
         this.length = length;
         this.origin = origin;
         this.destination = destination;
+        this.id = new Pair<>(origin.getId(),destination.getId());
     }
 
     public String getName() {
         return name;
     }
+
+    public Pair<Long, Long> getId() { return id; }
 
     public void setName(String name) {
         this.name = name;
@@ -60,5 +65,10 @@ public class Segment {
     @Override
     public int hashCode() {
         return Objects.hash(getName(), getLength(), getOrigin(), getDestination());
+    }
+
+    @Override
+    public String toString() {
+        return "Segment: "+origin.getId() + " -> "+ destination.getId()+ "| meters : "+ length;
     }
 }

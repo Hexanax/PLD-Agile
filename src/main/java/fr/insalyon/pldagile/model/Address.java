@@ -16,4 +16,9 @@ public class Address {
         this.intersection = intersection;
     }
 
+
+    @Override
+    public String toString() {
+        return intersection.toString();
+    }
 }

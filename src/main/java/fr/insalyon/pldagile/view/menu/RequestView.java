@@ -25,6 +25,7 @@ public class RequestView extends Region {
 
     private static final ObservableList<RequestItem> pickupItems = FXCollections.observableArrayList();
     private Button addRequestButton;
+    private Button generateRoadMap;
 
     public RequestView(Controller controller) {
         GridPane maingp = new GridPane();
@@ -50,14 +51,27 @@ public class RequestView extends Region {
         addRequestButton.setPrefHeight(40);
         addRequestButton.setDefaultButton(true);
         addRequestButton.setPrefWidth(100);
+        generateRoadMap = new Button("Generate the Road Map");
+        generateRoadMap.setPrefHeight(40);
+        generateRoadMap.setDefaultButton(true);
+        generateRoadMap.setPrefWidth(200);
+
         maingp.add(addRequestButton, 0, 3, 1, 1);
         GridPane.setHalignment(addRequestButton, HPos.CENTER);
         GridPane.setMargin(addRequestButton, new Insets(20, 0, 20, 0));
+
+        maingp.add(generateRoadMap, 0, 5, 1, 1);
+        GridPane.setHalignment(generateRoadMap, HPos.CENTER);
+        GridPane.setMargin(generateRoadMap, new Insets(20, 0, 20, 0));
 
         this.getChildren().add(maingp);
 
         addRequestButton.setOnAction(event -> {
             controller.modify();
+        });
+
+        generateRoadMap.setOnAction(event -> {
+            controller.generateRoadMap();
         });
     }
 

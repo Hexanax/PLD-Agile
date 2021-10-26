@@ -19,4 +19,8 @@ public class Depot extends Address {
         this.departureTime = departureTime;
     }
 
+    @Override
+    public String toString() {
+        return "Depot: \n " + super.toString();
+    }
 }
