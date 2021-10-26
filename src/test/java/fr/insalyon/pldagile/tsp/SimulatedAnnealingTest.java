@@ -83,7 +83,7 @@ public class SimulatedAnnealingTest {
     }
 
     /**
-     * Disabled because the swaps are already done at init  -
+     * Disabled because the swaps are done when calling simulatedAnnealing Constructor
      */
     @Disabled
     @Test
