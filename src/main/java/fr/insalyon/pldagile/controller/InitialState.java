@@ -16,6 +16,7 @@ public class InitialState implements State{
             XMLDeserializer.load(citymap);
             window.clearMap();
             window.renderCityMap(citymap);
+            window.centerMap(citymap);
             controller.setCurrentState(controller.mapDisplayedState);
         } catch(Exception e) {
             if(e.getMessage().equals("cancel")){

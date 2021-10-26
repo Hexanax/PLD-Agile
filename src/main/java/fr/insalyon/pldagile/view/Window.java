@@ -37,6 +37,8 @@ public class Window  {
     private static SidePanel sidePanel;
     private final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
+    private final int centeredZoomValue = 12;
+
 
     public Window( Controller controller) {
         this.controller = controller;
@@ -128,6 +130,23 @@ public class Window  {
             pointLayer.addPoint(mapPoint, new Circle(2, Color.BLUE));
         }
     }
+
+
+
+    /**
+     * Centers the map around the central coordinates of the city map
+     * sets the zoom the level of a city in the map
+     * @param cityMap
+     */
+    public void centerMap(CityMap cityMap) throws ExceptionXML {
+        Coordinates coord = cityMap.getCenter(cityMap.getIntersections());
+        MapPoint mapCenter = new MapPoint(coord.getLatitude(), coord.getLongitude());
+        // center the map around the calculated center coordinates
+        mapView.setCenter(mapCenter);
+        // sets the zoom at level 12: approximately the level of a city in our case
+        mapView.setZoom(centeredZoomValue);
+    }
+
 
     private static int count = 1; //TODO Delete this ugly counter
     public void renderPlanningRequest(PlanningRequest planningRequest) {

@@ -18,6 +18,7 @@ public class MapOverwrite3State implements State{
             window.clearRequest();
             window.clearMap();
             window.renderCityMap(newMap);
+            window.centerMap(newMap);
             controller.setCurrentState(controller.mapDisplayedState);
         } catch(Exception e) {
             if(!e.getMessage().equals("cancel")){
