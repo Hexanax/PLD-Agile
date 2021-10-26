@@ -1,6 +1,7 @@
 package fr.insalyon.pldagile.tsp;
 
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.tsp.Dijkstra;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -42,13 +43,16 @@ public class TourBuilderV2 {
         tour.addIntersection(intersections.get(previous));
         tourIntersections.remove(0);
         for(Long idIntersection : tourIntersections){
+            System.out.println(intersections.get(previous));
+            System.out.println(intersections.get(idIntersection));
             Long current = idIntersection;
-            if(!Objects.equals(previous, current)){
+            //if(!Objects.equals(previous, current)){ Magouille pour que ça marche
                 Segment currentSegment = segments.get(new Pair<>(previous,current));
+                System.out.println(currentSegment.toString());
                 tour.addSegment(currentSegment);
                 previous = current;
                 tour.addIntersection(intersections.get(previous));
-            }
+           // }
         }
 
         for(Request request : planningRequest.getRequests()){
@@ -57,6 +61,9 @@ public class TourBuilderV2 {
         }
 
         return tour;
+
+
+
     }
 
     public Map<Long, List<Pair<Address, Long>>> buildSpecificIntersections(Tour tour){
