@@ -1,9 +1,7 @@
 package fr.insalyon.pldagile.tsp;
 
+import fr.insalyon.pldagile.helpers.FakeCityMapProvider;
 import fr.insalyon.pldagile.model.CityMap;
-import fr.insalyon.pldagile.model.Coordinates;
-import fr.insalyon.pldagile.model.Intersection;
-import fr.insalyon.pldagile.model.Segment;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,39 +13,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CityMapGraphTest {
-    CityMap cityMap;
     CityMapGraph cityMapGraph;
 
     @BeforeEach
     void setup() throws ExceptionXML {
-        Intersection[] intersections = {
-                new Intersection(1L, new Coordinates(4, 5)),
-                new Intersection(2L, new Coordinates(5, 8)),
-                new Intersection(3L, new Coordinates(6, 9)),
-                new Intersection(4L, new Coordinates(6, 3)),
-                new Intersection(5L, new Coordinates(2, 7)),
-                new Intersection(6L, new Coordinates(3, 3)),
-                new Intersection(7L, new Coordinates(5, 1)),
-                new Intersection(8L, new Coordinates(1, 3)),
-
-        };
-        Segment[] segments = {
-                new Segment("1to2", 3, intersections[0], intersections[1]),
-                new Segment("2to3", 7, intersections[1], intersections[2]),
-                new Segment("3to4", 10, intersections[2], intersections[3]),
-                new Segment("4to1", 3, intersections[3], intersections[0]),
-                new Segment("1to5", 4.5, intersections[0], intersections[4]),
-                new Segment("5to6", 2.5, intersections[4], intersections[5]),
-                new Segment("6to3", 2.0, intersections[5], intersections[2]),
-
-        };
-        cityMap = new CityMap();
-        for (Intersection i : intersections) {
-            cityMap.add(i);
-        }
-        for (Segment s : segments) {
-            cityMap.add(s);
-        }
+        CityMap cityMap = FakeCityMapProvider.getSmallMap();
         cityMapGraph = new CityMapGraph(cityMap);
     }
 
