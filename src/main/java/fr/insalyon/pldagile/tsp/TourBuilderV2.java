@@ -22,18 +22,25 @@ public class TourBuilderV2 {
         //ArrayList of ordered **STEPS** to visit, computed by the simulatedAnnealing algorithm.
         ArrayList<Long> intersectionSteps = new ArrayList<>(simulatedAnnealing.getStepsIntersectionId());
 
-        Long previousIntersection = intersectionSteps.get(0);
-
-
         //Iterate over all intersectionSteps to compute the full tour, with intermediary intersections
         //in the _tourIntersections_ List
-        for (Long id : intersectionSteps.subList(1,intersectionSteps.size()-1)) {
+
+        Long previousIntersection = intersectionSteps.get(0);
+        for (Long destinationId : intersectionSteps.subList(1,intersectionSteps.size())) {
 
             Dijkstra bestPathsFromOrigin = bestPaths.get(previousIntersection);
-            List<Long> localTravel = bestPathsFromOrigin.getShortestPath(id);
-            tourIntersections.addAll(localTravel);
-            previousIntersection = id;
+            List<Long> localTravel = bestPathsFromOrigin.getShortestPath(destinationId);
+
+            //Don't add the last intersection to the tourIntersections, because it will
+            //Be added as the first intersection of the next travel
+            tourIntersections.addAll(localTravel.subList(0,localTravel.size()-1));
+            previousIntersection = destinationId;
         }
+        //We have to manually add the depot intersection to the end of the list
+        tourIntersections.add(intersectionSteps.get(0));
+
+
+        System.out.println(tourIntersections);
 
 
         Tour tour = new Tour(planningRequest.getRequests(),planningRequest.getDepot());
@@ -43,16 +50,11 @@ public class TourBuilderV2 {
         tour.addIntersection(intersections.get(previous));
         tourIntersections.remove(0);
         for(Long idIntersection : tourIntersections){
-            System.out.println(intersections.get(previous));
-            System.out.println(intersections.get(idIntersection));
             Long current = idIntersection;
-            //if(!Objects.equals(previous, current)){ Magouille pour que ça marche
-                Segment currentSegment = segments.get(new Pair<>(previous,current));
-                System.out.println(currentSegment.toString());
-                tour.addSegment(currentSegment);
-                previous = current;
-                tour.addIntersection(intersections.get(previous));
-           // }
+            Segment currentSegment = segments.get(new Pair<>(previous,current));
+            tour.addSegment(currentSegment);
+            previous = current;
+            tour.addIntersection(intersections.get(previous));
         }
 
         for(Request request : planningRequest.getRequests()){
