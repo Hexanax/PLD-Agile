@@ -16,8 +16,6 @@ public class Dijkstra {
     //We'll store our data in 4 structures
     private Map<Long, Double> distancesFromOrigin;
 
-
-
     private Map<Long, Long> predecessor;
     //Maps a vertice ID to an integer such that { 0 => white, 1 => grey, 2 => black}
     private Map<Long, Integer> color;
@@ -27,6 +25,8 @@ public class Dijkstra {
 
     private CityMapGraph cityMapGraph;
     private Long originId;
+
+
 
     /**
      * Initializes a Dijkstra object that will, given a cityMapGraph and an origin ID,
@@ -121,7 +121,6 @@ public class Dijkstra {
         Iterator it = grey.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Long,Double> entry = (Map.Entry)it.next();
-            System.out.println(entry.getKey() + " = " + entry.getValue());
             if(entry.getValue()<min)
             {
                 min = entry.getValue();
@@ -151,13 +150,20 @@ public class Dijkstra {
         }
 
         Collections.reverse(shortestPath);
-        System.out.println(shortestPath.toString());
 
         return shortestPath;
     }
 
+    public Double getShortestPathCost(Long destinationId){
+        return distancesFromOrigin.get(destinationId);
+    }
+
     public Map<Long, Double> getDistancesFromOrigin() {
         return distancesFromOrigin;
+    }
+
+    public Long getOriginId() {
+        return originId;
     }
 
 
