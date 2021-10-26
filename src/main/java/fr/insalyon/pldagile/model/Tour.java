@@ -1,7 +1,11 @@
 package fr.insalyon.pldagile.model;
 
+import javafx.util.Pair;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Tour {
     private final double SPEED_KMH = 15.0;
@@ -24,6 +28,7 @@ public class Tour {
         this.pickupsDuration = 0;
         this.deliveriesDuration = 0;
         this.travelsDuration = 0;
+
     }
 
     public Tour() {
@@ -34,6 +39,7 @@ public class Tour {
         return requests;
     }
 
+
     public List<Segment> getPath() {
         return path;
     }
@@ -43,6 +49,8 @@ public class Tour {
     }
 
     public List<Intersection> getIntersections() {return intersections;}
+
+
 
     public void addIntersection(Intersection intersection){
         intersections.add(intersection);
@@ -76,4 +84,6 @@ public class Tour {
     public void setDepotAddress(Depot depot) {
         this.depot = depot;
     }
+
+
 }

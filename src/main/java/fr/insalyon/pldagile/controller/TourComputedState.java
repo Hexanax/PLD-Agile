@@ -1,10 +1,15 @@
 package fr.insalyon.pldagile.controller;
 
-import fr.insalyon.pldagile.model.CityMap;
-import fr.insalyon.pldagile.model.PlanningRequest;
-import fr.insalyon.pldagile.model.Tour;
+import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
+import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class TourComputedState implements State{
@@ -33,6 +38,9 @@ public class TourComputedState implements State{
 
     @Override
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
-        //TODO : implements
+        TourBuilderV2 tourbuilder = new TourBuilderV2();
+        Map<Long,List<Pair<Address,Long>>> specificIntersections = tourbuilder.buildSpecificIntersections(tour);
+
+
     }
 }

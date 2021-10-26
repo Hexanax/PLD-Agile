@@ -30,12 +30,12 @@ public class RequestsDisplayedState implements State{
     }
 
     @Override
-    public void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Tour tour, Window window) {
+    public void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window) {
         //TODO change ALL
         System.out.println("Render tour called");
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
-        tourBuilderV2.buildTour(planningRequest, cityMap, tour); //TODO Change with segments from TourBuilder
-
+        Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
+        controller.setTour(tour);
         window.renderTour(tour.getIntersections());
         controller.setCurrentState(controller.tourComputedState);
     }

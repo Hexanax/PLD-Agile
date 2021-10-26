@@ -52,7 +52,7 @@ public class Controller {
 
     public void loadRequests() { currentState.loadRequests(this,citymap, planningRequest,window);}
 
-    public void computeTour() { currentState.computeTour(this,citymap, planningRequest,tour, window);}
+    public void computeTour() { currentState.computeTour(this,citymap, planningRequest, window);}
 
     public void cancel() { currentState.cancel(this);}
 
