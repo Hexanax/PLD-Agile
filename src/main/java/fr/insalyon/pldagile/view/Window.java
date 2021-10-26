@@ -170,7 +170,7 @@ public class Window  {
 
 
         Intersection previousIntersection = intersections.get(0);
-        for (Intersection intersection : intersections) {
+        for (Intersection intersection : intersections.subList(1, intersections.size())) {
             //Create line and add it
             MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
             MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
