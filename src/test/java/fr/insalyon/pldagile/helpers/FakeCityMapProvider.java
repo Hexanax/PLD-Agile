@@ -50,7 +50,7 @@ public abstract class FakeCityMapProvider {
                 Segment[] segments = {
                 new Segment("Rue Matthieu Roux"    , 20, intersections.get(0),   intersections.get(6-1)),
                 new Segment("Rue de l'église"      , 25, intersections.get(6-1), intersections.get(7-1)),
-                new Segment("Boulevard Belateche"  , 40, intersections.get(7-1), intersections.get(3-1)),
+                new Segment("Boulevard Boulard"  , 40, intersections.get(7-1), intersections.get(3-1)),
                 new Segment("Boulevard Delpech"    , 30, intersections.get(3-1), intersections.get(5-1)),
                 new Segment("Chemin Metwalli"      , 75, intersections.get(5-1), intersections.get(2-1)),
                 new Segment("Route de la Soie"     , 10, intersections.get(2-1), intersections.get(5-1)),
