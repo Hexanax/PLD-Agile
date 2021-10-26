@@ -2,14 +2,16 @@ package fr.insalyon.pldagile.tsp;
 
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.Dijkstra;
+import javafx.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class TourBuilderV2 {
 
-    public List<Long> buildTour(PlanningRequest planningRequest, CityMap cityMap) {
+    public void buildTour(PlanningRequest planningRequest, CityMap cityMap, Tour tour) {
 
         //List of ordered intersections to visit during the tour
         List<Long> tourIntersections = new ArrayList<>();
@@ -36,8 +38,33 @@ public class TourBuilderV2 {
             previousIntersection = id;
         }
 
+
+        tour = new Tour(planningRequest.getRequests(),planningRequest.getDepot());
+        Map<Long, Intersection> intersections = cityMap.getIntersections();
+        Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
+        Long previous = tourIntersections.get(0);
+        tour.addIntersection(intersections.get(previous));
+        tourIntersections.remove(0);
+        for(Long idIntersection : tourIntersections){
+            System.out.println(intersections.get(previous));
+            System.out.println(intersections.get(idIntersection));
+            Long current = idIntersection;
+            //if(!Objects.equals(previous, current)){ Magouille pour que ça marche
+                Segment currentSegment = segments.get(new Pair<>(previous,current));
+                System.out.println(currentSegment.toString());
+                tour.addSegment(currentSegment);
+                previous = current;
+                tour.addIntersection(intersections.get(previous));
+           // }
+        }
+
+        for(Request request : planningRequest.getRequests()){
+            tour.addPickupTime(request.getPickup().getDuration());
+            tour.addDeliveryTime(request.getDelivery().getDuration());
+        }
+
         System.out.println("Running V2");
-        return tourIntersections;
+
     }
 
 }

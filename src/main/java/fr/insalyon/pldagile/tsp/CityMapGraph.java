@@ -13,7 +13,7 @@ import static java.lang.Double.POSITIVE_INFINITY;
 public class CityMapGraph implements Graph {
 
     private final int nbVertices;
-    private final Map<Long, Segment> segments;
+    private final Map<Pair<Long, Long>,Segment> segments;
     private final Set<Long> vertexIds;
     public static Double NO_ARC_COST = -1D;
     private List<Long> pathIds;

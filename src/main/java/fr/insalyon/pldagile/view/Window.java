@@ -166,12 +166,11 @@ public class Window  {
         }
     }
 
-    public void renderTour(List<Long> intersectionIds, CityMap cityMap) {
+    public void renderTour(List<Intersection> intersections) {
 
 
-        Intersection previousIntersection = cityMap.getIntersection(intersectionIds.get(0));
-        for (Long intersectionId : intersectionIds) {
-            Intersection intersection = cityMap.getIntersection(intersectionId);
+        Intersection previousIntersection = intersections.get(0);
+        for (Intersection intersection : intersections) {
             //Create line and add it
             MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
             MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());

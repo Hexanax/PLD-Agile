@@ -4,6 +4,7 @@ import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.model.Tour;
 import fr.insalyon.pldagile.tsp.TourBuilderV1;
+import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 
@@ -32,9 +33,10 @@ public class RequestsDisplayedState implements State{
     public void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Tour tour, Window window) {
         //TODO change ALL
         System.out.println("Render tour called");
-        TourBuilderV1 tourBuilderV1 = new TourBuilderV1();
-        List<Long> intersectionIds = tourBuilderV1.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
-        window.renderTour(intersectionIds,cityMap);
+        TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
+        tourBuilderV2.buildTour(planningRequest, cityMap, tour); //TODO Change with segments from TourBuilder
+
+        window.renderTour(tour.getIntersections());
         controller.setCurrentState(controller.tourComputedState);
     }
 }

@@ -40,4 +40,9 @@ public class Intersection {
     public int hashCode() {
         return Objects.hash(getId(), getCoordinates());
     }
+
+    @Override
+    public String toString() {
+        return "Intersection: "+ id;
+    }
 }

@@ -1,6 +1,7 @@
 package fr.insalyon.pldagile.model;
 
 import fr.insalyon.pldagile.xml.ExceptionXML;
+import javafx.util.Pair;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,16 +12,16 @@ import java.util.Map;
 public class CityMap {
 
     private Map<Long, Intersection> intersections;
-    private Map<Long, Segment> segments;
+    private Map<Pair<Long, Long>, Segment> segments;
 
-    public CityMap(Map<Long, Intersection> intersections, Map<Long, Segment> segments) {
+    public CityMap(Map<Long, Intersection> intersections, Map<Pair<Long, Long>, Segment> segments) {
         this.intersections = intersections;
         this.segments = segments;
     }
 
     public CityMap() {
         this.intersections = new HashMap<Long, Intersection>();
-        this.segments = new HashMap<Long, Segment>();
+        this.segments = new HashMap<Pair<Long,Long>, Segment>();
     }
 
     public Map<Long, Intersection> getIntersections() {
@@ -31,7 +32,7 @@ public class CityMap {
         return intersections.get(id);
     }
 
-    public Map<Long, Segment> getSegments() {
+    public Map<Pair<Long, Long>, Segment> getSegments() {
         return segments;
     }
 
@@ -43,7 +44,7 @@ public class CityMap {
         intersections.put(id, intersection);
     }
 
-    static int index = 1;
+
 
     public void addAll(List<Segment> segments) throws ExceptionXML {
         for (Segment segment : segments) {
@@ -52,11 +53,7 @@ public class CityMap {
     }
 
     public void add(Segment segment) throws ExceptionXML {
-        Long id = (long) index++;
-//        if(segments.containsValue(segment)){
-//            throw new ExceptionXML("Error when reading file: Double segment exception");
-//        }
-        //verif pas de segment sans origine/dest
+        Pair<Long,Long> id = segment.getId();
         segments.put(id, segment);
     }
 }

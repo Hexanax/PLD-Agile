@@ -19,4 +19,6 @@ public interface State {
     public default void cancel(Controller controller){};
 
     public default void modify(Controller controller, Window window){};
+
+    public default void generateRoadMap(Controller controller, Tour tour, Window window){};
 }

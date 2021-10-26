@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;
+import fr.insalyon.pldagile.model.Tour;
 import fr.insalyon.pldagile.view.Window;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
 
@@ -28,5 +29,10 @@ public class TourComputedState implements State{
         controller.setCurrentState(controller.modifyTourState);
         System.out.println("modify");
         window.showModifyMenu();
+    }
+
+    @Override
+    public void generateRoadMap(Controller controller, Tour tour, Window window) {
+        //TODO : implements
     }
 }

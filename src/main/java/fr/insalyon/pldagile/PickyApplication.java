@@ -177,12 +177,12 @@ public class PickyApplication extends Application {
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
 
 //        List<Long> intersectionIds = tourBuilderV1.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
-        List<Long> intersectionIds = tourBuilderV2.buildTour(planningRequest, cityMap); //TODO Change with segments from TourBuilder
+      //  List<Long> intersectionIds = tourBuilderV2.buildTour(planningRequest, cityMap, new Tour()); //TODO Change with segments from TourBuilder
 
 //        Intersection origin = cityMap.getIntersection(25175791L);
 //        Intersection destination = cityMap.getIntersection(25175778L);
 
-        Intersection previousIntersection = cityMap.getIntersection(intersectionIds.get(0));
+        /*Intersection previousIntersection = cityMap.getIntersection(intersectionIds.get(0));
         for (Long intersectionId : intersectionIds) {
             Intersection intersection = cityMap.getIntersection(intersectionId);
             //Create line and add it
@@ -193,7 +193,7 @@ public class PickyApplication extends Application {
             lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Color.YELLOW);
             //Update prev intersection
             previousIntersection = intersection;
-        }
+        }*/
 ;
     }
 
