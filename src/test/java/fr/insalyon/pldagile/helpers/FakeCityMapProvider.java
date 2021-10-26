@@ -11,6 +11,8 @@ import java.util.List;
 /**
  * FakeCityMapProvider provides fake maps to tests while remaining independent from
  * XML parsing functions (which can be tested in their own test suite).
+ *
+ * Please be careful when deleting or changing lines in here as you could break a lot of tests...
  */
 public abstract class FakeCityMapProvider {
     static public CityMap getSmallMap() throws ExceptionXML {
@@ -44,33 +46,22 @@ public abstract class FakeCityMapProvider {
     }
 
     static public CityMap getMediumMap() throws ExceptionXML {
-        Intersection[] intersections = {
-                new Intersection(1L, new Coordinates(45.5, 4.8)),
-                new Intersection(2L, new Coordinates(45.6, 4.9)),
-                new Intersection(3L, new Coordinates(45.7, 5)),
-                new Intersection(4L, new Coordinates(45.5, 5)),
-                new Intersection(5L, new Coordinates(45.6, 5)),
-                new Intersection(6L, new Coordinates(45.8, 4.8)),
-                new Intersection(7L, new Coordinates(45.8, 5)),
-                new Intersection(8L, new Coordinates(45.9, 5.1)),
-                new Intersection(9L, new Coordinates(45.1, 5.2)),
-
-    };
+        List<Intersection> intersections = FakeIntersectionProvider.getFakeIntersections();
                 Segment[] segments = {
-                new Segment("Rue Matthieu Roux"    , 20, intersections[0], intersections[6-1]),
-                new Segment("Rue de l'église"      , 25, intersections[6-1], intersections[7-1]),
-                new Segment("Boulevard Belateche"  , 40, intersections[7-1], intersections[3-1]),
-                new Segment("Boulevard Delpech"    , 30, intersections[3-1], intersections[5-1]),
-                new Segment("Chemin Metwalli"      , 75, intersections[5-1], intersections[2-1]),
-                new Segment("Route de la Soie"     , 10, intersections[2-1], intersections[5-1]),
-                new Segment("Avenue Saugier"       , 15, intersections[5-1], intersections[4-1]),
-                new Segment("Boulevard Belateche"  , 35, intersections[0], intersections[8-1]),
-                new Segment("Place SGBD"           , 40, intersections[0], intersections[9-1]),
-                new Segment("Place Conficius"      , 55, intersections[4-1], intersections[9-1]),
-                new Segment("Route Gandhi"         , 50, intersections[9-1], intersections[0]),
-                new Segment("Chemin des pointeurs" , 5,  intersections[8-1], intersections[2-1]),
-                new Segment("Impasse des partiels" , 15, intersections[9-1], intersections[7-1]),
-                new Segment("Avenue de la Paix"    , 25, intersections[8-1], intersections[7-1]),
+                new Segment("Rue Matthieu Roux"    , 20, intersections.get(0),   intersections.get(6-1)),
+                new Segment("Rue de l'église"      , 25, intersections.get(6-1), intersections.get(7-1)),
+                new Segment("Boulevard Belateche"  , 40, intersections.get(7-1), intersections.get(3-1)),
+                new Segment("Boulevard Delpech"    , 30, intersections.get(3-1), intersections.get(5-1)),
+                new Segment("Chemin Metwalli"      , 75, intersections.get(5-1), intersections.get(2-1)),
+                new Segment("Route de la Soie"     , 10, intersections.get(2-1), intersections.get(5-1)),
+                new Segment("Avenue Saugier"       , 15, intersections.get(5-1), intersections.get(4-1)),
+                new Segment("Boulevard Belateche"  , 35, intersections.get(0),   intersections.get(8-1)),
+                new Segment("Place SGBD"           , 40, intersections.get(0),   intersections.get(9-1)),
+                new Segment("Place Conficius"      , 55, intersections.get(4-1), intersections.get(9-1)),
+                new Segment("Route Gandhi"         , 50, intersections.get(9-1), intersections.get(0)),
+                new Segment("Chemin des pointeurs" , 5,  intersections.get(8-1), intersections.get(2-1)),
+                new Segment("Impasse des partiels" , 15, intersections.get(9-1), intersections.get(7-1)),
+                new Segment("Avenue de la Paix"    , 25, intersections.get(8-1), intersections.get(7-1)),
         };
         CityMap cityMap = new CityMap();
         for (Intersection i : intersections) {
