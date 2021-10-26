@@ -53,23 +53,18 @@ public class TourBuilderV2 {
         tour.addIntersection(intersections.get(previous));
         tourIntersections.remove(0);
         for(Long idIntersection : tourIntersections){
-            System.out.println(intersections.get(previous));
-            System.out.println(intersections.get(idIntersection));
             Long current = idIntersection;
-            //if(!Objects.equals(previous, current)){ Magouille pour que ça marche
                 Segment currentSegment = segments.get(new Pair<>(previous,current));
-                System.out.println("Previous"+previous+"current"+current);
-                System.out.println(currentSegment.toString());
                 tour.addSegment(currentSegment);
                 previous = current;
                 tour.addIntersection(intersections.get(previous));
-           // }
         }
 
         for(Request request : planningRequest.getRequests()){
             tour.addPickupTime(request.getPickup().getDuration());
             tour.addDeliveryTime(request.getDelivery().getDuration());
         }
+
 
         System.out.println("Running V2");
 
