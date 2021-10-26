@@ -74,8 +74,8 @@ public class CityMap {
         for (Intersection intersection : intersections.values()) {
 
             // Convert each pair lat/long to a 3D vector
-            double latitude = (intersection.getCoordinates().getLatitude()*Math.PI) / 180;
-            double longitude = (intersection.getCoordinates().getLongitude()*Math.PI) / 180;
+            double latitude = intersection.getCoordinates().getLatitude()*Math.PI / 180;
+            double longitude = intersection.getCoordinates().getLongitude()*Math.PI / 180;
 
             // sum the vectors
             latitudeIntermed += Math.cos(latitude) * Math.cos(longitude);
