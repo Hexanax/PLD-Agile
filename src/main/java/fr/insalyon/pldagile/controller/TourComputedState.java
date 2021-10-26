@@ -4,6 +4,7 @@ import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
+import fr.insalyon.pldagile.xml.XMLSerializer;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -40,7 +41,11 @@ public class TourComputedState implements State{
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
         TourBuilderV2 tourbuilder = new TourBuilderV2();
         Map<Long,List<Pair<Address,Long>>> specificIntersections = tourbuilder.buildSpecificIntersections(tour);
-
+        try {
+            XMLSerializer.renderHTMLroadMap();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }
