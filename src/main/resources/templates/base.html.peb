@@ -1,7 +1,9 @@
 <html>
 <head>
 	<title>{% block title %}Picky{% endblock %}</title>
-
+    <style type="text/css">
+        {% include "templates/css/test.css" %}
+    </style>
 </head>
 <body>
 
