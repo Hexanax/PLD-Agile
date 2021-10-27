@@ -1,15 +1,111 @@
 <html>
 <head>
-	<title>{% block title %}My Website{% endblock %}</title>
+	<title>{% block title %}Picky{% endblock %}</title>
+
 </head>
 <body>
+
+    <div id="header">
+            <div>
+                {% include "templates/svg/icon.svg.peb" %}
+            </div>
+            <h1> Picky - Road Map </h1>
+    </div>
 	<div id="content">
-		<h1> Home </h1>
-	    <p> Welcome to my home page. My name is {{ name }}.</p>
+	    <div id="time">
+            <div>
+                Estimated time to complete the tour : {{ total_time }}
+            </div>
+            <div>
+                Distance in meters : {{ lenght | numberformat("#.##") }}
+            </div>
+            <div> Estimated travels time : {{ travels_time }} </div>
+            <div> Estimated pickups time : {{ pickups_time }} </div>
+            <div> Estimated deliveries time : {{ deliveries_time }} </div>
+        </div>
+        <hr>
+        <div id="depot">
+            <div> {% include "templates/svg/depot.svg.peb" %} </div>
+            <div> Departure from the depot at intersection no. {{ depot.intersection.id }} </div>
+            <div> Departure scheduled at {{ depot.departureTime| date("HH:mm:ss", timeZone="Europe/Paris") }} </div>
+        </div>
+        <hr>
+        {{ depot }}
+        <div id="path">
+        {% for row in rows %}
+            <div>
+                {% if row.type == "Segment"%}
+
+                    Follow the {{row.object.name}} over {{row.object.length| numberformat("#.##")}} meters to the intersection no.{{ row.object.destination.id}}
+                {% elseif row.type == "Intersection"  %}
+                    {% if row.step and not row.finish %}
+                        <div>
+                            {% if row.orientation==0 %}
+                                <div> {% include "templates/svg/north.svg.peb" %} </div>
+                                After dealing with deliveries go straight ahead on the road called : {{ row.segment_name }}
+                            {% elseif row.orientation==1 %}
+                                <div> {% include "templates/svg/east.svg.peb" %} </div>
+                                After dealing with deliveries turn right on the road called : {{ row.segment_name }}
+                            {% elseif row.orientation==2 %}
+                                <div> {% include "templates/svg/west.svg.peb" %} </div>
+                                After dealing with deliveries turn left on the road called : {{ row.segment_name }}
+                            {% elseif row.orientation==3 %}
+                                <div> {% include "templates/svg/south.svg.peb" %} </div>
+                                After dealing with deliveries turn back on the road called : {{ row.segment_name }}
+                            {% else %}
+                                After dealing with deliveries follow the road called : {{ row.segment_name }}
+                            {% endif %}
+                        </div>
+                    {% elseif not row.finish  %}
+                        <div>
+                            {% if row.orientation==0 %}
+                                <div> {% include "templates/svg/north.svg.peb" %} </div>
+                                At the intersection no {{row.object.id}} go straight ahead on the road called : {{ row.segment_name }}
+                            {% elseif row.orientation==1 %}
+                                <div> {% include "templates/svg/east.svg.peb" %} </div>
+                                At the intersection no {{row.object.id}} turn right on the road called : {{ row.segment_name }}
+                            {% elseif row.orientation==2 %}
+                                <div> {% include "templates/svg/west.svg.peb" %} </div>
+                                At the intersection no {{row.object.id}} turn left on the road called : {{ row.segment_name }}
+                            {% elseif row.orientation==3 %}
+                                <div> {% include "templates/svg/south.svg.peb" %} </div>
+                                At the intersection no {{row.object.id}} turn back on the road called : {{ row.segment_name }}
+                            {% else %}
+                                At the intersection no {{row.object.id}} follow the road called : {{ row.segment_name }}
+                            {% endif %}
+                        </div>
+
+                    {% endif %}
+                {% else %}
+                    At the intersection no {{row.object.intersection.id}}
+                    {% if row.subtype == "pickup" %}
+                        <div>
+                            <div> {% include "templates/svg/pickup.svg.peb" %} </div>
+                            You have a package to pick up. This will take about {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s
+                        </div>
+                    {% else %}
+                        <div>
+                            <div> {% include "templates/svg/dropoff.svg.peb" %} </div>
+                            You have a package to deliver. This will take about {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        {% endfor %}
+        </div>
+        <hr>
+        <div>
+            <div> {% include "templates/svg/depot.svg.peb" %} </div>
+            Welcome home, you have finished your tour
+        </div>
+        <hr>
+
+
 	</div>
+
 	<div id="footer">
 		{% block footer %}
-			Copyright 2018
+			Copyright 2021 - INSA LYON - Départment Informatique - HEXANOME 4102
 		{% endblock %}
 	</div>
 </body>
