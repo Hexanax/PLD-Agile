@@ -24,7 +24,7 @@ public class LineLayer extends MapLayer {
 
     public void addLine(MapDestination mapDestination, Color color) {
         Line line = new Line();
-        line.setStroke(Color.TURQUOISE);
+        line.setStroke(color);
         line.setStrokeWidth(4);
         lines.add(new Pair<>(mapDestination, line));
         this.getChildren().add(line); //TODO Reflect where to add the line node child the cleanest way

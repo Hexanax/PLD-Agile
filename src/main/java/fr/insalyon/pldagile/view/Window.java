@@ -186,22 +186,16 @@ public class Window  {
     }
 
     public void renderTour(List<Intersection> intersections) {
-
-
         Intersection previousIntersection = intersections.get(0);
         for (Intersection intersection : intersections.subList(1, intersections.size())) {
             //Create line and add it
             MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
             MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
-            pointLayer.addPoint(originPoint, new Circle(5, Color.PURPLE));
-            pointLayer.addPoint(destinationPoint, new Circle(5, Color.PURPLE));
-            lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Color.YELLOW);
+            lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Color.TURQUOISE);
             //Update prev intersection
             previousIntersection = intersection;
         }
-        ;
     }
-
 
     public void showWarningAlert(String title, String header, String text){
         Alert alert = new Alert(Alert.AlertType.WARNING);
