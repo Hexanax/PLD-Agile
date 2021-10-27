@@ -3,11 +3,9 @@ package fr.insalyon.pldagile.controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
-import fr.insalyon.pldagile.xml.XMLDeserializer;
+import fr.insalyon.pldagile.xml.HTMLSerializer;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,9 +36,11 @@ public class TourComputedState implements State{
 
     @Override
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
-        TourBuilderV2 tourbuilder = new TourBuilderV2();
-        Map<Long,List<Pair<Address,Long>>> specificIntersections = tourbuilder.buildSpecificIntersections(tour);
-
+        try {
+            HTMLSerializer.renderHTMLroadMap(tour);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }
