@@ -15,10 +15,11 @@ public class SidePanel extends Region {
 
     public void MainSidePanel(){
         ImportView importView = new ImportView(controller);
-        RequestView pickupView = new RequestView(controller);
+        RequestView requestView = new RequestView(controller);
         mainBorderPane = new BorderPane();
         mainBorderPane.setTop(importView);
-        mainBorderPane.setCenter(pickupView);
+        mainBorderPane.setCenter(requestView);
+        mainBorderPane.getStyleClass().add("side-panel");
         this.getChildren().add(mainBorderPane);
     }
 

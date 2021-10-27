@@ -1,11 +1,8 @@
 package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.model.Request;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -14,11 +11,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
+import java.awt.*;
 import java.util.List;
 
 public class RequestView extends Region {
@@ -29,40 +26,34 @@ public class RequestView extends Region {
 
     public RequestView(Controller controller) {
         GridPane maingp = new GridPane();
-        maingp.setAlignment(Pos.CENTER);
-        maingp.setPadding(new Insets(40, 40, 40, 40));
-        maingp.setHgap(10);
-        maingp.setVgap(10);
+        maingp.setAlignment(Pos.BASELINE_LEFT);
 
         Label titleLabel = new Label("Requests");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        titleLabel.getStyleClass().add("h1");
         maingp.add(titleLabel, 0, 0, 1, 1);
-        GridPane.setHalignment(titleLabel, HPos.CENTER);
-        GridPane.setMargin(titleLabel, new Insets(20, 0, 20, 0));
+        GridPane.setHalignment(titleLabel, HPos.LEFT);
 
-        ListView<RequestItem> pickupList = new ListView<RequestItem>();
+        ListView<RequestItem> pickupList = new ListView<>();
         pickupList.setItems(pickupItems);
+        pickupList.getStyleClass().add("requests-list");
         pickupList.setOrientation(Orientation.VERTICAL);
         pickupList.setMaxHeight(Control.USE_PREF_SIZE);
         maingp.add(pickupList, 0, 2, 1, 1);
 
 
         addRequestButton = new Button("Modify the tour");
-        addRequestButton.setPrefHeight(40);
         addRequestButton.setDefaultButton(true);
-        addRequestButton.setPrefWidth(100);
         generateRoadMap = new Button("Generate the Road Map");
-        generateRoadMap.setPrefHeight(40);
         generateRoadMap.setDefaultButton(true);
-        generateRoadMap.setPrefWidth(200);
+        generateRoadMap.getStyleClass().add("main-button");
 
         maingp.add(addRequestButton, 0, 3, 1, 1);
-        GridPane.setHalignment(addRequestButton, HPos.CENTER);
-        GridPane.setMargin(addRequestButton, new Insets(20, 0, 20, 0));
+        GridPane.setHalignment(addRequestButton, HPos.LEFT);
+        GridPane.setMargin(addRequestButton, new Insets(24, 0, 0, 0));
 
         maingp.add(generateRoadMap, 0, 5, 1, 1);
-        GridPane.setHalignment(generateRoadMap, HPos.CENTER);
-        GridPane.setMargin(generateRoadMap, new Insets(20, 0, 20, 0));
+        GridPane.setHalignment(generateRoadMap, HPos.LEFT);
+        GridPane.setMargin(generateRoadMap, new Insets(24, 0, 20, 0));
 
         this.getChildren().add(maingp);
 

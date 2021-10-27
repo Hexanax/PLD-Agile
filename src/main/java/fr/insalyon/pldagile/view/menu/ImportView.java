@@ -11,6 +11,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
@@ -28,6 +30,7 @@ public class ImportView extends Region {
     private Label importMapLabel;
     private Label importPickupLabel;
 
+    protected static final String IMPORT_TITLE = "Imports";
     protected static final String LOAD_MAP = "Import map";
     protected static final String LOAD_REQUESTS = "Import Requests";
     protected static final String COMPUTE_TOUR = "Compute tour";
@@ -42,17 +45,16 @@ public class ImportView extends Region {
         //TODO Move outside of constructor with function calls
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.CENTER);
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
-        Label titleLabel = new Label("Import");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
+        Label titleLabel = new Label(IMPORT_TITLE);
+        titleLabel.getStyleClass().add("h1");
         gridPane.add(titleLabel, 0,0,2,1);
-        GridPane.setHalignment(titleLabel, HPos.CENTER);
-        GridPane.setMargin(titleLabel, new Insets(0, 0,10,0));
+        GridPane.setHalignment(titleLabel, HPos.LEFT);
 
         importMapButton = new Button(LOAD_MAP);
+        importMapButton.setGraphic(new ImageView(new Image("img/buttonIcons/import_icon.png", 17, 17, false, false)));
         importPickupButton = new Button(LOAD_REQUESTS);
         gridPane.add(importMapButton, 0, 1, 1, 1);
         gridPane.add(importPickupButton, 1, 1, 1, 1);
@@ -64,13 +66,11 @@ public class ImportView extends Region {
 
 
         computeButton = new Button(COMPUTE_TOUR);
-        computeButton.setPrefHeight(40);
         computeButton.setDefaultButton(true);
-        computeButton.setPrefWidth(100);
-        gridPane.add(computeButton, 0, 3, 2, 1);
+            gridPane.add(computeButton, 0, 3, 2, 1);
+        computeButton.getStyleClass().add("main-button");
         GridPane.setHalignment(computeButton, HPos.CENTER);
         GridPane.setMargin(computeButton, new Insets(10, 0,0,0));
-
         //TODO Start TSP resolution algorithm
         computeButton.setOnAction(this::actionPerformed);
 

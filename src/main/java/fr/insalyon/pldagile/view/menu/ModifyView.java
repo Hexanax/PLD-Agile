@@ -31,7 +31,6 @@ public class ModifyView extends Region {
     private Button confirmMainMenu;
     private static ListView<RequestItem> pickupList;
 
-
     protected static final String BACK = "Cancel";
     protected static final String CONFIRM = "Confirm";
     protected static final String DELETE_REQUEST = "Delete Request";
@@ -43,22 +42,17 @@ public class ModifyView extends Region {
     public ModifyView(Controller controller) {
         this.controller = controller;
 
-        //TODO Move outside of constructor with function calls
+        // TODO Move outside of constructor with function calls
         GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setPadding(new Insets(10, 10, 10, 10));
-        gridPane.setHgap(10);
-        gridPane.setVgap(10);
+        gridPane.setAlignment(Pos.BASELINE_LEFT);
 
         Label titleLabel = new Label("Modify");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        gridPane.add(titleLabel, 0,0,2,1);
-        GridPane.setHalignment(titleLabel, HPos.CENTER);
-        GridPane.setMargin(titleLabel, new Insets(0, 0,10,0));
+        gridPane.add(titleLabel, 0, 0, 2, 1);
+        GridPane.setHalignment(titleLabel, HPos.LEFT);
+        GridPane.setMargin(titleLabel, new Insets(0, 0, 10, 0));
 
         addRequest = new Button(ADD_REQUEST);
         deleteRequest = new Button(DELETE_REQUEST);
-
 
         Label titleLabelRequests = new Label("Requests");
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
@@ -82,10 +76,6 @@ public class ModifyView extends Region {
         confirmMainMenu.setOnAction(this::actionPerformed);
         deleteRequest.setOnAction(this::actionPerformed);
         addRequest.setOnAction(this::actionPerformed);
-
-
-
-
 
         this.getChildren().add(gridPane);
     }
@@ -121,11 +111,11 @@ public class ModifyView extends Region {
         pickupItems.clear();
     }
 
-    public static void activeRowListener(){
+    public static void activeRowListener() {
         pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    public static void disableRowListener(){
+    public static void disableRowListener() {
         pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
