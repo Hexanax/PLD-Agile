@@ -13,17 +13,18 @@ public class InitialState implements State{
     @Override
     public void loadMap(Controller controller, CityMap citymap, Window window) {
         try {
-            XMLDeserializer.load(citymap);
-            window.clearMap();
-            window.renderCityMap(citymap);
-            window.centerMap(citymap);
-            controller.setCurrentState(controller.mapDisplayedState);
-        } catch(Exception e) {
-            if(e.getMessage().equals("cancel")){
-                controller.setCurrentState(controller.initialState);
+            File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
+            if (importFile != null){
+                XMLDeserializer.load(citymap, importFile);
+                window.clearMap();
+                window.renderCityMap(citymap);
+                window.centerMap(citymap);
+                controller.setCurrentState(controller.mapDisplayedState);
             } else {
-                window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+                controller.setCurrentState(controller.initialState);
             }
+        } catch(Exception e) {
+            window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
         }
     }
 }

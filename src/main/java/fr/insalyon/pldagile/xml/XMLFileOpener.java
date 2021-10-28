@@ -27,15 +27,20 @@ public class XMLFileOpener extends FileFilter {
     public File open(FileChooseOption fileChooseOption) {
         File selectedFile = null;
         FileChooser fileChooserXML = new FileChooser();
-        fileChooserXML.setTitle("Select a XML file to load");
-        fileChooserXML.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("XML Files", "*.xml")
-        );
+
         Stage mainStage = Window.getMainStage();
         if (fileChooseOption == FileChooseOption.READ) {
+            fileChooserXML.setTitle("Select a XML file to load");
+            fileChooserXML.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("XML Files", "*.xml")
+            );
             selectedFile = fileChooserXML.showOpenDialog(mainStage);
         } else if (fileChooseOption == FileChooseOption.SAVE) {
-            selectedFile = fileChooserXML.showSaveDialog(null);
+            fileChooserXML.setTitle("Save as");
+            fileChooserXML.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("HTML Files", "*.html")
+            );
+            selectedFile = fileChooserXML.showSaveDialog(mainStage);
         }
         return selectedFile;
     }
@@ -43,7 +48,7 @@ public class XMLFileOpener extends FileFilter {
     @Override
     public boolean accept(File f) {
         if (f == null) return false;
-        if (f.isDirectory()) return true;
+        if (f.isDirectory()) return false;
         String extension = getExtension(f);
         if (extension == null) return false;
         return extension.contentEquals("xml");

@@ -1,13 +1,12 @@
 package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
+import fr.insalyon.pldagile.xml.FileChooseOption;
 import fr.insalyon.pldagile.xml.HTMLSerializer;
-import javafx.util.Pair;
+import fr.insalyon.pldagile.xml.XMLFileOpener;
 
-import java.util.List;
-import java.util.Map;
+import java.io.File;
 
 
 public class TourComputedState implements State{
@@ -37,7 +36,10 @@ public class TourComputedState implements State{
     @Override
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
         try {
-            HTMLSerializer.renderHTMLroadMap(tour);
+            File html = XMLFileOpener.getInstance().open(FileChooseOption.SAVE);
+            if(html != null){
+                HTMLSerializer.renderHTMLroadMap(tour, html);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

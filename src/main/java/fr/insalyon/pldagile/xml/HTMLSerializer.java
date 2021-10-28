@@ -19,7 +19,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class HTMLSerializer {
-    public static void renderHTMLroadMap(Tour tour) throws IOException, TransformerConfigurationException {
+    public static void renderHTMLroadMap(Tour tour, File html) throws IOException, TransformerConfigurationException {
 
 
 
@@ -84,7 +84,7 @@ public class HTMLSerializer {
 
 
 
-        File html = HTMLFileOpener.getInstance().open(FileChooseOption.SAVE);
+
 
 
         FileWriter fstream = new FileWriter(html.getAbsolutePath(), false);

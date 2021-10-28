@@ -4,26 +4,33 @@ import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.model.Tour;
 import fr.insalyon.pldagile.view.Window;
+import fr.insalyon.pldagile.xml.FileChooseOption;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
+import fr.insalyon.pldagile.xml.XMLFileOpener;
+
+import java.io.File;
 
 public class MapOverwrite3State implements State{
     @Override
     public void loadMap(Controller controller, CityMap citymap, Window window) {
         try {
-            CityMap newMap = new CityMap();
-            XMLDeserializer.load(newMap);
-            controller.setCitymap(newMap);
-            controller.setPlanningRequest(new PlanningRequest());
-            controller.setTour(new Tour());
-            window.clearRequest();
-            window.clearMap();
-            window.renderCityMap(newMap);
-            window.centerMap(newMap);
-            controller.setCurrentState(controller.mapDisplayedState);
-        } catch(Exception e) {
-            if(!e.getMessage().equals("cancel")){
-                window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
+            if(importFile != null) {
+                CityMap newMap = new CityMap();
+                XMLDeserializer.load(newMap, importFile);
+                controller.setCitymap(newMap);
+                controller.setPlanningRequest(new PlanningRequest());
+                controller.setTour(new Tour());
+                window.clearRequest();
+                window.clearMap();
+                window.renderCityMap(newMap);
+                window.centerMap(newMap);
+                controller.setCurrentState(controller.mapDisplayedState);
+            } else {
+                controller.setCurrentState(controller.tourComputedState);
             }
+        } catch(Exception e) {
+            window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
             controller.setCurrentState(controller.tourComputedState);
         }
     }
