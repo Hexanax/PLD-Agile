@@ -43,18 +43,17 @@
     -fx-font-weight: 700;
     -fx-font-size: 14px;
     -fx-line-height: 16px;
-    -fx-max-width: 1000px;
+    -fx-max-width: infinity;
+
 }
 
 .requests-list{
-    -fx-border-radius: 24px;
+    -fx-border-radius: 0px;
 }
 .side-panel{
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 32px;
     -fx-background-color: #FFFFFF;
-    -fx-padding: 40px;
+    -fx-padding: 24px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 22, 0, 4, 22);
-    -fx-border-insets: 16px;
-    -fx-background-insets: 16px;
 }

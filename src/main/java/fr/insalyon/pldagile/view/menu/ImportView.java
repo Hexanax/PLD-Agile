@@ -16,23 +16,21 @@ public class ImportView extends Region {
 
     private static Controller controller = null;
 
-    private Button importMapButton;
-    private Button importPickupButton;
-    private Button computeButton;
-    private Label importMapLabel;
-    private Label importPickupLabel;
+    private final Button importMapButton;
+    private final Button importPickupButton;
+    private final Button computeButton;
 
     protected static final String IMPORT_TITLE = "Imports";
+
     protected static final String LOAD_MAP = "Import map";
     protected static final String LOAD_REQUESTS = "Import Requests";
     protected static final String COMPUTE_TOUR = "Compute tour";
 
+    protected static final String NO_FILE_IMPORTED_MESSAGE = "No file imported yet";
+
     protected static final String IMPORT_ICON = "import";
     protected static final String COMPUTE_ICON = "compute";
 
-
-
-    private final String[] buttonTexts = new String[]{LOAD_MAP, LOAD_REQUESTS, COMPUTE_TOUR};
 
     public ImportView (Controller controller) {
         ImportView.controller = controller;
@@ -47,17 +45,25 @@ public class ImportView extends Region {
         gridPane.add(titleLabel, 0,0,2,1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
+        // Import Map Button
         importMapButton = new Button(LOAD_MAP);
         importMapButton.setGraphic(IconProvider.getIcon(IMPORT_ICON, 17));
+        gridPane.add(importMapButton, 0, 1, 1, 1);
+
+        importMapButton.setOnAction(this::computeTour);
+
+        Label importMapLabel = new Label(NO_FILE_IMPORTED_MESSAGE);
+        gridPane.add(importMapLabel, 0, 2, 1, 1);
+
+
+        // Import Pickup Button
         importPickupButton = new Button(LOAD_REQUESTS);
         importPickupButton.setGraphic(IconProvider.getIcon(IMPORT_ICON, 17));
-        gridPane.add(importMapButton, 0, 1, 1, 1);
         gridPane.add(importPickupButton, 1, 1, 1, 1);
 
-        // TODO: put the name of file once it is imported
-        importMapLabel = new Label("No file imported yet");
-        importPickupLabel = new Label("No file imported yet");
-        gridPane.add(importMapLabel, 0, 2, 1, 1);
+        importPickupButton.setOnAction(this::computeTour);
+
+        Label importPickupLabel = new Label(NO_FILE_IMPORTED_MESSAGE);
         gridPane.add(importPickupLabel, 1, 2, 1, 1);
 
         // COMPUTE BUTTON
@@ -66,27 +72,11 @@ public class ImportView extends Region {
         computeButton.setGraphic(IconProvider.getIcon(COMPUTE_ICON, 20));
         gridPane.add(computeButton, 0, 3, 2, 1);
         computeButton.getStyleClass().add("main-button");
+        computeButton.setOnAction(this::computeTour);
         GridPane.setHalignment(computeButton, HPos.CENTER);
         GridPane.setMargin(computeButton, new Insets(10, 0,0,0));
-        computeButton.setOnAction(this::computeTour);
 
         this.getChildren().add(gridPane);
-
-
-        importMapButton.setOnAction(this::computeTour);
-        importPickupButton.setOnAction(this::computeTour);
-
-    }
-    public Button getImportMapButton() {
-        return importMapButton;
-    }
-
-    public Button getImportPickupButton() {
-        return importPickupButton;
-    }
-
-    public Button getComputeIcon() {
-        return computeButton;
     }
 
     private void computeTour(ActionEvent event){

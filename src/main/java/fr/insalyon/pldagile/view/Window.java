@@ -19,6 +19,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -29,19 +30,19 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class Window  {
+public class Window {
 
     private static Stage mainStage = null;
     private Controller controller = null;
     private MapView mapView;
     private static SidePanel sidePanel;
     private static BorderPane mainPanel;
-    private final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
+    private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
+                                                            // one tour)
     private final LineLayer lineLayer = new LineLayer();
     private final int centeredZoomValue = 12;
 
-
-    public Window( Controller controller) {
+    public Window(Controller controller) {
         this.controller = controller;
         pointLayer.setController(controller);
         this.controller.initWindow(this);
@@ -51,17 +52,16 @@ public class Window  {
         return mainStage;
     }
 
-
     public void start(Stage stage) throws Exception {
         mainStage = stage;
         stage.setTitle("Picky - INSA Lyon");
         Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
-        //cityMap = new CityMap();
-        //planningRequest = new PlanningRequest();
+        // cityMap = new CityMap();
+        // planningRequest = new PlanningRequest();
         mapView = new MapView();
-        mapView.addLayer(pointLayer); //Add the map layer
-        mapView.addLayer(lineLayer); //Add the line (tour) layer
+        mapView.addLayer(pointLayer); // Add the map layer
+        mapView.addLayer(lineLayer); // Add the line (tour) layer
         sidePanel = new SidePanel(controller);
         sidePanel.MainSidePanel();
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
@@ -78,9 +78,19 @@ public class Window  {
                 copyright.setLayoutY(getHeight() - copyright.prefHeight(-1));
             }
         };
-        mainPanel = new BorderPane();
-        mainPanel.setCenter(bp);
-        mainPanel.setRight(sidePanel);
+
+        AnchorPane mainPanel = new AnchorPane();
+        AnchorPane.setTopAnchor(bp, 0D);
+        AnchorPane.setBottomAnchor(bp, 0D);
+        AnchorPane.setLeftAnchor(bp, 0D);
+        AnchorPane.setRightAnchor(bp, 0D);
+
+        AnchorPane.setTopAnchor(sidePanel, 16D);
+        AnchorPane.setBottomAnchor(sidePanel, 16D);
+        AnchorPane.setRightAnchor(sidePanel, 16D);
+
+        mainPanel.getChildren().addAll(bp, sidePanel);
+
         Scene scene = new Scene(mainPanel, screenWidth, screenHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
         bp.getChildren().addAll(mapView, headerLabel, copyright);
@@ -88,7 +98,7 @@ public class Window  {
         headerLabel.setVisible(false);
         scene.getStylesheets().add("/style.css");
         stage.setScene(scene);
-        stage.setFullScreen(true);
+        stage.setFullScreen(false);
         MapPoint mapCenter = new MapPoint(46.75, 2.80);
         mapView.setCenter(mapCenter);
         mapView.setZoom(7);
@@ -104,10 +114,8 @@ public class Window  {
     }
 
     private Group createCopyright() {
-        final Label copyright = new Label(
-                "Map data © OpenStreetMap contributors, CC-BY-SA.\n" +
-                        "Imagery  © OpenStreetMap, for non-commercial use only."
-        );
+        final Label copyright = new Label("Map data © OpenStreetMap contributors, CC-BY-SA.\n"
+                + "Imagery  © OpenStreetMap, for non-commercial use only.");
         copyright.getStyleClass().add("copyright");
         copyright.setAlignment(Pos.CENTER);
         copyright.setMaxWidth(Double.MAX_VALUE);
@@ -124,7 +132,7 @@ public class Window  {
     }
 
     public void renderCityMap(CityMap cityMap) {
-        //Add all the intersections temporarily
+        // Add all the intersections temporarily
         for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
             Intersection intersection = entry.getValue();
             MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
@@ -133,11 +141,10 @@ public class Window  {
         }
     }
 
-
-
     /**
-     * Centers the map around the central coordinates of the city map
-     * sets the zoom the level of a city in the map
+     * Centers the map around the central coordinates of the city map sets the zoom
+     * the level of a city in the map
+     * 
      * @param cityMap
      */
     public void centerMap(CityMap cityMap) throws ExceptionXML {
@@ -149,16 +156,15 @@ public class Window  {
         mapView.setZoom(centeredZoomValue);
     }
 
-
     public void renderPlanningRequest(PlanningRequest planningRequest) {
-        if(!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
-            //Render the planning request
+        if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
+            // Render the planning request
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
             MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
             depotPoint.setId(planningRequest.getDepot().getIntersection().getId());
             ArrayList<RequestItem> items = new ArrayList<>();
             planningRequest.getRequests().forEach(request -> {
-                //Items in list
+                // Items in list
                 Pickup pickup = request.getPickup();
                 RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup",-1);
                 Delivery delivery = request.getDelivery();
@@ -182,24 +188,27 @@ public class Window  {
             RequestView.setPickupItems(items);
             ModifyView.setPickupItems(items);
             pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
-            //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
+            // pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png"));
+            // //TODO Scale it with zoom level
         }
     }
 
     public void renderTour(List<Intersection> intersections) {
-        //TODO Update RequestView
+        // TODO Update RequestView
         Intersection previousIntersection = intersections.get(0);
         for (Intersection intersection : intersections.subList(1, intersections.size())) {
-            //Create line and add it
-            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
-            MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            // Create line and add it
+            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(),
+                    previousIntersection.getCoordinates().getLongitude());
+            MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(),
+                    intersection.getCoordinates().getLongitude());
             lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Color.TURQUOISE);
-            //Update prev intersection
+            // Update prev intersection
             previousIntersection = intersection;
         }
     }
 
-    public void showWarningAlert(String title, String header, String text){
+    public void showWarningAlert(String title, String header, String text) {
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setTitle(title);
         alert.setHeaderText(header);
@@ -207,14 +216,14 @@ public class Window  {
         alert.showAndWait();
     }
 
-    public void showValidationAlert(String title, String header, String text){
+    public void showValidationAlert(String title, String header, String text) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
         alert.setHeaderText(header);
         alert.setContentText(text);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if(!result.isPresent() || result.get() != ButtonType.OK) {
+        if (!result.isPresent() || result.get() != ButtonType.OK) {
             controller.cancel();
         } else {
             controller.confirm("");
@@ -264,7 +273,6 @@ public class Window  {
         ModifyView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
     }
-
 
     public void activeRowListener() {
         ModifyView.activeRowListener();
