@@ -42,11 +42,13 @@ public class RequestItem extends Region {
         GridPane.setHalignment(timeLabel, HPos.LEFT);
         GridPane.setMargin(timeLabel, new Insets(5, 5,5,0));
 
-        Label requestLabel = new Label("Request n°" + requestNumber);
+        Label requestLabel = new Label("Request n°" + requestNumber+1);
         requestLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
         maingp.add(requestLabel, 0,2,1,1);
         GridPane.setHalignment(requestLabel, HPos.LEFT);
         GridPane.setMargin(requestLabel, new Insets(5, 5,5,0));
+
+
 
         /*up = new Button("^");
         up.setPrefHeight(30);
@@ -72,6 +74,12 @@ public class RequestItem extends Region {
         this.getChildren().add(maingp);
 
     }
+
+    public long getRequestNumber() {
+        return requestNumber;
+    }
+
+
 
 
 }

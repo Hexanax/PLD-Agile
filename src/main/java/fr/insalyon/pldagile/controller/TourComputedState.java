@@ -29,7 +29,7 @@ public class TourComputedState implements State{
     @Override
     public void modify(Controller controller, Window window) {
         controller.setCurrentState(controller.modifyTourState);
-        System.out.println("modify");
+        controller.initializaModifyTour();
         window.showModifyMenu();
     }
 

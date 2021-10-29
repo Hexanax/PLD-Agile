@@ -4,6 +4,8 @@ import fr.insalyon.pldagile.controller.Controller;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -12,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
@@ -26,13 +29,15 @@ public class ModifyView extends Region {
     private Button deleteRequest;
     private Button backMainMenu;
     private Button confirmMainMenu;
+    private static ListView<RequestItem> pickupList;
 
 
     protected static final String BACK = "Cancel";
     protected static final String CONFIRM = "Confirm";
+    protected static final String DELETE_REQUEST = "Delete Request";
 
 
-    private final String[] buttonTexts = new String[]{BACK, CONFIRM};
+    private final String[] buttonTexts = new String[]{BACK, CONFIRM, DELETE_REQUEST};
 
     public ModifyView(Controller controller) {
         this.controller = controller;
@@ -51,7 +56,7 @@ public class ModifyView extends Region {
         GridPane.setMargin(titleLabel, new Insets(0, 0,10,0));
 
         addRequest = new Button("Add Request");
-        deleteRequest = new Button("Delete Request");
+        deleteRequest = new Button(DELETE_REQUEST);
 
 
         Label titleLabelRequests = new Label("Requests");
@@ -59,7 +64,7 @@ public class ModifyView extends Region {
         gridPane.add(titleLabelRequests, 0, 2, 1, 1);
         GridPane.setHalignment(titleLabelRequests, HPos.CENTER);
         GridPane.setMargin(titleLabelRequests, new Insets(20, 0, 20, 0));
-        ListView<RequestItem> pickupList = new ListView<RequestItem>();
+        pickupList = new ListView<RequestItem>();
         pickupList.setItems(pickupItems);
         pickupList.setOrientation(Orientation.VERTICAL);
         pickupList.setMaxHeight(Control.USE_PREF_SIZE);
@@ -74,9 +79,23 @@ public class ModifyView extends Region {
 
         backMainMenu.setOnAction(this::actionPerformed);
         confirmMainMenu.setOnAction(this::actionPerformed);
+        deleteRequest.setOnAction(this::actionPerformed);
+
+
+
+
 
         this.getChildren().add(gridPane);
     }
+
+    private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            if(e.getClickCount()==2){
+                controller.deleteRequest(pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
+            }
+        }
+    };
 
     private void actionPerformed(ActionEvent event) {
         switch (((Button) event.getTarget()).getText()){
@@ -84,6 +103,8 @@ public class ModifyView extends Region {
                 controller.cancel(); break;
             case CONFIRM:
                 controller.confirm(); break;
+            case DELETE_REQUEST:
+                controller.deleteRequest(null); break;
         }
     }
 
@@ -94,6 +115,14 @@ public class ModifyView extends Region {
 
     public static void clearItems() {
         pickupItems.clear();
+    }
+
+    public static void activeRowListener(){
+        pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
+    public static void disableRowListener(){
+        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
 }

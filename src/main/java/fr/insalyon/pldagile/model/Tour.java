@@ -41,6 +41,18 @@ public class Tour {
 
     }
 
+    public Tour(Tour tour) {
+        this.requests = new HashMap<>(tour.requests);
+        this.path = new ArrayList<>(tour.path);
+        this.intersections = new ArrayList<>(tour.intersections);
+        this.depot = tour.depot;
+        this.pickupsDuration = tour.pickupsDuration;
+        this.deliveriesDuration = tour.deliveriesDuration;
+        this.travelsDuration = tour.travelsDuration;
+        this.length = tour.length;
+        this.stepsIdentifiers = new ArrayList<Pair<Long, String>>(tour.stepsIdentifiers);
+    }
+
     public Map<Long,Request> getRequests() {
         return requests;
     }
@@ -102,5 +114,13 @@ public class Tour {
 
     public void setStepsIdentifiers(ArrayList<Pair<Long,String>> stepsIdentifiers) {this.stepsIdentifiers = stepsIdentifiers;}
 
+    public void setIntersections(List<Intersection> intersections) {
+        this.intersections = new ArrayList<Intersection>(intersections);}
 
+    public void reset(){
+        pickupsDuration =0;
+        deliveriesDuration =0;
+        travelsDuration =0;
+        this.path = new ArrayList<>();
+    }
 }
