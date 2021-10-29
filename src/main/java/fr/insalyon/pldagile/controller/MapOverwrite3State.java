@@ -41,7 +41,7 @@ public class MapOverwrite3State implements State{
     }
 
     @Override
-    public void cancel(Controller controller) {
+    public void cancel(Controller controller,Window window) {
         controller.setCurrentState(controller.tourComputedState);
     }
 }

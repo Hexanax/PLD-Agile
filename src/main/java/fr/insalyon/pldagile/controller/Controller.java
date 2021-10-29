@@ -54,7 +54,7 @@ public class Controller {
 
     public void computeTour() { currentState.computeTour(this,citymap, planningRequest, window);}
 
-    public void cancel() { currentState.cancel(this);}
+    public void cancel() { currentState.cancel(this, window);}
 
     public void confirm() { currentState.confirm(this,citymap,planningRequest,window);}
 

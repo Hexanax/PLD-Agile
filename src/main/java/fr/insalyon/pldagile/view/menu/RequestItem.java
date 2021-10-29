@@ -20,7 +20,7 @@ public class RequestItem extends Region {
     private Button up;
     private Button down;
 
-    public RequestItem(String requestName, String requestCommentary, int requestNumber) {
+    public RequestItem(String requestName, String requestCommentary, long requestNumber) {
 
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.BASELINE_CENTER);
@@ -48,7 +48,7 @@ public class RequestItem extends Region {
         GridPane.setHalignment(requestLabel, HPos.LEFT);
         GridPane.setMargin(requestLabel, new Insets(5, 5,5,0));
 
-        up = new Button("^");
+        /*up = new Button("^");
         up.setPrefHeight(30);
         up.setPrefWidth(30);
         maingp.add(up, 1, 1, 1, 2);
@@ -67,7 +67,7 @@ public class RequestItem extends Region {
         destroy.setPrefWidth(30);
         maingp.add(destroy, 3, 1, 1, 2);
         GridPane.setHalignment(destroy, HPos.CENTER);
-        GridPane.setMargin(destroy, new Insets(0, 0,0,5));
+        GridPane.setMargin(destroy, new Insets(0, 0,0,5));*/
 
         this.getChildren().add(maingp);
 

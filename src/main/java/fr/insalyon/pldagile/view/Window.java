@@ -5,6 +5,7 @@ import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.TourBuilderV1;
 import fr.insalyon.pldagile.view.maps.*;
+import fr.insalyon.pldagile.view.menu.ModifyView;
 import fr.insalyon.pldagile.view.menu.RequestItem;
 import fr.insalyon.pldagile.view.menu.RequestView;
 import fr.insalyon.pldagile.view.menu.SidePanel;
@@ -35,6 +36,7 @@ public class Window  {
     private Controller controller = null;
     private MapView mapView;
     private static SidePanel sidePanel;
+    private static BorderPane mainPanel;
     private final PointLayer pointLayer = new PointLayer(); //TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
     private final int centeredZoomValue = 12;
@@ -77,7 +79,7 @@ public class Window  {
                 copyright.setLayoutY(getHeight() - copyright.prefHeight(-1));
             }
         };
-        BorderPane mainPanel = new BorderPane();
+        mainPanel = new BorderPane();
         mainPanel.setCenter(bp);
         mainPanel.setRight(sidePanel);
         Scene scene = new Scene(mainPanel, screenWidth, screenHeight);
@@ -148,7 +150,6 @@ public class Window  {
     }
 
 
-    private static int count = 1; //TODO Delete this ugly counter
     public void renderPlanningRequest(PlanningRequest planningRequest) {
         if(!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             //Render the planning request
@@ -158,9 +159,9 @@ public class Window  {
             planningRequest.getRequests().forEach(request -> {
                 //Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), count++);
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId()+1);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), count++);
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId()+1);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
@@ -180,6 +181,7 @@ public class Window  {
                 );
             });
             RequestView.setPickupItems(items);
+            ModifyView.setPickupItems(items);
             pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
             //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
         }
@@ -229,6 +231,17 @@ public class Window  {
     }
 
     public void showModifyMenu() {
-        sidePanel.ModifyPanel();
+        SidePanel sideModifyPanel = new SidePanel(controller);
+        sideModifyPanel.ModifyPanel();
+        mainPanel.setRight(sideModifyPanel);
     }
+
+    public void hideModifyMenu() {
+        sidePanel.MainSidePanel();
+        SidePanel sideMainPanel = new SidePanel(controller);
+        sideMainPanel.MainSidePanel();
+        mainPanel.setRight(sideMainPanel);
+    }
+
+
 }
