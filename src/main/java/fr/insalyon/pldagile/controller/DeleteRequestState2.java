@@ -26,6 +26,7 @@ public class DeleteRequestState2 implements State{
     @Override
     public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window) {
         window.renderTour(modifyTour.getIntersections());
+        window.disableEventListener();
         controller.setCurrentState(controller.modifyTourState);
     }
 }

@@ -245,6 +245,10 @@ public class Window  {
         mainPanel.setRight(sideMainPanel);
     }
 
+    public void disableEventListener() {
+        ModifyView.disableRowListener();
+    }
+
 
     public void activeRowListener() {
         ModifyView.activeRowListener();
