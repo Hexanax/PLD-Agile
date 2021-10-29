@@ -137,7 +137,7 @@ public class Window {
             Intersection intersection = entry.getValue();
             MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
             mapPoint.setId(intersection.getId());
-            pointLayer.addPoint(mapPoint, new Circle(2, Color.BLUE));
+            pointLayer.addPoint(mapPoint, new Circle(2, Colors.getMapIntersectionColor()));
         }
     }
 
@@ -176,20 +176,19 @@ public class Window {
                 mapPoint.setId(pickup.getIntersection().getId());
                 pointLayer.addPoint(
                         mapPoint,
-                        new Circle(7, Color.RED)
+                        IconProvider.getPickupIcon()
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 pointLayer.addPoint(
                         mapPoint,
-                        new Circle(7, Color.GREEN)
+                        IconProvider.getDropoffIcon()
                 );
             });
             RequestView.setPickupItems(items);
             ModifyView.setPickupItems(items);
-            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
-            // pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png"));
-            // //TODO Scale it with zoom level
+            pointLayer.addPoint(depotPoint, IconProvider.getDepotIcon());
+            //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
         }
     }
 
@@ -197,13 +196,13 @@ public class Window {
         // TODO Update RequestView
         Intersection previousIntersection = intersections.get(0);
         for (Intersection intersection : intersections.subList(1, intersections.size())) {
-            // Create line and add it
-            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(),
-                    previousIntersection.getCoordinates().getLongitude());
-            MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(),
-                    intersection.getCoordinates().getLongitude());
-            lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Color.TURQUOISE);
-            // Update prev intersection
+            //Create line and add it
+            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
+            MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
+            pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
+            lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Colors.getTourIntersectionColor());
+            //Update prev intersection
             previousIntersection = intersection;
         }
     }

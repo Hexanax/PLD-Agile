@@ -1,5 +1,6 @@
 package fr.insalyon.pldagile.view.maps;
 
+import fr.insalyon.pldagile.view.Colors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
