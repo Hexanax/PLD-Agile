@@ -13,7 +13,7 @@ public class DeleteRequestState1 implements State{
             controller.requestToDelete = request;
             controller.setCurrentState(controller.deleteRequestState2);
             window.showValidationAlert("Delete request ?",
-                    "Are you sure you want to delete the request no "+ request.getId()+1+" from intersection no "+request.getPickup().getIntersection().getId()+" to intersection no "+request.getDelivery().getIntersection().getId()+" ?",
+                    "Are you sure you want to delete the request no "+ (request.getId()+1)+" from intersection no "+request.getPickup().getIntersection().getId()+" to intersection no "+request.getDelivery().getIntersection().getId()+" ?",
                     null);
         } else {
             window.showWarningAlert("How to delete a request", "Request number unknown, please try again", null);
