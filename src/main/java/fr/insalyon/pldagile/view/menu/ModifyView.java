@@ -5,9 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.fxml.FXML;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -17,61 +15,59 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 import java.util.List;
 
 public class ModifyView extends Region {
     private static Controller controller = null;
     private static final ObservableList<RequestItem> pickupItems = FXCollections.observableArrayList();
-    private Button addRequest;
-    private Button deleteRequest;
-    private Button backMainMenu;
-    private Button confirmMainMenu;
     private static ListView<RequestItem> pickupList;
 
-    protected static final String BACK = "Cancel";
+    protected static final String TITLE = "Modify";
+
     protected static final String CONFIRM = "Confirm";
-    protected static final String DELETE_REQUEST = "Delete Request";
+    protected static final String BACK = "Cancel";
     protected static final String ADD_REQUEST = "Add Request";
+    protected static final String DELETE_REQUEST = "Delete Request";
 
-
-    private final String[] buttonTexts = new String[]{BACK, CONFIRM, DELETE_REQUEST, ADD_REQUEST};
 
     public ModifyView(Controller controller) {
-        this.controller = controller;
+        ModifyView.controller = controller;
 
-        // TODO Move outside of constructor with function calls
         GridPane gridPane = new GridPane();
-        gridPane.setAlignment(Pos.BASELINE_LEFT);
+        gridPane.getStyleClass().add("side-panel-section");
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setHgap(16);
+        gridPane.setVgap(16);
 
-        Label titleLabel = new Label("Modify");
+        Label titleLabel = new Label(TITLE);
+        titleLabel.getStyleClass().add("h1");
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
-        GridPane.setMargin(titleLabel, new Insets(0, 0, 10, 0));
 
-        addRequest = new Button(ADD_REQUEST);
-        deleteRequest = new Button(DELETE_REQUEST);
+        Button addRequest = new Button(ADD_REQUEST);
+        gridPane.add(addRequest, 0, 1, 1, 1);
+
+        Button deleteRequest = new Button(DELETE_REQUEST);
+        gridPane.add(deleteRequest, 1, 1, 1, 1);
+
 
         Label titleLabelRequests = new Label("Requests");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));
-        gridPane.add(titleLabelRequests, 0, 2, 1, 1);
-        GridPane.setHalignment(titleLabelRequests, HPos.CENTER);
-        GridPane.setMargin(titleLabelRequests, new Insets(20, 0, 20, 0));
-        pickupList = new ListView<RequestItem>();
+        titleLabelRequests.getStyleClass().add("request-list-element");
+        gridPane.add(titleLabelRequests, 0, 2, 2, 1);
+        GridPane.setHalignment(titleLabelRequests, HPos.LEFT);
+        pickupList = new ListView<>();
         pickupList.setItems(pickupItems);
         pickupList.setOrientation(Orientation.VERTICAL);
         pickupList.setMaxHeight(Control.USE_PREF_SIZE);
-        gridPane.add(pickupList, 0, 3, 1, 1);
+        gridPane.add(pickupList, 0, 3, 2, 1);
 
-        backMainMenu = new Button("Cancel");
-        confirmMainMenu = new Button(CONFIRM);
-        gridPane.add(addRequest, 0, 1, 1, 1);
-        gridPane.add(deleteRequest, 1, 1, 1, 1);
+        Button backMainMenu = new Button(BACK);
+        Button confirmMainMenu = new Button(CONFIRM);
         gridPane.add(backMainMenu, 0, 6, 1, 1);
         gridPane.add(confirmMainMenu, 1, 6, 1, 1);
 
+        // add actions
         backMainMenu.setOnAction(this::actionPerformed);
         confirmMainMenu.setOnAction(this::actionPerformed);
         deleteRequest.setOnAction(this::actionPerformed);
@@ -80,7 +76,7 @@ public class ModifyView extends Region {
         this.getChildren().add(gridPane);
     }
 
-    private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+    private static final EventHandler<MouseEvent> eventHandler = new EventHandler<>() {
         @Override
         public void handle(MouseEvent e) {
             if(e.getClickCount()==2){

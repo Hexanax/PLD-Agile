@@ -25,9 +25,10 @@ public class SidePanel extends Region {
 
     public void ModifyPanel() {
         ModifyView modify = new ModifyView(controller);
-        mainBorderPane = new BorderPane();
-        mainBorderPane.setCenter(modify);
+        mainBorderPane = new GridPane();
+        mainBorderPane = new GridPane();
+        mainBorderPane.add(modify, 0, 0, 1, 1);
+        mainBorderPane.getStyleClass().add("side-panel");
         this.getChildren().add(mainBorderPane);
-
     }
 }

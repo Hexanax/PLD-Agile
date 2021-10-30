@@ -35,6 +35,7 @@ public class ImportView extends Region {
         ImportView.controller = controller;
 
         GridPane gridPane = new GridPane();
+        gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(16);
         gridPane.setVgap(16);

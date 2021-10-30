@@ -26,6 +26,7 @@ public class RequestView extends Region {
     public RequestView(Controller controller) {
 
         GridPane gridPane = new GridPane();
+        gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(16);
         gridPane.setVgap(16);

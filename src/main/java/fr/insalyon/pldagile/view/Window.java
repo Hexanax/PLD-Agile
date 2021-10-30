@@ -36,7 +36,7 @@ public class Window {
     private Controller controller = null;
     private MapView mapView;
     private static SidePanel sidePanel;
-    private static BorderPane mainPanel;
+    private static AnchorPane mainPanel = new AnchorPane();
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
                                                             // one tour)
     private final LineLayer lineLayer = new LineLayer();
@@ -62,8 +62,6 @@ public class Window {
         mapView = new MapView();
         mapView.addLayer(pointLayer); // Add the map layer
         mapView.addLayer(lineLayer); // Add the line (tour) layer
-        sidePanel = new SidePanel(controller);
-        sidePanel.MainSidePanel();
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
@@ -78,18 +76,13 @@ public class Window {
                 copyright.setLayoutY(getHeight() - copyright.prefHeight(-1));
             }
         };
-
-        AnchorPane mainPanel = new AnchorPane();
         AnchorPane.setTopAnchor(bp, 0D);
         AnchorPane.setBottomAnchor(bp, 0D);
         AnchorPane.setLeftAnchor(bp, 0D);
         AnchorPane.setRightAnchor(bp, 0D);
 
-        AnchorPane.setTopAnchor(sidePanel, 16D);
-        AnchorPane.setBottomAnchor(sidePanel, 16D);
-        AnchorPane.setRightAnchor(sidePanel, 16D);
-
-        mainPanel.getChildren().addAll(bp, sidePanel);
+        mainPanel.getChildren().add(bp);
+        loadSidePanel(false);
 
         Scene scene = new Scene(mainPanel, screenWidth, screenHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
@@ -106,7 +99,27 @@ public class Window {
         MapView.setPlaceholderImageSupplier(loadingImageSupplier);
         stage.show();
     }
+    private void loadSidePanel(boolean modifyMode){
+        sidePanel = new SidePanel(controller);
+        if (modifyMode){
+            sidePanel.ModifyPanel();
+        } else {
+            sidePanel.MainSidePanel();
+        }
 
+        AnchorPane.setTopAnchor(sidePanel, 16D);
+        AnchorPane.setBottomAnchor(sidePanel, 16D);
+        AnchorPane.setRightAnchor(sidePanel, 16D);
+
+        // Removing the existing side panel
+        for (int i = 0; i < mainPanel.getChildren().size(); i++) {
+            if (mainPanel.getChildren().get(i).getClass() == SidePanel.class){
+                mainPanel.getChildren().remove(i);
+                break;
+            }
+        }
+        mainPanel.getChildren().add(sidePanel);
+    }
     private Label headerLabel() {
         final Label header = new Label("Picky - INSA Lyon");
         header.getStyleClass().add("header");
@@ -253,19 +266,14 @@ public class Window {
     }
 
     public void showModifyMenu() {
-        SidePanel sideModifyPanel = new SidePanel(controller);
-        sideModifyPanel.ModifyPanel();
-        mainPanel.setRight(sideModifyPanel);
+        loadSidePanel(true);
     }
 
 
     public void hideModifyMenu() {
         ModifyView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
-        sidePanel.MainSidePanel();
-        SidePanel sideMainPanel = new SidePanel(controller);
-        sideMainPanel.MainSidePanel();
-        mainPanel.setRight(sideMainPanel);
+        loadSidePanel(false);
     }
 
     public void disableEventListener() {
