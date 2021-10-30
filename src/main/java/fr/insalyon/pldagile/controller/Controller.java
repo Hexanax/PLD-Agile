@@ -49,7 +49,7 @@ public class Controller {
     protected void setCitymap(CityMap citymap) {this.citymap = citymap; }
     protected void setPlanningRequest(PlanningRequest planningRequest) {this.planningRequest = planningRequest;}
     protected void setTour(Tour tour){this.tour = tour;}
-    protected void initializaModifyTour() {
+    protected void initializeModifyTour() {
         modifyTour = new Tour(tour);
     }
     protected void validModifyTour() {
