@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;
+import fr.insalyon.pldagile.model.Tour;
 import fr.insalyon.pldagile.view.Window;
 import fr.insalyon.pldagile.xml.FileChooseOption;
 import fr.insalyon.pldagile.xml.XMLDeserializer;
@@ -30,12 +31,12 @@ public class MapOverwrite1State implements State{
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,  Window window) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, Tour modifyTour,  Window window) {
         this.loadMap(controller, citymap, window);
     }
 
     @Override
-    public void cancel(Controller controller,Window window) {
+    public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window) {
         controller.setCurrentState(controller.mapDisplayedState);
     }
 }

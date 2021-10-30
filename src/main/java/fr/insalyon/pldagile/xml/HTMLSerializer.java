@@ -6,6 +6,7 @@ import com.mitchellbosecke.pebble.loader.FileLoader;
 import com.mitchellbosecke.pebble.loader.StringLoader;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import javafx.util.Pair;
 import org.apache.log4j.PropertyConfigurator;
 
@@ -110,16 +111,7 @@ public class HTMLSerializer {
     }
 
 
-    public static Address getNextSpecificIntersection(Map<Long, Request> requests, Pair<Long, String> step){
-        Address result = null;
-        Request request = requests.get(step.getKey());
-        if(step.getValue().equals("pickup")){
-            result = request.getPickup();
-        } else if(step.getValue().equals("delivery")){
-            result = request.getDelivery();
-        }
-        return result;
-    }
+
 
     public static Map<String, Object> createSegment(Segment segment){
         Map<String, Object> buffer = new HashMap<>();
@@ -203,6 +195,17 @@ public class HTMLSerializer {
             time+= seconde_arround+"s ";
         }
         return time;
+    }
+
+    public static Address getNextSpecificIntersection(Map<Long, Request> requests, Pair<Long, String> step){
+        Address result = null;
+        Request request = requests.get(step.getKey());
+        if(step.getValue().equals("pickup")){
+            result = request.getPickup();
+        } else if(step.getValue().equals("delivery")){
+            result = request.getDelivery();
+        }
+        return result;
     }
 
 

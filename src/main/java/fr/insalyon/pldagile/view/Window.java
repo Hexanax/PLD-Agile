@@ -159,9 +159,9 @@ public class Window  {
             planningRequest.getRequests().forEach(request -> {
                 //Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId()+1);
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId());
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId()+1);
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId());
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
@@ -188,6 +188,7 @@ public class Window  {
     }
 
     public void renderTour(List<Intersection> intersections) {
+        //TODO Update RequestView
         Intersection previousIntersection = intersections.get(0);
         for (Intersection intersection : intersections.subList(1, intersections.size())) {
             //Create line and add it
@@ -227,7 +228,7 @@ public class Window  {
     }
 
     public void clearTour() {
-        //TODO : Implements
+        lineLayer.clearPoints();
     }
 
     public void showModifyMenu() {
@@ -237,11 +238,19 @@ public class Window  {
     }
 
     public void hideModifyMenu() {
+        ModifyView.disableRowListener();
         sidePanel.MainSidePanel();
         SidePanel sideMainPanel = new SidePanel(controller);
         sideMainPanel.MainSidePanel();
         mainPanel.setRight(sideMainPanel);
     }
 
+    public void disableEventListener() {
+        ModifyView.disableRowListener();
+    }
 
+
+    public void activeRowListener() {
+        ModifyView.activeRowListener();
+    }
 }
