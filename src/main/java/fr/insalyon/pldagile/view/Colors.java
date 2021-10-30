@@ -10,9 +10,11 @@ public abstract class Colors {
     static public Color getTourLineColor() {
         return Color.web(MAIN_BLUE);
     }
+
     static public Color getTourIntersectionColor() {
         return Color.web(MAIN_BLUE);
     }
+
     static public Color getMapIntersectionColor() {
         return Color.web(LIGHT_GREY);
     }

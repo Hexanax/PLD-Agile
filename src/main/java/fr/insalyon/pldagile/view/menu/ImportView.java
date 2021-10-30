@@ -31,7 +31,7 @@ public class ImportView extends Region {
     protected static final String COMPUTE_ICON = "compute";
 
 
-    public ImportView (Controller controller) {
+    public ImportView(Controller controller) {
         ImportView.controller = controller;
 
         GridPane gridPane = new GridPane();
@@ -41,7 +41,7 @@ public class ImportView extends Region {
 
         Label titleLabel = new Label(IMPORT_TITLE);
         titleLabel.getStyleClass().add("h1");
-        gridPane.add(titleLabel, 0,0,2,1);
+        gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
         // Import Map Button
@@ -73,19 +73,22 @@ public class ImportView extends Region {
         computeButton.getStyleClass().add("main-button");
         computeButton.setOnAction(this::computeTour);
         GridPane.setHalignment(computeButton, HPos.CENTER);
-        GridPane.setMargin(computeButton, new Insets(10, 0,0,0));
+        GridPane.setMargin(computeButton, new Insets(10, 0, 0, 0));
 
         this.getChildren().add(gridPane);
     }
 
-    private void computeTour(ActionEvent event){
-        switch (((Button) event.getTarget()).getText()){
+    private void computeTour(ActionEvent event) {
+        switch (((Button) event.getTarget()).getText()) {
             case LOAD_MAP:
-                controller.loadMap(); break;
+                controller.loadMap();
+                break;
             case LOAD_REQUESTS:
-                controller.loadRequests(); break;
+                controller.loadRequests();
+                break;
             case COMPUTE_TOUR:
-                controller.computeTour(); break;
+                controller.computeTour();
+                break;
         }
 
     }
