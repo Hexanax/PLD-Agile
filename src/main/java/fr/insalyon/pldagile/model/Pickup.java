@@ -10,6 +10,10 @@ public class Pickup extends Address {
         this.duration = duration;
     }
 
+    public Pickup(){
+        super();
+    }
+
     public int getDuration() {
         return duration;
     }

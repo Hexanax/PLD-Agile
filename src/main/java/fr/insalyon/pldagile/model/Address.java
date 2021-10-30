@@ -8,6 +8,8 @@ public class Address {
         this.intersection = intersection;
     }
 
+    public Address(){}
+
     public Intersection getIntersection() {
         return intersection;
     }

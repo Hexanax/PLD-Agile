@@ -9,6 +9,8 @@ public class Delivery extends Address {
         this.duration = duration;
     }
 
+    public Delivery(){}
+
     public int getDuration() {
         return duration;
     }

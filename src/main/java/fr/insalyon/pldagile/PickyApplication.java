@@ -144,9 +144,9 @@ public class PickyApplication extends Application {
             planningRequest.getRequests().forEach(request -> {
                 //Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), count++);
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), count++,"",0);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), count++);
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), count++,"",0);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points

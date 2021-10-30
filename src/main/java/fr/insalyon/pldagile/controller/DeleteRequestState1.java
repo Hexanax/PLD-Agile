@@ -29,7 +29,14 @@ public class DeleteRequestState1 implements State{
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour, Window window) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour,String result, Window window) {
         window.showWarningAlert("How to delete a request", null, "Please first select the request you want to delete");
+    }
+
+    @Override
+    public void modifyClick(Controller controller, Long idRequest, String type, int stepIndex, Window window) {
+        if(idRequest != -1){
+            controller.deleteRequest(idRequest);
+        }
     }
 }
