@@ -11,6 +11,7 @@ public class ModifyTourState implements State{
     public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window) {
         window.clearTour();
         window.renderTour(tour.getIntersections());
+        window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
         window.hideModifyMenu();
         controller.setCurrentState(controller.tourComputedState);
     }

@@ -23,5 +23,9 @@ public interface State {
 
     public default void generateRoadMap(Controller controller, Tour tour, Window window){};
 
+    public default void modifyClick(Controller controller,CityMap citymap, Tour tour,Tour modifyTour, Request request, Window window){};
+
     public default void deleteRequest(Controller controller,CityMap citymap, Tour tour,Tour modifyTour, Request request, Window window){};
+
+    public default void addRequest(Controller controller,CityMap citymap, Tour tour,Tour modifyTour, Request request, Window window){};
 }

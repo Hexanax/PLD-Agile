@@ -24,11 +24,9 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 public class Window  {
 
@@ -252,5 +250,28 @@ public class Window  {
 
     public void activeRowListener() {
         ModifyView.activeRowListener();
+    }
+
+    public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
+        ArrayList<RequestItem> items = new ArrayList<>();
+        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1);
+        items.add(item);
+        for(Pair<Long, String> step : steps) {
+            if(Objects.equals(step.getValue(), "pickup"))
+            {
+                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey());
+                items.add(item);
+            }
+            if(Objects.equals(step.getValue(), "delivery")){
+                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey());
+                items.add(item);
+            }
+        }
+        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -1);
+        items.add(item);
+        RequestView.clearItems();
+        ModifyView.clearItems();
+        RequestView.setPickupItems(items);
+        ModifyView.setPickupItems(items);
     }
 }

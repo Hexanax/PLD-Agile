@@ -14,6 +14,7 @@ public class DeleteRequestState2 implements State{
         modifyTour = tourBuilder.deleteRequest(citymap,modifyTour, request);
         controller.setModifyTour(modifyTour);
         window.renderTour(modifyTour.getIntersections());
+        window.orderListRequests(modifyTour.getSteps(), modifyTour.getRequests(), tour.getDepot());
         controller.setCurrentState(controller.modifyTourState);
         window.showWarningAlert("Modification", "Suppresion successfully completed", null);
     }
