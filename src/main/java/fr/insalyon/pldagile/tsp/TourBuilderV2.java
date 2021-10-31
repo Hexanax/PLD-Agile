@@ -109,9 +109,11 @@ public class TourBuilderV2 {
                 } else {
                     lastFoundIndex = index;
                     if(pickup){
+                        pickup = false;
                         indexAroundStep[1] = lastFoundIndex;
                     }
                     if(delivery){
+                        delivery = false;
                         indexAroundStep[3] = lastFoundIndex;
                         found =true;
                     }
@@ -125,6 +127,7 @@ public class TourBuilderV2 {
             index ++;
 
         }
+
 
 
 
