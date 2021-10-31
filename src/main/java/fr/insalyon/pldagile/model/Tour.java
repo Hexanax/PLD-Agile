@@ -135,6 +135,6 @@ public class Tour {
     }
 
     public void setNextRequestId(long l) {
-        this.nextRequestId = l-1;
+        this.nextRequestId = l;
     }
 }

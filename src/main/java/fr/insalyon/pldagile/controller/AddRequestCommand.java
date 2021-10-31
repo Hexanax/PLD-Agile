@@ -24,12 +24,13 @@ public class AddRequestCommand implements Command {
     @Override
     public void doCommand() {
         tour = tourBuilder.addRequest(cityMap, tour, pickup, delivery);
+
         requestAdded = tour.getRequests().get(tour.getNextRequestId()-1);
     }
 
     @Override
     public void undoCommand() {
         tour = tourBuilder.deleteRequest(cityMap, tour, requestAdded);
-        tour.setNextRequestId(tour.getNextRequestId()-1);
+        tour.setNextRequestId(requestAdded.getId());
     }
 }

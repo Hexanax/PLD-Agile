@@ -5,6 +5,7 @@ import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.model.Request;
 import fr.insalyon.pldagile.model.Tour;
 import fr.insalyon.pldagile.view.Window;
+import javafx.util.Pair;
 
 import static java.awt.SystemColor.window;
 
@@ -52,7 +53,9 @@ public class ModifyTourState implements State{
 
     @Override
     public void undo(ListOfCommands listOfCdes, Window window, Tour tour, Tour modifyTour) {
+
         listOfCdes.undo();
+
         window.clearTour();
         window.renderTour(modifyTour.getIntersections());
         window.orderListRequests(modifyTour.getSteps(), modifyTour.getRequests(), tour.getDepot());
@@ -61,5 +64,8 @@ public class ModifyTourState implements State{
     @Override
     public void redo(ListOfCommands listOfCdes,Window window, Tour tour, Tour modifyTour){
         listOfCdes.redo();
+        window.clearTour();
+        window.renderTour(modifyTour.getIntersections());
+        window.orderListRequests(modifyTour.getSteps(), modifyTour.getRequests(), tour.getDepot());
     }
 }
