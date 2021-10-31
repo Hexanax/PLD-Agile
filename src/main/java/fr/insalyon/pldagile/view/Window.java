@@ -52,6 +52,7 @@ public class Window {
         return mainStage;
     }
 
+
     public void start(Stage stage) throws Exception {
         mainStage = stage;
         stage.setTitle("Picky - INSA Lyon");
@@ -157,7 +158,7 @@ public class Window {
     /**
      * Centers the map around the central coordinates of the city map sets the zoom
      * the level of a city in the map
-     * 
+     *
      * @param cityMap
      */
     public void centerMap(CityMap cityMap) throws ExceptionXML {
@@ -187,13 +188,15 @@ public class Window {
                 //Map points
                 MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(pickup.getIntersection().getId());
-                pointLayer.addPoint(
+                mapPoint.setRequestId(request.getId());
+                pointLayer.addRequestPoint(
                         mapPoint,
                         IconProvider.getPickupIcon()
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
-                pointLayer.addPoint(
+                mapPoint.setRequestId(request.getId());
+                pointLayer.addRequestPoint(
                         mapPoint,
                         IconProvider.getDropoffIcon()
                 );
@@ -279,6 +282,7 @@ public class Window {
     public void disableEventListener() {
         ModifyView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
+        pointLayer.disableRequestIntersectionsListener();
     }
 
     public void activeRowListener() {
@@ -289,7 +293,10 @@ public class Window {
         pointLayer.activeMapIntersectionsListener();
     }
 
+    public void activeRequestIntersectionsListener(){pointLayer.activeRequestIntersectionsListener();}
+
     public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
+        pointLayer.clearRequestPoints();
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
         RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot",0);
@@ -299,11 +306,30 @@ public class Window {
             {
                 item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index);
                 items.add(item);
+
+                MapPoint mapPoint = new MapPoint(requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude(), requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude());
+                mapPoint.setId(requests.get(step.getKey()).getPickup().getIntersection().getId());
+                mapPoint.setRequestId(requests.get(step.getKey()).getId());
+                mapPoint.setStepIndex(index);
+                pointLayer.addRequestPoint(
+                        mapPoint,
+                        new Circle(7, Color.RED)
+                );
             }
             if(Objects.equals(step.getValue(), "delivery")){
                 item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index);
                 items.add(item);
+
+                MapPoint mapPoint = new MapPoint(requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude(), requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude());
+                mapPoint.setId(requests.get(step.getKey()).getDelivery().getIntersection().getId());
+                mapPoint.setRequestId(requests.get(step.getKey()).getId());
+                mapPoint.setStepIndex(index);
+                pointLayer.addRequestPoint(
+                        mapPoint,
+                        new Circle(7, Color.GREEN)
+                );
             }
+
             index++;
         }
         item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1));
@@ -319,13 +345,15 @@ public class Window {
         Delivery delivery = request.getDelivery();
         MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(pickup.getIntersection().getId());
-        pointLayer.addPoint(
+        mapPoint.setRequestId(request.getId());
+        pointLayer.addRequestPoint(
                 mapPoint,
                 new Circle(7, Color.RED)
         );
         mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(delivery.getIntersection().getId());
-        pointLayer.addPoint(
+        mapPoint.setRequestId(request.getId());
+        pointLayer.addRequestPoint(
                 mapPoint,
                 new Circle(7, Color.GREEN)
         );
