@@ -38,24 +38,24 @@ public class RequestItem extends Region {
 
         Label titleLabel = new Label(requestName);
         titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-        maingp.add(titleLabel, 0,0,4,1);
+        maingp.add(titleLabel, 0, 0, 4, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
-        GridPane.setMargin(titleLabel, new Insets(10, 0,5,0));
+        GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
         DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
 
         Label timeLabel = new Label(requestCommentary); //TODO Display time: dateFormat.format(pickupTime)
         timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-        maingp.add(timeLabel, 0,1,1,1);
+        maingp.add(timeLabel, 0, 1, 1, 1);
         GridPane.setHalignment(timeLabel, HPos.LEFT);
-        GridPane.setMargin(timeLabel, new Insets(5, 5,5,0));
+        GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
 
         
         Label requestLabel = new Label("Request n°" + (requestNumber+1));
         requestLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-        maingp.add(requestLabel, 0,2,1,1);
+        maingp.add(requestLabel, 0, 2, 1, 1);
         GridPane.setHalignment(requestLabel, HPos.LEFT);
-        GridPane.setMargin(requestLabel, new Insets(5, 5,5,0));
+        GridPane.setMargin(requestLabel, new Insets(5, 5, 5, 0));
 
 
 
@@ -64,14 +64,14 @@ public class RequestItem extends Region {
         up.setPrefWidth(30);
         maingp.add(up, 1, 1, 1, 2);
         GridPane.setHalignment(up, HPos.CENTER);
-        GridPane.setMargin(up, new Insets(0, 5,0,5));
+        GridPane.setMargin(up, new Insets(0, 5, 0, 5));
 
         down = new Button("v");
         down.setPrefHeight(30);
         down.setPrefWidth(30);
         maingp.add(down, 2, 1, 1, 2);
         GridPane.setHalignment(down, HPos.CENTER);
-        GridPane.setMargin(down, new Insets(0, 5,0,5));
+        GridPane.setMargin(down, new Insets(0, 5, 0, 5));
 
         destroy = new Button("destroy");
         destroy.setPrefHeight(30);
