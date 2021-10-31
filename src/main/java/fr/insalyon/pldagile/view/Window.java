@@ -203,8 +203,8 @@ public class Window {
             });
             RequestView.setPickupItems(items);
             ModifyView.setPickupItems(items);
-            pointLayer.addPoint(depotPoint, IconProvider.getDepotIcon());
-            //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
+            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+           //TODO Scale it with zoom level
         }
     }
 
@@ -313,7 +313,7 @@ public class Window {
                 mapPoint.setStepIndex(index);
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        new Circle(7, Color.RED)
+                        IconProvider.getPickupIcon()
                 );
             }
             if(Objects.equals(step.getValue(), "delivery")){
@@ -326,7 +326,7 @@ public class Window {
                 mapPoint.setStepIndex(index);
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        new Circle(7, Color.GREEN)
+                        IconProvider.getDropoffIcon()
                 );
             }
 
@@ -348,14 +348,14 @@ public class Window {
         mapPoint.setRequestId(request.getId());
         pointLayer.addRequestPoint(
                 mapPoint,
-                new Circle(7, Color.RED)
+                IconProvider.getPickupIcon()
         );
         mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(delivery.getIntersection().getId());
         mapPoint.setRequestId(request.getId());
         pointLayer.addRequestPoint(
                 mapPoint,
-                new Circle(7, Color.GREEN)
+                IconProvider.getDropoffIcon()
         );
 
     }

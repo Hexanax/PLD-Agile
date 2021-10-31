@@ -43,7 +43,7 @@ public class MapPoint {
         this.longitude = lon;
         special_id=-1;
         request_id=-1;
-        stepIndex=0;
+        stepIndex=-1;
     }
     
     public double getLatitude() {

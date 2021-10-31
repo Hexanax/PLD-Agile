@@ -37,6 +37,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -73,7 +74,6 @@ public class PointLayer extends MapLayer {
         requestPoints.add(new Pair<>(p, icon));
         this.getChildren().add(icon);
         this.markDirty();
-        System.out.println("request : " + p.getId());
     }
 
     public void clearPoints() {
@@ -83,11 +83,8 @@ public class PointLayer extends MapLayer {
     }
 
     public void clearRequestPoints(){
-
         requestPoints.clear();
-        // instance of IconProvider to delete requests, but it also deletes depot
-        //this.getChildren().removeIf(node -> node instanceof Circle);
-       // this.markDirty();
+        this.getChildren().removeIf(node -> node instanceof ImageView);
     }
 
     @Override
