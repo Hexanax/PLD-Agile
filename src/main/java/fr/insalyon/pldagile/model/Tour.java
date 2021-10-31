@@ -11,6 +11,8 @@ public class Tour {
     private final double SPEED_KMH = 15.0;
     private final double SPEED_MS = 15.0/3.6;
 
+    private Long nextRequestId;
+
     // An ordered list of requests
     private Map<Long,Request> requests;
     private List<Segment> path;
@@ -27,6 +29,7 @@ public class Tour {
         for(Request request : requests) {
             this.requests.put(request.getId(),request);
         }
+        this.nextRequestId = Long.parseLong(String.valueOf(this.requests.size()));
         this.path = new ArrayList<>();
         this.intersections = new ArrayList<>();
         this.depot = depot;
@@ -87,6 +90,12 @@ public class Tour {
         this.length += segment.getLength();
         path.add(segment);
     }
+
+    public void addRequest(Request request){
+        this.requests.put(request.getId(), request);
+        nextRequestId++;
+    }
+    public long getNextRequestId() {return nextRequestId;}
 
     public void addPickupTime(double time) {
         this.pickupsDuration += time;

@@ -27,10 +27,18 @@
  */
 package fr.insalyon.pldagile.view.maps;
 
+import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.view.menu.RequestItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 
 /**
@@ -39,9 +47,17 @@ import javafx.util.Pair;
 public class PointLayer extends MapLayer {
 
     private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();
-
+    private static Controller controller;
     public PointLayer() {
+
     }
+
+    public void setController(Controller controller) {
+        this.controller = controller;
+    }
+
+
+
 
     public void addPoint(MapPoint p, Node icon) {
         points.add(new Pair<>(p, icon));
@@ -64,6 +80,23 @@ public class PointLayer extends MapLayer {
             icon.setVisible(true);
             icon.setTranslateX(mapPoint.getX());
             icon.setTranslateY(mapPoint.getY());
+        }
+    }
+
+
+
+    public void activeMapIntersectionsListener(){
+        for (Pair<MapPoint, Node> point : points) {
+            point.getValue().setOnMouseClicked(event-> {
+                controller.modifyClick(point.getKey().getId(),"Intersection", -1);
+            });
+        }
+    }
+
+
+    public void disableMapIntersectionsListener() {
+        for (Pair<MapPoint, Node> point : points) {
+            point.getValue().setOnMouseClicked(null);
         }
     }
 }

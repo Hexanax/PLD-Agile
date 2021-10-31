@@ -16,13 +16,20 @@ import java.util.Date;
 
 public class RequestItem extends Region {
     private long requestNumber;
+    private String type;
+    private int stepIndex;
     private Button destroy;
     private Button up;
     private Button down;
 
-    public RequestItem(String requestName, String requestCommentary, long requestNumber) {
+    public RequestItem(String requestName, String requestCommentary, long requestNumber, String type, int stepIndex) {
 
+        //TODO test if its a depot
+
+        this.type = type;
         this.requestNumber = requestNumber;
+        this.stepIndex = stepIndex;
+
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.BASELINE_CENTER);
         maingp.setPadding(new Insets(5, 5, 5, 5));
@@ -82,6 +89,11 @@ public class RequestItem extends Region {
     }
 
 
+    public String getType() {
+        return type;
+    }
 
-
+    public int getStepIndex(){
+        return stepIndex;
+    }
 }

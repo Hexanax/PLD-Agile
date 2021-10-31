@@ -247,4 +247,10 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         return bestPaths;
     }
 
+    public void addBestPath(long idOrigin){
+        Dijkstra dijkstraData;
+        dijkstraData = new Dijkstra(cityMapGraph, idOrigin);
+        bestPaths.put(dijkstraData.getOriginId(), dijkstraData);
+    }
+
 }

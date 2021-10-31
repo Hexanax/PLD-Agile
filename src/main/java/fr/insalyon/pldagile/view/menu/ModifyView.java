@@ -35,9 +35,10 @@ public class ModifyView extends Region {
     protected static final String BACK = "Cancel";
     protected static final String CONFIRM = "Confirm";
     protected static final String DELETE_REQUEST = "Delete Request";
+    protected static final String ADD_REQUEST = "Add Request";
 
 
-    private final String[] buttonTexts = new String[]{BACK, CONFIRM, DELETE_REQUEST};
+    private final String[] buttonTexts = new String[]{BACK, CONFIRM, DELETE_REQUEST, ADD_REQUEST};
 
     public ModifyView(Controller controller) {
         this.controller = controller;
@@ -55,7 +56,7 @@ public class ModifyView extends Region {
         GridPane.setHalignment(titleLabel, HPos.CENTER);
         GridPane.setMargin(titleLabel, new Insets(0, 0,10,0));
 
-        addRequest = new Button("Add Request");
+        addRequest = new Button(ADD_REQUEST);
         deleteRequest = new Button(DELETE_REQUEST);
 
 
@@ -80,6 +81,7 @@ public class ModifyView extends Region {
         backMainMenu.setOnAction(this::actionPerformed);
         confirmMainMenu.setOnAction(this::actionPerformed);
         deleteRequest.setOnAction(this::actionPerformed);
+        addRequest.setOnAction(this::actionPerformed);
 
 
 
@@ -92,7 +94,7 @@ public class ModifyView extends Region {
         @Override
         public void handle(MouseEvent e) {
             if(e.getClickCount()==2){
-                controller.deleteRequest(pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
+                controller.modifyClick(pickupList.getSelectionModel().getSelectedItem().getRequestNumber(), pickupList.getSelectionModel().getSelectedItem().getType(), pickupList.getSelectionModel().getSelectedItem().getStepIndex());
             }
         }
     };
@@ -102,9 +104,11 @@ public class ModifyView extends Region {
             case BACK:
                 controller.cancel(); break;
             case CONFIRM:
-                controller.confirm(); break;
+                controller.confirm(""); break;
             case DELETE_REQUEST:
                 controller.deleteRequest(null); break;
+            case ADD_REQUEST:
+                controller.addRequest(null); break;
         }
     }
 
