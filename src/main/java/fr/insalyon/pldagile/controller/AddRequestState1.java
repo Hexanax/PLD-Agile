@@ -9,15 +9,16 @@ import javafx.util.Pair;
 
 public class AddRequestState1 implements State {
     @Override
-    public void cancel(Controller controller, Tour tour, Tour modifyTour, Window window) {
+    public void cancel(Controller controller, Tour tour, Tour modifyTour, Window window,ListOfCommands listOfCdes) {
         window.renderTour(tour.getIntersections());
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
         window.hideModifyMenu();
+        listOfCdes.reset();
         controller.setCurrentState(controller.tourComputedState);
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour,String result, Window window) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour,String result, Window window,ListOfCommands listOfCdes) {
         window.showWarningAlert("How to add a request", null, "Please first select the pickup address of your new request");
     }
 

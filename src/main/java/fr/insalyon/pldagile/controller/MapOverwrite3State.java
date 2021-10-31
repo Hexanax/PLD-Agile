@@ -36,12 +36,12 @@ public class MapOverwrite3State implements State{
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, Tour modifyTour,String result, Window window) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, Tour modifyTour,String result, Window window,ListOfCommands listOfCdes) {
         this.loadMap(controller, citymap, window);
     }
 
     @Override
-    public void cancel(Controller controller,Tour tour,Tour modifyTour,Window window) {
+    public void cancel(Controller controller,Tour tour,Tour modifyTour,Window window,ListOfCommands listOfCdes) {
         controller.setCurrentState(controller.tourComputedState);
     }
 }

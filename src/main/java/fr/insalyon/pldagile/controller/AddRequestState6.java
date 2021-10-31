@@ -7,15 +7,16 @@ import fr.insalyon.pldagile.view.Window;
 
 public class AddRequestState6 implements State{
     @Override
-    public void cancel(Controller controller, Tour tour, Tour modifyTour, Window window) {
+    public void cancel(Controller controller, Tour tour, Tour modifyTour, Window window,ListOfCommands listOfCdes) {
         window.renderTour(tour.getIntersections());
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
         window.hideModifyMenu();
+        listOfCdes.reset();
         controller.setCurrentState(controller.tourComputedState);
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour, String result, Window window) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour, String result, Window window,ListOfCommands listOfCdes) {
         int duration = 0;
         boolean valid = false;
         try {
@@ -29,6 +30,7 @@ public class AddRequestState6 implements State{
 
         if(valid){
             controller.pickupToAdd.getValue().setDuration(duration);
+            listOfCdes.add(new AddRequestCommand(citymap, modifyTour,controller.pickupToAdd, controller.deliveryToAdd));
             controller.setCurrentState(controller.addRequestState7);
             window.showValidationAlert("Add request ?",
                     "Are you sure you want to add the request from intersection no" +controller.pickupToAdd.getValue().getIntersection().getId() + "with a pickup time of "+controller.pickupToAdd.getValue().getDuration() +" to intersection no "+ controller.deliveryToAdd.getValue().getIntersection().getId()+ "with a delivery time of "+controller.pickupToAdd.getValue().getDuration(),

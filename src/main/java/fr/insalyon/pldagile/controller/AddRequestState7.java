@@ -9,9 +9,9 @@ import fr.insalyon.pldagile.view.Window;
 public class AddRequestState7 implements State {
     @Override
     public void addRequest(Controller controller, CityMap citymap, Tour tour, Tour modifyTour, Long intersectionID, Window window) {
-        TourBuilderV2 tourBuilder = new TourBuilderV2();
+        /*TourBuilderV2 tourBuilder = new TourBuilderV2();
         modifyTour = tourBuilder.addRequest(citymap, tour, controller.pickupToAdd, controller.deliveryToAdd);
-        controller.setModifyTour(modifyTour);
+        controller.setModifyTour(modifyTour);*/
         window.renderTour(modifyTour.getIntersections());
         window.addMapRequest(modifyTour.getRequests().get(modifyTour.getNextRequestId()-1));
         window.orderListRequests(modifyTour.getSteps(), modifyTour.getRequests(), tour.getDepot());
@@ -20,14 +20,15 @@ public class AddRequestState7 implements State {
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour, String result, Window window) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour, String result, Window window,ListOfCommands listOfCdes) {
         this.addRequest(controller, citymap, tour, modifyTour, null, window);
     }
 
     @Override
-    public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window) {
+    public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window,ListOfCommands listOfCdes) {
         window.renderTour(modifyTour.getIntersections());
         window.disableEventListener();
+        listOfCdes.cancel();
         controller.setCurrentState(controller.modifyTourState);
     }
 }

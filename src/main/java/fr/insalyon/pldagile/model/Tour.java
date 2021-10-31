@@ -54,6 +54,7 @@ public class Tour {
         this.travelsDuration = tour.travelsDuration;
         this.length = tour.length;
         this.stepsIdentifiers = new ArrayList<Pair<Long, String>>(tour.stepsIdentifiers);
+        this.nextRequestId = tour.nextRequestId;
     }
 
     public Map<Long,Request> getRequests() {
@@ -131,5 +132,9 @@ public class Tour {
         deliveriesDuration =0;
         travelsDuration =0;
         this.path = new ArrayList<>();
+    }
+
+    public void setNextRequestId(long l) {
+        this.nextRequestId = l-1;
     }
 }

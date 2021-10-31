@@ -29,6 +29,8 @@ public class ModifyView extends Region {
     private Button deleteRequest;
     private Button backMainMenu;
     private Button confirmMainMenu;
+    private Button redo;
+    private Button undo;
     private static ListView<RequestItem> pickupList;
 
 
@@ -36,9 +38,11 @@ public class ModifyView extends Region {
     protected static final String CONFIRM = "Confirm";
     protected static final String DELETE_REQUEST = "Delete Request";
     protected static final String ADD_REQUEST = "Add Request";
+    protected static final String REDO = "Redo";
+    protected static final String UNDO = "Undo";
 
 
-    private final String[] buttonTexts = new String[]{BACK, CONFIRM, DELETE_REQUEST, ADD_REQUEST};
+    private final String[] buttonTexts = new String[]{BACK, CONFIRM, DELETE_REQUEST, ADD_REQUEST, UNDO, REDO};
 
     public ModifyView(Controller controller) {
         this.controller = controller;
@@ -73,8 +77,15 @@ public class ModifyView extends Region {
 
         backMainMenu = new Button("Cancel");
         confirmMainMenu = new Button(CONFIRM);
+        redo = new Button(REDO);
+        undo = new Button(UNDO);
+
+
         gridPane.add(addRequest, 0, 1, 1, 1);
         gridPane.add(deleteRequest, 1, 1, 1, 1);
+
+        gridPane.add(undo, 0, 5, 1, 1);
+        gridPane.add(redo, 1, 5, 1, 1);
         gridPane.add(backMainMenu, 0, 6, 1, 1);
         gridPane.add(confirmMainMenu, 1, 6, 1, 1);
 
@@ -82,6 +93,8 @@ public class ModifyView extends Region {
         confirmMainMenu.setOnAction(this::actionPerformed);
         deleteRequest.setOnAction(this::actionPerformed);
         addRequest.setOnAction(this::actionPerformed);
+        undo.setOnAction(this::actionPerformed);
+        redo.setOnAction(this::actionPerformed);
 
 
 
@@ -109,6 +122,10 @@ public class ModifyView extends Region {
                 controller.deleteRequest(null); break;
             case ADD_REQUEST:
                 controller.addRequest(null); break;
+            case REDO:
+                controller.redo(); break;
+            case UNDO:
+                controller.undo(); break;
         }
     }
 

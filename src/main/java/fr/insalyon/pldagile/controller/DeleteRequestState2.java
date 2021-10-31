@@ -20,12 +20,12 @@ public class DeleteRequestState2 implements State{
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour,String result, Window window) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour,String result, Window window,ListOfCommands listOfCdes) {
         this.deleteRequest(controller,citymap, tour, modifyTour, controller.requestToDelete, window);
     }
 
     @Override
-    public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window) {
+    public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window,ListOfCommands listOfCdes) {
         window.renderTour(modifyTour.getIntersections());
         window.disableEventListener();
         controller.setCurrentState(controller.modifyTourState);

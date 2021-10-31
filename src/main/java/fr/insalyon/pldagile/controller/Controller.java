@@ -13,6 +13,7 @@ public class Controller {
     private Tour modifyTour;
     private State currentState;
     private Window window;
+    private ListOfCommands listOfCommands;
 
     protected Request requestToDelete;
     protected Pair<Integer, Pickup> pickupToAdd;
@@ -42,6 +43,7 @@ public class Controller {
         this.citymap = citymap;
         this.planningRequest = planningRequest;
         this.tour = tour;
+        listOfCommands = new ListOfCommands();
         currentState = initialState;
 
     }
@@ -75,9 +77,9 @@ public class Controller {
 
     public void computeTour() { currentState.computeTour(this,citymap, planningRequest, window);}
 
-    public void cancel() { currentState.cancel(this, tour,modifyTour,window);}
+    public void cancel() { currentState.cancel(this, tour,modifyTour,window, listOfCommands);}
 
-    public void confirm(String result) { currentState.confirm(this,citymap,planningRequest,tour, modifyTour,result,window);}
+    public void confirm(String result) { currentState.confirm(this,citymap,planningRequest,tour, modifyTour,result,window, listOfCommands);}
 
     public void modify() { currentState.modify(this,window);}
 
@@ -88,4 +90,18 @@ public class Controller {
     public void modifyClick(Long id, String type, int stepIndex) { currentState.modifyClick(this, id, type, stepIndex,window);}
 
     public void addRequest(Long id) { currentState.addRequest(this,citymap, tour, modifyTour,id, window);}
+
+    /**
+     * Method called by window after a click on the button "Undo"
+     */
+    public void undo(){
+        currentState.undo(listOfCommands, window, tour, modifyTour);
+    }
+
+    /**
+     * Method called by window after a click on the button "Redo"
+     */
+    public void redo(){
+        currentState.redo(listOfCommands, window, tour, modifyTour);
+    }
 }
