@@ -85,7 +85,7 @@ public class Controller {
 
     public void generateRoadMap() { currentState.generateRoadMap(this,tour,window);}
 
-    public void deleteRequest(Long idRequest) { currentState.deleteRequest(this,citymap, tour,modifyTour, modifyTour.getRequests().get(idRequest), window);}
+    public void deleteRequest(Long idRequest) { currentState.deleteRequest(this,citymap, tour,modifyTour, modifyTour.getRequests().get(idRequest), window, listOfCommands);}
 
     public void modifyClick(Long id, String type, int stepIndex) { currentState.modifyClick(this, id, type, stepIndex,window);}
 

@@ -26,9 +26,9 @@ public class AddRequestState7 implements State {
 
     @Override
     public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window,ListOfCommands listOfCdes) {
+        listOfCdes.cancel();
         window.renderTour(modifyTour.getIntersections());
         window.disableEventListener();
-        listOfCdes.cancel();
         controller.setCurrentState(controller.modifyTourState);
     }
 }

@@ -29,7 +29,7 @@ public class ModifyTourState implements State{
     }
 
     @Override
-    public void deleteRequest(Controller controller,CityMap citymap, Tour tour,Tour modifyTour, Request request, Window window) {
+    public void deleteRequest(Controller controller,CityMap citymap, Tour tour,Tour modifyTour, Request request, Window window,ListOfCommands listOfCdes) {
         if(modifyTour.getRequests().size()==1){
             window.showWarningAlert("Tour can't be empty", "You can't delete the last request of the tour", null);
         } else {

@@ -9,10 +9,10 @@ import fr.insalyon.pldagile.view.Window;
 
 public class DeleteRequestState2 implements State{
     @Override
-    public void deleteRequest(Controller controller, CityMap citymap, Tour tour, Tour modifyTour, Request request, Window window) {
-        TourBuilderV2 tourBuilder = new TourBuilderV2();
+    public void deleteRequest(Controller controller, CityMap citymap, Tour tour, Tour modifyTour, Request request, Window window,ListOfCommands listOfCdes) {
+        /*TourBuilderV2 tourBuilder = new TourBuilderV2();
         modifyTour = tourBuilder.deleteRequest(citymap,modifyTour, request);
-        controller.setModifyTour(modifyTour);
+        controller.setModifyTour(modifyTour);*/
         window.renderTour(modifyTour.getIntersections());
         window.orderListRequests(modifyTour.getSteps(), modifyTour.getRequests(), tour.getDepot());
         controller.setCurrentState(controller.modifyTourState);
@@ -21,11 +21,12 @@ public class DeleteRequestState2 implements State{
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour,String result, Window window,ListOfCommands listOfCdes) {
-        this.deleteRequest(controller,citymap, tour, modifyTour, controller.requestToDelete, window);
+        this.deleteRequest(controller,citymap, tour, modifyTour, controller.requestToDelete, window, listOfCdes);
     }
 
     @Override
     public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window,ListOfCommands listOfCdes) {
+        listOfCdes.cancel();
         window.renderTour(modifyTour.getIntersections());
         window.disableEventListener();
         controller.setCurrentState(controller.modifyTourState);

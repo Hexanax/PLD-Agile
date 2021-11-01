@@ -23,7 +23,7 @@ public class AddRequestCommand implements Command {
 
     @Override
     public void doCommand() {
-        tour = tourBuilder.addRequest(cityMap, tour, pickup, delivery);
+        tour = tourBuilder.addRequest(cityMap, tour, pickup, delivery, -1);
 
         requestAdded = tour.getRequests().get(tour.getNextRequestId()-1);
     }

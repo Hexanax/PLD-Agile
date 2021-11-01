@@ -19,6 +19,7 @@ public class DeleteRequestCommand implements Command {
         this.citymap = citymap;
         this.tour = tour;
         this.requestDeleted = request;
+        this.tourbuilder = new TourBuilderV2();
 
 
         int index = 0;
@@ -26,14 +27,23 @@ public class DeleteRequestCommand implements Command {
 
             if(Objects.equals(step.getKey(), request.getId())){
                 if(step.getValue()=="pickup"){
-                    pickup = new Pair<>(index-1, request.getPickup());
+                    int value = index -1;
+                    pickup = new Pair<>(value, request.getPickup());
+                    System.out.println("pickup");
                 } else {
-                    delivery = new Pair<>(index-1, request.getDelivery());
+                    int value = index-1;
+                    if(pickup.getKey() == (value-1)){
+                        value =  pickup.getKey();
+                    }
+                    System.out.println("delivery");
+                    delivery = new Pair<>(value, request.getDelivery());
                 }
             }
             index++;
         }
 
+        System.out.println(delivery.toString());
+        System.out.println(pickup.toString());
 
 
     }
@@ -46,6 +56,6 @@ public class DeleteRequestCommand implements Command {
 
     @Override
     public void undoCommand() {
-        this.tour = tourbuilder.addRequest(citymap, tour, pickup, delivery);
+        this.tour = tourbuilder.addRequest(citymap, tour, pickup, delivery, requestDeleted.getId());
     }
 }

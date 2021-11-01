@@ -223,12 +223,16 @@ public class TourBuilderV2 {
     //TODO refactor
     //TODO test
     //TODO enhance
-    public Tour addRequest(CityMap cityMap, Tour tour, Pair<Integer,Pickup> pickup, Pair<Integer,Delivery> delivery) {
+    public Tour addRequest(CityMap cityMap, Tour tour, Pair<Integer,Pickup> pickup, Pair<Integer,Delivery> delivery, long planningRequestId) {
 
 
         //Create and add the new request
         Request newRequest = new Request(pickup.getValue(), delivery.getValue());
-        newRequest.setId(tour.getNextRequestId());
+        if(planningRequestId == -1){
+            newRequest.setId(tour.getNextRequestId());
+        } else {
+            newRequest.setId(planningRequestId);
+        }
         tour.addRequest(newRequest);
         Map<Long,Request> requests = tour.getRequests();
 

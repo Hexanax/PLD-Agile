@@ -22,7 +22,7 @@ public interface State {
 
     public default void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window){};
 
-    public default void deleteRequest(Controller controller,CityMap citymap, Tour tour,Tour modifyTour, Request request, Window window){};
+    public default void deleteRequest(Controller controller,CityMap citymap, Tour tour,Tour modifyTour, Request request, Window window,ListOfCommands listOfCdes){};
 
     public default void addRequest(Controller controller, CityMap citymap, Tour tour, Tour modifyTour, Long intersectionID, Window window){};
 
