@@ -35,12 +35,15 @@ import javafx.beans.NamedArg;
 public class MapPoint {
 
     private double latitude, longitude;
-    private long special_id;
+    private long special_id, request_id;
+    private int stepIndex;
 
     public MapPoint(@NamedArg("latitude") double lat, @NamedArg("longitude") double lon) {
         this.latitude = lat;
         this.longitude = lon;
         special_id=-1;
+        request_id=-1;
+        stepIndex=-1;
     }
     
     public double getLatitude() {
@@ -58,10 +61,27 @@ public class MapPoint {
     public void setId(@NamedArg("id") long id) {
         this.special_id = id;
     }
-    
+
+    public long getRequestId() {
+        return request_id;
+    }
+
+    public void setRequestId(@NamedArg("request_id") long request_id) {
+        this.request_id = request_id;
+    }
+
+    public int getStepIndex() {
+        return stepIndex;
+    }
+
+    public void setStepIndex(int stepIndex) {
+        this.stepIndex = stepIndex;
+    }
+
     public void update(double lat, double lon) {
         this.latitude = lat;
         this.longitude = lon;
     }
-    
+
+
 }
