@@ -10,8 +10,6 @@ public class AddRequestState7 implements State {
     @Override
     public void addRequest(Controller controller, CityMap citymap, Tour tour, Tour modifyTour, Long intersectionID, Window window) {
         TourBuilderV2 tourBuilder = new TourBuilderV2();
-        System.out.println("pickupToAdd:" + controller.pickupToAdd);
-        System.out.println("deliveryToAdd:" + controller.deliveryToAdd);
         modifyTour = tourBuilder.addRequest(citymap, tour, controller.pickupToAdd, controller.deliveryToAdd);
         controller.setModifyTour(modifyTour);
         window.renderTour(modifyTour.getIntersections());

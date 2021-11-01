@@ -306,8 +306,9 @@ public class Window {
             {
                 item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index);
                 items.add(item);
-
-                MapPoint mapPoint = new MapPoint(requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude(), requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude());
+                double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
+                double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
+                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
                 mapPoint.setId(requests.get(step.getKey()).getPickup().getIntersection().getId());
                 mapPoint.setRequestId(requests.get(step.getKey()).getId());
                 mapPoint.setStepIndex(index);
@@ -319,8 +320,9 @@ public class Window {
             if(Objects.equals(step.getValue(), "delivery")){
                 item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index);
                 items.add(item);
-
-                MapPoint mapPoint = new MapPoint(requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude(), requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude());
+                double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
+                double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
+                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
                 mapPoint.setId(requests.get(step.getKey()).getDelivery().getIntersection().getId());
                 mapPoint.setRequestId(requests.get(step.getKey()).getId());
                 mapPoint.setStepIndex(index);
