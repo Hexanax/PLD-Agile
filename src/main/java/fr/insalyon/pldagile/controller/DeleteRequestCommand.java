@@ -29,21 +29,17 @@ public class DeleteRequestCommand implements Command {
                 if(step.getValue()=="pickup"){
                     int value = index -1;
                     pickup = new Pair<>(value, request.getPickup());
-                    System.out.println("pickup");
                 } else {
                     int value = index-1;
                     if(pickup.getKey() == (value-1)){
                         value =  pickup.getKey();
                     }
-                    System.out.println("delivery");
                     delivery = new Pair<>(value, request.getDelivery());
                 }
             }
             index++;
         }
 
-        System.out.println(delivery.toString());
-        System.out.println(pickup.toString());
 
 
     }
