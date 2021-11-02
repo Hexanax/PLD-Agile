@@ -7,7 +7,7 @@ import javafx.util.Pair;
 public class AddRequestState4 implements State{
     @Override
     public void cancel(Controller controller, Tour tour, Tour modifyTour, Window window) {
-        window.renderTour(tour.getIntersections());
+        window.renderTour(tour);
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
         window.hideModifyMenu();
         controller.setCurrentState(controller.tourComputedState);

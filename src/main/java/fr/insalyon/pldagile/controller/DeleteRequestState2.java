@@ -13,7 +13,7 @@ public class DeleteRequestState2 implements State{
         TourBuilderV2 tourBuilder = new TourBuilderV2();
         modifyTour = tourBuilder.deleteRequest(citymap,modifyTour, request);
         controller.setModifyTour(modifyTour);
-        window.renderTour(modifyTour.getIntersections());
+        window.renderTour(modifyTour);
         window.orderListRequests(modifyTour.getSteps(), modifyTour.getRequests(), tour.getDepot());
         controller.setCurrentState(controller.modifyTourState);
         window.showWarningAlert("Modification", "Suppresion successfully completed", null);
@@ -26,7 +26,7 @@ public class DeleteRequestState2 implements State{
 
     @Override
     public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window) {
-        window.renderTour(modifyTour.getIntersections());
+        window.renderTour(modifyTour);
         window.disableEventListener();
         controller.setCurrentState(controller.modifyTourState);
     }

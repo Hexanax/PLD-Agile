@@ -43,7 +43,6 @@ public class Controller {
         this.planningRequest = planningRequest;
         this.tour = tour;
         currentState = initialState;
-
     }
 
     public void initWindow(Window window) {

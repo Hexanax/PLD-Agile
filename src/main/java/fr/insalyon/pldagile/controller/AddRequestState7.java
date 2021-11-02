@@ -12,7 +12,7 @@ public class AddRequestState7 implements State {
         TourBuilderV2 tourBuilder = new TourBuilderV2();
         modifyTour = tourBuilder.addRequest(citymap, tour, controller.pickupToAdd, controller.deliveryToAdd);
         controller.setModifyTour(modifyTour);
-        window.renderTour(modifyTour.getIntersections());
+        window.renderTour(modifyTour);
         window.addMapRequest(modifyTour.getRequests().get(modifyTour.getNextRequestId()-1));
         window.orderListRequests(modifyTour.getSteps(), modifyTour.getRequests(), tour.getDepot());
         controller.setCurrentState(controller.modifyTourState);
@@ -26,7 +26,7 @@ public class AddRequestState7 implements State {
 
     @Override
     public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window) {
-        window.renderTour(modifyTour.getIntersections());
+        window.renderTour(modifyTour);
         window.disableEventListener();
         controller.setCurrentState(controller.modifyTourState);
     }

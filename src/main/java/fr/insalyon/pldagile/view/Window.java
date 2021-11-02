@@ -208,18 +208,19 @@ public class Window {
         }
     }
 
-    public void renderTour(List<Intersection> intersections) {
+    public void renderTour(Tour tour) {
         // TODO Update RequestView
-        Intersection previousIntersection = intersections.get(0);
-        for (Intersection intersection : intersections.subList(1, intersections.size())) {
-            //Create line and add it
+        Intersection previousIntersection = tour.getDepot().getIntersection();
+        for (Segment segment : tour.getPath()) {
+            Intersection destinationIntersection = segment.getDestination();
             MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
-            MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
+            MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
             pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
             pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
-            lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Colors.getTourIntersectionColor());
+            lineLayer.addLine(mapDestination, Colors.getTourIntersectionColor());
             //Update prev intersection
-            previousIntersection = intersection;
+            previousIntersection = destinationIntersection;
         }
     }
 
