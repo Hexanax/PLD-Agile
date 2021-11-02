@@ -19,6 +19,7 @@ public class InitialState implements State{
                 window.clearMap();
                 window.renderCityMap(citymap);
                 window.centerMap(citymap);
+                window.updateMapFileName(importFile.getName());
                 controller.setCurrentState(controller.mapDisplayedState);
             } else {
                 controller.setCurrentState(controller.initialState);

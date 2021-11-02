@@ -22,6 +22,7 @@ public class RequestsOverwrite2State implements State{
                 controller.setTour(new Tour());
                 window.clearRequest();
                 window.clearTour();
+                window.updateRequestFileName(importFile.getName());
                 window.renderPlanningRequest(newPlanningRequest);
                 controller.setCurrentState(controller.requestsDisplayedState);
             } else {

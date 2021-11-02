@@ -22,6 +22,7 @@ public class MapOverwrite1State implements State{
                 window.clearMap();
                 window.renderCityMap(newMap);
                 window.centerMap(newMap);
+                window.updateMapFileName(importFile.getName());
             }
         } catch(Exception e) {
             window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
