@@ -13,7 +13,7 @@ public class ModifyTourState implements State{
     /*@Override
     public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window, ListOfCommands listOfCdes) {
         window.clearTour();
-        window.renderTour(tour.getIntersections());
+        window.renderTour(tour);
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
         window.hideModifyMenu();
         listOfCdes.reset();

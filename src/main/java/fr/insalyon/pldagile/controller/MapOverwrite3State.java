@@ -25,6 +25,7 @@ public class MapOverwrite3State implements State{
                 window.clearMap();
                 window.renderCityMap(newMap);
                 window.centerMap(newMap);
+                window.updateMapFileName(importFile.getName());
                 controller.setCurrentState(controller.mapDisplayedState);
             } else {
                 controller.setCurrentState(controller.tourComputedState);

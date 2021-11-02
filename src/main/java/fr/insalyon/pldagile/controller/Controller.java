@@ -44,7 +44,6 @@ public class Controller {
         this.tour = tour;
         listOfCommands = new ListOfCommands();
         currentState = initialState;
-
     }
 
     public void initWindow(Window window) {

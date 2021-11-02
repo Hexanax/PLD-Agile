@@ -96,7 +96,7 @@ public class HTMLSerializer {
         context.put("travels_time", getTime(tour.getTravelsDuration()));
         context.put("pickups_time", getTime(tour.getPickupsDuration()));
         context.put("deliveries_time", getTime(tour.getDeliveriesDuration()));
-        context.put("lenght", tour.getLength());
+        context.put("length", tour.getLength());
         context.put("total_time", getTime(tour.getTourDuration()));
         context.put("depot", tour.getDepot());
         context.put("rows", rows);

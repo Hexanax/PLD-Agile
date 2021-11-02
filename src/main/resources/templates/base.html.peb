@@ -38,42 +38,42 @@
             <div>
                 {% if row.type == "Segment"%}
 
-                    Follow the {{row.object.name}} over {{row.object.length| numberformat("#.##")}} meters to the intersection no.{{ row.object.destination.id}}
+                    Follow {{row.object.name}} for {{row.object.length| numberformat("#.##")}} meters to the intersection no.{{ row.object.destination.id}}
                 {% elseif row.type == "Intersection"  %}
                     {% if row.step and not row.finish %}
                         <div>
                             {% if row.orientation==0 %}
                                 <div> {% include "templates/svg/north.svg.peb" %} </div>
-                                After dealing with deliveries go straight ahead on the road called : {{ row.segment_name }}
+                                After dealing with deliveries go straight ahead on {{ row.segment_name }}
                             {% elseif row.orientation==1 %}
                                 <div> {% include "templates/svg/east.svg.peb" %} </div>
-                                After dealing with deliveries turn right on the road called : {{ row.segment_name }}
+                                After dealing with deliveries turn right on {{ row.segment_name }}
                             {% elseif row.orientation==2 %}
                                 <div> {% include "templates/svg/west.svg.peb" %} </div>
-                                After dealing with deliveries turn left on the road called : {{ row.segment_name }}
+                                After dealing with deliveries turn left on {{ row.segment_name }}
                             {% elseif row.orientation==3 %}
                                 <div> {% include "templates/svg/south.svg.peb" %} </div>
-                                After dealing with deliveries turn back on the road called : {{ row.segment_name }}
+                                After dealing with deliveries turn back on{{ row.segment_name }}
                             {% else %}
-                                After dealing with deliveries follow the road called : {{ row.segment_name }}
+                                After dealing with deliveries follow {{ row.segment_name }}
                             {% endif %}
                         </div>
                     {% elseif not row.finish  %}
                         <div>
                             {% if row.orientation==0 %}
                                 <div> {% include "templates/svg/north.svg.peb" %} </div>
-                                At the intersection no {{row.object.id}} go straight ahead on the road called : {{ row.segment_name }}
+                                At the intersection no {{row.object.id}} go straight ahead on {{ row.segment_name }}
                             {% elseif row.orientation==1 %}
                                 <div> {% include "templates/svg/east.svg.peb" %} </div>
-                                At the intersection no {{row.object.id}} turn right on the road called : {{ row.segment_name }}
+                                At the intersection no {{row.object.id}} turn right on {{ row.segment_name }}
                             {% elseif row.orientation==2 %}
                                 <div> {% include "templates/svg/west.svg.peb" %} </div>
-                                At the intersection no {{row.object.id}} turn left on the road called : {{ row.segment_name }}
+                                At the intersection no {{row.object.id}} turn left on {{ row.segment_name }}
                             {% elseif row.orientation==3 %}
                                 <div> {% include "templates/svg/south.svg.peb" %} </div>
-                                At the intersection no {{row.object.id}} turn back on the road called : {{ row.segment_name }}
+                                At the intersection no {{row.object.id}} turn back on {{ row.segment_name }}
                             {% else %}
-                                At the intersection no {{row.object.id}} follow the road called : {{ row.segment_name }}
+                                At the intersection no {{row.object.id}} follow {{ row.segment_name }}
                             {% endif %}
                         </div>
 
@@ -83,12 +83,12 @@
                     {% if row.subtype == "pickup" %}
                         <div>
                             <div> {% include "templates/svg/pickup.svg.peb" %} </div>
-                            You have a package to pick up. This will take about {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s
+                            You have a package to pick up. This will take around {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s
                         </div>
                     {% else %}
                         <div>
                             <div> {% include "templates/svg/dropoff.svg.peb" %} </div>
-                            You have a package to deliver. This will take about {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s
+                            You have a package to deliver. This will take around {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s
                         </div>
                     {% endif %}
                 {% endif %}

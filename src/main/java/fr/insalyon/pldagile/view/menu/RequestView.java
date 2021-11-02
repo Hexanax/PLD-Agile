@@ -63,7 +63,7 @@ public class RequestView extends Region {
         pickupList.setItems(pickupItems);
         pickupList.getStyleClass().add("requests-list");
         pickupList.setOrientation(Orientation.VERTICAL);
-        pickupList.setMaxHeight(Control.USE_PREF_SIZE);
+        pickupList.setMaxHeight(200D);
         gridPane.add(pickupList, 0, 1, 2, 1);
 
 

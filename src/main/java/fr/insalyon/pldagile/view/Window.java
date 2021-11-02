@@ -5,10 +5,7 @@ import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.TourBuilderV1;
 import fr.insalyon.pldagile.view.maps.*;
-import fr.insalyon.pldagile.view.menu.ModifyView;
-import fr.insalyon.pldagile.view.menu.RequestItem;
-import fr.insalyon.pldagile.view.menu.RequestView;
-import fr.insalyon.pldagile.view.menu.SidePanel;
+import fr.insalyon.pldagile.view.menu.*;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -155,6 +152,14 @@ public class Window {
         }
     }
 
+    public void updateMapFileName(String fileName) {
+        ImportView.setImportMapLabel(fileName);
+    }
+
+    public void updateRequestFileName(String fileName) {
+        ImportView.setImportRequestLabel(fileName);
+    }
+
     /**
      * Centers the map around the central coordinates of the city map sets the zoom
      * the level of a city in the map
@@ -208,18 +213,19 @@ public class Window {
         }
     }
 
-    public void renderTour(List<Intersection> intersections) {
+    public void renderTour(Tour tour) {
         // TODO Update RequestView
-        Intersection previousIntersection = intersections.get(0);
-        for (Intersection intersection : intersections.subList(1, intersections.size())) {
-            //Create line and add it
+        Intersection previousIntersection = tour.getDepot().getIntersection();
+        for (Segment segment : tour.getPath()) {
+            Intersection destinationIntersection = segment.getDestination();
             MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
-            MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
+            MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
             pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
             pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
-            lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Colors.getTourIntersectionColor());
+            lineLayer.addLine(mapDestination, Colors.getTourIntersectionColor());
             //Update prev intersection
-            previousIntersection = intersection;
+            previousIntersection = destinationIntersection;
         }
     }
 

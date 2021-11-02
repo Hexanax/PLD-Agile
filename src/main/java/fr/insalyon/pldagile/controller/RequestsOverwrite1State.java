@@ -21,6 +21,7 @@ public class RequestsOverwrite1State implements State{
                 XMLDeserializer.load(newPlanningRequest, cityMap, importFile);
                 controller.setPlanningRequest(newPlanningRequest);
                 window.clearRequest();
+                window.updateRequestFileName(importFile.getName());
                 window.renderPlanningRequest(newPlanningRequest);
             }
         } catch(Exception e) {

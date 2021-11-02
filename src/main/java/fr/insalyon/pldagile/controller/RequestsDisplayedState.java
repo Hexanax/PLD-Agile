@@ -36,7 +36,7 @@ public class RequestsDisplayedState implements State{
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
         Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap);
         controller.setTour(tour);
-        window.renderTour(tour.getIntersections());
+        window.renderTour(tour);
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
         controller.setCurrentState(controller.tourComputedState);
     }
