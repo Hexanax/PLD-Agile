@@ -37,16 +37,21 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
+
+import java.util.ArrayList;
 
 /**
  * A layer that allows to visualise points of interest.
  */
 public class PointLayer extends MapLayer {
 
-    private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();
+    private final ObservableList<Pair<MapPoint, Node>> intersectionPoints = FXCollections.observableArrayList();
+    private final ObservableList<Pair<MapPoint, Node>> requestPoints = FXCollections.observableArrayList();
     private static Controller controller;
     public PointLayer() {
 
@@ -60,20 +65,36 @@ public class PointLayer extends MapLayer {
 
 
     public void addPoint(MapPoint p, Node icon) {
-        points.add(new Pair<>(p, icon));
+        intersectionPoints.add(new Pair<>(p, icon));
+        this.getChildren().add(icon);
+        this.markDirty();
+    }
+
+    public void addRequestPoint(MapPoint p, Node icon){
+        requestPoints.add(new Pair<>(p, icon));
         this.getChildren().add(icon);
         this.markDirty();
     }
 
     public void clearPoints() {
-        points.clear();
+        intersectionPoints.clear();
         this.getChildren().clear();
         this.markDirty();
     }
 
+    public void clearRequestPoints(){
+        requestPoints.clear();
+        this.getChildren().removeIf(node -> node instanceof ImageView);
+    }
+
     @Override
     protected void layoutLayer() {
-        for (Pair<MapPoint, Node> candidate : points) {
+        layoutLayerPoints(intersectionPoints);
+        layoutLayerPoints(requestPoints);
+    }
+
+    private void layoutLayerPoints(ObservableList<Pair<MapPoint, Node>> Points) {
+        for (Pair<MapPoint, Node> candidate : Points) {
             MapPoint point = candidate.getKey();
             Node icon = candidate.getValue();
             Point2D mapPoint = getMapPoint(point.getLatitude(), point.getLongitude());
@@ -84,19 +105,36 @@ public class PointLayer extends MapLayer {
     }
 
 
-
     public void activeMapIntersectionsListener(){
-        for (Pair<MapPoint, Node> point : points) {
+
+        for (Pair<MapPoint, Node> point : intersectionPoints) {
             point.getValue().setOnMouseClicked(event-> {
                 controller.modifyClick(point.getKey().getId(),"Intersection", -1);
             });
         }
     }
 
+    public void activeRequestIntersectionsListener(){
+        for (Pair<MapPoint, Node> point : requestPoints) {
+            point.getValue().setOnMouseClicked(event-> {
+                controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
+                System.out.println("active request:" + point.getKey().getStepIndex());
+            });
+        }
+    }
+
 
     public void disableMapIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : points) {
+        for (Pair<MapPoint, Node> point : intersectionPoints) {
             point.getValue().setOnMouseClicked(null);
         }
     }
+
+    public void disableRequestIntersectionsListener() {
+        for (Pair<MapPoint, Node> point : requestPoints) {
+            point.getValue().setOnMouseClicked(null);
+        }
+    }
+
+
 }

@@ -31,7 +31,8 @@ public class AddRequestState3 implements State{
         if(valid){
             controller.pickupToAdd.getValue().setDuration(duration);
             controller.setCurrentState(controller.addRequestState4);
-            //TODO make map clickable
+            window.disableEventListener();
+            window.activeRequestIntersectionsListener();
             window.activeRowListener();
             window.showWarningAlert("How to add a request", null, "Select the depot, a pickup or a delivery after which you want to place the delivery of your new request");
         } else {
