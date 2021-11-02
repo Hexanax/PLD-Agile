@@ -3,11 +3,9 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.tsp.TourBuilderV1;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
 import fr.insalyon.pldagile.xml.ExceptionXML;
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -17,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -196,19 +193,19 @@ public class Window {
                 mapPoint.setRequestId(request.getId());
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        IconProvider.getPickupIcon()
+                        new RequestMapPin(RequestType.PICKUP)
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        IconProvider.getDropoffIcon()
+                        new RequestMapPin(RequestType.DELIVERY)
                 );
             });
             RequestView.setPickupItems(items);
 
-            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+            pointLayer.addPoint(depotPoint, new DepotMapPin());
            //TODO Scale it with zoom level
         }
     }
@@ -320,7 +317,7 @@ public class Window {
                 mapPoint.setStepIndex(index);
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        IconProvider.getPickupIcon()
+                        new RequestMapPin(RequestType.PICKUP)
                 );
             }
             if(Objects.equals(step.getValue(), "delivery")){
@@ -334,7 +331,7 @@ public class Window {
                 mapPoint.setStepIndex(index);
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        IconProvider.getDropoffIcon()
+                        new RequestMapPin(RequestType.DELIVERY)
                 );
             }
 
@@ -356,14 +353,14 @@ public class Window {
         mapPoint.setRequestId(request.getId());
         pointLayer.addRequestPoint(
                 mapPoint,
-                IconProvider.getPickupIcon()
+                new RequestMapPin(RequestType.PICKUP)
         );
         mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(delivery.getIntersection().getId());
         mapPoint.setRequestId(request.getId());
         pointLayer.addRequestPoint(
                 mapPoint,
-                IconProvider.getDropoffIcon()
+                new RequestMapPin(RequestType.DELIVERY)
         );
 
     }
