@@ -41,10 +41,6 @@ public class TourBuilderV2 {
         //We have to manually add the depot intersection to the end of the list
         tourIntersections.add(intersectionSteps.get(0));
 
-
-
-
-
         Tour tour = new Tour(planningRequest.getRequests(),planningRequest.getDepot());
         Map<Long, Intersection> intersections = cityMap.getIntersections();
         Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
@@ -95,6 +91,12 @@ public class TourBuilderV2 {
         boolean delivery = false;
         int lastFoundIndex =0;
         int index = 1;
+
+        /**
+         * iterate over intersections to find the 2 intersections with the same IDs as the ones
+         * in the request we want to delete.
+         * in indexAroundStep we store the index of the intersections before/after the pickup/delivery
+         */
         long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(0));
         while(!found){
             if(intersections.get(index).getId()==nextSpecificIntersection){
@@ -129,14 +131,10 @@ public class TourBuilderV2 {
         }
 
 
-
-
-
-
-
         tour.getSteps().removeIf(step -> Objects.equals(step.getKey(), request.getId()));
 
         index = 0;
+
         while(index != indexAroundStep[0]){
             newIntersections.add(intersections.get(index));
             index ++;
