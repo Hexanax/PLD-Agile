@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
@@ -36,28 +37,52 @@ public class RequestItem extends Region {
         maingp.setHgap(5);
         maingp.setVgap(5);
 
-        Label titleLabel = new Label(requestName);
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-        maingp.add(titleLabel, 0, 0, 4, 1);
-        GridPane.setHalignment(titleLabel, HPos.LEFT);
-        GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
-        DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
+        if(requestNumber >= 0){
+            Label titleLabel = new Label(requestName);
+            titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+            maingp.add(titleLabel, 0, 0, 4, 1);
+            GridPane.setHalignment(titleLabel, HPos.LEFT);
+            GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
-        Label timeLabel = new Label(requestCommentary); //TODO Display time: dateFormat.format(pickupTime)
-        timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-        maingp.add(timeLabel, 0, 1, 1, 1);
-        GridPane.setHalignment(timeLabel, HPos.LEFT);
-        GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
+            DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
 
-        
-        Label requestLabel = new Label("Request n°" + (requestNumber+1));
-        requestLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-        maingp.add(requestLabel, 0, 2, 1, 1);
-        GridPane.setHalignment(requestLabel, HPos.LEFT);
-        GridPane.setMargin(requestLabel, new Insets(5, 5, 5, 0));
+            Label timeLabel = new Label("Duration : "); //TODO Display time: dateFormat.format(pickupTime)
+            timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(timeLabel, 0, 1, 1, 1);
+            GridPane.setHalignment(timeLabel, HPos.LEFT);
+            GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
 
 
+            TextField value = new TextField(requestCommentary);
+            value.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(value, 1, 1, 1, 1);
+            GridPane.setHalignment(value, HPos.LEFT);
+            GridPane.setMargin(value, new Insets(5, 5, 5, 0));
+            value.setEditable(false);
+            value.setDisable(false);
+
+            Label requestLabel = new Label("Request n°" + (requestNumber+1));
+            requestLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(requestLabel, 0, 2, 1, 1);
+            GridPane.setHalignment(requestLabel, HPos.LEFT);
+            GridPane.setMargin(requestLabel, new Insets(5, 5, 5, 0));
+        } else {
+            //depot
+            Label titleLabel = new Label(requestName);
+            titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+            maingp.add(titleLabel, 0, 0, 4, 1);
+            GridPane.setHalignment(titleLabel, HPos.LEFT);
+            GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
+
+            DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
+
+            Label timeLabel = new Label(requestCommentary); //TODO Display time: dateFormat.format(pickupTime)
+            timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(timeLabel, 0, 1, 1, 1);
+            GridPane.setHalignment(timeLabel, HPos.LEFT);
+            GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
+        }
 
         /*up = new Button("^");
         up.setPrefHeight(30);

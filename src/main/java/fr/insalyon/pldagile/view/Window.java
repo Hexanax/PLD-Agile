@@ -185,9 +185,9 @@ public class Window {
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup",-1);
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), String.valueOf(request.getPickup().getDuration()), request.getId(), "Pickup",-1);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery",-1);
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), String.valueOf(request.getDelivery().getDuration()), request.getId(), "Delivery",-1);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
@@ -310,7 +310,7 @@ public class Window {
         for(Pair<Long, String> step : steps) {
             if(Objects.equals(step.getValue(), "pickup"))
             {
-                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index);
+                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), String.valueOf(requests.get(step.getKey()).getPickup().getDuration()), step.getKey(), "Pickup",index);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
@@ -324,7 +324,7 @@ public class Window {
                 );
             }
             if(Objects.equals(step.getValue(), "delivery")){
-                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index);
+                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), String.valueOf(requests.get(step.getKey()).getDelivery().getDuration()), step.getKey(),"Delivery",index);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
