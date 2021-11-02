@@ -207,7 +207,7 @@ public class Window {
                 );
             });
             RequestView.setPickupItems(items);
-            ModifyView.setPickupItems(items);
+
             pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
            //TODO Scale it with zoom level
         }
@@ -280,19 +280,19 @@ public class Window {
 
 
     public void hideModifyMenu() {
-        ModifyView.disableRowListener();
+        RequestView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
         loadSidePanel(false);
     }
 
     public void disableEventListener() {
-        ModifyView.disableRowListener();
+        RequestView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
         pointLayer.disableRequestIntersectionsListener();
     }
 
     public void activeRowListener() {
-        ModifyView.activeRowListener();
+        RequestView.activeRowListener();
     }
 
     public void activeMapIntersectionsListener() {
@@ -343,9 +343,9 @@ public class Window {
         item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1));
         items.add(item);
         RequestView.clearItems();
-        ModifyView.clearItems();
+
         RequestView.setPickupItems(items);
-        ModifyView.setPickupItems(items);
+
     }
 
     public void addMapRequest(Request request) {
