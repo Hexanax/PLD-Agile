@@ -5,19 +5,7 @@ import fr.insalyon.pldagile.view.Window;
 import javafx.util.Pair;
 
 public class AddRequestState4 implements State{
-    @Override
-    public void cancel(Controller controller, Tour tour, Tour modifyTour, Window window,ListOfCommands listOfCdes) {
-        window.renderTour(tour.getIntersections());
-        window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
-        window.hideModifyMenu();
-        listOfCdes.reset();
-        controller.setCurrentState(controller.tourComputedState);
-    }
 
-    @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour, String result, Window window,ListOfCommands listOfCdes) {
-        window.showWarningAlert("How to add a request", null, "Please first select the delivery address of your new request");
-    }
 
     @Override
     public void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window) {

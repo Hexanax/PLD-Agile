@@ -10,7 +10,7 @@ import javafx.util.Pair;
 import static java.awt.SystemColor.window;
 
 public class ModifyTourState implements State{
-    @Override
+    /*@Override
     public void cancel(Controller controller, Tour tour,Tour modifyTour, Window window, ListOfCommands listOfCdes) {
         window.clearTour();
         window.renderTour(tour.getIntersections());
@@ -51,9 +51,9 @@ public class ModifyTourState implements State{
         window.activeRequestIntersectionsListener();
         window.showWarningAlert("How to add a request", null, "Select the depot, a pickup or a delivery after which you want to place the pickup of your new request");
 
-    }
+    }*/
 
-    @Override
+    /*@Override
     public void undo(ListOfCommands listOfCdes, Window window, Tour tour, Tour modifyTour) {
 
         listOfCdes.undo();
@@ -69,5 +69,5 @@ public class ModifyTourState implements State{
         window.clearTour();
         window.renderTour(modifyTour.getIntersections());
         window.orderListRequests(modifyTour.getSteps(), modifyTour.getRequests(), tour.getDepot());
-    }
+    }*/
 }

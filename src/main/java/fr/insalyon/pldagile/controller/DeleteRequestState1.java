@@ -8,31 +8,16 @@ import fr.insalyon.pldagile.view.Window;
 
 public class DeleteRequestState1 implements State{
     @Override
-    public void deleteRequest(Controller controller,CityMap citymap, Tour tour, Tour modifyTour, Request request, Window window,ListOfCommands listOfCdes) {
+    public void deleteRequest(Controller controller,CityMap citymap, Tour tour,  Request request, Window window,ListOfCommands listOfCdes) {
         if(request != null){
-            controller.requestToDelete = request;
-            controller.setCurrentState(controller.deleteRequestState2);
-            listOfCdes.add(new DeleteRequestCommand(citymap,modifyTour,request));
-            window.showValidationAlert("Delete request ?",
-                    "Are you sure you want to delete the request no "+ (request.getId()+1)+" from intersection no "+request.getPickup().getIntersection().getId()+" to intersection no "+request.getDelivery().getIntersection().getId()+" ?",
-                    null);
+            listOfCdes.add(new DeleteRequestCommand(citymap,tour,request));
+            window.renderTour(tour.getIntersections());
+            window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
+            controller.setCurrentState(controller.tourComputedState);
+            window.showWarningAlert("Modification", "Suppresion successfully completed", null);
         } else {
             window.showWarningAlert("How to delete a request", "Request number unknown, please try again", null);
         }
-    }
-
-    @Override
-    public void cancel(Controller controller, Tour tour, Tour modifyTour, Window window,ListOfCommands listOfCdes) {
-        window.renderTour(tour.getIntersections());
-        window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
-        window.hideModifyMenu();
-        listOfCdes.reset();
-        controller.setCurrentState(controller.tourComputedState);
-    }
-
-    @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour,String result, Window window,ListOfCommands listOfCdes) {
-        window.showWarningAlert("How to delete a request", null, "Please first select the request you want to delete");
     }
 
     @Override

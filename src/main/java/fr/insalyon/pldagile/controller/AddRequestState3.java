@@ -7,7 +7,7 @@ import fr.insalyon.pldagile.view.Window;
 
 public class AddRequestState3 implements State{
     @Override
-    public void cancel(Controller controller, Tour tour, Tour modifyTour, Window window,ListOfCommands listOfCdes) {
+    public void cancel(Controller controller, Tour tour, Window window,ListOfCommands listOfCdes) {
         window.renderTour(tour.getIntersections());
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
         window.hideModifyMenu();
@@ -16,7 +16,7 @@ public class AddRequestState3 implements State{
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Tour modifyTour, String result, Window window,ListOfCommands listOfCdes) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, String result, Window window,ListOfCommands listOfCdes) {
         int duration = 0;
         boolean valid = false;
         try {
