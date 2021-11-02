@@ -8,72 +8,72 @@
 <body>
 
     <div id="header">
-            <div>
+            <div id="logo">
                 {% include "templates/svg/icon.svg.peb" %}
             </div>
-            <h1> Picky - Road Map </h1>
+            <h1 id="logo-title"> Picky - Road Map </h1>
     </div>
 	<div id="content">
 	    <div id="time">
-            <div>
-                Estimated time to complete the tour : {{ total_time }}
+            <div class="estimation-row">
+                Estimated time to complete the tour : <div class="estimated-val">{{ total_time }}</div>
             </div>
-            <div>
-                Distance in meters : {{ lenght | numberformat("#.##") }}
+            <div class="estimation-row">
+                Distance in meters : <div class="estimated-val">{{ lenght | numberformat("#.##") }}</div>
             </div>
-            <div> Estimated travels time : {{ travels_time }} </div>
-            <div> Estimated pickups time : {{ pickups_time }} </div>
-            <div> Estimated deliveries time : {{ deliveries_time }} </div>
+            <div class="estimation-row"> Estimated travels time : <div class="estimated-val">{{ travels_time }} </div></div>
+            <div class="estimation-row"> Estimated pickups time : <div class="estimated-val">{{ pickups_time }} </div></div>
+            <div class="estimation-row"> Estimated deliveries time : <div class="estimated-val">{{ deliveries_time }} </div></div>
         </div>
-        <hr>
+        <hr/>
         <div id="depot">
             <div> {% include "templates/svg/depot.svg.peb" %} </div>
             <div> Departure from the depot at intersection no. {{ depot.intersection.id }} </div>
             <div> Departure scheduled at {{ depot.departureTime| date("HH:mm:ss", timeZone="Europe/Paris") }} </div>
         </div>
-        <hr>
+        <hr/>
         {{ depot }}
         <div id="path">
         {% for row in rows %}
-            <div>
+            <div class="path-seg">
                 {% if row.type == "Segment"%}
 
-                    Follow the {{row.object.name}} over {{row.object.length| numberformat("#.##")}} meters to the intersection no.{{ row.object.destination.id}}
+                    <div class="dir-txt">Follow the {{row.object.name}} over {{row.object.length| numberformat("#.##")}} meters to the intersection no.{{ row.object.destination.id}}</div>
                 {% elseif row.type == "Intersection"  %}
                     {% if row.step and not row.finish %}
-                        <div>
+                        <div class="dir-chg">
                             {% if row.orientation==0 %}
-                                <div> {% include "templates/svg/north.svg.peb" %} </div>
-                                After dealing with deliveries go straight ahead on the road called : {{ row.segment_name }}
+                                <div class = "arrow"> {% include "templates/svg/north.svg.peb" %} </div>
+                                <div class="dir-chg-txt">After dealing with deliveries go straight ahead on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==1 %}
-                                <div> {% include "templates/svg/east.svg.peb" %} </div>
-                                After dealing with deliveries turn right on the road called : {{ row.segment_name }}
+                                <div class = "arrow"> {% include "templates/svg/east.svg.peb" %} </div>
+                                <div class="dir-chg-txt">After dealing with deliveries turn right on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==2 %}
-                                <div> {% include "templates/svg/west.svg.peb" %} </div>
-                                After dealing with deliveries turn left on the road called : {{ row.segment_name }}
+                                <div class = "arrow"> {% include "templates/svg/west.svg.peb" %} </div>
+                                <div class="dir-chg-txt">After dealing with deliveries turn left on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==3 %}
-                                <div> {% include "templates/svg/south.svg.peb" %} </div>
-                                After dealing with deliveries turn back on the road called : {{ row.segment_name }}
+                                <div class = "arrow"> {% include "templates/svg/south.svg.peb" %} </div>
+                                <div class="dir-chg-txt">After dealing with deliveries turn back on the road called : {{ row.segment_name }}</div>
                             {% else %}
-                                After dealing with deliveries follow the road called : {{ row.segment_name }}
+                                <div class="dir-chg-txt"> After dealing with deliveries follow the road called : {{ row.segment_name }}</div>
                             {% endif %}
                         </div>
                     {% elseif not row.finish  %}
-                        <div>
+                        <div class="dir-chg">
                             {% if row.orientation==0 %}
-                                <div> {% include "templates/svg/north.svg.peb" %} </div>
-                                At the intersection no {{row.object.id}} go straight ahead on the road called : {{ row.segment_name }}
+                                <div class = "arrow"> {% include "templates/svg/north.svg.peb" %} </div>
+                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} go straight ahead on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==1 %}
-                                <div> {% include "templates/svg/east.svg.peb" %} </div>
-                                At the intersection no {{row.object.id}} turn right on the road called : {{ row.segment_name }}
+                                <div class = "arrow"> {% include "templates/svg/east.svg.peb" %} </div>
+                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} turn right on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==2 %}
-                                <div> {% include "templates/svg/west.svg.peb" %} </div>
-                                At the intersection no {{row.object.id}} turn left on the road called : {{ row.segment_name }}
+                                <div class = "arrow"> {% include "templates/svg/west.svg.peb" %} </div>
+                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} turn left on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==3 %}
-                                <div> {% include "templates/svg/south.svg.peb" %} </div>
-                                At the intersection no {{row.object.id}} turn back on the road called : {{ row.segment_name }}
+                                <div class = "arrow"> {% include "templates/svg/south.svg.peb" %} </div>
+                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} turn back on the road called : {{ row.segment_name }}</div>
                             {% else %}
-                                At the intersection no {{row.object.id}} follow the road called : {{ row.segment_name }}
+                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} follow the road called : {{ row.segment_name }}</div>
                             {% endif %}
                         </div>
 

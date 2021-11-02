@@ -1,2 +1,19 @@
 body {
-    font: 16px "Carnivalee Freakshow"; margin: auto; position: relative; width: 900px; height: auto; background-color: darkgray }
+    font: 16px "Carnivalee Freakshow"; margin: auto; position: relative; width: 900px; height: auto; background-color: darkgray
+}
+.path-seg{
+    display: flex;
+    flex-direction: column;
+    background-color: rgba(255,255,255,.5);
+}
+.dir-txt{
+    font-size: 1.2em;
+}
+.dir-chg{
+    padding-left: 2em;
+    display: flex;
+    flex-direction: row;
+}
+.dir-chg-txt{
+    padding-left: .5em;
+}
