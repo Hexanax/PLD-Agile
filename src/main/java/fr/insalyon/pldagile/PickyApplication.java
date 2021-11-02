@@ -23,6 +23,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -144,9 +145,9 @@ public class PickyApplication extends Application {
             planningRequest.getRequests().forEach(request -> {
                 //Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), count++,"",0);
+                RequestItem pickupItem = new RequestItem(new Date(), request.getPickup().getDuration(), count++,"Pickup",0);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), count++,"",0);
+                RequestItem deliveryItem = new RequestItem(new Date(), request.getDelivery().getDuration(), count++,"Delivery",0);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
