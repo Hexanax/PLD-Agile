@@ -13,8 +13,9 @@ public class Controller {
     private Tour modifyTour;
     private State currentState;
     private Window window;
+    private ListOfCommands listOfCommands;
 
-    protected Request requestToDelete;
+
     protected Pair<Integer, Pickup> pickupToAdd;
     protected Pair<Integer, Delivery> deliveryToAdd;
 
@@ -27,21 +28,20 @@ public class Controller {
     protected final RequestsOverwrite1State requestsOverwrite1State = new RequestsOverwrite1State();
     protected final RequestsOverwrite2State requestsOverwrite2State = new RequestsOverwrite2State();
     protected final TourComputedState tourComputedState = new TourComputedState();
-    protected final ModifyTourState modifyTourState = new ModifyTourState();
     protected final DeleteRequestState1 deleteRequestState1 = new DeleteRequestState1();
-    protected final DeleteRequestState2 deleteRequestState2 = new DeleteRequestState2();
     protected final AddRequestState1 addRequestState1 = new AddRequestState1();
     protected final AddRequestState2 addRequestState2 = new AddRequestState2();
     protected final AddRequestState3 addRequestState3 = new AddRequestState3();
     protected final AddRequestState4 addRequestState4 = new AddRequestState4();
     protected final AddRequestState5 addRequestState5 = new AddRequestState5();
     protected final AddRequestState6 addRequestState6 = new AddRequestState6();
-    protected final AddRequestState7 addRequestState7 = new AddRequestState7();
+
 
     public Controller(CityMap citymap, PlanningRequest planningRequest, Tour tour) {
         this.citymap = citymap;
         this.planningRequest = planningRequest;
         this.tour = tour;
+        listOfCommands = new ListOfCommands();
         currentState = initialState;
     }
 
@@ -74,17 +74,30 @@ public class Controller {
 
     public void computeTour() { currentState.computeTour(this,citymap, planningRequest, window);}
 
-    public void cancel() { currentState.cancel(this, tour,modifyTour,window);}
+    public void cancel() { currentState.cancel(this, tour,window, listOfCommands);}
 
-    public void confirm(String result) { currentState.confirm(this,citymap,planningRequest,tour, modifyTour,result,window);}
+    public void confirm(String result) { currentState.confirm(this,citymap,planningRequest,tour,result,window, listOfCommands);}
 
-    public void modify() { currentState.modify(this,window);}
 
     public void generateRoadMap() { currentState.generateRoadMap(this,tour,window);}
 
-    public void deleteRequest(Long idRequest) { currentState.deleteRequest(this,citymap, tour,modifyTour, modifyTour.getRequests().get(idRequest), window);}
+    public void deleteRequest(Long idRequest) { currentState.deleteRequest(this,citymap, tour, tour.getRequests().get(idRequest), window, listOfCommands);}
 
     public void modifyClick(Long id, String type, int stepIndex) { currentState.modifyClick(this, id, type, stepIndex,window);}
 
-    public void addRequest(Long id) { currentState.addRequest(this,citymap, tour, modifyTour,id, window);}
+    public void addRequest(Long id) { currentState.addRequest(this,citymap, tour,id, window);}
+
+    /**
+     * Method called by window after a click on the button "Undo"
+     */
+    public void undo(){
+        currentState.undo(listOfCommands, window, tour);
+    }
+
+    /**
+     * Method called by window after a click on the button "Redo"
+     */
+    public void redo(){
+        currentState.redo(listOfCommands, window, tour);
+    }
 }

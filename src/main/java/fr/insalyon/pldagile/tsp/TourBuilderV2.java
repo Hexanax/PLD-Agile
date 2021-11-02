@@ -224,19 +224,29 @@ public class TourBuilderV2 {
     //TODO refactor
     //TODO test
     //TODO enhance
-    public Tour addRequest(CityMap cityMap, Tour tour, Pair<Integer,Pickup> pickup, Pair<Integer,Delivery> delivery) {
+    public Tour addRequest(CityMap cityMap, Tour tour, Pair<Integer,Pickup> pickup, Pair<Integer,Delivery> delivery, long planningRequestId) {
+
+
         //Create and add the new request
         Request newRequest = new Request(pickup.getValue(), delivery.getValue());
-        newRequest.setId(tour.getNextRequestId());
+        if(planningRequestId == -1){
+            newRequest.setId(tour.getNextRequestId());
+        } else {
+            newRequest.setId(planningRequestId);
+        }
         tour.addRequest(newRequest);
         Map<Long,Request> requests = tour.getRequests();
+
 
         //Rebuild the tour
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
         Depot depot = tour.getDepot();
         List<Intersection> intersections = tour.getIntersections();
         List<Intersection> newIntersections = new ArrayList<>();
-        List<Pair<Long,String>> steps =new ArrayList<Pair<Long,String>>(tour.getSteps());
+        ArrayList<Pair<Long,String>> steps =tour.getSteps();
+
+
+
 
         ArrayList<Pair<Long,String>> newSteps = new ArrayList<>();
 
@@ -248,9 +258,11 @@ public class TourBuilderV2 {
         int indexIntersection = 0;
         boolean add= true;
         boolean complete = false;
+
         for(Pair<Long,String> step : tour.getSteps()) {
             newSteps.add(step);
             long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(indexStep));
+
             while(intersections.get(indexIntersection).getId()!=nextSpecificIntersection){
                 if(add){
                     newIntersections.add(intersections.get(indexIntersection));
