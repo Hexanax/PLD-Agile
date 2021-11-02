@@ -4,6 +4,7 @@ import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.IconProvider;
 import fr.insalyon.pldagile.view.maps.PointLayer;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -47,8 +48,23 @@ public class RequestView extends Region {
     public RequestView(Controller controller) {
 
         this.controller = controller;
+        render();
+        pickupItems.addListener(new ListChangeListener<RequestItem>() {
 
+            @Override
+            public void onChanged(Change<? extends RequestItem> c) {
+                render();
+            }
+        });
+
+    }
+
+    private void render() {
+        if (pickupItems.isEmpty()) {
+            return;
+        }
         GridPane gridPane = new GridPane();
+        gridPane.getChildren().removeAll();
         gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(16);
@@ -61,28 +77,10 @@ public class RequestView extends Region {
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
         // List of steps
-        pickupList = new ListView<>();
-        pickupList.setItems(pickupItems);
-        pickupList.getStyleClass().add("requests-list");
-        pickupList.setOrientation(Orientation.VERTICAL);
-        pickupList.setMaxHeight(200D);
-        gridPane.add(pickupList, 0, 1, 2, 1);
-
-
-
-
-
-        // Generate RoadMap Button
-        Button generateRoadMap = new Button("Generate the Road Map");
-        generateRoadMap.setGraphic(IconProvider.getIcon(COMPUTE_ICON, 20));
-        generateRoadMap.getStyleClass().add("main-button");
-        generateRoadMap.setDefaultButton(true);
-        gridPane.add(generateRoadMap, 0, 4, 2, 1);
-        GridPane.setHalignment(generateRoadMap, HPos.CENTER);
-
-        generateRoadMap.setOnAction(event -> {
-            controller.generateRoadMap();
-        });
+        int colIndex = 0;
+        for (RequestItem r : pickupItems) {
+            gridPane.add(r, 0, ++colIndex, 2, 1);
+        }
 
         addRequest = new Button(ADD_REQUEST);
         deleteRequest = new Button(DELETE_REQUEST);
@@ -90,23 +88,31 @@ public class RequestView extends Region {
         undo = new Button(UNDO);
 
 
-        gridPane.add(addRequest, 0, 2, 1, 1);
-        gridPane.add(deleteRequest, 1, 2, 1, 1);
-        gridPane.add(undo, 0, 3, 1, 1);
-        gridPane.add(redo, 1, 3, 1, 1);
+        gridPane.add(addRequest, 0, ++colIndex, 1, 1);
+        gridPane.add(deleteRequest, 1, colIndex, 1, 1);
+        gridPane.add(undo, 0, ++colIndex, 1, 1);
+        gridPane.add(redo, 1, colIndex, 1, 1);
 
 
-        deleteRequest.setOnAction(this::actionPerformed);
-        addRequest.setOnAction(this::actionPerformed);
-        undo.setOnAction(this::actionPerformed);
-        redo.setOnAction(this::actionPerformed);
+            deleteRequest.setOnAction(this::actionPerformed);
+            addRequest.setOnAction(this::actionPerformed);
+            undo.setOnAction(this::actionPerformed);
+            redo.setOnAction(this::actionPerformed);
 
+        // Generate RoadMap Button
+        Button generateRoadMap = new Button("Generate the Road Map");
+        generateRoadMap.setGraphic(IconProvider.getIcon(COMPUTE_ICON, 20));
+        generateRoadMap.getStyleClass().add("main-button");
+        generateRoadMap.setDefaultButton(true);
+        gridPane.add(generateRoadMap, 0, ++colIndex, 2, 1);
+        GridPane.setHalignment(generateRoadMap, HPos.CENTER);
+
+        generateRoadMap.setOnAction(event -> {
+            controller.generateRoadMap();
+        });
 
         this.getChildren().add(gridPane);
-
-
     }
-
     private void actionPerformed(ActionEvent event) {
         switch (((Button) event.getTarget()).getText()){
             case DELETE_REQUEST:

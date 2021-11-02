@@ -113,3 +113,7 @@ build/*
 # picky maps
 picky/*
 
+# binary files
+bin/*
+.project
+.settings/*

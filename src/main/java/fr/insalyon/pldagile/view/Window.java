@@ -36,6 +36,9 @@ public class Window {
     private final LineLayer lineLayer = new LineLayer();
     private final double centeredZoomValue = 13.5;
 
+    private int windwowWidth;
+    private int windowHeight;
+
     public Window(Controller controller) {
         this.controller = controller;
         pointLayer.setController(controller);
@@ -45,7 +48,6 @@ public class Window {
     public static Stage getMainStage() {
         return mainStage;
     }
-
 
     public void start(Stage stage) throws Exception {
         mainStage = stage;
@@ -57,8 +59,10 @@ public class Window {
         mapView = new MapView();
         mapView.addLayer(pointLayer); // Add the map layer
         mapView.addLayer(lineLayer); // Add the line (tour) layer
-        int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
-        int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
+        windwowWidth = (int) Screen.getPrimary().getBounds().getWidth();
+        windowHeight = (int) Screen.getPrimary().getBounds().getHeight();
+        Scene scene = new Scene(mainPanel, windwowWidth, windowHeight);
+        scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
         mapView.setZoom(3);
         final Label headerLabel = headerLabel();
         final Group copyright = createCopyright();
@@ -79,8 +83,6 @@ public class Window {
         mainPanel.getChildren().add(bp);
         loadSidePanel(false);
 
-        Scene scene = new Scene(mainPanel, screenWidth, screenHeight);
-        scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
         bp.getChildren().addAll(mapView, headerLabel, copyright);
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
@@ -94,27 +96,32 @@ public class Window {
         MapView.setPlaceholderImageSupplier(loadingImageSupplier);
         stage.show();
     }
-    private void loadSidePanel(boolean modifyMode){
+
+    private void loadSidePanel(boolean modifyMode) {
         sidePanel = new SidePanel(controller);
-        if (modifyMode){
+        if (modifyMode) {
             sidePanel.ModifyPanel();
         } else {
-            sidePanel.MainSidePanel();
+            System.out.println(windowHeight);
+            sidePanel.MainSidePanel(windowHeight * 0.8);
         }
 
+        sidePanel.setMinHeight(Window.getMainStage().getHeight());
+
         AnchorPane.setTopAnchor(sidePanel, 16D);
-        AnchorPane.setBottomAnchor(sidePanel, 16D);
+        // AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
 
         // Removing the existing side panel
         for (int i = 0; i < mainPanel.getChildren().size(); i++) {
-            if (mainPanel.getChildren().get(i).getClass() == SidePanel.class){
+            if (mainPanel.getChildren().get(i).getClass() == SidePanel.class) {
                 mainPanel.getChildren().remove(i);
                 break;
             }
         }
         mainPanel.getChildren().add(sidePanel);
     }
+
     private Label headerLabel() {
         final Label header = new Label("Picky - INSA Lyon");
         header.getStyleClass().add("header");
@@ -143,7 +150,8 @@ public class Window {
         // Add all the intersections temporarily
         for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
             Intersection intersection = entry.getValue();
-            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(),
+                    intersection.getCoordinates().getLongitude());
             mapPoint.setId(intersection.getId());
             pointLayer.addPoint(mapPoint, new Circle(2, Colors.getMapIntersectionColor()));
         }
@@ -183,31 +191,30 @@ public class Window {
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup",-1);
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(),
+                        "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup", -1);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery",-1);
+                RequestItem deliveryItem = new RequestItem(
+                        "Delivery at " + request.getDelivery().getIntersection().getId(),
+                        "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery", -1);
                 items.add(pickupItem);
                 items.add(deliveryItem);
-                //Map points
-                MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
+                // Map points
+                MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(),
+                        pickup.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(pickup.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        new RequestMapPin(RequestType.PICKUP)
-                );
-                mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
+                pointLayer.addRequestPoint(mapPoint, new RequestMapPin(RequestType.PICKUP));
+                mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(),
+                        delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        new RequestMapPin(RequestType.DELIVERY)
-                );
+                pointLayer.addRequestPoint(mapPoint, new RequestMapPin(RequestType.DELIVERY));
             });
             RequestView.setPickupItems(items);
 
             pointLayer.addPoint(depotPoint, new DepotMapPin());
-           //TODO Scale it with zoom level
+            // TODO Scale it with zoom level
         }
     }
 
@@ -216,13 +223,15 @@ public class Window {
         Intersection previousIntersection = tour.getDepot().getIntersection();
         for (Segment segment : tour.getPath()) {
             Intersection destinationIntersection = segment.getDestination();
-            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
-            MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
+            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(),
+                    previousIntersection.getCoordinates().getLongitude());
+            MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(),
+                    destinationIntersection.getCoordinates().getLongitude());
             MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
             pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
             pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
             lineLayer.addLine(mapDestination, Colors.getTourIntersectionColor());
-            //Update prev intersection
+            // Update prev intersection
             previousIntersection = destinationIntersection;
         }
     }
@@ -249,14 +258,14 @@ public class Window {
         }
     }
 
-    public void showInputAlert(String title, String header, String text){
+    public void showInputAlert(String title, String header, String text) {
         TextInputDialog dialog = new TextInputDialog("300");
         dialog.setTitle(title);
         dialog.setHeaderText(header);
         dialog.setContentText(text);
 
         Optional<String> result = dialog.showAndWait();
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             controller.confirm(result.get());
         } else {
             controller.cancel();
@@ -275,7 +284,6 @@ public class Window {
     public void showModifyMenu() {
         loadSidePanel(true);
     }
-
 
     public void hideModifyMenu() {
         RequestView.disableRowListener();
@@ -305,48 +313,53 @@ public class Window {
         pointLayer.activeMapIntersectionsListener();
     }
 
-    public void activeRequestIntersectionsListener(){pointLayer.activeRequestIntersectionsListener();}
+    public void activeRequestIntersectionsListener() {
+        pointLayer.activeRequestIntersectionsListener();
+    }
 
     public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
         pointLayer.clearRequestPoints();
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
-        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot",0);
+        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(),
+                "Departure time : " + depot.getDepartureTime(), -1, "Depot", 0);
         items.add(item);
-        for(Pair<Long, String> step : steps) {
-            if(Objects.equals(step.getValue(), "pickup"))
-            {
-                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index);
+        for (Pair<Long, String> step : steps) {
+            if (Objects.equals(step.getValue(), "pickup")) {
+                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(),
+                        "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",
+                        index);
                 items.add(item);
-                double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
+                double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates()
+                        .getLatitude();
+                double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates()
+                        .getLongitude();
                 MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
                 mapPoint.setId(requests.get(step.getKey()).getPickup().getIntersection().getId());
                 mapPoint.setRequestId(requests.get(step.getKey()).getId());
                 mapPoint.setStepIndex(index);
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        new RequestMapPin(RequestType.PICKUP)
-                );
+                pointLayer.addRequestPoint(mapPoint, new RequestMapPin(RequestType.PICKUP));
             }
-            if(Objects.equals(step.getValue(), "delivery")){
-                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index);
+            if (Objects.equals(step.getValue(), "delivery")) {
+                item = new RequestItem(
+                        "Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(),
+                        "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),
+                        "Delivery", index);
                 items.add(item);
-                double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
+                double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates()
+                        .getLatitude();
+                double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates()
+                        .getLongitude();
                 MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
                 mapPoint.setId(requests.get(step.getKey()).getDelivery().getIntersection().getId());
                 mapPoint.setRequestId(requests.get(step.getKey()).getId());
                 mapPoint.setStepIndex(index);
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        new RequestMapPin(RequestType.DELIVERY)
-                );
+                pointLayer.addRequestPoint(mapPoint, new RequestMapPin(RequestType.DELIVERY));
             }
 
             index++;
         }
-        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1));
+        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2, "Depot", (index - 1));
         items.add(item);
         RequestView.clearItems();
 
@@ -357,20 +370,16 @@ public class Window {
     public void addMapRequest(Request request) {
         Pickup pickup = request.getPickup();
         Delivery delivery = request.getDelivery();
-        MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
+        MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(),
+                pickup.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(pickup.getIntersection().getId());
         mapPoint.setRequestId(request.getId());
-        pointLayer.addRequestPoint(
-                mapPoint,
-                new RequestMapPin(RequestType.PICKUP)
-        );
-        mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
+        pointLayer.addRequestPoint(mapPoint, new RequestMapPin(RequestType.PICKUP));
+        mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(),
+                delivery.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(delivery.getIntersection().getId());
         mapPoint.setRequestId(request.getId());
-        pointLayer.addRequestPoint(
-                mapPoint,
-                new RequestMapPin(RequestType.DELIVERY)
-        );
+        pointLayer.addRequestPoint(mapPoint, new RequestMapPin(RequestType.DELIVERY));
 
     }
 

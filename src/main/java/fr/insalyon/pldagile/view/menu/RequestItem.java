@@ -32,7 +32,6 @@ public class RequestItem extends Region {
 
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.BASELINE_CENTER);
-        maingp.setPadding(new Insets(5, 5, 5, 5));
         maingp.setHgap(5);
         maingp.setVgap(5);
 
@@ -44,7 +43,7 @@ public class RequestItem extends Region {
 
         DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
 
-        Label timeLabel = new Label(requestCommentary); //TODO Display time: dateFormat.format(pickupTime)
+        Label timeLabel = new Label(requestCommentary); // TODO Display time: dateFormat.format(pickupTime)
         timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
         maingp.add(timeLabel, 0, 1, 1, 1);
         GridPane.setHalignment(timeLabel, HPos.LEFT);
