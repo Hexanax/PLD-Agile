@@ -130,16 +130,17 @@ public class TourBuilderV2 {
 
         }
 
-
+        //Remove the steps linked to the deleted request from the tour
         tour.getSteps().removeIf(step -> Objects.equals(step.getKey(), request.getId()));
 
-        index = 0;
 
+        index = 0;
         while(index != indexAroundStep[0]){
             newIntersections.add(intersections.get(index));
             index ++;
         }
 
+        //if intersection before pickup is the same as before delivery
         if(indexAroundStep[0]==indexAroundStep[2]){
             Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
             Dijkstra dijkstra = bestPaths.get(intersections.get(indexAroundStep[0]).getId());
@@ -147,6 +148,8 @@ public class TourBuilderV2 {
             for(long idIntersection : dijkstra.getShortestPath(intersections.get(indexAroundStep[1]).getId())){
                 newIntersections.add(intersectionsMap.get(idIntersection));
             }
+
+            //if intersection after pickup is the same as before delivery
         } else if(indexAroundStep[1]==indexAroundStep[2]){
             Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
             Dijkstra dijkstra = bestPaths.get(intersections.get(indexAroundStep[0]).getId());
@@ -348,12 +351,6 @@ public class TourBuilderV2 {
             tour.addPickupTime(m.getValue().getPickup().getDuration());
             tour.addDeliveryTime(m.getValue().getDelivery().getDuration());
         }
-
-
-
-
-
-
 
         return tour;
     }
