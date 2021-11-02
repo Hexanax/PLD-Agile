@@ -82,8 +82,6 @@ public class BaseMap extends Group {
     private final DoubleProperty prefCenterLat = new SimpleDoubleProperty();
     private final DoubleProperty prefZoom = new SimpleDoubleProperty();
     
-    private double zoomValue;
-
     public double x0, y0;
     private boolean dirty = true;
 
@@ -124,7 +122,7 @@ public class BaseMap extends Group {
         }
         this.sceneProperty().addListener(sceneListener);
     }
-    
+
     /**
      * Move the center of this map to the specified coordinates
      * @param lat the latitude of the new center
@@ -232,7 +230,7 @@ public class BaseMap extends Group {
     public void zoom(double delta, double pivotX, double pivotY) {
         double dz = delta;// > 0 ? .1 : -.1;
         double zp = zoom.get();
-        logger.fine("Zoom called, zp = " + zp + ", delta = " + delta + ", px = " + pivotX + ", py = " + pivotY);
+        logger.info("Zoom called, zp = " + zp + ", delta = " + delta + ", px = " + pivotX + ", py = " + pivotY);
         double txold = getTranslateX();
         double t1x = pivotX - getTranslateX();
         double t2x = 1. - Math.pow(2, dz);
@@ -241,7 +239,7 @@ public class BaseMap extends Group {
         double t1y = pivotY - tyold;
         double t2y = 1. - Math.pow(2, dz);
         double totY = t1y * t2y;
-        logger.fine("zp = " + zp + ", txold = " + txold + ", totx = " + totX + ", tyold = " + tyold + ", toty = " + totY);
+        logger.info("zp = " + zp + ", txold = " + txold + ", totx = " + totX + ", tyold = " + tyold + ", toty = " + totY);
         if ((delta > 0)) {
             if (zp < MAX_ZOOM) {
                 setTranslateX(txold + totX);
@@ -258,10 +256,10 @@ public class BaseMap extends Group {
                 zoom.set(zp + delta);
                 markDirty();
             } else {
-                logger.warning("sorry, would be too small");
+                logger.info("sorry, would be too small");
             }
         }
-        logger.fine("after, zp = " + zoom.get() + ", tx = " + getTranslateX());
+        logger.info("after, zp = " + zoom.get() + ", tx = " + getTranslateX());
     }
 
 
@@ -524,4 +522,7 @@ public class BaseMap extends Group {
         return this.getParent().getLayoutBounds().getHeight();
     }
 
+    public boolean canDezoom(double dezoom) {
+        return zoom.get() > dezoom;
+    }
 }

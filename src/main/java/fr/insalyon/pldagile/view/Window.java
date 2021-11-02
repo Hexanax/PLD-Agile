@@ -40,7 +40,7 @@ public class Window {
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
                                                             // one tour)
     private final LineLayer lineLayer = new LineLayer();
-    private final int centeredZoomValue = 12;
+    private final int centeredZoomValue = 13;
 
     public Window(Controller controller) {
         this.controller = controller;
@@ -168,6 +168,7 @@ public class Window {
         mapView.setCenter(mapCenter);
         // sets the zoom at level 12: approximately the level of a city in our case
         mapView.setZoom(centeredZoomValue);
+        mapView.setMaxDezoom(centeredZoomValue);
     }
 
     public void renderPlanningRequest(PlanningRequest planningRequest) {
@@ -361,4 +362,6 @@ public class Window {
         );
 
     }
+
+
 }

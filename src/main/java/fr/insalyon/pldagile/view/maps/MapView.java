@@ -41,6 +41,7 @@ import javafx.util.Duration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 /**
  * This is the top UI element of the map component. The center location and the
@@ -49,6 +50,7 @@ import java.util.function.Supplier;
  */
 public class MapView extends Region {
 
+    private static final Logger logger = Logger.getLogger( MapView.class.getName() );
     private final BaseMap baseMap;
     private Timeline timeline;
     private final List<MapLayer> layers = new LinkedList<>();
@@ -56,6 +58,7 @@ public class MapView extends Region {
     private MapPoint centerPoint = null;
     private boolean zooming = false;
     private boolean enableDragging = false;
+    private double maxDezoom = 0.0D;
 
     /**
      * Create a MapView component.
@@ -83,6 +86,8 @@ public class MapView extends Region {
 
 
     private void registerInputListeners() {
+        logger.warning("Register listeners" +
+                "");
         setOnMousePressed(t -> {
             if (zooming) return;
             baseMap.x0 = t.getX();
@@ -106,11 +111,28 @@ public class MapView extends Region {
             enableDragging = false;
         });
         setOnZoomFinished(t -> zooming = false);
-        setOnZoom(t -> baseMap.zoom(t.getZoomFactor() - 1, t.getX(), t.getY()));
+        setOnZoom(t -> {
+            logger.fine("Zoom factor = " + (t.getZoomFactor() - 1));
+            boolean allowDezoom = baseMap.canDezoom(maxDezoom);
+            boolean isZooming = t.getZoomFactor() > 0.0;
+            if (isZooming || allowDezoom) {
+                baseMap.zoom(t.getZoomFactor() - 1, t.getX(), t.getY());
+            }
+        });
+
         setOnScroll(t -> {
             final double delta = t.getDeltaY() > 1 ? .1 : t.getDeltaY() < -1 ? -.1 : 0;
-            baseMap.zoom(delta, t.getX(), t.getY());
+            logger.fine("Scroll factor = " + (delta));
+            boolean allowDezoom = baseMap.canDezoom(maxDezoom);
+            boolean isZooming = delta > 0.0;
+            if (isZooming || allowDezoom) {
+                baseMap.zoom(delta, t.getX(), t.getY());
+            }
         });
+    }
+
+    public void setMaxDezoom(double maxDezoom) {
+        this.maxDezoom = maxDezoom;
     }
 
     /**
@@ -258,4 +280,5 @@ public class MapView extends Region {
         clip.setWidth(w);
         clip.setHeight(h);
     }
+
 }
