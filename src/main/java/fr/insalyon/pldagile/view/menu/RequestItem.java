@@ -75,8 +75,6 @@ public class RequestItem extends Region {
             GridPane.setHalignment(titleLabel, HPos.LEFT);
             GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
-            DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
-
             Label timeLabel = new Label(requestCommentary); //TODO Display time: dateFormat.format(pickupTime)
             timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
             maingp.add(timeLabel, 0, 1, 1, 1);

@@ -25,6 +25,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Window {
@@ -185,9 +187,9 @@ public class Window {
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), String.valueOf(request.getPickup().getDuration()), request.getId(), "Pickup",-1);
+                RequestItem pickupItem = new RequestItem("Pickup - " + request.getPickup().getIntersection().getId(), String.valueOf(request.getPickup().getDuration()), request.getId(), "Pickup",-1);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), String.valueOf(request.getDelivery().getDuration()), request.getId(), "Delivery",-1);
+                RequestItem deliveryItem = new RequestItem("Delivery - " + request.getDelivery().getIntersection().getId(), String.valueOf(request.getDelivery().getDuration()), request.getId(), "Delivery",-1);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
@@ -305,7 +307,8 @@ public class Window {
         pointLayer.clearRequestPoints();
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
-        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot",0);
+        DateFormat dateFormat = new SimpleDateFormat("HH 'h' mm");
+        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + dateFormat.format(depot.getDepartureTime()), -1, "Depot",0);
         items.add(item);
         for(Pair<Long, String> step : steps) {
             if(Objects.equals(step.getValue(), "pickup"))
