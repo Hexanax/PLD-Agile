@@ -142,12 +142,15 @@ public class PickyApplication extends Application {
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
             MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
             ArrayList<RequestItem> items = new ArrayList<>();
+            Date currentDate = planningRequest.getDepot().getDepartureTime();
             planningRequest.getRequests().forEach(request -> {
                 //Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem(new Date(), request.getPickup().getDuration(), count++,"Pickup",0);
+                currentDate.setTime(currentDate.getTime() + request.getPickup().getDuration()*1000);
+                RequestItem pickupItem = new RequestItem(currentDate, request.getPickup().getDuration(), count++,"Pickup",0);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem(new Date(), request.getDelivery().getDuration(), count++,"Delivery",0);
+                currentDate.setTime(currentDate.getTime() + request.getDelivery().getDuration()*1000);
+                RequestItem deliveryItem = new RequestItem(currentDate, request.getDelivery().getDuration(), count++,"Delivery",0);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
