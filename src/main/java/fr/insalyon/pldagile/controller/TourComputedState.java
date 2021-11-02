@@ -26,12 +26,7 @@ public class TourComputedState implements State{
                 "This will remove the requests already loaded and lose the calculated tour");
     }
 
-    @Override
-    public void modify(Controller controller, Window window) {
-        controller.setCurrentState(controller.modifyTourState);
-        controller.initializeModifyTour();
-        window.showModifyMenu();
-    }
+
 
     @Override
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
@@ -78,7 +73,7 @@ public class TourComputedState implements State{
         listOfCdes.undo();
 
         window.clearTour();
-        window.renderTour(tour.getIntersections());
+        window.renderTour(tour);
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
     }
 
@@ -86,7 +81,7 @@ public class TourComputedState implements State{
     public void redo(ListOfCommands listOfCdes,Window window, Tour tour){
         listOfCdes.redo();
         window.clearTour();
-        window.renderTour(tour.getIntersections());
+        window.renderTour(tour);
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
     }
 

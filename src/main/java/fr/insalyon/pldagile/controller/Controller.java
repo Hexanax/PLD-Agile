@@ -28,7 +28,6 @@ public class Controller {
     protected final RequestsOverwrite1State requestsOverwrite1State = new RequestsOverwrite1State();
     protected final RequestsOverwrite2State requestsOverwrite2State = new RequestsOverwrite2State();
     protected final TourComputedState tourComputedState = new TourComputedState();
-    protected final ModifyTourState modifyTourState = new ModifyTourState();
     protected final DeleteRequestState1 deleteRequestState1 = new DeleteRequestState1();
     protected final AddRequestState1 addRequestState1 = new AddRequestState1();
     protected final AddRequestState2 addRequestState2 = new AddRequestState2();
@@ -79,7 +78,6 @@ public class Controller {
 
     public void confirm(String result) { currentState.confirm(this,citymap,planningRequest,tour,result,window, listOfCommands);}
 
-    public void modify() { currentState.modify(this,window);}
 
     public void generateRoadMap() { currentState.generateRoadMap(this,tour,window);}
 

@@ -16,8 +16,6 @@ public interface State {
 
     public default void cancel(Controller controller,Tour tour, Window window, ListOfCommands l){};
 
-    public default void modify(Controller controller, Window window){};
-
     public default void generateRoadMap(Controller controller, Tour tour, Window window){};
 
     public default void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window){};

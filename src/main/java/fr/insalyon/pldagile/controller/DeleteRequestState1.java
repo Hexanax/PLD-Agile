@@ -11,7 +11,7 @@ public class DeleteRequestState1 implements State{
     public void deleteRequest(Controller controller,CityMap citymap, Tour tour,  Request request, Window window,ListOfCommands listOfCdes) {
         if(request != null){
             listOfCdes.add(new DeleteRequestCommand(citymap,tour,request));
-            window.renderTour(tour.getIntersections());
+            window.renderTour(tour);
             window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
             controller.setCurrentState(controller.tourComputedState);
             window.showWarningAlert("Modification", "Suppresion successfully completed", null);

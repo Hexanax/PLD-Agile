@@ -8,7 +8,7 @@ import fr.insalyon.pldagile.view.Window;
 public class AddRequestState6 implements State{
     @Override
     public void cancel(Controller controller, Tour tour, Window window,ListOfCommands listOfCdes) {
-        window.renderTour(tour.getIntersections());
+        window.renderTour(tour);
         window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
         window.hideModifyMenu();
         listOfCdes.reset();
@@ -31,7 +31,7 @@ public class AddRequestState6 implements State{
         if(valid){
             controller.pickupToAdd.getValue().setDuration(duration);
             listOfCdes.add(new AddRequestCommand(citymap, tour,controller.pickupToAdd, controller.deliveryToAdd));
-            window.renderTour(tour.getIntersections());
+            window.renderTour(tour);
             window.addMapRequest(tour.getRequests().get(tour.getNextRequestId()-1));
             window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
             controller.setCurrentState(controller.tourComputedState);
