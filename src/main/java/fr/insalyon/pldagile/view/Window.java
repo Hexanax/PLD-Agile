@@ -193,14 +193,14 @@ public class Window {
                 mapPoint.setRequestId(request.getId());
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        new RequestMapPin()
+                        new RequestMapPin(RequestType.PICKUP)
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        new DeliveryMapPin()
+                        new RequestMapPin(RequestType.DELIVERY)
                 );
             });
             RequestView.setPickupItems(items);
@@ -317,7 +317,7 @@ public class Window {
                 mapPoint.setStepIndex(index);
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        new RequestMapPin()
+                        new RequestMapPin(RequestType.PICKUP)
                 );
             }
             if(Objects.equals(step.getValue(), "delivery")){
@@ -331,7 +331,7 @@ public class Window {
                 mapPoint.setStepIndex(index);
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        new DeliveryMapPin()
+                        new RequestMapPin(RequestType.DELIVERY)
                 );
             }
 
@@ -353,14 +353,14 @@ public class Window {
         mapPoint.setRequestId(request.getId());
         pointLayer.addRequestPoint(
                 mapPoint,
-                new RequestMapPin()
+                new RequestMapPin(RequestType.PICKUP)
         );
         mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(delivery.getIntersection().getId());
         mapPoint.setRequestId(request.getId());
         pointLayer.addRequestPoint(
                 mapPoint,
-                new DeliveryMapPin()
+                new RequestMapPin(RequestType.DELIVERY)
         );
 
     }
