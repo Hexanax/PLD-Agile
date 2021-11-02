@@ -60,7 +60,6 @@
 .side-panel{
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 32px;
-    -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 22, 0, 4, 22);
     -fx-max-width: 350px;
     -fx-padding: 24px 0px 24px 0px;
