@@ -5,10 +5,7 @@ import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.TourBuilderV1;
 import fr.insalyon.pldagile.view.maps.*;
-import fr.insalyon.pldagile.view.menu.ModifyView;
-import fr.insalyon.pldagile.view.menu.RequestItem;
-import fr.insalyon.pldagile.view.menu.RequestView;
-import fr.insalyon.pldagile.view.menu.SidePanel;
+import fr.insalyon.pldagile.view.menu.*;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.application.Application;
 import javafx.geometry.Pos;
@@ -153,6 +150,14 @@ public class Window {
             mapPoint.setId(intersection.getId());
             pointLayer.addPoint(mapPoint, new Circle(2, Colors.getMapIntersectionColor()));
         }
+    }
+
+    public void updateMapFileName(String fileName) {
+        ImportView.setImportMapLabel(fileName);
+    }
+
+    public void updateRequestFileName(String fileName) {
+        ImportView.setImportRequestLabel(fileName);
     }
 
     /**

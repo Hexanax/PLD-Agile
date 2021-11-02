@@ -26,6 +26,7 @@ public class MapDisplayedState implements State{
             if (importFile != null) {
                 XMLDeserializer.load(planningRequest, cityMap, importFile);
                 window.renderPlanningRequest(planningRequest);
+                window.updateRequestFileName(importFile.getName());
                 controller.setCurrentState(controller.requestsDisplayedState);
             } else {
                 controller.setCurrentState(controller.mapDisplayedState);
