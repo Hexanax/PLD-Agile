@@ -41,10 +41,6 @@ public class TourBuilderV2 {
         //We have to manually add the depot intersection to the end of the list
         tourIntersections.add(intersectionSteps.get(0));
 
-
-
-
-
         Tour tour = new Tour(planningRequest.getRequests(),planningRequest.getDepot());
         Map<Long, Intersection> intersections = cityMap.getIntersections();
         Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();

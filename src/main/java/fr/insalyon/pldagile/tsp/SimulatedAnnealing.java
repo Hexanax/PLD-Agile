@@ -16,7 +16,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
     private double coolingRate;
     private int numberOfIterations;
 
-    //Holds all of the best paths from an originId to each intersection of the graph
+    //Holds all the best paths from an originId to each intersection of the graph
     private Map<Long, Dijkstra> bestPaths;
 
     //our segments/intersections in form of a graph
@@ -41,7 +41,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         this.stepsIdentifiers = new ArrayList<>();
         this.stepsIntersectionId = new ArrayList<>();
         computeAllShortestPaths();
-        runSimulatedAnnealing(25.0,1000,0.99);
+        runSimulatedAnnealing(25.0,10000,0.99);
     }
 
     public void computeAllShortestPaths() {
