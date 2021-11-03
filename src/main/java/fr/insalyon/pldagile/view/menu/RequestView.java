@@ -146,7 +146,6 @@ public class RequestView extends Region {
         @Override
         public void handle(MouseEvent event) {
             if (event.getClickCount()==1){
-                System.out.println("request numéro : " + pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
                 PointLayer.highlightIcon(pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
             }
 
