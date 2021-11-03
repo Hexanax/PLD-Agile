@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.IconProvider;
+import fr.insalyon.pldagile.view.maps.PointLayer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
+import java.awt.*;
 import java.util.List;
 
 public class RequestView extends Region {
@@ -140,6 +142,17 @@ public class RequestView extends Region {
         }
     };
 
+    private static EventHandler<MouseEvent> onOneClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getClickCount()==1){
+                System.out.println("request numéro : " + pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
+                PointLayer.highlightIcon(pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
+            }
+
+        }
+    };
+
     public static void activeRowListener(){
         pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
@@ -147,4 +160,16 @@ public class RequestView extends Region {
     public static void disableRowListener(){
         pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
+
+    public static void activeItemListener(){
+        pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, onOneClick);
+    }
+
+
+    public static void disableItemListener(){
+        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, onOneClick);
+        PointLayer.unHighlightIcon(PointLayer.getLastHighlighted().getKey().getRequestId());
+    }
+
+
 }

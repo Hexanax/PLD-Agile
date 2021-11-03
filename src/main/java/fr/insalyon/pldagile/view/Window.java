@@ -295,6 +295,14 @@ public class Window {
         RequestView.activeRowListener();
     }
 
+    public void activeItemListener(){
+        RequestView.activeItemListener();
+    }
+
+    public void disableItemListener(){
+        RequestView.disableItemListener();
+    }
+
     public void activeMapIntersectionsListener() {
         pointLayer.activeMapIntersectionsListener();
     }
