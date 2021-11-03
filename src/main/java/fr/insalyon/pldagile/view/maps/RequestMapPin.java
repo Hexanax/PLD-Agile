@@ -12,12 +12,27 @@ public class RequestMapPin extends MapPin {
     public RequestMapPin(RequestType type){
         double iconSize = DEFAULT_ICON_SIZE;
         this.type = type;
-        String imgURL = type.equals(RequestType.PICKUP) ? PICKUP_ICON_URL : DELIVERY_ICON_URL;
+        String imgURL, styleClass;
+        if (type.equals(RequestType.PICKUP)){
+            imgURL = PICKUP_ICON_URL;
+            styleClass = "pickup-pin";
+
+        } else { // type.equals(RequestType.DELIVERY) == true
+            imgURL = DELIVERY_ICON_URL;
+            styleClass = "delivery-pin";
+        }
         this.setImage(new Image(
                 imgURL,
                 iconSize, iconSize,
                 true, true
         ));
-        this.centerCoordinates();
+        super.centerCoordinates();
+        // Add style properties to the pin
+        this.getStyleClass().add(styleClass);
     }
+
+    public Long getRequestId() {
+        return requestId;
+    }
+
 }

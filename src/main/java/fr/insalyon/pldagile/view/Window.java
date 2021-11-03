@@ -205,7 +205,7 @@ public class Window {
             });
             RequestView.setPickupItems(items);
 
-            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+            pointLayer.addPoint(depotPoint, new DepotMapPin());
            //TODO Scale it with zoom level
         }
     }

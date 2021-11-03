@@ -4,8 +4,8 @@ import fr.insalyon.pldagile.model.RequestType;
 import javafx.scene.image.ImageView;
 
 public abstract class MapPin extends ImageView {
-    protected double iconSize;
     static protected double DEFAULT_ICON_SIZE = 35D;
+    protected double iconSize = DEFAULT_ICON_SIZE;
 
     /**
      * Adjusts the coordinates of the view so that their origin is at the bottom center of
@@ -27,7 +27,7 @@ public abstract class MapPin extends ImageView {
      * Sets the new X origin on the icon
      */
     private void setCenteredX(){
-        setX(-iconSize / 2.6); // Somehow, dividing by 2 makes it not on the intersection
+        super.setX(-iconSize / 2.6); // Somehow, dividing by 2 makes it not on the intersection
                                     // dividing by 2.6 looks closer to the real intersection
     }
 
