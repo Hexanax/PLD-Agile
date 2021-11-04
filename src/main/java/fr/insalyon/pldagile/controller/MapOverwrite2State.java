@@ -18,7 +18,7 @@ public class MapOverwrite2State implements State{
             if(importFile != null) {
                 CityMap newMap = new CityMap();
                 XMLDeserializer.load(newMap, importFile);
-                controller.setCitymap(newMap);
+                controller.setCityMap(newMap);
                 controller.setPlanningRequest(new PlanningRequest());
                 window.clearRequest();
                 window.clearMap();

@@ -3,11 +3,9 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.tsp.TourBuilderV1;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
 import fr.insalyon.pldagile.xml.ExceptionXML;
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -17,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -25,9 +22,11 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 
-public class Window {
+public class Window implements PropertyChangeListener {
 
     private static Stage mainStage = null;
     private Controller controller = null;
@@ -35,12 +34,13 @@ public class Window {
     private static SidePanel sidePanel;
     private static AnchorPane mainPanel = new AnchorPane();
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
-                                                            // one tour)
+    // one tour)
     private final LineLayer lineLayer = new LineLayer();
     private final int centeredZoomValue = 12;
 
     public Window(Controller controller) {
         this.controller = controller;
+        this.controller.getPclCityMap().addPropertyChangeListener(this);
         pointLayer.setController(controller);
         this.controller.initWindow(this);
     }
@@ -97,9 +97,10 @@ public class Window {
         MapView.setPlaceholderImageSupplier(loadingImageSupplier);
         stage.show();
     }
-    private void loadSidePanel(boolean modifyMode){
+
+    private void loadSidePanel(boolean modifyMode) {
         sidePanel = new SidePanel(controller);
-        if (modifyMode){
+        if (modifyMode) {
             sidePanel.ModifyPanel();
         } else {
             sidePanel.MainSidePanel();
@@ -111,13 +112,14 @@ public class Window {
 
         // Removing the existing side panel
         for (int i = 0; i < mainPanel.getChildren().size(); i++) {
-            if (mainPanel.getChildren().get(i).getClass() == SidePanel.class){
+            if (mainPanel.getChildren().get(i).getClass() == SidePanel.class) {
                 mainPanel.getChildren().remove(i);
                 break;
             }
         }
         mainPanel.getChildren().add(sidePanel);
     }
+
     private Label headerLabel() {
         final Label header = new Label("Picky - INSA Lyon");
         header.getStyleClass().add("header");
@@ -185,9 +187,9 @@ public class Window {
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup",-1);
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup", -1);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery",-1);
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery", -1);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
@@ -209,7 +211,7 @@ public class Window {
             RequestView.setPickupItems(items);
 
             pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
-           //TODO Scale it with zoom level
+            //TODO Scale it with zoom level
         }
     }
 
@@ -251,14 +253,14 @@ public class Window {
         }
     }
 
-    public void showInputAlert(String title, String header, String text){
+    public void showInputAlert(String title, String header, String text) {
         TextInputDialog dialog = new TextInputDialog("300");
         dialog.setTitle(title);
         dialog.setHeaderText(header);
         dialog.setContentText(text);
 
         Optional<String> result = dialog.showAndWait();
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             controller.confirm(result.get());
         } else {
             controller.cancel();
@@ -299,18 +301,19 @@ public class Window {
         pointLayer.activeMapIntersectionsListener();
     }
 
-    public void activeRequestIntersectionsListener(){pointLayer.activeRequestIntersectionsListener();}
+    public void activeRequestIntersectionsListener() {
+        pointLayer.activeRequestIntersectionsListener();
+    }
 
     public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
         pointLayer.clearRequestPoints();
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
-        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot",0);
+        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot", 0);
         items.add(item);
-        for(Pair<Long, String> step : steps) {
-            if(Objects.equals(step.getValue(), "pickup"))
-            {
-                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index);
+        for (Pair<Long, String> step : steps) {
+            if (Objects.equals(step.getValue(), "pickup")) {
+                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup", index);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
@@ -323,8 +326,8 @@ public class Window {
                         IconProvider.getPickupIcon()
                 );
             }
-            if(Objects.equals(step.getValue(), "delivery")){
-                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index);
+            if (Objects.equals(step.getValue(), "delivery")) {
+                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(), "Delivery", index);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
@@ -340,7 +343,7 @@ public class Window {
 
             index++;
         }
-        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1));
+        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2, "Depot", (index - 1));
         items.add(item);
         RequestView.clearItems();
 
@@ -366,5 +369,12 @@ public class Window {
                 IconProvider.getDropoffIcon()
         );
 
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("abc" + evt.toString());
+        clearMap();
+        renderCityMap((CityMap) evt.getNewValue());
     }
 }

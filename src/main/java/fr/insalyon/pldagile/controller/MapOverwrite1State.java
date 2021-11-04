@@ -12,13 +12,13 @@ import java.io.File;
 
 public class MapOverwrite1State implements State{
     @Override
-    public void loadMap(Controller controller, CityMap citymap, Window window) {
+    public void loadMap(Controller controller, CityMap cityMap, Window window) {
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if (importFile != null) {
                 CityMap newMap = new CityMap();
                 XMLDeserializer.load(newMap, importFile);
-                controller.setCitymap(newMap);
+                controller.setCityMap(cityMap);
                 window.clearMap();
                 window.renderCityMap(newMap);
                 window.centerMap(newMap);

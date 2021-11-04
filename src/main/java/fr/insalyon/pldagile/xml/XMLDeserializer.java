@@ -15,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.text.SimpleDateFormat;
@@ -40,7 +41,7 @@ public class XMLDeserializer {
      * @throws IOException
      * @throws ExceptionXML
      */
-    public static void load(CityMap map, File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML {
+    public static void load(CityMap map, File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML, CloneNotSupportedException {
         Element root = getRootElement(xmlFile);
         if (root.getNodeName().equals("map")) {
             buildFromDOMXML(root, map);
@@ -56,7 +57,7 @@ public class XMLDeserializer {
      * @param map the city map to create from the file
      * @throws ExceptionXML
      */
-    private static void buildFromDOMXML(Element rootNode, CityMap map) throws ExceptionXML {
+    private static void buildFromDOMXML(Element rootNode, CityMap map) throws ExceptionXML, CloneNotSupportedException {
         NodeList intersectionsList = rootNode.getElementsByTagName("intersection");
         for (int i = 0; i < intersectionsList.getLength(); i++) {
             Intersection intersection = createIntersection((Element) intersectionsList.item(i));

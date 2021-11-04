@@ -1,13 +1,14 @@
 package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.observer.PCLCityMap;
 import fr.insalyon.pldagile.view.Window;
 import javafx.util.Pair;
 
 import static javafx.application.Application.launch;
 
 public class Controller {
-    private CityMap citymap;
+    private PCLCityMap pclCityMap;
     private PlanningRequest planningRequest;
     private Tour tour;
     private Tour modifyTour;
@@ -38,11 +39,15 @@ public class Controller {
 
 
     public Controller(CityMap citymap, PlanningRequest planningRequest, Tour tour) {
-        this.citymap = citymap;
+        this.pclCityMap = new PCLCityMap(citymap);
         this.planningRequest = planningRequest;
         this.tour = tour;
         listOfCommands = new ListOfCommands();
         currentState = initialState;
+    }
+
+    public PCLCityMap getPclCityMap() {
+        return pclCityMap;
     }
 
     public void initWindow(Window window) {
@@ -52,7 +57,7 @@ public class Controller {
     protected void setCurrentState(State state){
         currentState = state;
     }
-    protected void setCitymap(CityMap citymap) {this.citymap = citymap; }
+    protected void setCityMap(CityMap cityMap) { pclCityMap.setCityMap(cityMap); }
     protected void setPlanningRequest(PlanningRequest planningRequest) {this.planningRequest = planningRequest;}
     protected void setTour(Tour tour){this.tour = tour;}
     protected void initializeModifyTour() {
@@ -67,25 +72,25 @@ public class Controller {
      * Method called by window after a click on the button "Load a plan"
      */
     public void loadMap() {
-        currentState.loadMap(this, citymap, window);
+        currentState.loadMap(this, pclCityMap.getCityMap(), window);
     }
 
-    public void loadRequests() { currentState.loadRequests(this,citymap, planningRequest,window);}
+    public void loadRequests() { currentState.loadRequests(this, pclCityMap.getCityMap(), planningRequest,window);}
 
-    public void computeTour() { currentState.computeTour(this,citymap, planningRequest, window);}
+    public void computeTour() { currentState.computeTour(this, pclCityMap.getCityMap(), planningRequest, window);}
 
     public void cancel() { currentState.cancel(this, tour,window, listOfCommands);}
 
-    public void confirm(String result) { currentState.confirm(this,citymap,planningRequest,tour,result,window, listOfCommands);}
+    public void confirm(String result) { currentState.confirm(this, pclCityMap.getCityMap(), planningRequest,tour,result,window, listOfCommands);}
 
 
     public void generateRoadMap() { currentState.generateRoadMap(this,tour,window);}
 
-    public void deleteRequest(Long idRequest) { currentState.deleteRequest(this,citymap, tour, tour.getRequests().get(idRequest), window, listOfCommands);}
+    public void deleteRequest(Long idRequest) { currentState.deleteRequest(this, pclCityMap.getCityMap(), tour, tour.getRequests().get(idRequest), window, listOfCommands);}
 
     public void modifyClick(Long id, String type, int stepIndex) { currentState.modifyClick(this, id, type, stepIndex,window);}
 
-    public void addRequest(Long id) { currentState.addRequest(this,citymap, tour,id, window);}
+    public void addRequest(Long id) { currentState.addRequest(this, pclCityMap.getCityMap(), tour,id, window);}
 
     /**
      * Method called by window after a click on the button "Undo"

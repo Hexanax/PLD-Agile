@@ -3,26 +3,41 @@ package fr.insalyon.pldagile.model;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.util.Pair;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 //TODO : switch to hashMap
 
-public class CityMap {
+public class CityMap implements Cloneable {
 
     private Map<Long, Intersection> intersections;
     private Map<Pair<Long, Long>, Segment> segments;
 
+    private PropertyChangeSupport support;
+
     public CityMap(Map<Long, Intersection> intersections, Map<Pair<Long, Long>, Segment> segments) {
         this.intersections = intersections;
         this.segments = segments;
+        support = new PropertyChangeSupport(this);
     }
 
     public CityMap() {
         this.intersections = new HashMap<Long, Intersection>();
         this.segments = new HashMap<Pair<Long,Long>, Segment>();
+        support = new PropertyChangeSupport(this);
     }
+
+    @Override
+    protected Object clone()
+            throws CloneNotSupportedException
+    {
+        return new CityMap(this.intersections, this.segments);
+    }
+
 
     public Map<Long, Intersection> getIntersections() {
         return intersections;
@@ -44,9 +59,13 @@ public class CityMap {
         intersections.put(id, intersection);
     }
 
+    public void addAllIntersections(List<Intersection> intersections) throws ExceptionXML {
+        for (Intersection intersection : intersections) {
+            add(intersection);
+        }
+    }
 
-
-    public void addAll(List<Segment> segments) throws ExceptionXML {
+    public void addAllSegments(List<Segment> segments) throws ExceptionXML {
         for (Segment segment : segments) {
             add(segment);
         }
@@ -56,6 +75,15 @@ public class CityMap {
         Pair<Long,Long> id = segment.getId();
         segments.put(id, segment);
     }
+
+    public void buildMap(List<Intersection> intersections,List<Segment> segments) throws ExceptionXML, CloneNotSupportedException {
+        CityMap oldMap = (CityMap) this.clone();
+        addAllIntersections(intersections);
+        addAllSegments(segments);
+        support.firePropertyChange("mapLoaded", oldMap, this);
+    }
+
+
 
 
     /**
@@ -96,4 +124,16 @@ public class CityMap {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CityMap cityMap = (CityMap) o;
+        return Objects.equals(intersections, cityMap.intersections) && Objects.equals(segments, cityMap.segments);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(intersections, segments);
+    }
 }
