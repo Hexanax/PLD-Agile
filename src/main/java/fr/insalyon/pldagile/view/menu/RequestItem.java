@@ -41,13 +41,17 @@ public class RequestItem extends Region {
         DateFormat dateFormat = new SimpleDateFormat("HH 'h' mm");
 
         if(requestNumber >= 0) {
-            Label titleLabel = new Label(type + " - " + dateFormat.format(stepDate));
+            Label titleLabel;
+            if(stepDate==null){
+                titleLabel = new Label(type );
+            } else {
+                titleLabel = new Label(type + " - " + dateFormat.format(stepDate));
+            }
             titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
             maingp.add(titleLabel, 0, 0, 4, 1);
             GridPane.setHalignment(titleLabel, HPos.LEFT);
             GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
-            DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
 
             Label timeLabel = new Label("Duration : "); //TODO Display time: dateFormat.format(pickupTime)
             timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
