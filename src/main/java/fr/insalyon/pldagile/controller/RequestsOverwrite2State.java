@@ -19,7 +19,6 @@ public class RequestsOverwrite2State implements State{
                 PlanningRequest newPlanningRequest = XMLDeserializer.load(cityMap, importFile);
                 controller.setPlanningRequest(newPlanningRequest);
                 controller.setTour(new Tour());
-                window.clearTour();
                 window.updateRequestFileName(importFile.getName());
                 controller.setCurrentState(controller.requestsDisplayedState);
             } else {

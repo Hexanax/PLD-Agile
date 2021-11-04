@@ -17,10 +17,8 @@ public class RequestsOverwrite1State implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
-                PlanningRequest newPlanningRequest = new PlanningRequest();
-                XMLDeserializer.load(cityMap, importFile);
+                PlanningRequest newPlanningRequest = XMLDeserializer.load(cityMap, importFile);
                 controller.setPlanningRequest(newPlanningRequest);
-                window.clearTour();
                 window.updateRequestFileName(importFile.getName());
             }
         } catch(Exception e) {

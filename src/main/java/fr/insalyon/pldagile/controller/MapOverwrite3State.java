@@ -16,11 +16,10 @@ public class MapOverwrite3State implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
-                CityMap newMap = XMLDeserializer.load(importFile);
-                controller.setCityMap(newMap);
+                CityMap newCityMap = XMLDeserializer.load(importFile);
+                controller.setCityMap(newCityMap);
                 controller.setPlanningRequest(new PlanningRequest());
                 controller.setTour(new Tour());
-                window.clearRequest();
                 window.updateMapFileName(importFile.getName());
                 controller.setCurrentState(controller.mapDisplayedState);
             } else {

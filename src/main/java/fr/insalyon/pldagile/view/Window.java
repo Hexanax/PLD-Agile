@@ -381,19 +381,21 @@ public class Window implements PropertyChangeListener {
         if(propertyName.equals("cityMapUpdate")) {
             CityMap newCityMapValue = (CityMap) evt.getNewValue();
             clearMap();
-            renderCityMap((CityMap) evt.getNewValue());
+            clearRequest();
+            clearTour();
+            renderCityMap(newCityMapValue);
             try {
-                this.centerMap(newCityMapValue);
+                centerMap(newCityMapValue);
             } catch (ExceptionXML e) {
                 e.printStackTrace();
             }
         }
         else if (propertyName.equals("planningRequestUpdate")){
             System.out.println("new value");
+            clearRequest();
+            clearTour();
             PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
-            this.clearRequest();
-            this.clearTour();
-            this.renderPlanningRequest(newPlanningRequestValue);
+            renderPlanningRequest(newPlanningRequestValue);
 
         }
 
