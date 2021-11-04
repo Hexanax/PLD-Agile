@@ -25,6 +25,8 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Window {
@@ -196,13 +198,18 @@ public class Window {
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
             MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
             depotPoint.setId(planningRequest.getDepot().getIntersection().getId());
+            Date currentDate = planningRequest.getDepot().getDepartureTime();
             ArrayList<RequestItem> items = new ArrayList<>();
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
                 RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), String.valueOf(request.getPickup().getDuration()), request.getId(), "Pickup",-1, false);
+                currentDate.setTime(currentDate.getTime() + pickup.getDuration()*1000);
+                RequestItem pickupItem = new RequestItem(currentDate, request.getPickup().getDuration(), request.getId(), "Pickup",-1);
                 Delivery delivery = request.getDelivery();
                 RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), String.valueOf(request.getDelivery().getDuration()), request.getId(), "Delivery",-1, false);
+                currentDate.setTime(currentDate.getTime() + delivery.getDuration()*1000);
+                RequestItem deliveryItem = new RequestItem(currentDate, request.getDelivery().getDuration(), request.getId(), "Delivery",-1);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
@@ -325,11 +332,15 @@ public class Window {
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
         RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot",0, false);
+        RequestItem item = new RequestItem(depot.getDepartureTime(), 0, -1, "Depot",0);
         items.add(item);
+        Date currentDate = depot.getDepartureTime();
         for(Pair<Long, String> step : steps) {
             if(Objects.equals(step.getValue(), "pickup"))
             {
                 item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), String.valueOf(requests.get(step.getKey()).getPickup().getDuration()), step.getKey(), "Pickup",index, false);
+                currentDate.setTime(currentDate.getTime() + requests.get(step.getKey()).getPickup().getDuration()*1000);
+                item = new RequestItem(currentDate, requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
@@ -344,6 +355,8 @@ public class Window {
             }
             if(Objects.equals(step.getValue(), "delivery")){
                 item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), String.valueOf(requests.get(step.getKey()).getDelivery().getDuration()), step.getKey(),"Delivery",index, false);
+                currentDate.setTime(currentDate.getTime() + requests.get(step.getKey()).getPickup().getDuration()*1000);
+                item = new RequestItem(currentDate, requests.get(step.getKey()).getPickup().getDuration(), step.getKey(),"Delivery",index);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
@@ -360,6 +373,7 @@ public class Window {
             index++;
         }
         item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1), false);
+        item = new RequestItem(currentDate, 0, -2,"Depot",(index-1));
         items.add(item);
         RequestView.clearItems();
 
