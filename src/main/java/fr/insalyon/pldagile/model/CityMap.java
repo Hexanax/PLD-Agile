@@ -32,7 +32,7 @@ public class CityMap implements Cloneable {
     }
 
     @Override
-    protected Object clone()
+    public Object clone()
             throws CloneNotSupportedException
     {
         return new CityMap(this.intersections, this.segments);
@@ -129,7 +129,7 @@ public class CityMap implements Cloneable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         CityMap cityMap = (CityMap) o;
-        return Objects.equals(intersections, cityMap.intersections) && Objects.equals(segments, cityMap.segments);
+        return (intersections.equals(cityMap.intersections)) && (segments.equals(cityMap.segments));
     }
 
     @Override

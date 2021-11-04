@@ -15,8 +15,9 @@ public class InitialState implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if (importFile != null){
-                XMLDeserializer.load(citymap, importFile);
-                controller.setCityMap(citymap);
+                CityMap cloneCityMap = (CityMap) citymap.clone();
+                XMLDeserializer.load(cloneCityMap, importFile);
+                controller.setCityMap(cloneCityMap);
                 window.centerMap(citymap);
                 window.updateMapFileName(importFile.getName());
                 controller.setCurrentState(controller.mapDisplayedState);
