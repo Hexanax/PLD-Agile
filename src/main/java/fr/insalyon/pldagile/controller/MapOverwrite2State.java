@@ -12,18 +12,16 @@ import java.io.File;
 
 public class MapOverwrite2State implements State{
     @Override
-    public void loadMap(Controller controller, CityMap citymap, Window window) {
+    public void loadMap(Controller controller, Window window) {
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
-                CityMap newMap = new CityMap();
-                XMLDeserializer.load(newMap, importFile);
-                controller.setCityMap(newMap);
+                CityMap newCityMap = new CityMap();
+                XMLDeserializer.load(newCityMap, importFile);
+                controller.setCityMap(newCityMap);
                 controller.setPlanningRequest(new PlanningRequest());
                 window.clearRequest();
-                window.clearMap();
-                window.renderCityMap(newMap);
-                window.centerMap(newMap);
+                window.centerMap(newCityMap);
                 window.updateMapFileName(importFile.getName());
                 controller.setCurrentState(controller.mapDisplayedState);
             } else {
@@ -37,7 +35,7 @@ public class MapOverwrite2State implements State{
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour,String result, Window window,ListOfCommands listOfCdes) {
-        this.loadMap(controller, citymap, window);
+        this.loadMap(controller, window);
     }
 
     @Override

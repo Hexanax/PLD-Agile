@@ -11,7 +11,7 @@ import java.io.File;
 
 public class MapDisplayedState implements State{
     @Override
-    public void loadMap(Controller controller, CityMap citymap, Window window) {
+    public void loadMap(Controller controller, Window window) {
         controller.setCurrentState(controller.mapOverwrite1State);
         window.showValidationAlert("Load a new map",
                 "Are you sure you want to load a new map? ",

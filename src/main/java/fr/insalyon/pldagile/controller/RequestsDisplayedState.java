@@ -3,18 +3,13 @@ package fr.insalyon.pldagile.controller;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.model.Tour;
-import fr.insalyon.pldagile.tsp.TourBuilderV1;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
-import fr.insalyon.pldagile.xml.XMLDeserializer;
-
-import java.util.List;
-
 
 
 public class RequestsDisplayedState implements State{
     @Override
-    public void loadMap(Controller controller, CityMap citymap, Window window) {
+    public void loadMap(Controller controller, Window window) {
         controller.setCurrentState(controller.mapOverwrite2State);
         window.showValidationAlert("Load a new map",
                 "Are you sure you want to load a new map? ",

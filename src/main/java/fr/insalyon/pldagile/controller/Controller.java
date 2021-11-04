@@ -72,7 +72,7 @@ public class Controller {
      * Method called by window after a click on the button "Load a plan"
      */
     public void loadMap() {
-        currentState.loadMap(this, pclCityMap.getCityMap(), window);
+        currentState.loadMap(this, window);
     }
 
     public void loadRequests() { currentState.loadRequests(this, pclCityMap.getCityMap(), planningRequest,window);}

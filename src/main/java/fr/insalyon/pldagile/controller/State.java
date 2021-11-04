@@ -6,7 +6,7 @@ import fr.insalyon.pldagile.view.Window;
 
 public interface State {
 
-    public default void loadMap(Controller controller, CityMap citymap, Window window) {};
+    public default void loadMap(Controller controller, Window window) {};
 
     public default void loadRequests(Controller controller,CityMap cityMap, PlanningRequest planningRequest, Window window){};
 
