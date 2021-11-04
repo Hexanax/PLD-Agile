@@ -15,7 +15,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.text.SimpleDateFormat;
@@ -35,16 +34,16 @@ public class XMLDeserializer {
     /**
      * Open an XML file and create a city map from this file
      * Inspired from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
-     * @param map the city map to create from the file
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
      * @throws ExceptionXML
+     * @return
      */
-    public static void load(CityMap map, File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML, CloneNotSupportedException {
+    public static CityMap load(File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML, CloneNotSupportedException {
         Element root = getRootElement(xmlFile);
         if (root.getNodeName().equals("map")) {
-            buildFromDOMXML(root, map);
+            return buildFromDOMXML(root);
         } else {
             throw new ExceptionXML("Wrong format");
         }
@@ -54,20 +53,22 @@ public class XMLDeserializer {
      * Browse the XML map file to fill the city map
      * Inspired from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
      * @param rootNode the root element of the XML map file
-     * @param map the city map to create from the file
      * @throws ExceptionXML
      */
-    private static void buildFromDOMXML(Element rootNode, CityMap map) throws ExceptionXML, CloneNotSupportedException {
+    private static CityMap buildFromDOMXML(Element rootNode) throws ExceptionXML, CloneNotSupportedException {
+        CityMap newCityMap = new CityMap();
         NodeList intersectionsList = rootNode.getElementsByTagName("intersection");
         for (int i = 0; i < intersectionsList.getLength(); i++) {
             Intersection intersection = createIntersection((Element) intersectionsList.item(i));
-            map.add(intersection);
+            newCityMap.add(intersection);
         }
         NodeList segmentsList = rootNode.getElementsByTagName("segment");
         for (int i = 0; i < segmentsList.getLength(); i++) {
-            Segment segment = createSegment((Element) segmentsList.item(i), map.getIntersections());
-            map.add(segment);
+            Segment segment = createSegment((Element) segmentsList.item(i), newCityMap.getIntersections());
+            newCityMap.add(segment);
         }
+
+        return newCityMap;
     }
 
     /**
@@ -123,18 +124,18 @@ public class XMLDeserializer {
     /**
      * Open an XML file and planning request from this file
      * Inspired from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
-     * @param planning the planning request to create from the file
      * @param map the city map currently used
      * @throws ParserConfigurationException
      * @throws SAXException
      * @throws IOException
      * @throws ExceptionXML
      * @throws ParseException
+     * @return
      */
-    public static void load(PlanningRequest planning, CityMap map, File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML, ParseException {
+    public static PlanningRequest load(CityMap map, File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML, ParseException {
         Element root = getRootElement(xmlFile);
         if (root.getNodeName().equals("planningRequest")) {
-            buildFromDOMXML(root, planning, map);
+            return buildFromDOMXML(root, map);
         } else {
             throw new ExceptionXML("Wrong format");
         }
@@ -144,24 +145,26 @@ public class XMLDeserializer {
      * Browse the XML requests file to fill the planning request
      * Inspired from @author Mrs SOLNON <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
      * @param rootNode the root element of the XML map file
-     * @param planning the planning request to create from the file
      * @param map the city map currently used
      * @throws ExceptionXML
      * @throws ParseException
+     * @return
      */
-    private static void buildFromDOMXML(Element rootNode, PlanningRequest planning, CityMap map) throws ExceptionXML, ParseException {
+    private static PlanningRequest buildFromDOMXML(Element rootNode, CityMap map) throws ExceptionXML, ParseException {
+        PlanningRequest planningRequest = new PlanningRequest();
         NodeList depotNodeList = rootNode.getElementsByTagName("depot");
         if (depotNodeList.getLength() != 1) {
             throw new ExceptionXML("Error when reading file : Depot is undefined");
         }
         Map<Long, Intersection> intersections = map.getIntersections();
         Depot depot = createDepot((Element) depotNodeList.item(0), intersections);
-        planning.add(depot);
+        planningRequest.add(depot);
 
         NodeList requests = rootNode.getElementsByTagName("request");
         for (int i = 0; i < requests.getLength(); i++) {
-            planning.add(createRequest((Element) requests.item(i), intersections));
+            planningRequest.add(createRequest((Element) requests.item(i), intersections));
         }
+        return planningRequest;
     }
 
     /**

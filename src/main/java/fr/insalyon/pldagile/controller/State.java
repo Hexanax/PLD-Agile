@@ -8,7 +8,7 @@ public interface State {
 
     public default void loadMap(Controller controller, Window window) {};
 
-    public default void loadRequests(Controller controller,CityMap cityMap, PlanningRequest planningRequest, Window window){};
+    public default void loadRequests(Controller controller, CityMap cityMap, Window window){};
 
     public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window){};
 

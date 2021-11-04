@@ -13,16 +13,15 @@ import java.io.File;
 
 public class RequestsOverwrite1State implements State{
     @Override
-    public void loadRequests(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window) {
+    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
                 PlanningRequest newPlanningRequest = new PlanningRequest();
-                XMLDeserializer.load(newPlanningRequest, cityMap, importFile);
+                XMLDeserializer.load(cityMap, importFile);
                 controller.setPlanningRequest(newPlanningRequest);
-                window.clearRequest();
+                window.clearTour();
                 window.updateRequestFileName(importFile.getName());
-                window.renderPlanningRequest(newPlanningRequest);
             }
         } catch(Exception e) {
             if(!e.getMessage().equals("cancel")){
@@ -36,7 +35,7 @@ public class RequestsOverwrite1State implements State{
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour,String result, Window window,ListOfCommands listOfCdes) {
-        this.loadRequests(controller, citymap,planningRequest, window);
+        this.loadRequests(controller, citymap, window);
     }
 
     @Override

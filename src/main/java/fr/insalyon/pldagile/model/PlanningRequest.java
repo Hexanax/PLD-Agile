@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PlanningRequest {
 
@@ -41,5 +42,18 @@ public class PlanningRequest {
         Long unorderedId = (long) requests.size();
         request.setId(unorderedId);
         requests.add(request);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PlanningRequest that = (PlanningRequest) o;
+        return Objects.equals(requests, that.requests) && Objects.equals(depot, that.depot);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(requests, depot);
     }
 }

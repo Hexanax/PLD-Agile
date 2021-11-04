@@ -28,8 +28,7 @@ public class PCLCityMap {
     }
 
     public void setCityMap(CityMap cityMap){
-        System.out.println("notification : " + this.cityMap + " " + cityMap);
-        System.out.println(support.getPropertyChangeListeners());
+
         support.firePropertyChange("cityMapUpdate",this.cityMap, cityMap);
         this.cityMap = cityMap;
     }

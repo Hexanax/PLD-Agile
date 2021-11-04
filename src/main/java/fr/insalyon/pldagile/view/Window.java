@@ -41,6 +41,7 @@ public class Window implements PropertyChangeListener {
     public Window(Controller controller) {
         this.controller = controller;
         this.controller.getPclCityMap().addPropertyChangeListener(this);
+        this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
         pointLayer.setController(controller);
         this.controller.initWindow(this);
     }
@@ -373,8 +374,28 @@ public class Window implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("abc" + evt.toString());
-        clearMap();
-        renderCityMap((CityMap) evt.getNewValue());
+
+        String propertyName = evt.getPropertyName();
+        System.out.println(propertyName);
+
+        if(propertyName.equals("cityMapUpdate")) {
+            CityMap newCityMapValue = (CityMap) evt.getNewValue();
+            clearMap();
+            renderCityMap((CityMap) evt.getNewValue());
+            try {
+                this.centerMap(newCityMapValue);
+            } catch (ExceptionXML e) {
+                e.printStackTrace();
+            }
+        }
+        else if (propertyName.equals("planningRequestUpdate")){
+            System.out.println("new value");
+            PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
+            this.clearRequest();
+            this.clearTour();
+            this.renderPlanningRequest(newPlanningRequestValue);
+
+        }
+
     }
 }

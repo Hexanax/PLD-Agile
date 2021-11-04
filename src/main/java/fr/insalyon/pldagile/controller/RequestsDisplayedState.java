@@ -17,7 +17,7 @@ public class RequestsDisplayedState implements State{
     }
 
     @Override
-    public void loadRequests(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window) {
+    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
         controller.setCurrentState(controller.requestsOverwrite1State);
         window.showValidationAlert("Load new requests",
                 "Are you sure you want to load new requests ? ",

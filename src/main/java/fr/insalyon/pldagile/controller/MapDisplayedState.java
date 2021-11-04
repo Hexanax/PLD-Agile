@@ -20,12 +20,12 @@ public class MapDisplayedState implements State{
     }
 
     @Override
-    public void loadRequests(Controller controller,CityMap cityMap, PlanningRequest planningRequest, Window window) {
+    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if (importFile != null) {
-                XMLDeserializer.load(planningRequest, cityMap, importFile);
-                window.renderPlanningRequest(planningRequest);
+                PlanningRequest newPlanningRequest = XMLDeserializer.load(cityMap, importFile);
+                controller.setPlanningRequest(newPlanningRequest);
                 window.updateRequestFileName(importFile.getName());
                 controller.setCurrentState(controller.requestsDisplayedState);
             } else {
