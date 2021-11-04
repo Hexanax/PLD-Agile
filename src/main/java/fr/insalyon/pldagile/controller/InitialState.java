@@ -1,6 +1,5 @@
 package fr.insalyon.pldagile.controller;
 
-import fr.insalyon.pldagile.PickyApplication;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.view.Window;
 import fr.insalyon.pldagile.xml.FileChooseOption;
@@ -15,17 +14,19 @@ public class InitialState implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if (importFile != null){
+                window.addStateFollow("Loading the map ...");
                 XMLDeserializer.load(citymap, importFile);
                 window.clearMap();
                 window.renderCityMap(citymap);
                 window.centerMap(citymap);
                 window.updateMapFileName(importFile.getName());
                 controller.setCurrentState(controller.mapDisplayedState);
+                window.addStateFollow("Map loaded");
             } else {
                 controller.setCurrentState(controller.initialState);
             }
         } catch(Exception e) {
-            window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            window.addStateFollow("Error when reading the XML map file : " + e.getMessage());
         }
     }
 }

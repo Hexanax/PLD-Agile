@@ -1,6 +1,5 @@
 package fr.insalyon.pldagile.picky;
 
-import fr.insalyon.pldagile.PickyApplication;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;

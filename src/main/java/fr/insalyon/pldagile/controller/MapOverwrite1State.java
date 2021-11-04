@@ -16,6 +16,7 @@ public class MapOverwrite1State implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if (importFile != null) {
+                window.addStateFollow("Loading the new map ...");
                 CityMap newMap = new CityMap();
                 XMLDeserializer.load(newMap, importFile);
                 controller.setCitymap(newMap);
@@ -25,7 +26,7 @@ public class MapOverwrite1State implements State{
                 window.updateMapFileName(importFile.getName());
             }
         } catch(Exception e) {
-            window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            window.addStateFollow("Error when reading the XML map file : " + e.getMessage());
         } finally {
             controller.setCurrentState(controller.mapDisplayedState);
         }

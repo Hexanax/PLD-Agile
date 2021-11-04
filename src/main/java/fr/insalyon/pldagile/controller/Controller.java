@@ -2,6 +2,9 @@ package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.Window;
+import javafx.event.EventTarget;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Pair;
 
 import static javafx.application.Application.launch;
@@ -99,5 +102,11 @@ public class Controller {
      */
     public void redo(){
         currentState.redo(listOfCommands, window, tour);
+    }
+
+
+    public void keystroke(KeyCode code, boolean isControlDown) {currentState.keystroke(this,code, window, isControlDown);}
+
+    public void leftClick(MouseEvent event) { currentState.leftClick(this, event, window);
     }
 }

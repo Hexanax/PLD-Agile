@@ -29,6 +29,10 @@ import java.util.*;
 
 public class Window {
 
+    private static KeyboardListener keyboardListener;
+    private static MouseListener mouseListener;
+    private static RequestItem requestListener;
+
     private static Stage mainStage = null;
     private Controller controller = null;
     private MapView mapView;
@@ -43,6 +47,9 @@ public class Window {
         this.controller = controller;
         pointLayer.setController(controller);
         this.controller.initWindow(this);
+
+        keyboardListener = new KeyboardListener(controller);
+        mouseListener = new MouseListener(controller);
     }
 
     public static Stage getMainStage() {
@@ -88,6 +95,14 @@ public class Window {
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
         scene.getStylesheets().add("/style.css");
+
+
+        //key pressed on the scene
+        scene.setOnKeyPressed(KeyboardListener::keyPressed);
+        scene.setOnMouseClicked(MouseListener::mouseClicked);
+
+
+
         stage.setScene(scene);
         stage.setFullScreen(false);
         MapPoint mapCenter = new MapPoint(46.75, 2.80);
@@ -185,9 +200,9 @@ public class Window {
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), String.valueOf(request.getPickup().getDuration()), request.getId(), "Pickup",-1);
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), String.valueOf(request.getPickup().getDuration()), request.getId(), "Pickup",-1, false);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), String.valueOf(request.getDelivery().getDuration()), request.getId(), "Delivery",-1);
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), String.valueOf(request.getDelivery().getDuration()), request.getId(), "Delivery",-1, false);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
@@ -291,6 +306,10 @@ public class Window {
         pointLayer.disableRequestIntersectionsListener();
     }
 
+    public void disableMainListener(){
+        mainStage.getScene().setOnMouseClicked(null);
+    }
+
     public void activeRowListener() {
         RequestView.activeRowListener();
     }
@@ -305,12 +324,12 @@ public class Window {
         pointLayer.clearRequestPoints();
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
-        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot",0);
+        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot",0, false);
         items.add(item);
         for(Pair<Long, String> step : steps) {
             if(Objects.equals(step.getValue(), "pickup"))
             {
-                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), String.valueOf(requests.get(step.getKey()).getPickup().getDuration()), step.getKey(), "Pickup",index);
+                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), String.valueOf(requests.get(step.getKey()).getPickup().getDuration()), step.getKey(), "Pickup",index, false);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
@@ -324,7 +343,7 @@ public class Window {
                 );
             }
             if(Objects.equals(step.getValue(), "delivery")){
-                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), String.valueOf(requests.get(step.getKey()).getDelivery().getDuration()), step.getKey(),"Delivery",index);
+                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), String.valueOf(requests.get(step.getKey()).getDelivery().getDuration()), step.getKey(),"Delivery",index, false);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
@@ -340,7 +359,7 @@ public class Window {
 
             index++;
         }
-        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1));
+        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1), false);
         items.add(item);
         RequestView.clearItems();
 
@@ -366,5 +385,39 @@ public class Window {
                 IconProvider.getDropoffIcon()
         );
 
+    }
+
+
+    public void addStateFollow(String string){
+        //TODO red when its an Error
+        TextItem item = new TextItem(string);
+        LogView.addTextItem(item);
+    }
+
+
+    public void addListPickup(int index, Pickup pickup, long requestID){
+        requestListener = new RequestItem("Pickup at " + pickup.getIntersection().getId(), String.valueOf(pickup.getDuration()), requestID, "Pickup", -2, true);
+        requestListener.setOnKeyPressed(KeyboardListener::keyPressed);
+        RequestView.addItem(requestListener, index, true);
+    }
+
+    public String getRequestListener(){
+        return requestListener.getValue();
+    }
+
+    public void resetRequestListener(){
+        requestListener.setEditable(false);
+        requestListener.setOnKeyPressed(null);
+    }
+
+
+    public void addListDelivery(Integer index, Delivery delivery, long requestID) {
+        requestListener = new RequestItem("Delivery at " + delivery.getIntersection().getId(), String.valueOf(delivery.getDuration()), requestID, "Delivery", -2, true);
+        requestListener.setOnKeyPressed(KeyboardListener::keyPressed);
+        RequestView.addItem(requestListener, index, false);
+    }
+
+    public void activeMainListener() {
+        mainStage.getScene().setOnMouseClicked(MouseListener::mouseClicked);
     }
 }

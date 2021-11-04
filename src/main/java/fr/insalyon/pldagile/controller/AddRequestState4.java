@@ -9,17 +9,21 @@ public class AddRequestState4 implements State{
 
     @Override
     public void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window) {
+        if(stepIndex==-2) { stepIndex = controller.pickupToAdd.getKey(); }
         if(type=="Depot" && stepIndex!=0)
         {
-            window.showWarningAlert("How to add a request", "You can't add a request after the arrival of the tour", null);
+            window.addStateFollow("You can't add a request after the arrival of the tour");
         } else if(stepIndex < controller.pickupToAdd.getKey()) {
-            window.showWarningAlert("How to add a request", "You can't add a request with delivery before pickups", null);
+            window.addStateFollow("You can't add a request with delivery before pickups");
         }
         else {
+
+
             controller.deliveryToAdd = new Pair<Integer, Delivery>(stepIndex, null);
-            window.showWarningAlert("How to add a request", "Please select on the map the intersection of your delivery", null);
+            window.addStateFollow("Please select on the map the intersection of your delivery");
             window.disableEventListener();
             window.activeMapIntersectionsListener();
+            window.disableMainListener();
             controller.setCurrentState(controller.addRequestState5);
         }
 

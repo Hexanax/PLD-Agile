@@ -29,7 +29,7 @@ public class LogView extends Region {
         gridPane.setVgap(16);
 
         // Title Label
-        Label titleLabel = new Label("Requests");
+        Label titleLabel = new Label("State");
         titleLabel.getStyleClass().add("h1");
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
@@ -39,7 +39,7 @@ public class LogView extends Region {
         textList.setItems(textItems);
         textList.getStyleClass().add("requests-list");
         textList.setOrientation(Orientation.VERTICAL);
-        textList.setMaxHeight(200D);
+        textList.setMaxHeight(80);
         gridPane.add(textList, 0, 1, 2, 1);
 
 
@@ -49,6 +49,11 @@ public class LogView extends Region {
     public static void setTextItems(List<TextItem> textList) {
         clearItems();
         textItems.addAll(textList);
+    }
+
+    public static void addTextItem(TextItem textItem) {
+        textItems.add(textItem);
+        textList.scrollTo(textItem);
     }
 
     public static void clearItems() {

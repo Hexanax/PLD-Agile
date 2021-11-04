@@ -19,11 +19,12 @@ public class RequestItem extends Region {
     private long requestNumber;
     private String type;
     private int stepIndex;
+    private TextField value;
     private Button destroy;
     private Button up;
     private Button down;
 
-    public RequestItem(String requestName, String requestCommentary, long requestNumber, String type, int stepIndex) {
+    public RequestItem(String requestName, String requestCommentary, long requestNumber, String type, int stepIndex, boolean editable) {
 
         //TODO test if its a depot
 
@@ -54,13 +55,17 @@ public class RequestItem extends Region {
             GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
 
 
-            TextField value = new TextField(requestCommentary);
+            value = new TextField(requestCommentary);
             value.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
             maingp.add(value, 1, 1, 1, 1);
             GridPane.setHalignment(value, HPos.LEFT);
             GridPane.setMargin(value, new Insets(5, 5, 5, 0));
             value.setEditable(false);
             value.setDisable(false);
+
+            if(editable){
+                value.setEditable(true);
+            }
 
             Label requestLabel = new Label("Request n°" + (requestNumber+1));
             requestLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
@@ -121,4 +126,14 @@ public class RequestItem extends Region {
     public int getStepIndex(){
         return stepIndex;
     }
+
+    public String getValue() {
+        return this.value.getText();
+    }
+
+    public void setEditable(boolean b) {
+        this.value.setEditable(b);
+    }
+
+
 }

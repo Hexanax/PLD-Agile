@@ -2,6 +2,8 @@ package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.IconProvider;
+import fr.insalyon.pldagile.view.KeyboardListener;
+import fr.insalyon.pldagile.view.MouseListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,6 +19,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RequestView extends Region {
@@ -103,7 +106,14 @@ public class RequestView extends Region {
         this.getChildren().add(gridPane);
 
 
+        addRequest.setOnMouseClicked(MouseListener::mouseClicked);
+        deleteRequest.setOnMouseClicked(MouseListener::mouseClicked);
+        redo.setOnMouseClicked(MouseListener::mouseClicked);
+        undo.setOnMouseClicked(MouseListener::mouseClicked);
+        generateRoadMap.setOnMouseClicked(MouseListener::mouseClicked);
     }
+
+
 
     private void actionPerformed(ActionEvent event) {
         switch (((Button) event.getTarget()).getText()){
@@ -127,6 +137,27 @@ public class RequestView extends Region {
         pickupItems.addAll(requestList);
     }
 
+    public static void addItem(RequestItem item, int index, boolean pickup) {
+        //pickupItems.
+
+        List<RequestItem> items = new ArrayList<RequestItem>();
+        int currentIndex =0;
+        for(RequestItem requestItem : pickupItems){
+            if((currentIndex == (index+1) && pickup) || (currentIndex == (index+2) && !pickup)){
+                items.add(item);
+            }
+            items.add(requestItem);
+            currentIndex++;
+        }
+        clearItems();
+        pickupItems.addAll(items);
+        pickupList.scrollTo(item);
+
+
+
+
+    }
+
     public static void clearItems() {
         pickupItems.clear();
     }
@@ -134,7 +165,7 @@ public class RequestView extends Region {
     private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            if(e.getClickCount()==2){
+            if(e.getClickCount()==1){
                 controller.modifyClick(pickupList.getSelectionModel().getSelectedItem().getRequestNumber(), pickupList.getSelectionModel().getSelectedItem().getType(), pickupList.getSelectionModel().getSelectedItem().getStepIndex());
             }
         }
