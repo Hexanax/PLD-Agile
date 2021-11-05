@@ -44,7 +44,7 @@ public class Window {
 //        this.controller.getPclTour().addPropertyChangeListener(this);
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
-        this.mapView = new MapView();
+        this.mapView = new MapView(controller);
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
     }

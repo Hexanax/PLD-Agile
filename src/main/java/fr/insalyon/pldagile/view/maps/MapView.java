@@ -27,6 +27,9 @@
  */
 package fr.insalyon.pldagile.view.maps;
 
+import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.model.CityMap;
+import fr.insalyon.pldagile.model.Coordinates;
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -38,6 +41,8 @@ import javafx.scene.layout.Region;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Supplier;
@@ -47,7 +52,8 @@ import java.util.function.Supplier;
  * zoom level of the map can be altered by input events (mouse/touch/gestures)
  * or by calling the methods setCenter and setZoom.
  */
-public class MapView extends Region {
+public class MapView extends Region implements PropertyChangeListener {
+
 
     private final BaseMap baseMap;
     private Timeline timeline;
@@ -60,11 +66,11 @@ public class MapView extends Region {
     /**
      * Create a MapView component.
      */
-    public MapView() {
+    public MapView(Controller controller) {
         baseMap = new BaseMap();
         getChildren().add(baseMap);
         registerInputListeners();
-
+        controller.getPclCityMap().addPropertyChangeListener(this);
         baseMap.centerLat().addListener(o -> markDirty());
         baseMap.centerLon().addListener(o -> markDirty());
         clip = new Rectangle();
@@ -257,5 +263,14 @@ public class MapView extends Region {
         // update clip
         clip.setWidth(w);
         clip.setHeight(h);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("CityMapViewCenter event " + evt);
+        CityMap newCityMap = (CityMap) evt.getNewValue();
+        Coordinates center = newCityMap.getCenter();
+        setCenter(center.getLatitude(),center.getLongitude());
+        setZoom(13.5);
     }
 }

@@ -35,8 +35,8 @@ public class RequestMapView implements PropertyChangeListener {
         planningRequestPoints.clearPoints();
     }
 
-    public void renderPlanningRequest(PlanningRequest planningRequest) {
-        System.out.println("Entered");
+    public void render() {
+        PlanningRequest planningRequest = this.planningRequest;
         if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             // Render the planning request
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
@@ -45,7 +45,6 @@ public class RequestMapView implements PropertyChangeListener {
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup", -1);
                 Delivery delivery = request.getDelivery();
                 RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery", -1);
                 //Map points
@@ -64,7 +63,7 @@ public class RequestMapView implements PropertyChangeListener {
                         IconProvider.getDropoffIcon()
                 );
             });
-            planningRequestPoints.addPoint(depotPoint, IconProvider.getDepotIcon());
+            planningRequestPoints.addPoint(depotPoint, new Circle(7, Color.ORANGE));
             //TODO Scale it with zoom level
         }
     }
@@ -80,8 +79,8 @@ public class RequestMapView implements PropertyChangeListener {
 
         if (propertyName.equals("planningRequestUpdate")){
             clearRequest();
-            PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
-            renderPlanningRequest(newPlanningRequestValue);
+            this.planningRequest = (PlanningRequest) evt.getNewValue();
+            render();
 
         }
     }
