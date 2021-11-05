@@ -119,7 +119,7 @@ public class PickyApplication extends Application {
     }
 
     public static void renderMapAndRequests() {
-        renderCityMap();
+        window.renderTour(tour);Map();
         renderPlanningRequest();
     }
 

@@ -32,15 +32,16 @@ public class Window implements PropertyChangeListener {
     private Controller controller = null;
     private MapView mapView;
     private final AnchorPane mainPane = new AnchorPane();
-    private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
-    // one tour)
+    private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
+    private final CityMapView cityMapView;
 
     public Window(Controller controller) {
         this.controller = controller;
         this.controller.getPclCityMap().addPropertyChangeListener(this);
         this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
         this.controller.getPclTour().addPropertyChangeListener(this);
+        this.cityMapView = new CityMapView(controller);
     }
 
     public static Stage getMainStage() {
@@ -136,20 +137,10 @@ public class Window implements PropertyChangeListener {
         pointLayer.clearPoints();
     }
 
-    public void renderMapAndRequests(CityMap cityMap, PlanningRequest planningRequest) {
-        renderCityMap(cityMap);
-        renderPlanningRequest(planningRequest);
-    }
-
-    public void renderCityMap(CityMap cityMap) {
-        // Add all the intersections temporarily
-        for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
-            Intersection intersection = entry.getValue();
-            MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
-            mapPoint.setId(intersection.getId());
-            pointLayer.addPoint(mapPoint, new Circle(2, Colors.getMapIntersectionColor()));
-        }
-    }
+//    public void renderMapAndRequests(CityMap cityMap, PlanningRequest planningRequest) {
+//        renderCityMap(cityMap);
+//        renderPlanningRequest(planningRequest);
+//    }
 
     public void updateMapFileName(String fileName) {
         ImportView.setImportMapLabel(fileName);
@@ -368,32 +359,32 @@ public class Window implements PropertyChangeListener {
         );
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        String propertyName = evt.getPropertyName();
-        System.out.println(propertyName);
-        if(propertyName.equals("cityMapUpdate")) {
-            CityMap newCityMapValue = (CityMap) evt.getNewValue();
-            clearMap();
-            clearRequest();
-            clearTour();
-            renderCityMap(newCityMapValue);
-            try {
-                centerMap(newCityMapValue);
-            } catch (ExceptionXML e) {
-                e.printStackTrace();
-            }
-        } else if (propertyName.equals("planningRequestUpdate")){
-            clearRequest();
-            clearTour();
-            PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
-            renderPlanningRequest(newPlanningRequestValue);
-
-        } else if (propertyName.equals("tourUpdate")){
-            Tour newTourValue = (Tour) evt.getNewValue();
-            clearTour();
-            orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
-            renderTour(newTourValue);
-        }
-    }
+//    @Override
+//    public void propertyChange(PropertyChangeEvent evt) {
+//        String propertyName = evt.getPropertyName();
+//        System.out.println(propertyName);
+//        if(propertyName.equals("cityMapUpdate")) {
+//            CityMap newCityMapValue = (CityMap) evt.getNewValue();
+//            clearMap();
+//            clearRequest();
+//            clearTour();
+//            renderCityMap(newCityMapValue);
+//            try {
+//                centerMap(newCityMapValue);
+//            } catch (ExceptionXML e) {
+//                e.printStackTrace();
+//            }
+//        } else if (propertyName.equals("planningRequestUpdate")){
+//            clearRequest();
+//            clearTour();
+//            PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
+//            renderPlanningRequest(newPlanningRequestValue);
+//
+//        } else if (propertyName.equals("tourUpdate")){
+//            Tour newTourValue = (Tour) evt.getNewValue();
+//            clearTour();
+//            orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
+//            renderTour(newTourValue);
+//        }
+//    }
 }
