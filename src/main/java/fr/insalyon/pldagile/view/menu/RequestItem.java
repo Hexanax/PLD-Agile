@@ -20,9 +20,6 @@ public class RequestItem extends Region {
     private String type;
     private int stepIndex;
     private TextField value;
-    private Button destroy;
-    private Button up;
-    private Button down;
 
     public RequestItem(Date arrivalDate, int duration, long requestNumber, String type, int stepIndex, boolean editable) {
 
@@ -91,29 +88,7 @@ public class RequestItem extends Region {
 
         }
 
-        /*up = new Button("^");
-        up.setPrefHeight(30);
-        up.setPrefWidth(30);
-        maingp.add(up, 1, 1, 1, 2);
-        GridPane.setHalignment(up, HPos.CENTER);
-        GridPane.setMargin(up, new Insets(0, 5, 0, 5));
-
-        down = new Button("v");
-        down.setPrefHeight(30);
-        down.setPrefWidth(30);
-        maingp.add(down, 2, 1, 1, 2);
-        GridPane.setHalignment(down, HPos.CENTER);
-        GridPane.setMargin(down, new Insets(0, 5, 0, 5));
-
-        destroy = new Button("destroy");
-        destroy.setPrefHeight(30);
-        destroy.setPrefWidth(30);
-        maingp.add(destroy, 3, 1, 1, 2);
-        GridPane.setHalignment(destroy, HPos.CENTER);
-        GridPane.setMargin(destroy, new Insets(0, 0,0,5));*/
-
         this.getChildren().add(maingp);
-
     }
 
     public long getRequestNumber() {
