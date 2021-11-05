@@ -3,14 +3,9 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.tsp.TourBuilderV1;
 import fr.insalyon.pldagile.view.maps.*;
-import fr.insalyon.pldagile.view.menu.ModifyView;
-import fr.insalyon.pldagile.view.menu.RequestItem;
-import fr.insalyon.pldagile.view.menu.RequestView;
-import fr.insalyon.pldagile.view.menu.SidePanel;
+import fr.insalyon.pldagile.view.menu.*;
 import fr.insalyon.pldagile.xml.ExceptionXML;
-import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,7 +15,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -155,6 +149,14 @@ public class Window {
         }
     }
 
+    public void updateMapFileName(String fileName) {
+        ImportView.setImportMapLabel(fileName);
+    }
+
+    public void updateRequestFileName(String fileName) {
+        ImportView.setImportRequestLabel(fileName);
+    }
+
     /**
      * Centers the map around the central coordinates of the city map sets the zoom
      * the level of a city in the map
@@ -191,35 +193,36 @@ public class Window {
                 mapPoint.setRequestId(request.getId());
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        IconProvider.getPickupIcon()
+                        new RequestMapPin(RequestType.PICKUP)
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        IconProvider.getDropoffIcon()
+                        new RequestMapPin(RequestType.DELIVERY)
                 );
             });
             RequestView.setPickupItems(items);
-            ModifyView.setPickupItems(items);
-            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+
+            pointLayer.addPoint(depotPoint, new DepotMapPin());
            //TODO Scale it with zoom level
         }
     }
 
-    public void renderTour(List<Intersection> intersections) {
+    public void renderTour(Tour tour) {
         // TODO Update RequestView
-        Intersection previousIntersection = intersections.get(0);
-        for (Intersection intersection : intersections.subList(1, intersections.size())) {
-            //Create line and add it
+        Intersection previousIntersection = tour.getDepot().getIntersection();
+        for (Segment segment : tour.getPath()) {
+            Intersection destinationIntersection = segment.getDestination();
             MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
-            MapPoint destinationPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+            MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
+            MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
             pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
             pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
-            lineLayer.addLine(new MapDestination(originPoint, destinationPoint), Colors.getTourIntersectionColor());
+            lineLayer.addLine(mapDestination, Colors.getTourIntersectionColor());
             //Update prev intersection
-            previousIntersection = intersection;
+            previousIntersection = destinationIntersection;
         }
     }
 
@@ -274,19 +277,19 @@ public class Window {
 
 
     public void hideModifyMenu() {
-        ModifyView.disableRowListener();
+        RequestView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
         loadSidePanel(false);
     }
 
     public void disableEventListener() {
-        ModifyView.disableRowListener();
+        RequestView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
         pointLayer.disableRequestIntersectionsListener();
     }
 
     public void activeRowListener() {
-        ModifyView.activeRowListener();
+        RequestView.activeRowListener();
     }
 
     public void activeMapIntersectionsListener() {
@@ -314,7 +317,7 @@ public class Window {
                 mapPoint.setStepIndex(index);
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        IconProvider.getPickupIcon()
+                        new RequestMapPin(RequestType.PICKUP)
                 );
             }
             if(Objects.equals(step.getValue(), "delivery")){
@@ -328,7 +331,7 @@ public class Window {
                 mapPoint.setStepIndex(index);
                 pointLayer.addRequestPoint(
                         mapPoint,
-                        IconProvider.getDropoffIcon()
+                        new RequestMapPin(RequestType.DELIVERY)
                 );
             }
 
@@ -337,9 +340,9 @@ public class Window {
         item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1));
         items.add(item);
         RequestView.clearItems();
-        ModifyView.clearItems();
+
         RequestView.setPickupItems(items);
-        ModifyView.setPickupItems(items);
+
     }
 
     public void addMapRequest(Request request) {
@@ -350,14 +353,14 @@ public class Window {
         mapPoint.setRequestId(request.getId());
         pointLayer.addRequestPoint(
                 mapPoint,
-                IconProvider.getPickupIcon()
+                new RequestMapPin(RequestType.PICKUP)
         );
         mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(delivery.getIntersection().getId());
         mapPoint.setRequestId(request.getId());
         pointLayer.addRequestPoint(
                 mapPoint,
-                IconProvider.getDropoffIcon()
+                new RequestMapPin(RequestType.DELIVERY)
         );
 
     }

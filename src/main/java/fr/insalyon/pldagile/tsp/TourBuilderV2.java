@@ -41,10 +41,6 @@ public class TourBuilderV2 {
         //We have to manually add the depot intersection to the end of the list
         tourIntersections.add(intersectionSteps.get(0));
 
-
-
-
-
         Tour tour = new Tour(planningRequest.getRequests(),planningRequest.getDepot());
         Map<Long, Intersection> intersections = cityMap.getIntersections();
         Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
@@ -95,6 +91,12 @@ public class TourBuilderV2 {
         boolean delivery = false;
         int lastFoundIndex =0;
         int index = 1;
+
+        /**
+         * iterate over intersections to find the 2 intersections with the same IDs as the ones
+         * in the request we want to delete.
+         * in indexAroundStep we store the index of the intersections before/after the pickup/delivery
+         */
         long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(0));
         while(!found){
             if(intersections.get(index).getId()==nextSpecificIntersection){
@@ -128,13 +130,9 @@ public class TourBuilderV2 {
 
         }
 
-
-
-
-
-
-
+        //Remove the steps linked to the deleted request from the tour
         tour.getSteps().removeIf(step -> Objects.equals(step.getKey(), request.getId()));
+
 
         index = 0;
         while(index != indexAroundStep[0]){
@@ -142,6 +140,7 @@ public class TourBuilderV2 {
             index ++;
         }
 
+        //if intersection before pickup is the same as before delivery
         if(indexAroundStep[0]==indexAroundStep[2]){
             Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
             Dijkstra dijkstra = bestPaths.get(intersections.get(indexAroundStep[0]).getId());
@@ -149,6 +148,8 @@ public class TourBuilderV2 {
             for(long idIntersection : dijkstra.getShortestPath(intersections.get(indexAroundStep[1]).getId())){
                 newIntersections.add(intersectionsMap.get(idIntersection));
             }
+
+            //if intersection after pickup is the same as before delivery
         } else if(indexAroundStep[1]==indexAroundStep[2]){
             Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
             Dijkstra dijkstra = bestPaths.get(intersections.get(indexAroundStep[0]).getId());
@@ -223,19 +224,29 @@ public class TourBuilderV2 {
     //TODO refactor
     //TODO test
     //TODO enhance
-    public Tour addRequest(CityMap cityMap, Tour tour, Pair<Integer,Pickup> pickup, Pair<Integer,Delivery> delivery) {
+    public Tour addRequest(CityMap cityMap, Tour tour, Pair<Integer,Pickup> pickup, Pair<Integer,Delivery> delivery, long planningRequestId) {
+
+
         //Create and add the new request
         Request newRequest = new Request(pickup.getValue(), delivery.getValue());
-        newRequest.setId(tour.getNextRequestId());
+        if(planningRequestId == -1){
+            newRequest.setId(tour.getNextRequestId());
+        } else {
+            newRequest.setId(planningRequestId);
+        }
         tour.addRequest(newRequest);
         Map<Long,Request> requests = tour.getRequests();
+
 
         //Rebuild the tour
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
         Depot depot = tour.getDepot();
         List<Intersection> intersections = tour.getIntersections();
         List<Intersection> newIntersections = new ArrayList<>();
-        List<Pair<Long,String>> steps =new ArrayList<Pair<Long,String>>(tour.getSteps());
+        ArrayList<Pair<Long,String>> steps =tour.getSteps();
+
+
+
 
         ArrayList<Pair<Long,String>> newSteps = new ArrayList<>();
 
@@ -247,9 +258,11 @@ public class TourBuilderV2 {
         int indexIntersection = 0;
         boolean add= true;
         boolean complete = false;
+
         for(Pair<Long,String> step : tour.getSteps()) {
             newSteps.add(step);
             long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(indexStep));
+
             while(intersections.get(indexIntersection).getId()!=nextSpecificIntersection){
                 if(add){
                     newIntersections.add(intersections.get(indexIntersection));
@@ -350,12 +363,6 @@ public class TourBuilderV2 {
             tour.addPickupTime(m.getValue().getPickup().getDuration());
             tour.addDeliveryTime(m.getValue().getDelivery().getDuration());
         }
-
-
-
-
-
-
 
         return tour;
     }

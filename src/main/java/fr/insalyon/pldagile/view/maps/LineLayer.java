@@ -16,11 +16,10 @@ import java.awt.*;
  */
 public class LineLayer extends MapLayer {
 
-    // TODO Pair<MapPoint, MapPoint> define MapLine
     private final ObservableList<Pair<MapDestination, Line>> lines = FXCollections.observableArrayList();
 
     public LineLayer() {
-
+        
     }
 
     public void addLine(MapDestination mapDestination, Color color) {
@@ -48,10 +47,6 @@ public class LineLayer extends MapLayer {
 
             Point2D startProjected = getMapPoint(start.getLatitude(), start.getLongitude());
             Point2D endProjected = getMapPoint(end.getLatitude(), end.getLongitude());
-            // Line line = new Line(startProjected.getX(), startProjected.getY(),
-            // endProjected.getX(), endProjected.getY());
-            // icon.setTranslateX(mapPoint.getX());
-            // icon.setTranslateY(mapPoint.getY());
             line.setStartX(startProjected.getX());
             line.setStartY(startProjected.getY());
             line.setEndX(endProjected.getX());

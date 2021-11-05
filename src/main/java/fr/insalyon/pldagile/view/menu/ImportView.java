@@ -30,6 +30,9 @@ public class ImportView extends Region {
     protected static final String IMPORT_ICON = "import";
     protected static final String COMPUTE_ICON = "compute";
 
+    private static final Label importMapLabel = new Label(NO_FILE_IMPORTED_MESSAGE);
+    private static final Label importPickupLabel = new Label(NO_FILE_IMPORTED_MESSAGE);
+
 
     public ImportView(Controller controller) {
         ImportView.controller = controller;
@@ -52,7 +55,6 @@ public class ImportView extends Region {
 
         importMapButton.setOnAction(this::computeTour);
 
-        Label importMapLabel = new Label(NO_FILE_IMPORTED_MESSAGE);
         gridPane.add(importMapLabel, 0, 2, 1, 1);
 
 
@@ -63,7 +65,6 @@ public class ImportView extends Region {
 
         importPickupButton.setOnAction(this::computeTour);
 
-        Label importPickupLabel = new Label(NO_FILE_IMPORTED_MESSAGE);
         gridPane.add(importPickupLabel, 1, 2, 1, 1);
 
         // COMPUTE BUTTON
@@ -92,6 +93,14 @@ public class ImportView extends Region {
                 break;
         }
 
+    }
+
+    public static void setImportMapLabel(String fileName) {
+        importMapLabel.setText(fileName);
+    }
+
+    public static void setImportRequestLabel(String fileName) {
+        importPickupLabel.setText(fileName);
     }
 
 }

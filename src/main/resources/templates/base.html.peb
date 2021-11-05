@@ -71,6 +71,7 @@
         {% for row in rows %}
             <div class="path-seg">
                 {% if row.type == "Segment"%}
+
                     <div class="path-seg-cnt">
                         <div class="dir-txt">Follow the {{row.object.name}} over {{row.object.length| numberformat("#.##")}} meters to the intersection no.{{ row.object.destination.id}}</div>
                     </div>
@@ -97,6 +98,7 @@
                     {% elseif not row.finish  %}
                         <div class="dir-chg">
                             {% if row.orientation==0 %}
+
                                 <div class = "arrow icon"> {% include "templates/svg/north.svg.peb" %} </div>
                                 <div class="dir-chg-txt">At the intersection no {{row.object.id}} go straight ahead on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==1 %}
@@ -110,6 +112,7 @@
                                 <div class="dir-chg-txt">At the intersection no {{row.object.id}} turn back on the road called : {{ row.segment_name }}</div>
                             {% else %}
                                 <div class="dir-chg-txt">At the intersection no {{row.object.id}} follow the road called : {{ row.segment_name }}</div>
+
                             {% endif %}
                         </div>
 
@@ -118,6 +121,7 @@
                 <div class="stop-container">
                     <div class= "stop-txt"> At the intersection no {{row.object.intersection.id}}</div>
                     {% if row.subtype == "pickup" %}
+
                         <div class="pickup icon-container">
                             <div class="pickup-icon icon">
                                 {% include "templates/svg/pickup.svg.peb" %}
@@ -138,6 +142,7 @@
                                     You have a package to deliver. This will take about <span class="estimated-val"> {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s </span>
                                 </div>
                             </div>
+
                         </div>
                     {% endif %}
                 </div>
