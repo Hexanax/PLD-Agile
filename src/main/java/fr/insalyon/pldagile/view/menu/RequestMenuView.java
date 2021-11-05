@@ -1,7 +1,9 @@
 package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.IconProvider;
+import fr.insalyon.pldagile.view.maps.MapPoint;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -16,10 +18,18 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.util.Pair;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
-public class RequestMenuView extends Region {
+public class RequestMenuView extends Region implements PropertyChangeListener {
 
     protected static final String MODIFY_ICON = "edit";
     protected static final String COMPUTE_ICON = "compute";
@@ -101,14 +111,61 @@ public class RequestMenuView extends Region {
         }
     }
 
-//    public static void setPickupItems(List<RequestItem> requestList) {
-//        clearItems();
-//        pickupItems.addAll(requestList);
-//    }
+    public void renderRequestMenu(PlanningRequest planningRequest) {
+        if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
+            // Render the planning request
+            Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
+            MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
+            depotPoint.setId(planningRequest.getDepot().getIntersection().getId());
+            ArrayList<RequestItem> items = new ArrayList<>();
+            planningRequest.getRequests().forEach(request -> {
+                // Items in list
+                Pickup pickup = request.getPickup();
+                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup", -1);
+                Delivery delivery = request.getDelivery();
+                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery", -1);
+                items.add(pickupItem);
+                items.add(deliveryItem);
+            });
+            setPickupItems(items);
+        }
+    }
 
-//    public static void clearItems() {
-//        pickupItems.clear();
-//    }
+    public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
+        ArrayList<RequestItem> items = new ArrayList<>();
+        int index = 0;
+        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot", 0);
+        items.add(item);
+        for (Pair<Long, String> step : steps) {
+            if (Objects.equals(step.getValue(), "pickup")) {
+                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup", index);
+                items.add(item);
+            }
+            if (Objects.equals(step.getValue(), "delivery")) {
+                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(), "Delivery", index);
+                items.add(item);
+            }
+
+            index++;
+        }
+        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2, "Depot", (index - 1));
+        items.add(item);
+        clearItems();
+
+        setPickupItems(items);
+
+    }
+
+    public void setPickupItems(List<RequestItem> requestList) {
+        clearItems();
+        pickupItems.addAll(requestList);
+    }
+
+    public void clearItems() {
+        pickupItems.clear();
+    }
+
+
 
     private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
@@ -119,11 +176,21 @@ public class RequestMenuView extends Region {
         }
     };
 
-    public static void activeRowListener() {
+    public void activeRowListener() {
         pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    public static void disableRowListener() {
+    public void disableRowListener() {
         pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String propertyName = evt.getPropertyName();
+        if (propertyName.equals("tourUpdate")){
+            Tour newTourValue = (Tour) evt.getNewValue();
+            clearItems();
+            orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
+        }
     }
 }

@@ -35,12 +35,14 @@ public class Window implements PropertyChangeListener {
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
     // one tour)
     private final LineLayer lineLayer = new LineLayer();
+    private final RequestMapView requestMapView;
 
     public Window(Controller controller) {
         this.controller = controller;
         this.controller.getPclCityMap().addPropertyChangeListener(this);
         this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
         this.controller.getPclTour().addPropertyChangeListener(this);
+        this.requestMapView = new RequestMapView(controller);
     }
 
     public static Stage getMainStage() {
@@ -136,10 +138,10 @@ public class Window implements PropertyChangeListener {
         pointLayer.clearPoints();
     }
 
-    public void renderMapAndRequests(CityMap cityMap, PlanningRequest planningRequest) {
-        renderCityMap(cityMap);
-        renderPlanningRequest(planningRequest);
-    }
+//    public void renderMapAndRequests(CityMap cityMap, PlanningRequest planningRequest) {
+//        renderCityMap(cityMap);
+//        renderPlanningRequest(planningRequest);
+//    }
 
     public void renderCityMap(CityMap cityMap) {
         // Add all the intersections temporarily
@@ -175,43 +177,7 @@ public class Window implements PropertyChangeListener {
         mapView.setZoom(centeredZoomValue);
     }
 
-    public void renderPlanningRequest(PlanningRequest planningRequest) {
-        if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
-            // Render the planning request
-            Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
-            MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
-            depotPoint.setId(planningRequest.getDepot().getIntersection().getId());
-            ArrayList<RequestItem> items = new ArrayList<>();
-            planningRequest.getRequests().forEach(request -> {
-                // Items in list
-                Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup", -1);
-                Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery", -1);
-                items.add(pickupItem);
-                items.add(deliveryItem);
-                //Map points
-                MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
-                mapPoint.setId(pickup.getIntersection().getId());
-                mapPoint.setRequestId(request.getId());
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        IconProvider.getPickupIcon()
-                );
-                mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
-                mapPoint.setId(delivery.getIntersection().getId());
-                mapPoint.setRequestId(request.getId());
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        IconProvider.getDropoffIcon()
-                );
-            });
-            RequestMenuView.setPickupItems(items);
 
-            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
-            //TODO Scale it with zoom level
-        }
-    }
 
     public void renderTour(Tour tour) {
         // TODO Update RequestView
@@ -265,10 +231,7 @@ public class Window implements PropertyChangeListener {
         }
     }
 
-    public void clearRequest() {
-        lineLayer.clearPoints();
-        RequestMenuView.clearItems();
-    }
+
 
     public void clearTour() {
         lineLayer.clearPoints();
@@ -303,51 +266,7 @@ public class Window implements PropertyChangeListener {
         pointLayer.activeRequestIntersectionsListener();
     }
 
-    public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
-        pointLayer.clearRequestPoints();
-        ArrayList<RequestItem> items = new ArrayList<>();
-        int index = 0;
-        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot", 0);
-        items.add(item);
-        for (Pair<Long, String> step : steps) {
-            if (Objects.equals(step.getValue(), "pickup")) {
-                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup", index);
-                items.add(item);
-                double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
-                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
-                mapPoint.setId(requests.get(step.getKey()).getPickup().getIntersection().getId());
-                mapPoint.setRequestId(requests.get(step.getKey()).getId());
-                mapPoint.setStepIndex(index);
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        IconProvider.getPickupIcon()
-                );
-            }
-            if (Objects.equals(step.getValue(), "delivery")) {
-                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(), "Delivery", index);
-                items.add(item);
-                double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
-                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
-                mapPoint.setId(requests.get(step.getKey()).getDelivery().getIntersection().getId());
-                mapPoint.setRequestId(requests.get(step.getKey()).getId());
-                mapPoint.setStepIndex(index);
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        IconProvider.getDropoffIcon()
-                );
-            }
 
-            index++;
-        }
-        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2, "Depot", (index - 1));
-        items.add(item);
-        RequestMenuView.clearItems();
-
-        RequestMenuView.setPickupItems(items);
-
-    }
 
     public void addMapRequest(Request request) {
         Pickup pickup = request.getPickup();
@@ -355,14 +274,14 @@ public class Window implements PropertyChangeListener {
         MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(pickup.getIntersection().getId());
         mapPoint.setRequestId(request.getId());
-        pointLayer.addRequestPoint(
+        pointLayer.addPoint(
                 mapPoint,
                 IconProvider.getPickupIcon()
         );
         mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
         mapPoint.setId(delivery.getIntersection().getId());
         mapPoint.setRequestId(request.getId());
-        pointLayer.addRequestPoint(
+        pointLayer.addPoint(
                 mapPoint,
                 IconProvider.getDropoffIcon()
         );
@@ -375,7 +294,6 @@ public class Window implements PropertyChangeListener {
         if(propertyName.equals("cityMapUpdate")) {
             CityMap newCityMapValue = (CityMap) evt.getNewValue();
             clearMap();
-            clearRequest();
             clearTour();
             renderCityMap(newCityMapValue);
             try {
@@ -383,16 +301,10 @@ public class Window implements PropertyChangeListener {
             } catch (ExceptionXML e) {
                 e.printStackTrace();
             }
-        } else if (propertyName.equals("planningRequestUpdate")){
-            clearRequest();
-            clearTour();
-            PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
-            renderPlanningRequest(newPlanningRequestValue);
-
         } else if (propertyName.equals("tourUpdate")){
             Tour newTourValue = (Tour) evt.getNewValue();
             clearTour();
-            orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
+            //orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
             renderTour(newTourValue);
         }
     }
