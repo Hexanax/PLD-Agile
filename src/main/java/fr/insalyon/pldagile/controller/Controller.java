@@ -44,8 +44,8 @@ public class Controller {
         this.pclCityMap = new PCLCityMap();
         this.pclPlanningRequest = new PCLPlanningRequest();
         this.pclTour = new PCLTour();
-        listOfCommands = new ListOfCommands();
-        currentState = initialState;
+        this.listOfCommands = new ListOfCommands();
+        this.currentState = initialState;
         this.window = new Window(this);
     }
 
