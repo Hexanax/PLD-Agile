@@ -10,6 +10,10 @@ import fr.insalyon.pldagile.xml.XMLFileOpener;
 
 import java.io.File;
 
+/**
+ *  RequestsOverwrite1State is the state when map & requests & tour
+ *  are loaded in the system and the user wants to load new requests
+ */
 public class RequestsOverwrite2State implements State{
     @Override
     public void loadRequests(Controller controller, CityMap cityMap, Window window) {

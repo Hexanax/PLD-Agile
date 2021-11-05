@@ -9,6 +9,9 @@ import fr.insalyon.pldagile.xml.XMLFileOpener;
 
 import java.io.File;
 
+/**
+ * MapDisplayedState is the state when only the map has been loaded in the application
+ */
 public class MapDisplayedState implements State{
     @Override
     public void loadMap(Controller controller, Window window) {

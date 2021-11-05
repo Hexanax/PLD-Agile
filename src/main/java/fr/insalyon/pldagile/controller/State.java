@@ -6,10 +6,28 @@ import fr.insalyon.pldagile.view.Window;
 
 public interface State {
 
+    /**
+     * load a map into the application
+     * @param controller
+     * @param window
+     */
     public default void loadMap(Controller controller, Window window) {};
 
+    /**
+     * Load requests into the application
+     * @param controller
+     * @param cityMap
+     * @param window
+     */
     public default void loadRequests(Controller controller, CityMap cityMap, Window window){};
 
+    /**
+     * compute the tour from the CityMap and PlanningRequest in parameters
+     * @param controller
+     * @param cityMap
+     * @param planningRequest
+     * @param window
+     */
     public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window){};
 
     public default void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, String result, Window window, ListOfCommands l){};
@@ -21,6 +39,7 @@ public interface State {
     public default void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window){};
 
     public default void deleteRequest(Controller controller,CityMap citymap, Tour tour, Request request, Window window,ListOfCommands listOfCdes){};
+
 
     public default void addRequest(Controller controller, CityMap citymap, Tour tour, Long intersectionID, Window window){};
 

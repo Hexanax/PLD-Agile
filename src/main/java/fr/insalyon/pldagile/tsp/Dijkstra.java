@@ -16,13 +16,14 @@ public class Dijkstra {
     //We'll store our data in 4 structures
     private Map<Long, Double> distancesFromOrigin;
 
+    //Stores the predecessor of each vertice id
     private Map<Long, Long> predecessor;
     //Maps a vertice ID to an integer such that { 0 => white, 1 => grey, 2 => black}
     private Map<Long, Integer> color;
-    //Represents "grey" vertices, ie vertices visited but we're not sure we've found the shortest path yet
+    //Represents "grey" vertices, ie vertices visited, but we're not sure if we've found the shortest path yet
     private Map<Long,Double> grey;
 
-
+    //Graph of our cityMap
     private CityMapGraph cityMapGraph;
     private Long originId;
 
@@ -30,7 +31,7 @@ public class Dijkstra {
 
     /**
      * Initializes a Dijkstra object that will, given a cityMapGraph and an origin ID,
-     * contain the distance from origin from each intersection, and the best path to get to this intersection
+     * contain the distance from origin for each intersection, and the best path to get to this intersection
      * @param cityMapGraph the graph of our city
      * @param originId the origin id of the algorithm
      */
@@ -154,14 +155,26 @@ public class Dijkstra {
         return shortestPath;
     }
 
+    /**
+     * @param destinationId
+     * @return cost of the shortest path to go from this.originId to the destinationId
+     */
     public Double getShortestPathCost(Long destinationId){
         return distancesFromOrigin.get(destinationId);
     }
 
+    /**
+     *
+     * @return a hashmap containing all distances from this.originId
+     */
     public Map<Long, Double> getDistancesFromOrigin() {
         return distancesFromOrigin;
     }
 
+    /**
+     *
+     * @return originId of the Dijkstra instance
+     */
     public Long getOriginId() {
         return originId;
     }

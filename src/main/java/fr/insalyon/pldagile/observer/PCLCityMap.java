@@ -6,6 +6,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ * Allows a view to subscribe to an object that will notify them when the cityMap changes
+ */
 public class PCLCityMap {
 
     private CityMap cityMap;

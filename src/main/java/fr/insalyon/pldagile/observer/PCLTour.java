@@ -5,6 +5,9 @@ import fr.insalyon.pldagile.model.Tour;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
+/**
+ *  Allows a view to subscribe to an object that notifies it when the tour changes
+ */
 public class PCLTour {
 
     private Tour tour;
