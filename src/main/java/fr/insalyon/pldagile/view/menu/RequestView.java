@@ -198,7 +198,7 @@ public class RequestView extends Region {
 
     public static void disableItemListener(){
         pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, onOneClick);
-        PointLayer.unHighlightIcon(PointLayer.getLastHighlighted().getKey().getRequestId());
+        //PointLayer.unHighlightIcon(PointLayer.getLastHighlighted().getKey().getRequestId());
     }
 
 

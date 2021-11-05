@@ -79,6 +79,8 @@ public class TourBuilderV2 {
     //TODO test
     public Tour deleteRequest(CityMap cityMap, Tour tour, Request request){
 
+
+
         Map<Long, Request> requests = tour.getRequests();
         Depot depot = tour.getDepot();
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
@@ -147,9 +149,17 @@ public class TourBuilderV2 {
         }
 
         //if intersection before pickup is the same as before delivery
+
+
+        System.out.println(Arrays.toString(indexAroundStep));
+
+
         if(indexAroundStep[0]==indexAroundStep[2]){
             Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
             Dijkstra dijkstra = bestPaths.get(intersections.get(indexAroundStep[0]).getId());
+
+
+
 
             for(long idIntersection : dijkstra.getShortestPath(intersections.get(indexAroundStep[1]).getId())){
                 newIntersections.add(intersectionsMap.get(idIntersection));
