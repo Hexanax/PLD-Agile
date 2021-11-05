@@ -10,6 +10,9 @@ import fr.insalyon.pldagile.xml.XMLFileOpener;
 
 import java.io.File;
 
+/**
+ * MapOverwrite2State is the state when map & requests are loaded in the system and the user wants to load a new map
+ */
 public class MapOverwrite2State implements State{
     @Override
     public void loadMap(Controller controller, Window window) {

@@ -8,7 +8,10 @@ import fr.insalyon.pldagile.xml.XMLFileOpener;
 
 import java.io.File;
 
-
+/**
+ *  TourComputedState is the state when map & requests & tour computed
+ *  are loaded in the system and the user
+ */
 public class TourComputedState implements State{
     @Override
     public void loadMap(Controller controller, Window window) {

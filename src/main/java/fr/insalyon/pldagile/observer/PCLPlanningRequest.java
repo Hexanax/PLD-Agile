@@ -8,7 +8,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-
+/**
+ * Allows a view to subscribe to an object that notifies it when the planningRequest changes
+ */
 public class PCLPlanningRequest {
 
     private PlanningRequest planningRequest;

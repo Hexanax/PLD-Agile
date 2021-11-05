@@ -26,7 +26,10 @@ public class CityMapGraph implements Graph {
     private final Map<Long, ArrayList<Pair<Long, Double>>> graph;
 
 
-
+    /**
+     * Generate a graph from a citymap
+     * @param cityMap
+     */
     public CityMapGraph(CityMap cityMap) {
         Map<Long, Intersection> intersections = cityMap.getIntersections();
         segments = cityMap.getSegments();

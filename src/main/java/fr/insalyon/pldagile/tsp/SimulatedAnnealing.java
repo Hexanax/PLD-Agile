@@ -12,9 +12,9 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
 
 
     //Parameters of our Simulated Annealing algorithm
-    private double temperature;
-    private double coolingRate;
-    private int numberOfIterations;
+    private final double temperature = 25.0;
+    private final double coolingRate = 0.99;
+    private final int numberOfIterations = 10000;
 
     //Holds all the best paths from an originId to each intersection of the graph
     private Map<Long, Dijkstra> bestPaths;
@@ -41,21 +41,29 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         this.stepsIdentifiers = new ArrayList<>();
         this.stepsIntersectionId = new ArrayList<>();
         computeAllShortestPaths();
-        runSimulatedAnnealing(25.0,10000,0.99);
+        runSimulatedAnnealing(temperature,numberOfIterations,coolingRate);
     }
 
+    /**
+     * For every step the TSM has to visit, run Dijkstra from this intersectionId
+     * and store the results in bestPaths
+     *
+     * For every step, store in stepsIdentifiers the id of the request and its type
+     * (pickup or delivery, or depot begin/end) , and store in the same index in stepsIntersectionId
+     * the id of the associated intersection.
+     */
     public void computeAllShortestPaths() {
 
-        //compute Dijkstra from the depot intersection
         Dijkstra dijkstraData;
         Long depotId = planningRequest.getDepot().getIntersection().getId();
+
+        //compute Dijkstra from the depot intersection
         dijkstraData = new Dijkstra(cityMapGraph, depotId);
 
         //store the result in our hashmap
         bestPaths.put(dijkstraData.getOriginId(), dijkstraData);
 
         //start the travel with the depot
-
         stepsIdentifiers.add(new Pair(-1L, "begin"));
         stepsIntersectionId.add(depotId);
 
@@ -93,6 +101,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
 
     /**
      * Inspired from https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman
+     * Simulated annealing algorithm to find an optimal path for our deliverer.
      * @param startingTemperature
      * @param numberOfIterations
      * @param coolingRate
@@ -102,10 +111,9 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         double bestDistance = getTotalDistance();
         double t = startingTemperature;
 
-        //System.out.println(stepsIntersectionId.toString());
-        //System.out.println(stepsIdentifiers.toString());
         for (int i = 0; i < numberOfIterations; i++) {
             if (t > 0.1) {
+                //Store the old values to revert the swap if it's not suitable
                 oldStepsIdentifiers = (ArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
                 oldIntersectionIds = (ArrayList<Long>) stepsIntersectionId.clone();
                 do {
@@ -114,7 +122,10 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
                     int swapFirstIndex = 1 + (int) (Math.random() * (stepsSize-1));
                     int swapSecondIndex = 1 + (int) (Math.random() * (stepsSize-1));
                     swapResult = swapSteps(swapFirstIndex,swapSecondIndex);
+
+                    //If the swap is not allowed (can't have delivery X prior to pickup X, we retry to swap)
                 } while (swapResult == false);
+
                 double currentDistance = getTotalDistance();
                 if (currentDistance < bestDistance) {
                     bestDistance = currentDistance;
@@ -128,11 +139,12 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
 
 
         }
-
-        //System.out.println(stepsIntersectionId.toString());
-        //System.out.println(stepsIdentifiers.toString());
     }
 
+    /**
+     *
+     * @return total distance of the travel
+     */
     public double getTotalDistance() {
         Double totalDistance = 0.0;
         //for all entries in the stepsLocation
@@ -145,11 +157,9 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
     }
 
     /**
-     * Swaps two steps in the ordered list of steps.
-     * If the swap is not allowed, returns false.
-     * If the swap is allowed, returns the new order.
-     *
-     * @return
+     * If the swap is allowed, stepsIdentifiers and stepsIntersectionId elements are swapped
+     * in a new order
+     * @return false if the swap is not allowed / true if the swap is allowed
      */
     public boolean swapSteps(int swapFirstIndex, int swapSecondIndex) {
 
@@ -220,6 +230,11 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
 
     }
 
+    /**
+     * reverts a swap using the old values of stepsIdentifiers and stepsIntersectionId
+     * @param oldStepsIdentifiers
+     * @param oldIntersectionIds
+     */
     public void revertSwapSteps(ArrayList<Pair<Long,String>> oldStepsIdentifiers, ArrayList<Long> oldIntersectionIds) {
         stepsIdentifiers = oldStepsIdentifiers;
         stepsIntersectionId = oldIntersectionIds;
@@ -231,10 +246,18 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
 
     }
 
+    /**
+     *
+     * @return ArrayList of ordered steps Pairs(RequestId, typeOfRequest)
+     */
     public ArrayList<Pair<Long, String>> getStepsIdentifiers() {
         return stepsIdentifiers;
     }
 
+    /**
+     *
+     * @return ArrayList of ordered steps intersection Ids
+     */
     public ArrayList<Long> getStepsIntersectionId() {
         return stepsIntersectionId;
     }
@@ -243,10 +266,18 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         return 0.0;
     }
 
+    /**
+     *
+     * @return Mapping of each originId with a Dijkstra computation result
+     */
     public Map<Long, Dijkstra> getBestPaths() {
         return bestPaths;
     }
 
+    /**
+     * adds to this.bestPaths the result of Dijkstra computation from idOrigin
+     * @param idOrigin
+     */
     public void addBestPath(long idOrigin){
         Dijkstra dijkstraData;
         dijkstraData = new Dijkstra(cityMapGraph, idOrigin);

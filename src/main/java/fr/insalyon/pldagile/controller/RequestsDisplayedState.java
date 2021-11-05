@@ -6,7 +6,10 @@ import fr.insalyon.pldagile.model.Tour;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
 
-
+/**
+ *  RequestDisplayedState is the state when map & requests
+ *  are loaded in the system
+ */
 public class RequestsDisplayedState implements State{
     @Override
     public void loadMap(Controller controller, Window window) {

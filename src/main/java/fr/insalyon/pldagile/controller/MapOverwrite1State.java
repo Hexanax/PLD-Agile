@@ -10,6 +10,9 @@ import fr.insalyon.pldagile.xml.XMLFileOpener;
 
 import java.io.File;
 
+/**
+ * MapOverwrite1State is the state when you load a new map in MapDisplayedState (only map loaded in the app)
+ */
 public class MapOverwrite1State implements State{
     @Override
     public void loadMap(Controller controller, Window window) {

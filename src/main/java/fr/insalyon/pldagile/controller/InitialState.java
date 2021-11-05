@@ -8,6 +8,9 @@ import fr.insalyon.pldagile.xml.XMLFileOpener;
 
 import java.io.File;
 
+/**
+ * InitialState is the state when the application is launched.
+ */
 public class InitialState implements State {
     @Override
     public void loadMap(Controller controller, Window window) {
