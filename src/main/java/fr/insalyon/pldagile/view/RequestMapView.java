@@ -28,6 +28,7 @@ public class RequestMapView implements PropertyChangeListener {
     public RequestMapView(Controller controller) {
         this.controller = controller;
         this.planningRequest = controller.getPclPlanningRequest().getPlanningRequest();
+        controller.getPclPlanningRequest().addPropertyChangeListener(this);
     }
 
     public void clearRequest() {
@@ -35,6 +36,7 @@ public class RequestMapView implements PropertyChangeListener {
     }
 
     public void renderPlanningRequest(PlanningRequest planningRequest) {
+        System.out.println("Entered");
         if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             // Render the planning request
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
@@ -62,7 +64,7 @@ public class RequestMapView implements PropertyChangeListener {
                         IconProvider.getDropoffIcon()
                 );
             });
-            planningRequestPoints.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+            planningRequestPoints.addPoint(depotPoint, IconProvider.getDepotIcon());
             //TODO Scale it with zoom level
         }
     }

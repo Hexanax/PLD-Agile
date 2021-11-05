@@ -70,7 +70,7 @@ public class Controller {
     }
 
     protected void setPlanningRequest(PlanningRequest planningRequest) {
-        this.pclPlanningRequest.setPlanningRequest(planningRequest);
+        pclPlanningRequest.setPlanningRequest(planningRequest);
     }
 
     protected void setTour(Tour tour) {

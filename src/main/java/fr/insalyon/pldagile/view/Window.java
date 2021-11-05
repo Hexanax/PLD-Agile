@@ -60,8 +60,8 @@ public class Window {
         stage.getIcons().add(desktopIcon);
         // cityMap = new CityMap();
         // planningRequest = new PlanningRequest();
-        mapView.addLayer(pointLayer); // Add the map layer
-        mapView.addLayer(lineLayer); // Add the line (tour) layer
+        //mapView.addLayer(pointLayer); // Add the map layer
+        //mapView.addLayer(lineLayer); // Add the line (tour) layer
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
@@ -82,7 +82,7 @@ public class Window {
         AnchorPane.setRightAnchor(bp, 0D);
 
         mainPane.getChildren().add(bp);
-        loadSidePanel(false);
+        loadSidePanel();
 
         Scene scene = new Scene(mainPane, screenWidth, screenHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
@@ -100,13 +100,10 @@ public class Window {
         stage.show();
     }
 
-    private void loadSidePanel(boolean modifyMode) {
+    private void loadSidePanel() {
         SidePanel sidePanel = new SidePanel(controller);
-        if (modifyMode) {
-            sidePanel.ModifyPanel();
-        } else {
-            sidePanel.MainSidePanel();
-        }
+        sidePanel.MainSidePanel();
+
 
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setBottomAnchor(sidePanel, 16D);
@@ -267,7 +264,7 @@ public class Window {
     }
 
     public void showModifyMenu() {
-        loadSidePanel(true);
+        //loadSidePanel(true);
     }
 
 
