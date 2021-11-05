@@ -31,11 +31,12 @@ public class RequestMapView implements PropertyChangeListener {
         controller.getPclPlanningRequest().addPropertyChangeListener(this);
     }
 
-    public void clearRequest() {
+    public void clear() {
         planningRequestPoints.clearPoints();
     }
 
     public void render() {
+        clear();
         PlanningRequest planningRequest = this.planningRequest;
         if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             // Render the planning request
@@ -66,7 +67,7 @@ public class RequestMapView implements PropertyChangeListener {
             //TODO Scale it with zoom level
         }
     }
-    
+
     public MapLayer getLayer() {
         return planningRequestPoints;
     }
@@ -75,13 +76,8 @@ public class RequestMapView implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
         System.out.println(propertyName);
-
-        if (propertyName.equals("planningRequestUpdate")){
-            clearRequest();
-            this.planningRequest = (PlanningRequest) evt.getNewValue();
-            render();
-
-        }
+        this.planningRequest = (PlanningRequest) evt.getNewValue();
+        render();
     }
 
     public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {

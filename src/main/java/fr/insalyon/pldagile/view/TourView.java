@@ -24,9 +24,19 @@ public class TourView implements PropertyChangeListener {
         controller.getPclTour().addPropertyChangeListener(this);
     }
 
+    public void clear(){
+        tourLineLayer.clearPoints();
+        tourPointLayer.clearPoints();
+    }
+
     public void render() {
+        clear();
         Tour tour = this.tour;
         // TODO Update RequestView
+        //if the tour is a null object, we just clear
+        if(tour.getDepot()==null){
+            return;
+        }
         Intersection previousIntersection = tour.getDepot().getIntersection();
         for (Segment segment : tour.getPath()) {
             Intersection destinationIntersection = segment.getDestination();
