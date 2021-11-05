@@ -13,10 +13,11 @@ public class AddRequestState1 implements State {
     public void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window) {
         if(type=="Depot" && stepIndex!=0)
         {
-            window.showWarningAlert("How to add a request", "You can't add a request after the arrival of the tour", null);
+            window.addStateFollow( "You can't add a request after the arrival of the tour");
+
         } else {
             controller.pickupToAdd = new Pair<Integer, Pickup>(stepIndex, null);
-            window.showWarningAlert("How to add a request", "Please select on the map the intersection of your pickup", null);
+            window.addStateFollow("Please select on the map the intersection of your pickup");
             window.disableEventListener();
             window.activeMapIntersectionsListener();
             controller.setCurrentState(controller.addRequestState2);

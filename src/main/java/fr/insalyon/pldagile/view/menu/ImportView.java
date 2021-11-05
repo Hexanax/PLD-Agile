@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.IconProvider;
+import fr.insalyon.pldagile.view.MouseListener;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -76,6 +77,12 @@ public class ImportView extends Region {
         computeButton.setOnAction(this::computeTour);
         GridPane.setHalignment(computeButton, HPos.CENTER);
         GridPane.setMargin(computeButton, new Insets(10, 0, 0, 0));
+
+
+        importPickupButton.setOnMouseClicked(MouseListener::mouseClicked);
+        importMapButton.setOnMouseClicked(MouseListener::mouseClicked);
+        computeButton.setOnMouseClicked(MouseListener::mouseClicked);
+
 
         this.getChildren().add(gridPane);
     }

@@ -16,6 +16,7 @@ public class MapOverwrite3State implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
+                window.addStateFollow("Loading the new map ...");
                 CityMap newMap = new CityMap();
                 XMLDeserializer.load(newMap, importFile);
                 controller.setCitymap(newMap);
@@ -31,7 +32,7 @@ public class MapOverwrite3State implements State{
                 controller.setCurrentState(controller.tourComputedState);
             }
         } catch(Exception e) {
-            window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            window.addStateFollow("Error when reading the XML map file : " + e.getMessage());
             controller.setCurrentState(controller.tourComputedState);
         }
     }

@@ -24,16 +24,18 @@ public class MapDisplayedState implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if (importFile != null) {
+                window.addStateFollow("Loading the requests ...");
                 XMLDeserializer.load(planningRequest, cityMap, importFile);
                 window.renderPlanningRequest(planningRequest);
                 window.updateRequestFileName(importFile.getName());
                 window.activeItemListener();
                 controller.setCurrentState(controller.requestsDisplayedState);
+                window.addStateFollow("Requests loaded");
             } else {
                 controller.setCurrentState(controller.mapDisplayedState);
             }
         } catch(Exception e) {
-            window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            window.addStateFollow("Error when reading the XML requests file " +e.getMessage());
             controller.setCurrentState(controller.mapDisplayedState);
         }
     }

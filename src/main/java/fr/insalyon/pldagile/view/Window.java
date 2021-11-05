@@ -22,9 +22,15 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Pair;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class Window {
+
+    private static KeyboardListener keyboardListener;
+    private static MouseListener mouseListener;
+    private static RequestItem requestListener;
 
     private static Stage mainStage = null;
     private Controller controller = null;
@@ -36,10 +42,15 @@ public class Window {
     private final LineLayer lineLayer = new LineLayer();
     private final double centeredZoomValue = 13.5;
 
+    private int tourDuration;
+
     public Window(Controller controller) {
         this.controller = controller;
         pointLayer.setController(controller);
         this.controller.initWindow(this);
+
+        keyboardListener = new KeyboardListener(controller);
+        mouseListener = new MouseListener(controller);
     }
 
     public static Stage getMainStage() {
@@ -85,6 +96,14 @@ public class Window {
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
         scene.getStylesheets().add("/style.css");
+
+
+        //key pressed on the scene
+        scene.setOnKeyPressed(KeyboardListener::keyPressed);
+        scene.setOnMouseClicked(MouseListener::mouseClicked);
+
+
+
         stage.setScene(scene);
         stage.setFullScreen(false);
         MapPoint mapCenter = new MapPoint(46.75, 2.80);
@@ -179,13 +198,15 @@ public class Window {
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
             MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
             depotPoint.setId(planningRequest.getDepot().getIntersection().getId());
+
             ArrayList<RequestItem> items = new ArrayList<>();
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup",-1);
+                RequestItem pickupItem = new RequestItem(new Date(), request.getPickup().getDuration(), request.getId(), "Pickup",-1, false);
                 Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery",-1);
+
+                RequestItem deliveryItem = new RequestItem(new Date(), request.getDelivery().getDuration(), request.getId(), "Delivery",-1,false);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
@@ -213,6 +234,7 @@ public class Window {
 
     public void renderTour(Tour tour) {
         // TODO Update RequestView
+        this.tourDuration = (int) tour.getTourDuration();
         Intersection previousIntersection = tour.getDepot().getIntersection();
         for (Segment segment : tour.getPath()) {
             Intersection destinationIntersection = segment.getDestination();
@@ -289,6 +311,10 @@ public class Window {
         pointLayer.disableRequestIntersectionsListener();
     }
 
+    public void disableMainListener(){
+        mainStage.getScene().setOnMouseClicked(null);
+    }
+
     public void activeRowListener() {
         RequestView.activeRowListener();
     }
@@ -311,12 +337,16 @@ public class Window {
         pointLayer.clearRequestPoints();
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
-        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot",0);
+
+        RequestItem item = new RequestItem(depot.getDepartureTime(), 0, -1, "Depot",0, false);
         items.add(item);
+
         for(Pair<Long, String> step : steps) {
             if(Objects.equals(step.getValue(), "pickup"))
             {
-                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index);
+
+
+                item = new RequestItem(requests.get(step.getKey()).getPickup().getArrivalTime(), requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index, false);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
@@ -330,7 +360,8 @@ public class Window {
                 );
             }
             if(Objects.equals(step.getValue(), "delivery")){
-                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index);
+
+                item = new RequestItem(requests.get(step.getKey()).getDelivery().getArrivalTime(), requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index, false);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
@@ -346,10 +377,10 @@ public class Window {
 
             index++;
         }
-        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2,"Depot",(index-1));
+        Date finalDate = new Date(depot.getDepartureTime().getTime() + this.tourDuration*1000);
+        item = new RequestItem(finalDate, 0, -2,"Depot",(index-1),false);
         items.add(item);
         RequestView.clearItems();
-
         RequestView.setPickupItems(items);
 
     }
@@ -372,6 +403,40 @@ public class Window {
                 new RequestMapPin(RequestType.DELIVERY)
         );
 
+    }
+
+
+    public void addStateFollow(String string){
+        //TODO red when its an Error
+        TextItem item = new TextItem(string);
+        LogView.addTextItem(item);
+    }
+
+
+    public void addListPickup(int index, Pickup pickup, long requestID){
+        requestListener = new RequestItem(null, pickup.getDuration(), requestID, "Pickup", -2, true);
+        requestListener.setOnKeyPressed(KeyboardListener::keyPressed);
+        RequestView.addItem(requestListener, index, true);
+    }
+
+    public String getRequestListener(){
+        return requestListener.getValue();
+    }
+
+    public void resetRequestListener(){
+        requestListener.setEditable(false);
+        requestListener.setOnKeyPressed(null);
+    }
+
+
+    public void addListDelivery(Integer index, Delivery delivery, long requestID) {
+        requestListener = new RequestItem(null, delivery.getDuration(), requestID, "Delivery", -2, true);
+        requestListener.setOnKeyPressed(KeyboardListener::keyPressed);
+        RequestView.addItem(requestListener, index, false);
+    }
+
+    public void activeMainListener() {
+        mainStage.getScene().setOnMouseClicked(MouseListener::mouseClicked);
     }
 
 

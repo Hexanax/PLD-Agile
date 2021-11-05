@@ -15,9 +15,9 @@ public class DeleteRequestState1 implements State{
             window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
             window.activeItemListener();
             controller.setCurrentState(controller.tourComputedState);
-            window.showWarningAlert("Modification", "Suppresion successfully completed", null);
+            window.addStateFollow("Suppresion successfully completed");
         } else {
-            window.showWarningAlert("How to delete a request", "Request number unknown, please try again", null);
+            window.addStateFollow("Request number unknown, please try again");
         }
     }
 

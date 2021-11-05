@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
@@ -18,11 +19,9 @@ public class RequestItem extends Region {
     private long requestNumber;
     private String type;
     private int stepIndex;
-    private Button destroy;
-    private Button up;
-    private Button down;
+    private TextField value;
 
-    public RequestItem(String requestName, String requestCommentary, long requestNumber, String type, int stepIndex) {
+    public RequestItem(Date arrivalDate, int duration, long requestNumber, String type, int stepIndex, boolean editable) {
 
         //TODO test if its a depot
 
@@ -36,52 +35,60 @@ public class RequestItem extends Region {
         maingp.setHgap(5);
         maingp.setVgap(5);
 
-        Label titleLabel = new Label(requestName);
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
-        maingp.add(titleLabel, 0, 0, 4, 1);
-        GridPane.setHalignment(titleLabel, HPos.LEFT);
-        GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
+        DateFormat dateFormat = new SimpleDateFormat("HH 'h' mm");
 
-        DateFormat dateFormat = new SimpleDateFormat("HH'h'mm");
-
-        Label timeLabel = new Label(requestCommentary); //TODO Display time: dateFormat.format(pickupTime)
-        timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-        maingp.add(timeLabel, 0, 1, 1, 1);
-        GridPane.setHalignment(timeLabel, HPos.LEFT);
-        GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
-
-        
-        Label requestLabel = new Label("Request n°" + (requestNumber+1));
-        requestLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-        maingp.add(requestLabel, 0, 2, 1, 1);
-        GridPane.setHalignment(requestLabel, HPos.LEFT);
-        GridPane.setMargin(requestLabel, new Insets(5, 5, 5, 0));
+        if(requestNumber >= 0) {
+            Label titleLabel = new Label(type + " n°" + (requestNumber + 1));
+            titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+            maingp.add(titleLabel, 0, 0, 4, 1);
+            GridPane.setHalignment(titleLabel, HPos.LEFT);
+            GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
 
+            if(!editable){
+                Label arrivalLabel = new Label("Arrival time : " + dateFormat.format(arrivalDate));
+                titleLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+                maingp.add(arrivalLabel, 0, 1, 4, 1);
+                GridPane.setHalignment(arrivalLabel, HPos.LEFT);
+                GridPane.setMargin(arrivalLabel, new Insets(5, 5, 5, 0));
+            }
 
-        /*up = new Button("^");
-        up.setPrefHeight(30);
-        up.setPrefWidth(30);
-        maingp.add(up, 1, 1, 1, 2);
-        GridPane.setHalignment(up, HPos.CENTER);
-        GridPane.setMargin(up, new Insets(0, 5, 0, 5));
+            Label timeLabel = new Label(type + " duration : "); //TODO Display time: dateFormat.format(pickupTime)
+            timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(timeLabel, 0, 2, 1, 1);
+            GridPane.setHalignment(timeLabel, HPos.LEFT);
+            GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
 
-        down = new Button("v");
-        down.setPrefHeight(30);
-        down.setPrefWidth(30);
-        maingp.add(down, 2, 1, 1, 2);
-        GridPane.setHalignment(down, HPos.CENTER);
-        GridPane.setMargin(down, new Insets(0, 5, 0, 5));
 
-        destroy = new Button("destroy");
-        destroy.setPrefHeight(30);
-        destroy.setPrefWidth(30);
-        maingp.add(destroy, 3, 1, 1, 2);
-        GridPane.setHalignment(destroy, HPos.CENTER);
-        GridPane.setMargin(destroy, new Insets(0, 0,0,5));*/
+            value = new TextField(String.valueOf(duration));
+            value.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(value, 1, 2, 1, 1);
+            GridPane.setHalignment(value, HPos.LEFT);
+            GridPane.setMargin(value, new Insets(5, 5, 5, 0));
+            value.setEditable(false);
+            value.setDisable(false);
+
+            Label unity = new Label(" seconds");
+            unity.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(unity, 2, 2, 1, 1);
+            GridPane.setHalignment(unity, HPos.LEFT);
+            GridPane.setMargin(unity, new Insets(5, 5, 5, 0));
+
+
+            if(editable){
+                value.setEditable(true);
+            }
+        } else {
+            //depot
+            Label titleLabel = new Label(type + " - " + dateFormat.format(arrivalDate));
+            titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+            maingp.add(titleLabel, 0, 0, 4, 1);
+            GridPane.setHalignment(titleLabel, HPos.LEFT);
+            GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
+
+        }
 
         this.getChildren().add(maingp);
-
     }
 
     public long getRequestNumber() {
@@ -96,4 +103,14 @@ public class RequestItem extends Region {
     public int getStepIndex(){
         return stepIndex;
     }
+
+    public String getValue() {
+        return this.value.getText();
+    }
+
+    public void setEditable(boolean b) {
+        this.value.setEditable(b);
+    }
+
+
 }
