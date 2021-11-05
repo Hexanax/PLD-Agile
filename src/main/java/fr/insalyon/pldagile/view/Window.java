@@ -374,6 +374,8 @@ public class Window {
 
             index++;
         }
+
+        //TODO compute the final date
         item = new RequestItem(new Date(), 0, -2,"Depot",(index-1),false);
         items.add(item);
         RequestView.clearItems();

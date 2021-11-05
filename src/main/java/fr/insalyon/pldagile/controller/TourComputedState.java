@@ -59,6 +59,8 @@ public class TourComputedState implements State{
         }
     }
 
+
+    //TODO change state order
     @Override
     public void addRequest(Controller controller, CityMap citymap, Tour tour,Long intersectionID,  Window window) {
         controller.setCurrentState(controller.addRequestState1);

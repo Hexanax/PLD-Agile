@@ -30,6 +30,10 @@ public class AddRequestState5 implements State{
 
     @Override
     public void leftClick(Controller controller, MouseEvent event, Window window) {
-        controller.setCurrentState(controller.addRequestState6);
+        if(controller.deliveryToAdd.getValue() != null){
+            controller.setCurrentState(controller.addRequestState6);
+        } else {
+            controller.setCurrentState(controller.addRequestState5);
+        }
     }
 }
