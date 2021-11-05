@@ -76,12 +76,12 @@ public class RequestMapView implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
         System.out.println(propertyName);
-        this.planningRequest = (PlanningRequest) evt.getNewValue();
+        PlanningRequest newPlanningRequest = (PlanningRequest) evt.getNewValue()
+        this.planningRequest = ;
         render();
     }
 
     public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
-        planningRequestPoints.clearPoints();
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
         for (Pair<Long, String> step : steps) {
