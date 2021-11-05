@@ -177,7 +177,10 @@ public class RequestView extends Region {
         @Override
         public void handle(MouseEvent event) {
             if (event.getClickCount()==1){
-                PointLayer.highlightIcon(pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
+                if(pickupList.getSelectionModel().getSelectedItem() != null){
+                    PointLayer.highlightIcon(pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
+                }
+
             }
 
         }
