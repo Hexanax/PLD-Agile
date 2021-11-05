@@ -67,7 +67,6 @@ public class TourBuilderV2 {
             tour.addDeliveryTime(request.getDelivery().getDuration());
         }*/
         tour.setStepsIdentifiers(simulatedAnnealing.getStepsIdentifiers());
-
         return computeTour(cityMap,tour, tour.getIntersections());
 
 
@@ -207,7 +206,7 @@ public class TourBuilderV2 {
 
 
 
-        long previous = newIntersections.get(0).getId();
+        /*long previous = newIntersections.get(0).getId();
         newIntersections.remove(0);
         for(Intersection intersection : newIntersections){
             Long current = intersection.getId();
@@ -221,10 +220,10 @@ public class TourBuilderV2 {
         for (Map.Entry<Long,Request> m : tour.getRequests().entrySet()) {
             tour.addPickupTime(m.getValue().getPickup().getDuration());
             tour.addDeliveryTime(m.getValue().getDelivery().getDuration());
-        }
+        }*/
 
 
-        return tour;
+        return computeTour(cityMap, tour, newIntersections);
     }
 
 
@@ -354,7 +353,7 @@ public class TourBuilderV2 {
         tour.reset();
 
 
-        Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
+        /*Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
 
         long previous = newIntersections.get(0).getId();
         newIntersections.remove(0);
@@ -369,9 +368,9 @@ public class TourBuilderV2 {
         for (Map.Entry<Long,Request> m : tour.getRequests().entrySet()) {
             tour.addPickupTime(m.getValue().getPickup().getDuration());
             tour.addDeliveryTime(m.getValue().getDelivery().getDuration());
-        }
+        }*/
 
-        return tour;
+        return computeTour(cityMap, tour, newIntersections);
     }
 
 
