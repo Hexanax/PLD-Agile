@@ -47,7 +47,7 @@ public class TourBuilderV2 {
 
 
         for(long idIntersection : tourIntersections){
-            tour.addIntersection(intersections.get(idIntersection));
+          tour.addIntersection(intersections.get(idIntersection));
         }
 
 
@@ -68,7 +68,7 @@ public class TourBuilderV2 {
         }*/
         tour.setStepsIdentifiers(simulatedAnnealing.getStepsIdentifiers());
         return computeTour(cityMap,tour, tour.getIntersections());
-
+        //return tour;
 
 
     }
@@ -404,13 +404,14 @@ public class TourBuilderV2 {
         Depot depot = tour.getDepot();
         Map<Long, Request> requests = tour.getRequests();
         ArrayList<Pair<Long, String>> steps = tour.getSteps();
+        List<Intersection> copyIntersections = new ArrayList<>(intersections);
 
         int stepIndex = 1;
         long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(stepIndex));
 
-        long previous = intersections.get(0).getId();
-        intersections.remove(0);
-        for(Intersection intersection : intersections){
+        long previous = copyIntersections.get(0).getId();
+        copyIntersections.remove(0);
+        for(Intersection intersection : copyIntersections){
             long current = intersection.getId();
             Segment currentSegment = segments.get(new Pair<>(previous,current));
             tour.addSegment(currentSegment);

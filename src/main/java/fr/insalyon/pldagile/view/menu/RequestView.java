@@ -167,7 +167,7 @@ public class RequestView extends Region {
     private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            if(e.getClickCount()==2){
+            if(e.getClickCount()==1){
                 controller.modifyClick(pickupList.getSelectionModel().getSelectedItem().getRequestNumber(), pickupList.getSelectionModel().getSelectedItem().getType(), pickupList.getSelectionModel().getSelectedItem().getStepIndex());
             }
         }
