@@ -4,6 +4,7 @@ import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.observer.PCLCityMap;
 import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
+import fr.insalyon.pldagile.view.CityMapView;
 import fr.insalyon.pldagile.view.Window;
 import javafx.util.Pair;
 

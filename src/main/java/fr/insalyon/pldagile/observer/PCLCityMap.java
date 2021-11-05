@@ -20,7 +20,7 @@ public class PCLCityMap {
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
+        support.addPropertyChangeListener("cityMapUpdate", pcl);
     }
 
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
