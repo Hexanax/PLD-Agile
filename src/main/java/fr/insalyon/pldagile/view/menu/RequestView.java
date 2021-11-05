@@ -167,7 +167,7 @@ public class RequestView extends Region {
     private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {
-            if(e.getClickCount()==1){
+            if(e.getClickCount()==2){
                 controller.modifyClick(pickupList.getSelectionModel().getSelectedItem().getRequestNumber(), pickupList.getSelectionModel().getSelectedItem().getType(), pickupList.getSelectionModel().getSelectedItem().getStepIndex());
             }
         }
@@ -198,8 +198,8 @@ public class RequestView extends Region {
 
     public static void disableItemListener(){
         pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, onOneClick);
-        //PointLayer.unHighlightIcon(PointLayer.getLastHighlighted().getKey().getRequestId());
+        if (PointLayer.getLastHighlighted() != null) {
+            PointLayer.unHighlightIcon(PointLayer.getLastHighlighted().getKey().getRequestId());
+        }
     }
-
-
 }
