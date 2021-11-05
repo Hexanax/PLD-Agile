@@ -435,10 +435,6 @@ public class TourBuilderV2 {
             previous = current;
         }
 
-
-
-
-
         return tour;
     }
 

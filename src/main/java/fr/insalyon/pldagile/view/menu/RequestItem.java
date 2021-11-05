@@ -47,11 +47,14 @@ public class RequestItem extends Region {
             GridPane.setHalignment(titleLabel, HPos.LEFT);
             GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
-            Label arrivalLabel = new Label("Arrival time : " + dateFormat.format(arrivalDate));
-            titleLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-            maingp.add(arrivalLabel, 0, 1, 4, 1);
-            GridPane.setHalignment(arrivalLabel, HPos.LEFT);
-            GridPane.setMargin(arrivalLabel, new Insets(5, 5, 5, 0));
+
+            if(!editable){
+                Label arrivalLabel = new Label("Arrival time : " + dateFormat.format(arrivalDate));
+                titleLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+                maingp.add(arrivalLabel, 0, 1, 4, 1);
+                GridPane.setHalignment(arrivalLabel, HPos.LEFT);
+                GridPane.setMargin(arrivalLabel, new Insets(5, 5, 5, 0));
+            }
 
             Label timeLabel = new Label(type + " duration : "); //TODO Display time: dateFormat.format(pickupTime)
             timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
