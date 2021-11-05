@@ -28,12 +28,21 @@
 package fr.insalyon.pldagile.view.maps;
 
 import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.view.Colors;
+import fr.insalyon.pldagile.view.menu.RequestItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.util.Pair;
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +58,7 @@ public class PointLayer extends MapLayer {
     private static Controller controller;
     private static Pair<MapPoint, Node> lastHighlighted = null;
     private static final double highlightIconFactor = 1.3;
+
     public PointLayer() {
 
     }
@@ -57,35 +67,30 @@ public class PointLayer extends MapLayer {
         this.controller = controller;
     }
 
-    public static void highlightIcon(Long id){
+    public static void highlightIcon(Long id) {
         // unhighlight last listened icon when disabling the itemView listener
-        if (lastHighlighted != null){
+        if (lastHighlighted != null) {
             unHighlightIcon(lastHighlighted.getKey().getRequestId());
         }
         // looking for the mapPoints that matches the listened request
         List<Pair<MapPoint, Node>> candidates = requestPoints.stream()
-                .filter(point -> point.getKey().getRequestId() == id)
-                .collect(Collectors.toList());
+                .filter(point -> point.getKey().getRequestId() == id).collect(Collectors.toList());
         candidates.forEach((candidate) -> {
-                    candidate.getValue().setScaleX(highlightIconFactor);
-                    candidate.getValue().setScaleY(highlightIconFactor);
-                    lastHighlighted = candidate;
-                }
-        );
+            candidate.getValue().setScaleX(highlightIconFactor);
+            candidate.getValue().setScaleY(highlightIconFactor);
+            lastHighlighted = candidate;
+        });
     }
 
-    public static void unHighlightIcon(Long id){
+    public static void unHighlightIcon(Long id) {
         // looking for the mapPoints that matches the listened request
         List<Pair<MapPoint, Node>> candidates = requestPoints.stream()
-                .filter(point -> point.getKey().getRequestId() == id)
-                .collect(Collectors.toList());
+                .filter(point -> point.getKey().getRequestId() == id).collect(Collectors.toList());
         candidates.forEach((candidate) -> {
-                    candidate.getValue().setScaleX(1.0);
-                    candidate.getValue().setScaleY(1.0);
-                }
-        );
+            candidate.getValue().setScaleX(1.0);
+            candidate.getValue().setScaleY(1.0);
+        });
     }
-
 
     public static Pair<MapPoint, Node> getLastHighlighted() {
         return lastHighlighted;
@@ -97,7 +102,19 @@ public class PointLayer extends MapLayer {
         this.markDirty();
     }
 
-    public void addRequestPoint(MapPoint p, Node icon){
+    public void addTourPoint(MapPoint p) {
+        Node circle = new Circle(2, Color.WHITE);
+
+        // Add blue border
+        DropShadow borderEffect = new DropShadow(BlurType.THREE_PASS_BOX, Colors.getTourLineColor(), 2, 3, 0, 0);
+        circle.setEffect(borderEffect);
+
+        intersectionPoints.add(new Pair<>(p, circle));
+        this.getChildren().add(circle);
+        this.markDirty();
+    }
+
+    public void addRequestPoint(MapPoint p, Node icon) {
         requestPoints.add(new Pair<>(p, icon));
         this.getChildren().add(icon);
         this.markDirty();
@@ -109,7 +126,7 @@ public class PointLayer extends MapLayer {
         this.markDirty();
     }
 
-    public void clearRequestPoints(){
+    public void clearRequestPoints() {
         requestPoints.clear();
         this.getChildren().removeIf(node -> node instanceof RequestMapPin);
     }
@@ -131,25 +148,23 @@ public class PointLayer extends MapLayer {
         }
     }
 
-
-    public void activeMapIntersectionsListener(){
+    public void activeMapIntersectionsListener() {
 
         for (Pair<MapPoint, Node> point : intersectionPoints) {
-            point.getValue().setOnMouseClicked(event-> {
-                controller.modifyClick(point.getKey().getId(),"Intersection", -1);
+            point.getValue().setOnMouseClicked(event -> {
+                controller.modifyClick(point.getKey().getId(), "Intersection", -1);
             });
         }
     }
 
-    public void activeRequestIntersectionsListener(){
+    public void activeRequestIntersectionsListener() {
         for (Pair<MapPoint, Node> point : requestPoints) {
-            point.getValue().setOnMouseClicked(event-> {
-                controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
+            point.getValue().setOnMouseClicked(event -> {
+                controller.modifyClick(point.getKey().getRequestId(), "Intersection", point.getKey().getStepIndex());
                 System.out.println("active request:" + point.getKey().getStepIndex());
             });
         }
     }
-
 
     public void disableMapIntersectionsListener() {
         for (Pair<MapPoint, Node> point : intersectionPoints) {
@@ -162,6 +177,5 @@ public class PointLayer extends MapLayer {
             point.getValue().setOnMouseClicked(null);
         }
     }
-
 
 }

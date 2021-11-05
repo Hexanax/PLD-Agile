@@ -55,8 +55,8 @@ public class Window {
         // cityMap = new CityMap();
         // planningRequest = new PlanningRequest();
         mapView = new MapView();
-        mapView.addLayer(pointLayer); // Add the map layer
         mapView.addLayer(lineLayer); // Add the line (tour) layer
+        mapView.addLayer(pointLayer); // Add the map layer
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
@@ -219,9 +219,9 @@ public class Window {
             MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
             MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
             MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
-            pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
-            pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
-            lineLayer.addLine(mapDestination, Colors.getTourIntersectionColor());
+            lineLayer.addLine(mapDestination);
+            pointLayer.addTourPoint(originPoint);
+            pointLayer.addTourPoint(destinationPoint);
             //Update prev intersection
             previousIntersection = destinationIntersection;
         }

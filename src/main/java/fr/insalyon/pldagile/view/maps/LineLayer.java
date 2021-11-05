@@ -5,7 +5,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
 
@@ -22,10 +25,12 @@ public class LineLayer extends MapLayer {
         
     }
 
-    public void addLine(MapDestination mapDestination, Color color) {
+    public void addLine(MapDestination mapDestination) {
         Line line = new Line();
-        line.setStroke(color);
+        line.setStroke(Colors.getTourLineColor());
         line.setStrokeWidth(4);
+        DropShadow borderEffect = new DropShadow(BlurType.THREE_PASS_BOX, Colors.getTourLineStrokeColor(), 2, 1, 0, 0);
+        line.setEffect(borderEffect);
         lines.add(new Pair<>(mapDestination, line));
         this.getChildren().add(line); // TODO Reflect where to add the line node child the cleanest way
         this.markDirty();
