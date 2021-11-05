@@ -24,7 +24,7 @@ public class RequestItem extends Region {
     private Button up;
     private Button down;
 
-    public RequestItem(Date stepDate, int duration, long requestNumber, String type, int stepIndex, boolean editable) {
+    public RequestItem(Date arrivalDate, int duration, long requestNumber, String type, int stepIndex, boolean editable) {
 
         //TODO test if its a depot
 
@@ -41,45 +41,46 @@ public class RequestItem extends Region {
         DateFormat dateFormat = new SimpleDateFormat("HH 'h' mm");
 
         if(requestNumber >= 0) {
-            Label titleLabel;
-            if(stepDate==null){
-                titleLabel = new Label(type );
-            } else {
-                titleLabel = new Label(type + " - " + dateFormat.format(stepDate));
-            }
+            Label titleLabel = new Label(type + " n°" + (requestNumber + 1));
             titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
             maingp.add(titleLabel, 0, 0, 4, 1);
             GridPane.setHalignment(titleLabel, HPos.LEFT);
             GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
+            Label arrivalLabel = new Label("Arrival time : " + dateFormat.format(arrivalDate));
+            titleLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(arrivalLabel, 0, 1, 4, 1);
+            GridPane.setHalignment(arrivalLabel, HPos.LEFT);
+            GridPane.setMargin(arrivalLabel, new Insets(5, 5, 5, 0));
 
-            Label timeLabel = new Label("Duration : "); //TODO Display time: dateFormat.format(pickupTime)
+            Label timeLabel = new Label(type + " duration : "); //TODO Display time: dateFormat.format(pickupTime)
             timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-            maingp.add(timeLabel, 0, 1, 1, 1);
+            maingp.add(timeLabel, 0, 2, 1, 1);
             GridPane.setHalignment(timeLabel, HPos.LEFT);
             GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
 
 
             value = new TextField(String.valueOf(duration));
             value.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-            maingp.add(value, 1, 1, 1, 1);
+            maingp.add(value, 1, 2, 1, 1);
             GridPane.setHalignment(value, HPos.LEFT);
             GridPane.setMargin(value, new Insets(5, 5, 5, 0));
             value.setEditable(false);
             value.setDisable(false);
 
+            Label unity = new Label(" seconds");
+            unity.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            maingp.add(unity, 2, 2, 1, 1);
+            GridPane.setHalignment(unity, HPos.LEFT);
+            GridPane.setMargin(unity, new Insets(5, 5, 5, 0));
+
+
             if(editable){
                 value.setEditable(true);
             }
-
-            Label requestLabel = new Label("Request n°" + (requestNumber+1));
-            requestLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-            maingp.add(requestLabel, 0, 2, 1, 1);
-            GridPane.setHalignment(requestLabel, HPos.LEFT);
-            GridPane.setMargin(requestLabel, new Insets(5, 5, 5, 0));
         } else {
             //depot
-            Label titleLabel = new Label(type + " - " + dateFormat.format(stepDate));
+            Label titleLabel = new Label(type + " - " + dateFormat.format(arrivalDate));
             titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
             maingp.add(titleLabel, 0, 0, 4, 1);
             GridPane.setHalignment(titleLabel, HPos.LEFT);
