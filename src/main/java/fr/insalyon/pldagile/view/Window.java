@@ -329,13 +329,13 @@ public class Window {
 
         RequestItem item = new RequestItem(depot.getDepartureTime(), 0, -1, "Depot",0, false);
         items.add(item);
-        Date currentDate = depot.getDepartureTime();
+
         for(Pair<Long, String> step : steps) {
             if(Objects.equals(step.getValue(), "pickup"))
             {
 
-                currentDate.setTime(currentDate.getTime() + requests.get(step.getKey()).getPickup().getDuration()*1000);
-                item = new RequestItem(currentDate, requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index, false);
+
+                item = new RequestItem(requests.get(step.getKey()).getPickup().getArrivalTime(), requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index, false);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
@@ -350,8 +350,7 @@ public class Window {
             }
             if(Objects.equals(step.getValue(), "delivery")){
 
-                currentDate.setTime(currentDate.getTime() + requests.get(step.getKey()).getPickup().getDuration()*1000);
-                item = new RequestItem(currentDate, requests.get(step.getKey()).getPickup().getDuration(), step.getKey(),"Delivery",index, false);
+                item = new RequestItem(requests.get(step.getKey()).getDelivery().getArrivalTime(), requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index, false);
                 items.add(item);
                 double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
                 double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
@@ -367,7 +366,7 @@ public class Window {
 
             index++;
         }
-        item = new RequestItem(currentDate, 0, -2,"Depot",(index-1),false);
+        item = new RequestItem(new Date(), 0, -2,"Depot",(index-1),false);
         items.add(item);
         RequestView.clearItems();
 

@@ -44,7 +44,14 @@ public class TourBuilderV2 {
         Tour tour = new Tour(planningRequest.getRequests(),planningRequest.getDepot());
         Map<Long, Intersection> intersections = cityMap.getIntersections();
         Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
-        Long previous = tourIntersections.get(0);
+
+
+        for(long idIntersection : tourIntersections){
+            tour.addIntersection(intersections.get(idIntersection));
+        }
+
+
+        /*Long previous = tourIntersections.get(0);
         tour.addIntersection(intersections.get(previous));
         tourIntersections.remove(0);
         for(Long idIntersection : tourIntersections){
@@ -58,10 +65,10 @@ public class TourBuilderV2 {
         for(Request request : planningRequest.getRequests()){
             tour.addPickupTime(request.getPickup().getDuration());
             tour.addDeliveryTime(request.getDelivery().getDuration());
-        }
+        }*/
         tour.setStepsIdentifiers(simulatedAnnealing.getStepsIdentifiers());
 
-        return tour;
+        return computeTour(cityMap,tour, tour.getIntersections());
 
 
 
@@ -372,17 +379,56 @@ public class TourBuilderV2 {
     private long getValueOfNextIntersection(Depot depot, Map<Long, Request> requests, Pair<Long, String> step)
     {
 
-        if(step.getValue()=="pickup"){
+        if(Objects.equals(step.getValue(), "pickup")){
             return requests.get(step.getKey()).getPickup().getIntersection().getId();
         }
-        if(step.getValue()=="delivery")
+        if(Objects.equals(step.getValue(), "delivery"))
         {
             return requests.get(step.getKey()).getDelivery().getIntersection().getId();
         }
         return depot.getIntersection().getId();
     }
 
-    private Tour computeTour(Tour tour, List<Intersection> intersections){
+    private Tour computeTour(CityMap cityMap, Tour tour, List<Intersection> intersections){
+
+        Map<Pair<Long,Long>,Segment> segments = cityMap.getSegments();
+        Depot depot = tour.getDepot();
+        Map<Long, Request> requests = tour.getRequests();
+        ArrayList<Pair<Long, String>> steps = tour.getSteps();
+
+        int stepIndex = 1;
+        long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(stepIndex));
+
+        long previous = intersections.get(0).getId();
+        intersections.remove(0);
+        for(Intersection intersection : intersections){
+            long current = intersection.getId();
+            Segment currentSegment = segments.get(new Pair<>(previous,current));
+            tour.addSegment(currentSegment);
+            if(current == nextSpecificIntersection){
+                double tourDuration = tour.getTourDuration()*1000;
+                Pair<Long, String> step = steps.get(stepIndex);
+                if(Objects.equals(step.getValue(), "pickup")){
+                    Pickup pickup = requests.get(step.getKey()).getPickup();
+                    tour.addPickupTime(pickup.getDuration());
+                    pickup.setArrivalTime((int) (depot.getDepartureTime().getTime()+tourDuration));
+                    stepIndex++;
+                }
+                if(Objects.equals(step.getValue(), "delivery")){
+                    Delivery delivery = requests.get(step.getKey()).getDelivery();
+                    tour.addDeliveryTime(delivery.getDuration());
+                    delivery.setArrivalTime((int) (depot.getDepartureTime().getTime()+tourDuration));
+                    stepIndex++;
+                }
+                nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(stepIndex));
+            }
+
+            previous = current;
+        }
+
+
+
+
 
         return tour;
     }
