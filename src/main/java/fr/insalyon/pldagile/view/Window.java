@@ -195,16 +195,15 @@ public class Window {
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
             MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
             depotPoint.setId(planningRequest.getDepot().getIntersection().getId());
-            Date currentDate = planningRequest.getDepot().getDepartureTime();
+
             ArrayList<RequestItem> items = new ArrayList<>();
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
-                currentDate.setTime(currentDate.getTime() + pickup.getDuration()*1000);
-                RequestItem pickupItem = new RequestItem(currentDate, request.getPickup().getDuration(), request.getId(), "Pickup",-1, false);
+                RequestItem pickupItem = new RequestItem(new Date(), request.getPickup().getDuration(), request.getId(), "Pickup",-1, false);
                 Delivery delivery = request.getDelivery();
-                currentDate.setTime(currentDate.getTime() + delivery.getDuration()*1000);
-                RequestItem deliveryItem = new RequestItem(currentDate, request.getDelivery().getDuration(), request.getId(), "Delivery",-1,false);
+
+                RequestItem deliveryItem = new RequestItem(new Date(), request.getDelivery().getDuration(), request.getId(), "Delivery",-1,false);
                 items.add(pickupItem);
                 items.add(deliveryItem);
                 //Map points
