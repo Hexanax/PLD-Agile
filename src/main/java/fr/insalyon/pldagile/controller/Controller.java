@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.observer.PCLCityMap;
 import fr.insalyon.pldagile.observer.PCLPlanningRequest;
+import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
 import javafx.util.Pair;
 
@@ -11,7 +12,7 @@ import static javafx.application.Application.launch;
 public class Controller {
     private PCLCityMap pclCityMap;
     private PCLPlanningRequest pclPlanningRequest;
-    private Tour tour;
+    private PCLTour pclTour;
     private Tour modifyTour;
     private State currentState;
     private Window window;
@@ -42,7 +43,7 @@ public class Controller {
     public Controller(CityMap citymap, PlanningRequest planningRequest, Tour tour) {
         this.pclCityMap = new PCLCityMap(citymap);
         this.pclPlanningRequest = new PCLPlanningRequest(planningRequest);
-        this.tour = tour;
+        this.pclTour = new PCLTour(tour);
         listOfCommands = new ListOfCommands();
         currentState = initialState;
     }
@@ -67,20 +68,24 @@ public class Controller {
         return pclPlanningRequest;
     }
 
+    public PCLTour getPclTour() {
+        return pclTour;
+    }
+
     protected void setPlanningRequest(PlanningRequest planningRequest) {
         this.pclPlanningRequest.setPlanningRequest(planningRequest);
     }
 
     protected void setTour(Tour tour) {
-        this.tour = tour;
+        this.pclTour.setTour(tour);
     }
 
     protected void initializeModifyTour() {
-        modifyTour = new Tour(tour);
+        modifyTour = new Tour(pclTour.getTour());
     }
 
     protected void validModifyTour() {
-        tour = modifyTour;
+        pclTour.setTour(modifyTour);
     }
 
     protected void setModifyTour(Tour tour) {
@@ -103,20 +108,20 @@ public class Controller {
     }
 
     public void cancel() {
-        currentState.cancel(this, tour, window, listOfCommands);
+        currentState.cancel(this, pclTour.getTour(), window, listOfCommands);
     }
 
     public void confirm(String result) {
-        currentState.confirm(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), tour, result, window, listOfCommands);
+        currentState.confirm(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), result, window, listOfCommands);
     }
 
 
     public void generateRoadMap() {
-        currentState.generateRoadMap(this, tour, window);
+        currentState.generateRoadMap(this, pclTour.getTour(), window);
     }
 
     public void deleteRequest(Long idRequest) {
-        currentState.deleteRequest(this, pclCityMap.getCityMap(), tour, tour.getRequests().get(idRequest), window, listOfCommands);
+        currentState.deleteRequest(this, pclCityMap.getCityMap(), pclTour.getTour(), pclTour.getTour().getRequests().get(idRequest), window, listOfCommands);
     }
 
     public void modifyClick(Long id, String type, int stepIndex) {
@@ -124,20 +129,20 @@ public class Controller {
     }
 
     public void addRequest(Long id) {
-        currentState.addRequest(this, pclCityMap.getCityMap(), tour, id, window);
+        currentState.addRequest(this, pclCityMap.getCityMap(), pclTour.getTour(), id, window);
     }
 
     /**
      * Method called by window after a click on the button "Undo"
      */
     public void undo() {
-        currentState.undo(listOfCommands, window, tour);
+        currentState.undo(this,listOfCommands, window, pclTour.getTour());
     }
 
     /**
      * Method called by window after a click on the button "Redo"
      */
     public void redo() {
-        currentState.redo(listOfCommands, window, tour);
+        currentState.redo(this, listOfCommands, window, pclTour.getTour());
     }
 }

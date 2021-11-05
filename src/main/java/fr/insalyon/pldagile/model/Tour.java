@@ -57,6 +57,8 @@ public class Tour {
         this.nextRequestId = tour.nextRequestId;
     }
 
+
+
     public Map<Long,Request> getRequests() {
         return requests;
     }

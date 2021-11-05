@@ -8,8 +8,7 @@ import fr.insalyon.pldagile.view.Window;
 public class AddRequestState3 implements State{
     @Override
     public void cancel(Controller controller, Tour tour, Window window,ListOfCommands listOfCdes) {
-        window.renderTour(tour);
-        window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
+        controller.setTour(tour);
         window.hideModifyMenu();
         listOfCdes.reset();
         controller.setCurrentState(controller.tourComputedState);

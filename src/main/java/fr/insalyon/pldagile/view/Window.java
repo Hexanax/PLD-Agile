@@ -42,6 +42,8 @@ public class Window implements PropertyChangeListener {
         this.controller = controller;
         this.controller.getPclCityMap().addPropertyChangeListener(this);
         this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
+        this.controller.getPclTour().addPropertyChangeListener(this);
+
         pointLayer.setController(controller);
         this.controller.initWindow(this);
     }
@@ -391,12 +393,18 @@ public class Window implements PropertyChangeListener {
             }
         }
         else if (propertyName.equals("planningRequestUpdate")){
-            System.out.println("new value");
             clearRequest();
             clearTour();
             PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
             renderPlanningRequest(newPlanningRequestValue);
 
+        }
+        else if (propertyName.equals("tourUpdate")){
+            System.out.println("new tour");
+            Tour newTourValue = (Tour) evt.getNewValue();
+            clearTour();
+            orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
+            renderTour(newTourValue);
         }
 
     }

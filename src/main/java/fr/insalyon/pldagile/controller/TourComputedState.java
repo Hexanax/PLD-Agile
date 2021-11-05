@@ -68,21 +68,16 @@ public class TourComputedState implements State{
 
 
     @Override
-    public void undo(ListOfCommands listOfCdes, Window window, Tour tour) {
+    public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
 
         listOfCdes.undo();
-
-        window.clearTour();
-        window.renderTour(tour);
-        window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
+        controller.setTour(tour);
     }
 
     @Override
-    public void redo(ListOfCommands listOfCdes,Window window, Tour tour){
+    public void redo(Controller controller, ListOfCommands listOfCdes,Window window, Tour tour){
         listOfCdes.redo();
-        window.clearTour();
-        window.renderTour(tour);
-        window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
+        controller.setTour(tour);
     }
 
 

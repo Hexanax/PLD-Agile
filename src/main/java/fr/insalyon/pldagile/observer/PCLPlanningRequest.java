@@ -31,8 +31,6 @@ public class PCLPlanningRequest {
     }
 
     public void setPlanningRequest(PlanningRequest planningRequest){
-        System.out.println("notification : " + this.planningRequest + " " + planningRequest);
-        System.out.println(support.getPropertyChangeListeners());
         support.firePropertyChange("planningRequestUpdate",this.planningRequest, planningRequest);
         this.planningRequest = planningRequest;
     }
