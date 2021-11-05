@@ -42,6 +42,8 @@ public class Window {
     private final LineLayer lineLayer = new LineLayer();
     private final double centeredZoomValue = 13.5;
 
+    private int tourDuration;
+
     public Window(Controller controller) {
         this.controller = controller;
         pointLayer.setController(controller);
@@ -232,6 +234,7 @@ public class Window {
 
     public void renderTour(Tour tour) {
         // TODO Update RequestView
+        this.tourDuration = (int) tour.getTourDuration();
         Intersection previousIntersection = tour.getDepot().getIntersection();
         for (Segment segment : tour.getPath()) {
             Intersection destinationIntersection = segment.getDestination();
@@ -374,12 +377,10 @@ public class Window {
 
             index++;
         }
-
-        //TODO compute the final date
-        item = new RequestItem(new Date(), 0, -2,"Depot",(index-1),false);
+        Date finalDate = new Date(depot.getDepartureTime().getTime() + this.tourDuration*1000);
+        item = new RequestItem(finalDate, 0, -2,"Depot",(index-1),false);
         items.add(item);
         RequestView.clearItems();
-
         RequestView.setPickupItems(items);
 
     }
