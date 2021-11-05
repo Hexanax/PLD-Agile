@@ -102,8 +102,8 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         double bestDistance = getTotalDistance();
         double t = startingTemperature;
 
-        System.out.println(stepsIntersectionId.toString());
-        System.out.println(stepsIdentifiers.toString());
+        //System.out.println(stepsIntersectionId.toString());
+        //System.out.println(stepsIdentifiers.toString());
         for (int i = 0; i < numberOfIterations; i++) {
             if (t > 0.1) {
                 oldStepsIdentifiers = (ArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
@@ -129,8 +129,8 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
 
         }
 
-        System.out.println(stepsIntersectionId.toString());
-        System.out.println(stepsIdentifiers.toString());
+        //System.out.println(stepsIntersectionId.toString());
+        //System.out.println(stepsIdentifiers.toString());
     }
 
     public double getTotalDistance() {

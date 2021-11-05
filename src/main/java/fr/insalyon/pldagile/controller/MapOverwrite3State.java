@@ -26,6 +26,7 @@ public class MapOverwrite3State implements State{
                 controller.setCurrentState(controller.tourComputedState);
             }
         } catch(Exception e) {
+            System.out.println(e);
             window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
             controller.setCurrentState(controller.tourComputedState);
         }

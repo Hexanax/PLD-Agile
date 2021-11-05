@@ -172,7 +172,7 @@ public class PickyApplication extends Application {
     }
 
     public static void renderTour() {
-        System.out.println("Render tour called");
+        ////System.out.println("Render tour called");
         TourBuilderV1 tourBuilderV1 = new TourBuilderV1();
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
 

@@ -118,7 +118,7 @@ public class PointLayer extends MapLayer {
         for (Pair<MapPoint, Node> point : requestPoints) {
             point.getValue().setOnMouseClicked(event-> {
                 controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
-                System.out.println("active request:" + point.getKey().getStepIndex());
+                //System.out.println("active request:" + point.getKey().getStepIndex());
             });
         }
     }

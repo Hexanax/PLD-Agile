@@ -12,6 +12,7 @@ import java.io.File;
 public class TourComputedState implements State{
     @Override
     public void loadMap(Controller controller, Window window) {
+        System.out.println("going to map overwrite3");
         controller.setCurrentState(controller.mapOverwrite3State);
         window.showValidationAlert("Load a new map",
                 "Are you sure you want to load a new map? ",

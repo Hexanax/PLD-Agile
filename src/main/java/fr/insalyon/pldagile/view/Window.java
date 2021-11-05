@@ -43,7 +43,6 @@ public class Window implements PropertyChangeListener {
         this.controller.getPclCityMap().addPropertyChangeListener(this);
         this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
         this.controller.getPclTour().addPropertyChangeListener(this);
-
         pointLayer.setController(controller);
         this.controller.initWindow(this);
     }

@@ -121,9 +121,9 @@ public class SimulatedAnnealingTest {
         };
 
         for (TestCase tc : tests) {
-            System.out.println(tc.simulatedAnnealing.getStepsIdentifiers());
+            ////System.out.println(tc.simulatedAnnealing.getStepsIdentifiers());
             boolean actualResult = tc.simulatedAnnealing.swapSteps(tc.swapFirstIndex, tc.swapSecondIndex);
-            System.out.println(actualResult);
+            ////System.out.println(actualResult);
 
             assertEquals(tc.expectedResult, actualResult);
         }
