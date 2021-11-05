@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.IconProvider;
+import fr.insalyon.pldagile.view.maps.PointLayer;
 import fr.insalyon.pldagile.view.KeyboardListener;
 import fr.insalyon.pldagile.view.MouseListener;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
 import java.util.ArrayList;
+import java.awt.*;
 import java.util.List;
 
 public class RequestView extends Region {
@@ -171,6 +173,16 @@ public class RequestView extends Region {
         }
     };
 
+    private static EventHandler<MouseEvent> onOneClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getClickCount()==1){
+                PointLayer.highlightIcon(pickupList.getSelectionModel().getSelectedItem().getRequestNumber());
+            }
+
+        }
+    };
+
     public static void activeRowListener(){
         pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
@@ -178,4 +190,16 @@ public class RequestView extends Region {
     public static void disableRowListener(){
         pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
+
+    public static void activeItemListener(){
+        pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, onOneClick);
+    }
+
+
+    public static void disableItemListener(){
+        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, onOneClick);
+        PointLayer.unHighlightIcon(PointLayer.getLastHighlighted().getKey().getRequestId());
+    }
+
+
 }

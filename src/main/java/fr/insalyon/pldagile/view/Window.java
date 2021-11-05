@@ -40,7 +40,7 @@ public class Window {
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
                                                             // one tour)
     private final LineLayer lineLayer = new LineLayer();
-    private final int centeredZoomValue = 12;
+    private final double centeredZoomValue = 13.5;
 
     public Window(Controller controller) {
         this.controller = controller;
@@ -185,8 +185,9 @@ public class Window {
         MapPoint mapCenter = new MapPoint(coord.getLatitude(), coord.getLongitude());
         // center the map around the calculated center coordinates
         mapView.setCenter(mapCenter);
-        // sets the zoom at level 12: approximately the level of a city in our case
+        // sets the zoom at level 13.5: approximately the level of a city in our case
         mapView.setZoom(centeredZoomValue);
+        mapView.setMaxZoomOut(centeredZoomValue);
     }
 
     public void renderPlanningRequest(PlanningRequest planningRequest) {
@@ -315,6 +316,14 @@ public class Window {
         RequestView.activeRowListener();
     }
 
+    public void activeItemListener(){
+        RequestView.activeItemListener();
+    }
+
+    public void disableItemListener(){
+        RequestView.disableItemListener();
+    }
+
     public void activeMapIntersectionsListener() {
         pointLayer.activeMapIntersectionsListener();
     }
@@ -426,4 +435,6 @@ public class Window {
     public void activeMainListener() {
         mainStage.getScene().setOnMouseClicked(MouseListener::mouseClicked);
     }
+
+
 }

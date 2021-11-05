@@ -28,6 +28,7 @@ public class MapDisplayedState implements State{
                 XMLDeserializer.load(planningRequest, cityMap, importFile);
                 window.renderPlanningRequest(planningRequest);
                 window.updateRequestFileName(importFile.getName());
+                window.activeItemListener();
                 controller.setCurrentState(controller.requestsDisplayedState);
                 window.addStateFollow("Requests loaded");
             } else {

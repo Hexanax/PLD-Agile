@@ -13,6 +13,7 @@ public class DeleteRequestState1 implements State{
             listOfCdes.add(new DeleteRequestCommand(citymap,tour,request));
             window.renderTour(tour);
             window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
+            window.activeItemListener();
             controller.setCurrentState(controller.tourComputedState);
             window.addStateFollow("Suppresion successfully completed");
         } else {

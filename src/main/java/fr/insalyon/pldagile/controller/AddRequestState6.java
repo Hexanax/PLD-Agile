@@ -42,6 +42,7 @@ public class AddRequestState6 implements State{
             window.renderTour(tour);
             window.addMapRequest(tour.getRequests().get(tour.getNextRequestId()-1));
             window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
+            window.activeItemListener();
             controller.setCurrentState(controller.tourComputedState);
             window.addStateFollow( "Addition successfully completed");
         } else {

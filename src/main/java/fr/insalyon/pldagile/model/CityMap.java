@@ -87,12 +87,12 @@ public class CityMap {
         z = z/totalCoordinates;
 
         // Reconvert to spherical coordinates
-        double  longitudeCentral = Math.atan2(longitudeIntermed, latitudeIntermed);
+        double  longitudeCentral = Math.atan2(longitudeIntermed, latitudeIntermed) ;
         double squareCentral = Math.sqrt(latitudeIntermed*latitudeIntermed + longitudeIntermed*longitudeIntermed);
         double latitudeCentral = Math.atan2(z, squareCentral);
 
         // Create the central coordinates
-        return new Coordinates(latitudeCentral*180/Math.PI,longitudeCentral*180/Math.PI);
+        return new Coordinates(latitudeCentral*180/Math.PI,(longitudeCentral*180/Math.PI) + 0.01);
 
     }
 
