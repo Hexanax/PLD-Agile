@@ -151,7 +151,7 @@ public class TourBuilderV2 {
         //if intersection before pickup is the same as before delivery
 
 
-        System.out.println(Arrays.toString(indexAroundStep));
+
 
 
         if(indexAroundStep[0]==indexAroundStep[2]){
@@ -327,7 +327,7 @@ public class TourBuilderV2 {
             else if(indexStep == delivery.getKey() && !complete){
                 newSteps.add(new Pair(newRequest.getId(),"delivery"));
 
-                long afterPickupAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep+1));
+                long afterDeliveryAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep+1));
 
                 Dijkstra dijkstra = bestPaths.get(nextSpecificIntersection);
 
@@ -338,7 +338,7 @@ public class TourBuilderV2 {
 
                 dijkstra = bestPaths.get(delivery.getValue().getIntersection().getId());
 
-                for(long idIntersection : dijkstra.getShortestPath(afterPickupAction)){
+                for(long idIntersection : dijkstra.getShortestPath(afterDeliveryAction)){
                     newIntersections.add(intersectionsMap.get(idIntersection));
                 }
                 newIntersections.remove(newIntersections.size()-1);

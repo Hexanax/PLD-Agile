@@ -23,17 +23,22 @@ public class DeleteRequestCommand implements Command {
 
 
         int index = 0;
+
         for(Pair<Long, String> step: tour.getSteps()){
 
             if(Objects.equals(step.getKey(), request.getId())){
                 if(step.getValue()=="pickup"){
                     int value = index -1;
+
                     pickup = new Pair<>(value, request.getPickup());
                 } else {
                     int value = index-1;
                     if(pickup.getKey() == (value-1)){
                         value =  pickup.getKey();
+                    } else {
+                        value = value -1;
                     }
+
                     delivery = new Pair<>(value, request.getDelivery());
                 }
             }
