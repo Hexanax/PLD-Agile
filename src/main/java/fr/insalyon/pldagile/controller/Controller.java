@@ -74,6 +74,7 @@ public class Controller {
     }
 
     protected void setTour(Tour tour) {
+        System.out.println("setting tour");
         this.pclTour.setTour(tour);
     }
 
@@ -133,7 +134,7 @@ public class Controller {
      * Method called by window after a click on the button "Undo"
      */
     public void undo() {
-        currentState.undo(this,listOfCommands, window, pclTour.getTour());
+        currentState.undo(this, listOfCommands, window, pclTour.getTour());
     }
 
     /**

@@ -22,7 +22,7 @@ public class PCLPlanningRequest {
     }
 
     public void addPropertyChangeListener(PropertyChangeListener pcl) {
-        support.addPropertyChangeListener(pcl);
+        support.addPropertyChangeListener("planningRequestUpdate",pcl);
     }
     public void removePropertyChangeListener(PropertyChangeListener pcl) {
         support.removePropertyChangeListener(pcl);

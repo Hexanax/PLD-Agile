@@ -36,6 +36,7 @@ public class Window {
     private final MapView mapView;
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
+    private final TourView tourView;
 
     public Window(Controller controller) {
         this.controller = controller;
@@ -45,8 +46,11 @@ public class Window {
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
         this.mapView = new MapView(controller);
+        this.tourView = new TourView(controller);
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
+        mapView.addLayer(tourView.getTourLineLayer());
+        mapView.addLayer(tourView.getTourPointLayer());
     }
 
     public static Stage getMainStage() {
