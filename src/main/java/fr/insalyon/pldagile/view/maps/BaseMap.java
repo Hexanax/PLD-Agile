@@ -230,7 +230,7 @@ public class BaseMap extends Group {
     public void zoom(double delta, double pivotX, double pivotY) {
         double dz = delta;// > 0 ? .1 : -.1;
         double zp = zoom.get();
-        logger.info("Zoom called, zp = " + zp + ", delta = " + delta + ", px = " + pivotX + ", py = " + pivotY);
+        logger.fine("Zoom called, zp = " + zp + ", delta = " + delta + ", px = " + pivotX + ", py = " + pivotY);
         double txold = getTranslateX();
         double t1x = pivotX - getTranslateX();
         double t2x = 1. - Math.pow(2, dz);
@@ -239,7 +239,7 @@ public class BaseMap extends Group {
         double t1y = pivotY - tyold;
         double t2y = 1. - Math.pow(2, dz);
         double totY = t1y * t2y;
-        logger.info("zp = " + zp + ", txold = " + txold + ", totx = " + totX + ", tyold = " + tyold + ", toty = " + totY);
+        logger.fine("zp = " + zp + ", txold = " + txold + ", totx = " + totX + ", tyold = " + tyold + ", toty = " + totY);
         if ((delta > 0)) {
             if (zp < MAX_ZOOM) {
                 setTranslateX(txold + totX);
@@ -256,10 +256,10 @@ public class BaseMap extends Group {
                 zoom.set(zp + delta);
                 markDirty();
             } else {
-                logger.info("sorry, would be too small");
+                logger.fine("sorry, would be too small");
             }
         }
-        logger.info("after, zp = " + zoom.get() + ", tx = " + getTranslateX());
+        logger.fine("after, zp = " + zoom.get() + ", tx = " + getTranslateX());
     }
 
 
@@ -522,7 +522,7 @@ public class BaseMap extends Group {
         return this.getParent().getLayoutBounds().getHeight();
     }
 
-    public boolean canDezoom(double dezoom) {
-        return zoom.get() > dezoom;
+    public boolean canZoomOut (double maxZoomOut) {
+        return zoom.get() > maxZoomOut;
     }
 }

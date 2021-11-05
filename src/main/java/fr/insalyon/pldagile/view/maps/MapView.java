@@ -58,7 +58,7 @@ public class MapView extends Region {
     private MapPoint centerPoint = null;
     private boolean zooming = false;
     private boolean enableDragging = false;
-    private double maxDezoom = 0.0D;
+    private double maxZoomOut = 0.0D;
 
     /**
      * Create a MapView component.
@@ -113,7 +113,7 @@ public class MapView extends Region {
         setOnZoomFinished(t -> zooming = false);
         setOnZoom(t -> {
             logger.fine("Zoom factor = " + (t.getZoomFactor() - 1));
-            boolean allowDezoom = baseMap.canDezoom(maxDezoom);
+            boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
             boolean isZooming = t.getZoomFactor() > 0.0;
             if (isZooming || allowDezoom) {
                 baseMap.zoom(t.getZoomFactor() - 1, t.getX(), t.getY());
@@ -123,7 +123,7 @@ public class MapView extends Region {
         setOnScroll(t -> {
             final double delta = t.getDeltaY() > 1 ? .1 : t.getDeltaY() < -1 ? -.1 : 0;
             logger.fine("Scroll factor = " + (delta));
-            boolean allowDezoom = baseMap.canDezoom(maxDezoom);
+            boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
             boolean isZooming = delta > 0.0;
             if (isZooming || allowDezoom) {
                 baseMap.zoom(delta, t.getX(), t.getY());
@@ -131,8 +131,8 @@ public class MapView extends Region {
         });
     }
 
-    public void setMaxDezoom(double maxDezoom) {
-        this.maxDezoom = maxDezoom;
+    public void setMaxZoomOut(double maxZoomOut) {
+        this.maxZoomOut = maxZoomOut;
     }
 
     /**

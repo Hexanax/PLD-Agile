@@ -168,7 +168,7 @@ public class Window {
         mapView.setCenter(mapCenter);
         // sets the zoom at level 12: approximately the level of a city in our case
         mapView.setZoom(centeredZoomValue);
-        mapView.setMaxDezoom(centeredZoomValue);
+        mapView.setMaxZoomOut(centeredZoomValue);
     }
 
     public void renderPlanningRequest(PlanningRequest planningRequest) {
