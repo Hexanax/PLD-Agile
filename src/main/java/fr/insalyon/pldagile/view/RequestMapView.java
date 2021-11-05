@@ -75,51 +75,16 @@ public class RequestMapView implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-        System.out.println(propertyName);
+        //System.out.println(propertyName);
         this.planningRequest = (PlanningRequest) evt.getNewValue();
         render();
     }
 
-    public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
-        planningRequestPoints.clearPoints();
-        ArrayList<RequestItem> items = new ArrayList<>();
-        int index = 0;
-        for (Pair<Long, String> step : steps) {
-            if (Objects.equals(step.getValue(), "pickup")) {
-                double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
-                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
-                mapPoint.setId(requests.get(step.getKey()).getPickup().getIntersection().getId());
-                mapPoint.setRequestId(requests.get(step.getKey()).getId());
-                mapPoint.setStepIndex(index);
-                planningRequestPoints.addPoint(
-                        mapPoint,
-                        IconProvider.getPickupIcon()
-                );
-            }
-            if (Objects.equals(step.getValue(), "delivery")) {
-                double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
-                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
-                mapPoint.setId(requests.get(step.getKey()).getDelivery().getIntersection().getId());
-                mapPoint.setRequestId(requests.get(step.getKey()).getId());
-                mapPoint.setStepIndex(index);
-                planningRequestPoints.addPoint(
-                        mapPoint,
-                        IconProvider.getDropoffIcon()
-                );
-            }
-
-            index++;
-        }
-
-    }
-
-//    public void activeRequestIntersectionsListener() {
+    //    public void activeRequestIntersectionsListener() {
 //        for (Pair<MapPoint, Node> point : requestPoints) {
 //            point.getValue().setOnMouseClicked(event-> {
 //                controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
-//                //System.out.println("active request:" + point.getKey().getStepIndex());
+//                ////System.out.println("active request:" + point.getKey().getStepIndex());
 //            });
 //        }
 //    }

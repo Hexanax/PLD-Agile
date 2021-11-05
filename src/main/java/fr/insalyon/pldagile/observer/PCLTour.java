@@ -30,7 +30,7 @@ public class PCLTour {
     }
 
     public void setTour(Tour tour) {
-        System.out.println("notification : " + this.tour + " " + tour);
+        //System.out.println("notification : " + this.tour + " " + tour);
         support.firePropertyChange("tourUpdate", this.tour, tour);
         this.tour = tour;
     }

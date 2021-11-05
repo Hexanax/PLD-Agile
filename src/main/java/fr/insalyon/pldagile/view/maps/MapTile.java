@@ -145,7 +145,7 @@ class MapTile extends Region {
     void addCovering(MapTile child) {
         coveredTiles.add(child);
         InvalidationListener il = createProgressListener(child);
-//        //System.out.println("We have to cover, add "+il);
+//        ////System.out.println("We have to cover, add "+il);
         child.progress.addListener(il);
         calculatePosition();
     }

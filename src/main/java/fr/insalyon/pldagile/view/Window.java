@@ -363,7 +363,7 @@ public class Window {
 //    @Override
 //    public void propertyChange(PropertyChangeEvent evt) {
 //        String propertyName = evt.getPropertyName();
-//        System.out.println(propertyName);
+//        //System.out.println(propertyName);
 //        if(propertyName.equals("cityMapUpdate")) {
 //            CityMap newCityMapValue = (CityMap) evt.getNewValue();
 //            clearMap();

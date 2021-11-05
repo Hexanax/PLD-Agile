@@ -45,6 +45,11 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
     private final String[] buttonTexts = new String[]{DELETE_REQUEST, ADD_REQUEST, UNDO, REDO};
 
     public RequestMenuView(Controller controller) {
+
+        //Subscribe to both request rendering events
+        controller.getPclPlanningRequest().addPropertyChangeListener(this);
+        controller.getPclTour().addPropertyChangeListener(this);
+
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
@@ -111,7 +116,8 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
         }
     }
 
-    public void renderRequestMenu(PlanningRequest planningRequest) {
+    public void render(PlanningRequest planningRequest) {
+        clear();
         if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             // Render the planning request
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
@@ -131,7 +137,12 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
         }
     }
 
-    public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
+    public void renderOrderedSteps(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
+        clear();
+        //if no tour computed, just clear and return
+        if(depot==null){
+            return;
+        }
         ArrayList<RequestItem> items = new ArrayList<>();
         int index = 0;
         RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot", 0);
@@ -150,18 +161,14 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
         }
         item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2, "Depot", (index - 1));
         items.add(item);
-        clearItems();
-
         setPickupItems(items);
-
     }
 
     public void setPickupItems(List<RequestItem> requestList) {
-        clearItems();
         pickupItems.addAll(requestList);
     }
 
-    public void clearItems() {
+    public void clear() {
         pickupItems.clear();
     }
 
@@ -182,13 +189,20 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
 //        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
 //    }
 //
+
+    //TODO make so that when both events are fired, they don't
+    // erase one another...
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
+        System.out.println(propertyName);
         if (propertyName.equals("tourUpdate")){
             Tour newTourValue = (Tour) evt.getNewValue();
-            clearItems();
-            orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
+            renderOrderedSteps(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
+        }
+        if (propertyName.equals("planningRequestUpdate")){
+            PlanningRequest planningRequest = (PlanningRequest) evt.getNewValue();
+            render(planningRequest);
         }
     }
 }
