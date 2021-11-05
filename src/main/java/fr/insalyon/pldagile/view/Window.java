@@ -400,7 +400,6 @@ public class Window implements PropertyChangeListener {
 
         }
         else if (propertyName.equals("tourUpdate")){
-            System.out.println("new tour");
             Tour newTourValue = (Tour) evt.getNewValue();
             clearTour();
             orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());

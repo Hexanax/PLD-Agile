@@ -69,7 +69,6 @@ public class TourComputedState implements State{
 
     @Override
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
-
         listOfCdes.undo();
         controller.setTour(tour);
     }
