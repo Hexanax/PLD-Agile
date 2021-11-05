@@ -192,6 +192,7 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
 
     //TODO make so that when both events are fired, they don't
     // erase one another...
+    // temporary solution = call setTour before setPlanningRequest
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
