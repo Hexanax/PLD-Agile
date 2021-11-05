@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.Intersection;
+import fr.insalyon.pldagile.view.maps.MapLayer;
 import fr.insalyon.pldagile.view.maps.MapPoint;
 import fr.insalyon.pldagile.view.maps.PointLayer;
 import javafx.scene.shape.Circle;
@@ -35,6 +36,10 @@ public class CityMapView implements PropertyChangeListener {
                 cityPointLayer.addPoint(mapPoint, new Circle(2, Colors.getMapIntersectionColor()));
             }
         }
+    }
+
+    public MapLayer getLayer() {
+        return cityPointLayer;
     }
 
     @Override

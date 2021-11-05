@@ -165,25 +165,23 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
         pickupItems.clear();
     }
 
-
-
-    private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e) {
-            if (e.getClickCount() == 2) {
-                controller.modifyClick(pickupList.getSelectionModel().getSelectedItem().getRequestNumber(), pickupList.getSelectionModel().getSelectedItem().getType(), pickupList.getSelectionModel().getSelectedItem().getStepIndex());
-            }
-        }
-    };
-
-    public void activeRowListener() {
-        pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-    }
-
-    public void disableRowListener() {
-        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-    }
-
+//    private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+//        @Override
+//        public void handle(MouseEvent e) {
+//            if (e.getClickCount() == 2) {
+//                controller.modifyClick(pickupList.getSelectionModel().getSelectedItem().getRequestNumber(), pickupList.getSelectionModel().getSelectedItem().getType(), pickupList.getSelectionModel().getSelectedItem().getStepIndex());
+//            }
+//        }
+//    };
+//
+//    public void activeRowListener() {
+//        pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+//    }
+//
+//    public void disableRowListener() {
+//        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+//    }
+//
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();

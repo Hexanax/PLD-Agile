@@ -18,8 +18,9 @@ public class AddRequestState4 implements State{
         else {
             controller.deliveryToAdd = new Pair<Integer, Delivery>(stepIndex, null);
             window.showWarningAlert("How to add a request", "Please select on the map the intersection of your delivery", null);
-            window.disableEventListener();
-            window.activeMapIntersectionsListener();
+            //TODO Update
+//            window.disableEventListener();
+//            window.activeMapIntersectionsListener();
             controller.setCurrentState(controller.addRequestState5);
         }
 

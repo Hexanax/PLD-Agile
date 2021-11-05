@@ -26,24 +26,27 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
-public class Window implements PropertyChangeListener {
+public class Window {
 
     private static Stage mainStage = null;
     private Controller controller = null;
     private MapView mapView;
     private final AnchorPane mainPane = new AnchorPane();
-    private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
-    // one tour)
+    private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
     private final CityMapView cityMapView;
+    private final RequestMapView requestMapView;
 
     public Window(Controller controller) {
         this.controller = controller;
-        this.controller.getPclCityMap().addPropertyChangeListener(this);
-        this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
-        this.controller.getPclTour().addPropertyChangeListener(this);
+//        this.controller.getPclCityMap().addPropertyChangeListener(this);
+//        this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
+//        this.controller.getPclTour().addPropertyChangeListener(this);
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
+        this.mapView = new MapView();
+        mapView.addLayer(cityMapView.getLayer());
+        mapView.addLayer(requestMapView.getLayer());
     }
 
     public static Stage getMainStage() {
@@ -269,29 +272,22 @@ public class Window implements PropertyChangeListener {
     }
 
 
-    public void hideModifyMenu() {
-        RequestMenuView.disableRowListener();
-        pointLayer.disableMapIntersectionsListener();
-        loadSidePanel(false);
-    }
-
-    public void disableEventListener() {
-        RequestMenuView.disableRowListener();
-        pointLayer.disableMapIntersectionsListener();
-        pointLayer.disableRequestIntersectionsListener();
-    }
-
-    public void activeRowListener() {
-        RequestMenuView.activeRowListener();
-    }
-
-    public void activeMapIntersectionsListener() {
-        pointLayer.activeMapIntersectionsListener();
-    }
-
-    public void activeRequestIntersectionsListener() {
-        pointLayer.activeRequestIntersectionsListener();
-    }
+    //TODO Update modify view
+//    public void hideModifyMenu() {
+//        RequestMenuView.disableRowListener();
+//        pointLayer.disableMapIntersectionsListener();
+//        loadSidePanel(false);
+//    }
+//
+//    public void disableEventListener() {
+//        RequestMenuView.disableRowListener();
+//        pointLayer.disableMapIntersectionsListener();
+//        pointLayer.disableRequestIntersectionsListener();
+//    }
+//
+//    public void activeRowListener() {
+//        RequestMenuView.activeRowListener();
+//    }
 
    /* public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
         pointLayer.clearRequestPoints();

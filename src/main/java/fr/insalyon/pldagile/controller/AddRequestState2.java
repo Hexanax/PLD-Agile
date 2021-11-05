@@ -19,7 +19,8 @@ public class AddRequestState2 implements State{
             window.showWarningAlert("How to add a request", "Intersection number unknown, please try again", null);
         } else {
             controller.pickupToAdd = new Pair<Integer, Pickup>(controller.pickupToAdd.getKey(), new Pickup(intersection, 300));
-            window.disableEventListener();
+            //TODO Update
+//            window.disableEventListener();
             controller.setCurrentState(controller.addRequestState3);
             window.showInputAlert("Pickup Duration", "Please select the duration in second", "Pickup duration :");
         }

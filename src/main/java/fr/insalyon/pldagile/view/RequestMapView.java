@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.LineLayer;
+import fr.insalyon.pldagile.view.maps.MapLayer;
 import fr.insalyon.pldagile.view.maps.MapPoint;
 import fr.insalyon.pldagile.view.maps.PointLayer;
 import fr.insalyon.pldagile.view.menu.RequestItem;
@@ -65,6 +66,10 @@ public class RequestMapView implements PropertyChangeListener {
             //TODO Scale it with zoom level
         }
     }
+    
+    public MapLayer getLayer() {
+        return planningRequestPoints;
+    }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -113,6 +118,7 @@ public class RequestMapView implements PropertyChangeListener {
         }
 
     }
+
 //    public void activeRequestIntersectionsListener() {
 //        for (Pair<MapPoint, Node> point : requestPoints) {
 //            point.getValue().setOnMouseClicked(event-> {

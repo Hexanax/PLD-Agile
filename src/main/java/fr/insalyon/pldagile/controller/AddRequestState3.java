@@ -9,7 +9,8 @@ public class AddRequestState3 implements State{
     @Override
     public void cancel(Controller controller, Tour tour, Window window,ListOfCommands listOfCdes) {
         controller.setTour(tour);
-        window.hideModifyMenu();
+        //TODO Update
+//        window.hideModifyMenu();
         listOfCdes.reset();
         controller.setCurrentState(controller.tourComputedState);
     }
@@ -30,9 +31,10 @@ public class AddRequestState3 implements State{
         if(valid){
             controller.pickupToAdd.getValue().setDuration(duration);
             controller.setCurrentState(controller.addRequestState4);
-            window.disableEventListener();
-            window.activeRequestIntersectionsListener();
-            window.activeRowListener();
+            //TODO Update
+//            window.disableEventListener();
+//            window.activeRequestIntersectionsListener();
+//            window.activeRowListener();
             window.showWarningAlert("How to add a request", null, "Select the depot, a pickup or a delivery after which you want to place the delivery of your new request");
         } else {
             window.showWarningAlert("Error","Wrong format, number must be a positive Integer" ,null);

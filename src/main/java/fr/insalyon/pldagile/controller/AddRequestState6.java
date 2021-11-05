@@ -9,7 +9,8 @@ public class AddRequestState6 implements State{
     @Override
     public void cancel(Controller controller, Tour tour, Window window,ListOfCommands listOfCdes) {
         controller.setTour(tour);
-        window.hideModifyMenu();
+        //TODO Update modify view
+//        window.hideModifyMenu();
         listOfCdes.reset();
         controller.setCurrentState(controller.tourComputedState);
     }

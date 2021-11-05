@@ -51,10 +51,11 @@ public class TourComputedState implements State{
             window.showWarningAlert("Tour can't be empty", "You can't delete the last request of the tour", null);
         } else {
             controller.setCurrentState(controller.deleteRequestState1);
-            window.disableEventListener();
+            //TODO Update
+//            window.disableEventListener();
             window.clearTour();
-            window.activeRowListener();
-            window.activeRequestIntersectionsListener();
+//            window.activeRowListener();
+//            window.activeRequestIntersectionsListener();
             window.showWarningAlert("How to delete a request", null, "Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
         }
     }
@@ -62,10 +63,11 @@ public class TourComputedState implements State{
     @Override
     public void addRequest(Controller controller, CityMap citymap, Tour tour,Long intersectionID,  Window window) {
         controller.setCurrentState(controller.addRequestState1);
-        window.disableEventListener();
+        //TODO Update
+//        window.disableEventListener();
         window.clearTour();
-        window.activeRowListener();
-        window.activeRequestIntersectionsListener();
+//        window.activeRowListener();
+//        window.activeRequestIntersectionsListener();
         window.showWarningAlert("How to add a request", null, "Select the depot, a pickup or a delivery after which you want to place the pickup of your new request");
 
     }
