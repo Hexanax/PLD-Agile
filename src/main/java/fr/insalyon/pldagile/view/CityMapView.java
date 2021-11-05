@@ -28,8 +28,10 @@ public class CityMapView implements PropertyChangeListener {
     //TODO Add View interface with render method
     public void render() {
         if(cityMap != null) {
+            System.out.println("Entered");
             cityPointLayer.clearPoints();
             for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
+                System.out.println("loop");
                 Intersection intersection = entry.getValue();
                 MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
                 mapPoint.setId(intersection.getId());
@@ -44,6 +46,8 @@ public class CityMapView implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("CityMapView event " + evt);
+        this.cityMap = (CityMap) evt.getNewValue();
         render();
     }
 

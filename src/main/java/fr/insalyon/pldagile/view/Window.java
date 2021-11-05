@@ -30,10 +30,10 @@ public class Window {
 
     private static Stage mainStage = null;
     private Controller controller = null;
-    private MapView mapView;
     private final AnchorPane mainPane = new AnchorPane();
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
+    private final MapView mapView;
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
 
@@ -53,14 +53,13 @@ public class Window {
         return mainStage;
     }
 
-    public void start(Stage stage) throws Exception {
+    public void render(Stage stage) throws Exception {
         mainStage = stage;
         stage.setTitle("Picky - INSA Lyon");
         Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
         // cityMap = new CityMap();
         // planningRequest = new PlanningRequest();
-        mapView = new MapView();
         mapView.addLayer(pointLayer); // Add the map layer
         mapView.addLayer(lineLayer); // Add the line (tour) layer
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();

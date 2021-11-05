@@ -142,4 +142,8 @@ public class Controller {
     public void redo() {
         currentState.redo(this, listOfCommands, window, pclTour.getTour());
     }
+
+    public Window getWindow() {
+        return window;
+    }
 }
