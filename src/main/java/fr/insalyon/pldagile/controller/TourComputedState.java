@@ -48,6 +48,7 @@ public class TourComputedState implements State{
         } else {
             controller.setCurrentState(controller.deleteRequestState1);
             window.disableEventListener();
+            window.disableItemListener();
             window.clearTour();
             window.activeRowListener();
             window.activeRequestIntersectionsListener();
@@ -59,6 +60,7 @@ public class TourComputedState implements State{
     public void addRequest(Controller controller, CityMap citymap, Tour tour,Long intersectionID,  Window window) {
         controller.setCurrentState(controller.addRequestState1);
         window.disableEventListener();
+        window.disableItemListener();
         window.clearTour();
         window.activeRowListener();
         window.activeRequestIntersectionsListener();
