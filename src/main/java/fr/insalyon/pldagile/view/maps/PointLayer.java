@@ -29,22 +29,16 @@ package fr.insalyon.pldagile.view.maps;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.Colors;
-import fr.insalyon.pldagile.view.menu.RequestItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

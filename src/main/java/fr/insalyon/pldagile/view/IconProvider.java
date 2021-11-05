@@ -17,18 +17,11 @@ public abstract class IconProvider {
         );
     }
 
-    public static ImageView getDepotIcon() {
-        ImageView img = new ImageView(
-                new Image(
-                        "img/depotPin/depot@2x.png",
-                        ICON_SIZE, ICON_SIZE,
-                        true, true
-                ));
-
-        // Adjust coordinates of teh view so that their origin is at the bottom center of the pin
-        img.setY(-ICON_SIZE);
-        img.setX(-ICON_SIZE / 2);
-
-        return img;
+    public static ImageView getDirectionIcon(double iconSize) {
+            ImageView img = new ImageView(
+                            new Image("img/directionIcon/directionIcon.png", iconSize, iconSize, true, true));
+            img.setY(-iconSize / 2);
+            img.setX(-iconSize / 2);
+            return img;
     }
 }

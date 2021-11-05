@@ -83,5 +83,12 @@ public class MapPoint {
         this.longitude = lon;
     }
 
+    public double getRotationAngle(MapPoint otherMapPoint) {
+        double deltaX = this.getLatitude() - this.getLongitude();
+        double deltaY = otherMapPoint.getLatitude() - otherMapPoint.getLongitude();
+        double rotation = Math.atan2(deltaY, deltaX);
+        System.out.println(rotation);
+        return rotation;
+    }
 
 }
