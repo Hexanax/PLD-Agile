@@ -30,5 +30,4 @@ public class CityMapTest {
             assertEquals(tc.expectedResult, actualResult);
         }
     }
-
 }
