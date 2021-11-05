@@ -14,7 +14,7 @@ public class PCLPlanningRequest {
     private PlanningRequest planningRequest;
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-
+    public PCLPlanningRequest() { }
     public PCLPlanningRequest(PlanningRequest planningRequest) {
         this.planningRequest = planningRequest;
     }

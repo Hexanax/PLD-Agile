@@ -31,26 +31,21 @@ public class Window implements PropertyChangeListener {
     private static Stage mainStage = null;
     private Controller controller = null;
     private MapView mapView;
-    private static SidePanel sidePanel;
-    private static AnchorPane mainPanel = new AnchorPane();
+    private final AnchorPane mainPane = new AnchorPane();
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests,
     // one tour)
     private final LineLayer lineLayer = new LineLayer();
-    private final int centeredZoomValue = 12;
 
     public Window(Controller controller) {
         this.controller = controller;
         this.controller.getPclCityMap().addPropertyChangeListener(this);
         this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
         this.controller.getPclTour().addPropertyChangeListener(this);
-        pointLayer.setController(controller);
-        this.controller.initWindow(this);
     }
 
     public static Stage getMainStage() {
         return mainStage;
     }
-
 
     public void start(Stage stage) throws Exception {
         mainStage = stage;
@@ -81,10 +76,10 @@ public class Window implements PropertyChangeListener {
         AnchorPane.setLeftAnchor(bp, 0D);
         AnchorPane.setRightAnchor(bp, 0D);
 
-        mainPanel.getChildren().add(bp);
+        mainPane.getChildren().add(bp);
         loadSidePanel(false);
 
-        Scene scene = new Scene(mainPanel, screenWidth, screenHeight);
+        Scene scene = new Scene(mainPane, screenWidth, screenHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
         bp.getChildren().addAll(mapView, headerLabel, copyright);
         headerLabel.setManaged(false);
@@ -101,7 +96,7 @@ public class Window implements PropertyChangeListener {
     }
 
     private void loadSidePanel(boolean modifyMode) {
-        sidePanel = new SidePanel(controller);
+        SidePanel sidePanel = new SidePanel(controller);
         if (modifyMode) {
             sidePanel.ModifyPanel();
         } else {
@@ -113,13 +108,13 @@ public class Window implements PropertyChangeListener {
         AnchorPane.setRightAnchor(sidePanel, 16D);
 
         // Removing the existing side panel
-        for (int i = 0; i < mainPanel.getChildren().size(); i++) {
-            if (mainPanel.getChildren().get(i).getClass() == SidePanel.class) {
-                mainPanel.getChildren().remove(i);
+        for (int i = 0; i < mainPane.getChildren().size(); i++) {
+            if (mainPane.getChildren().get(i).getClass() == SidePanel.class) {
+                mainPane.getChildren().remove(i);
                 break;
             }
         }
-        mainPanel.getChildren().add(sidePanel);
+        mainPane.getChildren().add(sidePanel);
     }
 
     private Label headerLabel() {
@@ -171,11 +166,12 @@ public class Window implements PropertyChangeListener {
      * @param cityMap
      */
     public void centerMap(CityMap cityMap) throws ExceptionXML {
-        Coordinates coord = cityMap.getCenter();
-        MapPoint mapCenter = new MapPoint(coord.getLatitude(), coord.getLongitude());
+        Coordinates coordinates = cityMap.getCenter();
+        MapPoint mapCenter = new MapPoint(coordinates.getLatitude(), coordinates.getLongitude());
         // center the map around the calculated center coordinates
         mapView.setCenter(mapCenter);
         // sets the zoom at level 12: approximately the level of a city in our case
+        int centeredZoomValue = 12;
         mapView.setZoom(centeredZoomValue);
     }
 
@@ -210,7 +206,7 @@ public class Window implements PropertyChangeListener {
                         IconProvider.getDropoffIcon()
                 );
             });
-            RequestView.setPickupItems(items);
+            RequestMenuView.setPickupItems(items);
 
             pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
             //TODO Scale it with zoom level
@@ -271,7 +267,7 @@ public class Window implements PropertyChangeListener {
 
     public void clearRequest() {
         lineLayer.clearPoints();
-        RequestView.clearItems();
+        RequestMenuView.clearItems();
     }
 
     public void clearTour() {
@@ -284,19 +280,19 @@ public class Window implements PropertyChangeListener {
 
 
     public void hideModifyMenu() {
-        RequestView.disableRowListener();
+        RequestMenuView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
         loadSidePanel(false);
     }
 
     public void disableEventListener() {
-        RequestView.disableRowListener();
+        RequestMenuView.disableRowListener();
         pointLayer.disableMapIntersectionsListener();
         pointLayer.disableRequestIntersectionsListener();
     }
 
     public void activeRowListener() {
-        RequestView.activeRowListener();
+        RequestMenuView.activeRowListener();
     }
 
     public void activeMapIntersectionsListener() {
@@ -347,9 +343,9 @@ public class Window implements PropertyChangeListener {
         }
         item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2, "Depot", (index - 1));
         items.add(item);
-        RequestView.clearItems();
+        RequestMenuView.clearItems();
 
-        RequestView.setPickupItems(items);
+        RequestMenuView.setPickupItems(items);
 
     }
 
@@ -370,15 +366,12 @@ public class Window implements PropertyChangeListener {
                 mapPoint,
                 IconProvider.getDropoffIcon()
         );
-
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-
         String propertyName = evt.getPropertyName();
         System.out.println(propertyName);
-
         if(propertyName.equals("cityMapUpdate")) {
             CityMap newCityMapValue = (CityMap) evt.getNewValue();
             clearMap();
@@ -390,20 +383,17 @@ public class Window implements PropertyChangeListener {
             } catch (ExceptionXML e) {
                 e.printStackTrace();
             }
-        }
-        else if (propertyName.equals("planningRequestUpdate")){
+        } else if (propertyName.equals("planningRequestUpdate")){
             clearRequest();
             clearTour();
             PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
             renderPlanningRequest(newPlanningRequestValue);
 
-        }
-        else if (propertyName.equals("tourUpdate")){
+        } else if (propertyName.equals("tourUpdate")){
             Tour newTourValue = (Tour) evt.getNewValue();
             clearTour();
             orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
             renderTour(newTourValue);
         }
-
     }
 }

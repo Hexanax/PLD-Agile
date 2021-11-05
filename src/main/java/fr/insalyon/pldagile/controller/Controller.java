@@ -13,15 +13,15 @@ public class Controller {
     private PCLCityMap pclCityMap;
     private PCLPlanningRequest pclPlanningRequest;
     private PCLTour pclTour;
-    private Tour modifyTour;
+    private Tour modifyTour; //TODO Check usage (maybe delete)
     private State currentState;
     private Window window;
     private ListOfCommands listOfCommands;
 
-
     protected Pair<Integer, Pickup> pickupToAdd;
     protected Pair<Integer, Delivery> deliveryToAdd;
 
+    // Instances associated with each possible state of the controller
     protected final InitialState initialState = new InitialState();
     protected final MapDisplayedState mapDisplayedState = new MapDisplayedState();
     protected final MapOverwrite1State mapOverwrite1State = new MapOverwrite1State();
@@ -39,21 +39,17 @@ public class Controller {
     protected final AddRequestState5 addRequestState5 = new AddRequestState5();
     protected final AddRequestState6 addRequestState6 = new AddRequestState6();
 
-
-    public Controller(CityMap citymap, PlanningRequest planningRequest, Tour tour) {
-        this.pclCityMap = new PCLCityMap(citymap);
-        this.pclPlanningRequest = new PCLPlanningRequest(planningRequest);
-        this.pclTour = new PCLTour(tour);
+    public Controller() {
+        this.pclCityMap = new PCLCityMap();
+        this.pclPlanningRequest = new PCLPlanningRequest();
+        this.pclTour = new PCLTour();
         listOfCommands = new ListOfCommands();
         currentState = initialState;
+        this.window = new Window(this);
     }
 
     public PCLCityMap getPclCityMap() {
         return pclCityMap;
-    }
-
-    public void initWindow(Window window) {
-        this.window = window;
     }
 
     protected void setCurrentState(State state) {

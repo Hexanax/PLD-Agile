@@ -10,6 +10,7 @@ public class PCLTour {
     private Tour tour;
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    public PCLTour() {}
     public PCLTour(Tour tour){
         this.tour = tour;
     }

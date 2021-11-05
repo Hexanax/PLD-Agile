@@ -14,13 +14,7 @@ public class Picky extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        CityMap citymap = new CityMap();
-        PlanningRequest planningRequest = new PlanningRequest();
-        Tour tour = new Tour();
-        Controller controller = new Controller(citymap, planningRequest, tour);
-        Window window = new Window(controller);
-        window.start(stage);
-
+        Controller controller = new Controller();
         stage.show();
     }
 

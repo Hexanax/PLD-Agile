@@ -3,8 +3,6 @@ package fr.insalyon.pldagile.view.menu;
 import fr.insalyon.pldagile.controller.Controller;
 import javafx.scene.layout.*;
 
-import java.awt.*;
-
 public class SidePanel extends Region {
     private Controller controller;
     private GridPane mainBorderPane;
@@ -15,7 +13,7 @@ public class SidePanel extends Region {
 
     public void MainSidePanel() {
         ImportView importView = new ImportView(controller);
-        RequestView requestView = new RequestView(controller);
+        RequestMenuView requestView = new RequestMenuView(controller);
         mainBorderPane = new GridPane();
         mainBorderPane.add(importView, 0, 0, 1, 1);
         mainBorderPane.add(requestView, 0, 1, 1, 1);

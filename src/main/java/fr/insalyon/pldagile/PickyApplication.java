@@ -5,7 +5,7 @@ import fr.insalyon.pldagile.tsp.TourBuilderV1;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.RequestItem;
-import fr.insalyon.pldagile.view.menu.RequestView;
+import fr.insalyon.pldagile.view.menu.RequestMenuView;
 import fr.insalyon.pldagile.view.menu.SidePanel;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.application.Application;
@@ -18,12 +18,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Line;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 public class PickyApplication extends Application {
@@ -165,7 +163,7 @@ public class PickyApplication extends Application {
                         new Circle(7, Color.GREEN)
                 );
             });
-            RequestView.setPickupItems(items);
+            RequestMenuView.setPickupItems(items);
             pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
             //pointLayer.addPoint(depotPoint, new ImageView("/img/depotPin/depot.png")); //TODO Scale it with zoom level
         }

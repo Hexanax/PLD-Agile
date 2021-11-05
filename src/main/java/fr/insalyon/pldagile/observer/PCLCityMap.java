@@ -11,6 +11,7 @@ public class PCLCityMap {
     private CityMap cityMap;
     private PropertyChangeSupport support = new PropertyChangeSupport(this);
 
+    public PCLCityMap() { }
     public PCLCityMap(CityMap citymap) {
         this.cityMap = citymap;
     }
@@ -27,10 +28,9 @@ public class PCLCityMap {
         return cityMap;
     }
 
-    public void setCityMap(CityMap cityMap){
-        support.firePropertyChange("cityMapUpdate",this.cityMap, cityMap);
+    public void setCityMap(CityMap cityMap) {
+        support.firePropertyChange("cityMapUpdate", this.cityMap, cityMap);
         this.cityMap = cityMap;
     }
-
 
 }
