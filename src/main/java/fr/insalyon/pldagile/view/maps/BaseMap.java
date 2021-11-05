@@ -82,8 +82,6 @@ public class BaseMap extends Group {
     private final DoubleProperty prefCenterLat = new SimpleDoubleProperty();
     private final DoubleProperty prefZoom = new SimpleDoubleProperty();
     
-    private double zoomValue;
-
     public double x0, y0;
     private boolean dirty = true;
 
@@ -124,7 +122,7 @@ public class BaseMap extends Group {
         }
         this.sceneProperty().addListener(sceneListener);
     }
-    
+
     /**
      * Move the center of this map to the specified coordinates
      * @param lat the latitude of the new center
@@ -258,7 +256,7 @@ public class BaseMap extends Group {
                 zoom.set(zp + delta);
                 markDirty();
             } else {
-                logger.warning("sorry, would be too small");
+                logger.fine("sorry, would be too small");
             }
         }
         logger.fine("after, zp = " + zoom.get() + ", tx = " + getTranslateX());
@@ -524,4 +522,7 @@ public class BaseMap extends Group {
         return this.getParent().getLayoutBounds().getHeight();
     }
 
+    public boolean canZoomOut (double maxZoomOut) {
+        return zoom.get() > maxZoomOut;
+    }
 }
