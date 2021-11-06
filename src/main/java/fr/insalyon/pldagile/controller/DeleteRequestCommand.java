@@ -13,13 +13,13 @@ public class DeleteRequestCommand implements Command {
     private Request deletedRequest;
     private final CityMap cityMap;
     private final PCLTour pclTour;
-    private final PCLPlanningRequest pCLPlanningRequest;
+    private final PCLPlanningRequest pclPlanningRequest;
     private final TourBuilderV2 tourBuilder;
     private int indexBeforePickup;
     private int indexBeforeDelivery;
 
     public DeleteRequestCommand(CityMap citymap, PCLPlanningRequest pCLPlanningRequest, PCLTour PCLtour, Request request) {
-        this.pCLPlanningRequest = pCLPlanningRequest;
+        this.pclPlanningRequest = pCLPlanningRequest;
         this.cityMap = citymap;
         this.pclTour = PCLtour;
         this.deletedRequest = request;
@@ -35,38 +35,35 @@ public class DeleteRequestCommand implements Command {
             }
             index++;
         }
-
-
-
     }
-
 
     @Override
     public void doCommand() {
-        PlanningRequest planningRequest = new PlanningRequest(pCLPlanningRequest.getPlanningRequest());
-        int index =0;
-        for(Request request : planningRequest.getRequests()){
-            if(Objects.equals(request.getId(), deletedRequest.getId())){
+        PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
+        int index = 0;
+        for (Request request : planningRequest.getRequests()) {
+            if (Objects.equals(request.getId(), deletedRequest.getId())) {
                 planningRequest.getRequests().remove(index);
                 break;
             }
             index++;
         }
-        pCLPlanningRequest.setPlanningRequest(planningRequest);
-
-        pclTour.setTour(tourBuilder.deleteRequest(cityMap,pclTour.getTour(), deletedRequest));
+        pclPlanningRequest.setPlanningRequest(planningRequest);
+        pclTour.setTour(tourBuilder.deleteRequest(cityMap, pclTour.getTour(), deletedRequest));
     }
 
     @Override
     public void undoCommand() {
-        PlanningRequest planningRequest = new PlanningRequest(pCLPlanningRequest.getPlanningRequest());
-        planningRequest.setRequest(deletedRequest);
-        pCLPlanningRequest.setPlanningRequest(planningRequest);
+        System.out.println("UNDO CALLED");
+        PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
+        planningRequest.add(deletedRequest, false);
 
         Tour tour = new Tour(pclTour.getTour());
         tour.addRequest(deletedRequest);
-        tour.addStep(indexBeforePickup, new Pair<>(deletedRequest.getId(),"pickup"));
-        tour.addStep(indexBeforeDelivery, new Pair<>(deletedRequest.getId(),"delivery"));
+        tour.addStep(indexBeforePickup, new Pair<>(deletedRequest.getId(), "pickup"));
+        tour.addStep(indexBeforeDelivery, new Pair<>(deletedRequest.getId(), "delivery"));
+
+        pclPlanningRequest.setPlanningRequest(planningRequest);
         pclTour.setTour(tourBuilder.addRequest(cityMap, tour, deletedRequest.getId()));
     }
 

@@ -44,8 +44,14 @@ public class PlanningRequest {
     }
 
     public void add(Request request) {
-        Long unorderedId = (long) requests.size();
-        request.setId(unorderedId);
+        add(request, true);
+    }
+
+    public void add(Request request, boolean assignId) {
+        if(assignId) {
+            Long availableId = (long) requests.size();
+            request.setId(availableId);
+        }
         requests.add(request);
     }
 
@@ -53,9 +59,6 @@ public class PlanningRequest {
         int index = requests.size()-1;
         requests.remove(index);
     }
-    
-    
-
 
     @Override
     public boolean equals(Object o) {
@@ -74,7 +77,4 @@ public class PlanningRequest {
         return requests.get(requests.size()-1);
     }
 
-    public void setRequest(Request deletedRequest) {
-        requests.add(deletedRequest);
-    }
 }

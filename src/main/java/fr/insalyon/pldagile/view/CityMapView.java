@@ -72,7 +72,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        //System.out.println("CityMapView event " + evt);
+        System.out.println("CityMapView event " + evt);
         this.cityMap = (CityMap) evt.getNewValue();
         render();
     }

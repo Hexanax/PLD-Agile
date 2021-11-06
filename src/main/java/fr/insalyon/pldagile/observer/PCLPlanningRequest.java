@@ -33,7 +33,7 @@ public class PCLPlanningRequest {
     }
 
     public void setPlanningRequest(PlanningRequest planningRequest){
-        support.firePropertyChange("planningRequestUpdate",this.planningRequest, planningRequest);
+        support.firePropertyChange("planningRequestUpdate", null, planningRequest); //TODO Check null old value, problem in UNDO deleteRequest
         this.planningRequest = planningRequest;
     }
 

@@ -61,6 +61,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("RequestMapView event " + evt);
         this.planningRequest = (PlanningRequest) evt.getNewValue();
         render();
     }
