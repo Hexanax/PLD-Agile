@@ -12,7 +12,7 @@ public class SidePanel extends Region {
     }
 
     public void MainSidePanel() {
-        ImportView importView = new ImportView(controller);
+        ImportView importView = new ImportView();
         RequestMenuView requestView = new RequestMenuView(controller);
         mainBorderPane = new GridPane();
         mainBorderPane.add(importView, 0, 0, 1, 1);
@@ -21,12 +21,4 @@ public class SidePanel extends Region {
         this.getChildren().add(mainBorderPane);
     }
 
-    public void ModifyPanel() {
-        ModifyView modify = new ModifyView(controller);
-        mainBorderPane = new GridPane();
-        mainBorderPane = new GridPane();
-        mainBorderPane.add(modify, 0, 0, 1, 1);
-        mainBorderPane.getStyleClass().add("side-panel");
-        this.getChildren().add(mainBorderPane);
-    }
 }

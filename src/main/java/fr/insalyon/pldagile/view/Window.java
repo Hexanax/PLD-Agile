@@ -16,14 +16,10 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 
 public class Window {
@@ -37,8 +33,13 @@ public class Window {
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
 
+    private ButtonListener buttonListener;
+
+
     public Window(Controller controller) {
         this.controller = controller;
+
+        buttonListener = new ButtonListener(controller);
 //        this.controller.getPclCityMap().addPropertyChangeListener(this);
 //        this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
 //        this.controller.getPclTour().addPropertyChangeListener(this);

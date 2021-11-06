@@ -63,11 +63,11 @@ public class RequestMapView implements PropertyChangeListener {
                         IconProvider.getDropoffIcon()
                 );
             });
-            planningRequestPoints.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+            planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());
             //TODO Scale it with zoom level
         }
     }
-    
+
     public MapLayer getLayer() {
         return planningRequestPoints;
     }

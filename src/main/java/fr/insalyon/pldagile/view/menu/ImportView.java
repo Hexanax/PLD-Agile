@@ -13,17 +13,18 @@ import javafx.scene.layout.Region;
 
 public class ImportView extends Region {
 
-    private static Controller controller = null;
 
     private final Button importMapButton;
     private final Button importPickupButton;
     private final Button computeButton;
+    private final Button generateRoadMap;
 
     protected static final String IMPORT_TITLE = "Imports";
 
     protected static final String LOAD_MAP = "Import map";
     protected static final String LOAD_REQUESTS = "Import Requests";
     protected static final String COMPUTE_TOUR = "Compute tour";
+    protected static final String GENERATE_ROADMAP = "Generate the Road Map";
 
     protected static final String NO_FILE_IMPORTED_MESSAGE = "No file imported yet";
 
@@ -34,8 +35,9 @@ public class ImportView extends Region {
     private static final Label importPickupLabel = new Label(NO_FILE_IMPORTED_MESSAGE);
 
 
-    public ImportView(Controller controller) {
-        ImportView.controller = controller;
+
+    public ImportView() {
+
 
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("side-panel-section");
@@ -48,51 +50,44 @@ public class ImportView extends Region {
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
+
         // Import Map Button
         importMapButton = new Button(LOAD_MAP);
-        importMapButton.setGraphic(IconProvider.getIcon(IMPORT_ICON, 17));
-        gridPane.add(importMapButton, 0, 1, 1, 1);
-
-        importMapButton.setOnAction(this::computeTour);
-
+        createButton(importMapButton, gridPane, 0,1,1,1, false);
         gridPane.add(importMapLabel, 0, 2, 1, 1);
 
 
         // Import Pickup Button
         importPickupButton = new Button(LOAD_REQUESTS);
-        importPickupButton.setGraphic(IconProvider.getIcon(IMPORT_ICON, 17));
-        gridPane.add(importPickupButton, 1, 1, 1, 1);
-
-        importPickupButton.setOnAction(this::computeTour);
-
+        createButton(importPickupButton, gridPane, 1,1,1,1, false);
         gridPane.add(importPickupLabel, 1, 2, 1, 1);
 
         // COMPUTE BUTTON
         computeButton = new Button(COMPUTE_TOUR);
-        computeButton.setDefaultButton(true);
-        computeButton.setGraphic(IconProvider.getIcon(COMPUTE_ICON, 20));
-        gridPane.add(computeButton, 0, 3, 2, 1);
-        computeButton.getStyleClass().add("main-button");
-        computeButton.setOnAction(this::computeTour);
-        GridPane.setHalignment(computeButton, HPos.CENTER);
-        GridPane.setMargin(computeButton, new Insets(10, 0, 0, 0));
+        createButton(computeButton, gridPane, 0,3,2,1, true);
+
+        generateRoadMap = new Button(GENERATE_ROADMAP);
+        createButton(generateRoadMap, gridPane, 0,4,2,1, true);
+
 
         this.getChildren().add(gridPane);
     }
 
-    private void computeTour(ActionEvent event) {
-        switch (((Button) event.getTarget()).getText()) {
-            case LOAD_MAP:
-                controller.loadMap();
-                break;
-            case LOAD_REQUESTS:
-                controller.loadRequests();
-                break;
-            case COMPUTE_TOUR:
-                controller.computeTour();
-                break;
+
+
+    private void createButton(Button button, GridPane gridPane, int columnIndex, int rowIndex, int colspan, int rowspan, boolean defaultButton){
+        if(defaultButton){
+            button.setDefaultButton(true);
+            button.setGraphic(IconProvider.getIcon(COMPUTE_ICON, 20));
+            button.getStyleClass().add("main-button");
+            GridPane.setHalignment(button, HPos.CENTER);
+            GridPane.setMargin(button, new Insets(10, 0, 0, 0));
+        } else {
+            button.setGraphic(IconProvider.getIcon(IMPORT_ICON, 17));
         }
 
+        gridPane.add(button, columnIndex, rowIndex, colspan, rowspan);
+        button.setOnAction(ButtonListener::actionPerformed);
     }
 
     public static void setImportMapLabel(String fileName) {
