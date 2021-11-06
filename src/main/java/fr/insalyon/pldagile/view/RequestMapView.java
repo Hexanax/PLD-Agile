@@ -51,7 +51,7 @@ public class RequestMapView implements PropertyChangeListener {
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        new RequestMapPin(RequestType.PICKUP, request.getId())
+                        new RequestMapPin(RequestType.DELIVERY, request.getId())
                 );
             });
             planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());

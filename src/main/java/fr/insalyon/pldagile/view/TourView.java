@@ -7,13 +7,12 @@ import fr.insalyon.pldagile.model.Tour;
 import fr.insalyon.pldagile.view.maps.*;
 import javafx.scene.shape.Circle;
 
-import javax.sound.sampled.Line;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class TourView implements PropertyChangeListener {
 
-    private final PointLayer tourPointLayer = new PointLayer();
+    private final PointLayer<Circle> tourPointLayer = new PointLayer<>();
     private final LineLayer tourLineLayer = new LineLayer();
     private Controller controller;
     private Tour tour;
@@ -24,7 +23,7 @@ public class TourView implements PropertyChangeListener {
         controller.getPclTour().addPropertyChangeListener(this);
     }
 
-    public void clear(){
+    public void clear() {
         tourLineLayer.clearPoints();
         tourPointLayer.clearPoints();
     }
@@ -34,7 +33,7 @@ public class TourView implements PropertyChangeListener {
         Tour tour = this.tour;
         // TODO Update RequestView
         //if the tour is a null object, we just clear
-        if(tour.getDepot()==null){
+        if (tour.getDepot() == null) {
             return;
         }
         Intersection previousIntersection = tour.getDepot().getIntersection();
@@ -51,7 +50,7 @@ public class TourView implements PropertyChangeListener {
         }
     }
 
-    public MapLayer getTourPointLayer(){
+    public MapLayer getTourPointLayer() {
         return tourPointLayer;
     }
 
@@ -64,4 +63,5 @@ public class TourView implements PropertyChangeListener {
         this.tour = (Tour) evt.getNewValue();
         render();
     }
+
 }
