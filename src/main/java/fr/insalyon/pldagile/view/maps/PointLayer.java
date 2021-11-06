@@ -28,6 +28,7 @@
 package fr.insalyon.pldagile.view.maps;
 
 import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.view.Hideable;
 import fr.insalyon.pldagile.view.menu.RequestItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,7 +49,7 @@ import java.util.ArrayList;
 /**
  * A layer that allows to visualise points of interest.
  */
-public class PointLayer<T extends Node> extends MapLayer {
+public class PointLayer<T extends Node> extends MapLayer implements Hideable {
 
     private final ObservableList<Pair<MapPoint, T>> points = FXCollections.observableArrayList();
 
@@ -66,6 +67,10 @@ public class PointLayer<T extends Node> extends MapLayer {
         this.markDirty();
     }
 
+    public ObservableList<Pair<MapPoint, T>> getPoints() {
+        return points;
+    }
+
     @Override
     protected void layoutLayer() {
         for (Pair<MapPoint, T> candidate : points) {
@@ -78,7 +83,16 @@ public class PointLayer<T extends Node> extends MapLayer {
         }
     }
 
-    public ObservableList<Pair<MapPoint, T>> getPoints() {
-        return points;
+    @Override
+    public void hide() {
+        this.getChildren().clear();
+        this.markDirty();
     }
+
+    @Override
+    public void show() {
+        points.forEach(point -> this.getChildren().add(point.getValue()));
+        this.markDirty();
+    }
+
 }

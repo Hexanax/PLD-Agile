@@ -10,12 +10,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
-public class CityMapView implements PropertyChangeListener {
+public class CityMapView implements PropertyChangeListener, View, Hideable {
 
     private final PointLayer<Circle> cityPointLayer = new PointLayer<>();
     private final Controller controller;
@@ -26,24 +25,6 @@ public class CityMapView implements PropertyChangeListener {
         this.cityMap = controller.getPclCityMap().getCityMap();
         controller.getPclCityMap().addPropertyChangeListener(this);
         render();
-    }
-
-    public void clear(){
-        cityPointLayer.clearPoints();
-    }
-
-    //TODO Add View interface with render method
-    public void render() {
-        if (cityMap != null) {
-            //System.out.println("Entered");
-            clear();
-            for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
-                Intersection intersection = entry.getValue();
-                MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
-                mapPoint.setId(intersection.getId());
-                cityPointLayer.addPoint(mapPoint, new Circle(2, Colors.getMapIntersectionColor()));
-            }
-        }
     }
 
     public MapLayer getLayer() {
@@ -57,22 +38,44 @@ public class CityMapView implements PropertyChangeListener {
         });
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        ////System.out.println("CityMapView event " + evt);
-        this.cityMap = (CityMap) evt.getNewValue();
-        render();
-    }
-
     /**
      * Makes map intersections clickable
      */
     public void activeMapIntersectionsListener() {
         for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
-            point.getValue().setOnMouseClicked(event-> {
-                controller.modifyClick(point.getKey().getId(),"Intersection", -1); //TODO Intersection click instead of modify click
+            point.getValue().setOnMouseClicked(event -> {
+                controller.modifyClick(point.getKey().getId(), "Intersection", -1); //TODO Intersection click instead of modify click
             });
         }
+    }
+
+    @Override
+    public void hide() {
+        cityPointLayer.hide();
+    }
+
+    @Override
+    public void show() {
+        cityPointLayer.show();
+    }
+
+    @Override
+    public void render() {
+        if (cityMap != null) {
+            cityPointLayer.clearPoints();
+            for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
+                Intersection intersection = entry.getValue();
+                MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
+                mapPoint.setId(intersection.getId());
+                cityPointLayer.addPoint(mapPoint, new Circle(2, Colors.getMapIntersectionColor()));
+            }
+        }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        this.cityMap = (CityMap) evt.getNewValue();
+        render();
     }
 
 }

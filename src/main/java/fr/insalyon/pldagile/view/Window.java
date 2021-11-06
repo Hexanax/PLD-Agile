@@ -336,18 +336,14 @@ public class Window {
         }
     };
 
-
     //TODO : show in list selected request when selecting a pin on the map
-    private EventHandler<MouseEvent> onRequestPinClick = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            if (event.getClickCount() == 1) {
-                System.out.println("MouseEvent" + event);
-                RequestMapPin rmp = (RequestMapPin) event.getTarget();
-                Long requestId = rmp.getRequestId();
-                RequestType type = rmp.getType();
+    private EventHandler<MouseEvent> onRequestPinClick = event -> {
+        if (event.getClickCount() == 1) {
+            System.out.println("MouseEvent" + event);
+            RequestMapPin rmp = (RequestMapPin) event.getTarget();
+            Long requestId = rmp.getRequestId();
+            RequestType type = rmp.getType();
 
-            }
         }
     };
 

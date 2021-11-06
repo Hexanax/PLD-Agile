@@ -3,17 +3,16 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
-import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class RequestMapView implements PropertyChangeListener {
+public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
-    private final PointLayer<ImageView> planningRequestPoints = new PointLayer();
-    private Controller controller;
+    private final PointLayer<ImageView> planningRequestPoints = new PointLayer<>();
+    private final Controller controller;
     private PlanningRequest planningRequest;
 
     public RequestMapView(Controller controller) {
@@ -22,12 +21,9 @@ public class RequestMapView implements PropertyChangeListener {
         controller.getPclPlanningRequest().addPropertyChangeListener(this);
     }
 
-    public void clear() {
-        planningRequestPoints.clearPoints();
-    }
-
+    @Override
     public void render() {
-        clear();
+        planningRequestPoints.clearPoints();
         PlanningRequest planningRequest = this.planningRequest;
         if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             // Render the planning request
@@ -91,7 +87,18 @@ public class RequestMapView implements PropertyChangeListener {
     }
 
     //TODO Inspect usage and maybe improve
-    public PointLayer getPlanningRequestPoints() {
+    public PointLayer<ImageView> getPlanningRequestPoints() {
         return planningRequestPoints;
     }
+
+    @Override
+    public void hide() {
+        planningRequestPoints.hide();
+    }
+
+    @Override
+    public void show() {
+        planningRequestPoints.show();
+    }
+
 }

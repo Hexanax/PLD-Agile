@@ -10,7 +10,7 @@ import javafx.scene.shape.Circle;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-public class TourView implements PropertyChangeListener {
+public class TourView implements PropertyChangeListener, View, Hideable {
 
     private final PointLayer<Circle> tourPointLayer = new PointLayer<>();
     private final LineLayer tourLineLayer = new LineLayer();
@@ -28,6 +28,17 @@ public class TourView implements PropertyChangeListener {
         tourPointLayer.clearPoints();
     }
 
+    //TODO Check usage => Potential side effects ?
+    public MapLayer getTourPointLayer() {
+        return tourPointLayer;
+    }
+
+    //TODO Check usage => Potential side effects ?
+    public LineLayer getTourLineLayer() {
+        return tourLineLayer;
+    }
+
+    @Override
     public void render() {
         clear();
         Tour tour = this.tour;
@@ -50,12 +61,14 @@ public class TourView implements PropertyChangeListener {
         }
     }
 
-    public MapLayer getTourPointLayer() {
-        return tourPointLayer;
+    @Override
+    public void hide() {
+        tourPointLayer.hide();
     }
 
-    public LineLayer getTourLineLayer() {
-        return tourLineLayer;
+    @Override
+    public void show() {
+        tourLineLayer.show();
     }
 
     @Override
@@ -63,5 +76,4 @@ public class TourView implements PropertyChangeListener {
         this.tour = (Tour) evt.getNewValue();
         render();
     }
-
 }
