@@ -68,6 +68,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
     /**
      * Makes request points clickable
      */
+    //TODO Always listen for the request points click and just handle it depending on the test in the controller/state
     public void activeRequestIntersectionsListener() {
         for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
             point.getValue().setOnMouseClicked(event -> {

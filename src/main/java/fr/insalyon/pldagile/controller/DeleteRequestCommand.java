@@ -9,30 +9,28 @@ import java.util.Objects;
 
 public class DeleteRequestCommand implements Command {
 
-    private Request requestDeleted;
-    private CityMap citymap;
-    private PCLTour PCLtour;
-    private TourBuilderV2 tourbuilder;
+    private final Request deletedRequest;
+    private final CityMap cityMap;
+    private final PCLTour pclTour;
+    private final TourBuilderV2 tourBuilder;
     private Pair<Integer, Pickup> pickup;
     private Pair<Integer, Delivery> delivery;
 
-    public DeleteRequestCommand(CityMap citymap, PCLTour PCLtour, Request request){
-        this.citymap = citymap;
-        this.PCLtour = PCLtour;
-        this.requestDeleted = request;
-        this.tourbuilder = new TourBuilderV2();
-
+    public DeleteRequestCommand(CityMap citymap, PCLTour PCLtour, Request request) {
+        this.cityMap = citymap;
+        this.pclTour = PCLtour;
+        this.deletedRequest = request;
+        this.tourBuilder = new TourBuilderV2();
         int index = 0;
-        for(Pair<Long, String> step: PCLtour.getTour().getSteps()){
-
-            if(Objects.equals(step.getKey(), request.getId())){
-                if(step.getValue()=="pickup"){
-                    int value = index -1;
+        for (Pair<Long, String> step : PCLtour.getTour().getSteps()) {
+            if (Objects.equals(step.getKey(), request.getId())) {
+                if (step.getValue().equals("pickup")) {
+                    int value = index - 1;
                     pickup = new Pair<>(value, request.getPickup());
                 } else {
-                    int value = index-1;
-                    if(pickup.getKey() == (value-1)){
-                        value =  pickup.getKey();
+                    int value = index - 1;
+                    if (pickup.getKey() == (value - 1)) {
+                        value = pickup.getKey();
                     }
                     delivery = new Pair<>(value, request.getDelivery());
                 }
@@ -43,12 +41,12 @@ public class DeleteRequestCommand implements Command {
 
     @Override
     public void doCommand() {
-        PCLtour.setTour(tourbuilder.deleteRequest(citymap,PCLtour.getTour(), requestDeleted));
+        pclTour.setTour(tourBuilder.deleteRequest(cityMap, pclTour.getTour(), deletedRequest));
     }
 
     @Override
     public void undoCommand() {
-        PCLtour.setTour(tourbuilder.addRequest(citymap, PCLtour.getTour(), pickup, delivery, requestDeleted.getId()));
+        pclTour.setTour(tourBuilder.addRequest(cityMap, pclTour.getTour(), pickup, delivery, deletedRequest.getId()));
     }
 
 }
