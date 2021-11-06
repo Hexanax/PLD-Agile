@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
+import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 
@@ -43,14 +44,14 @@ public class RequestMapView implements PropertyChangeListener {
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        new RequestMapPin(RequestType.PICKUP)
+                        new RequestMapPin(RequestType.PICKUP, request.getId())
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        new RequestMapPin(RequestType.DELIVERY)
+                        new RequestMapPin(RequestType.PICKUP, request.getId())
                 );
             });
             planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());
@@ -89,4 +90,8 @@ public class RequestMapView implements PropertyChangeListener {
         }
     }
 
+    //TODO Inspect usage and maybe improve
+    public PointLayer getPlanningRequestPoints() {
+        return planningRequestPoints;
+    }
 }

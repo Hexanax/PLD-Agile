@@ -329,7 +329,7 @@ public class Window {
                 System.out.println("MouseEvent" + event);
                 if (sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem() != null) {
                     System.out.println("condition");
-                    requestMapView.getPlanningRequestPoints().highlightIcon(sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem().getRequestNumber());
+                    //requestMapView.getPlanningRequestPoints().highlightIcon(sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem().getRequestNumber()); //TODO Reimplement
                 }
 
             }
@@ -356,15 +356,14 @@ public class Window {
         requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
     }
 
-
     public void disableItemListener() {
         sidePanel.getRequestView().getRequestList().removeEventHandler(MouseEvent.MOUSE_CLICKED, onRequestListItemClick);
-        if (requestMapView.getPlanningRequestPoints().getLastHighlighted() != null) {
-            requestMapView.getPlanningRequestPoints().unHighlightIcon(requestMapView.getPlanningRequestPoints().getLastHighlighted().getKey().getRequestId());
-        }
+        //TOOD Reimplement
+//        if (requestMapView.getPlanningRequestPoints().getLastHighlighted() != null) {
+//            requestMapView.getPlanningRequestPoints().unHighlightIcon(requestMapView.getPlanningRequestPoints().getLastHighlighted().getKey().getRequestId());
+//        }
         requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
     }
-
 
     //TODO Update modify view
 //    public void hideModifyMenu() {
