@@ -78,4 +78,7 @@ public class PointLayer extends MapLayer {
         }
     }
 
+    public ObservableList<Pair<MapPoint, Node>> getPoints() {
+        return points;
+    }
 }

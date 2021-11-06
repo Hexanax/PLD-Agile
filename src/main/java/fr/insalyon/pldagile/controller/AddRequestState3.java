@@ -33,7 +33,7 @@ public class AddRequestState3 implements State{
             controller.setCurrentState(controller.addRequestState4);
             //TODO Update
 //            window.disableEventListener();
-//            window.activeRequestIntersectionsListener();
+            window.getRequestMapView().activeRequestIntersectionsListener();
 //            window.activeRowListener();
             window.showWarningAlert("How to add a request", null, "Select the depot, a pickup or a delivery after which you want to place the delivery of your new request");
         } else {

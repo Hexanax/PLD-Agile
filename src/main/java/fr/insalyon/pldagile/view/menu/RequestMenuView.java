@@ -29,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+
+//DEPRECATED ?
 public class RequestMenuView extends Region implements PropertyChangeListener {
 
     protected static final String MODIFY_ICON = "edit";
@@ -172,23 +174,23 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
         pickupItems.clear();
     }
 
-//    private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-//        @Override
-//        public void handle(MouseEvent e) {
-//            if (e.getClickCount() == 2) {
-//                controller.modifyClick(pickupList.getSelectionModel().getSelectedItem().getRequestNumber(), pickupList.getSelectionModel().getSelectedItem().getType(), pickupList.getSelectionModel().getSelectedItem().getStepIndex());
-//            }
-//        }
-//    };
-//
-//    public void activeRowListener() {
-//        pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-//    }
-//
-//    public void disableRowListener() {
-//        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
-//    }
-//
+    private EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                controller.modifyClick(pickupList.getSelectionModel().getSelectedItem().getRequestNumber(), pickupList.getSelectionModel().getSelectedItem().getType(), pickupList.getSelectionModel().getSelectedItem().getStepIndex());
+            }
+        }
+    };
+
+    public void activeRowListener() {
+        pickupList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
+    public void disableRowListener() {
+        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
 
     //TODO make so that when both events are fired, they don't
     // erase one another...

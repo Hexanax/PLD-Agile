@@ -36,6 +36,7 @@ public class Window {
     private final RequestListView requestListView;
 
 
+
     private ButtonListener buttonListener;
     private KeyboardListener keyboardListener;
     private MouseListener mouseListener;
@@ -62,6 +63,10 @@ public class Window {
 
     public static Stage getMainStage() {
         return mainStage;
+    }
+
+    public RequestMapView getRequestMapView() {
+        return requestMapView;
     }
 
     public void render(Stage stage) throws Exception {

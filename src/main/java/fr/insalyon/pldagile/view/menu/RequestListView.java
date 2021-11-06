@@ -19,7 +19,7 @@ public class RequestListView extends Region implements PropertyChangeListener {
     private final Controller controller;
     private PlanningRequest planningRequest;
     private Tour tour;
-    private final ObservableList<AddressItem> adressItems = FXCollections.observableArrayList();
+    private final ObservableList<AddressItem> addressItems = FXCollections.observableArrayList();
 
     public RequestListView(Controller controller) {
         this.controller = controller;
@@ -30,18 +30,18 @@ public class RequestListView extends Region implements PropertyChangeListener {
     }
 
     public void clear(){
-        adressItems.clear();
+        addressItems.clear();
     }
 
-    public void renderUnorered(){
+    public void renderUnordered(){
         clear();
         for(Request request : planningRequest.getRequests()){
             Pickup pickup = request.getPickup();
             AddressItem pickupItem = new AddressItem(new Date(), pickup.getDuration(), request.getId(), "Pickup",-1, false);
             Delivery delivery = request.getDelivery();
             AddressItem deliveryItem = new AddressItem(new Date(), delivery.getDuration(), request.getId(), "Delivery",-1,false);
-            adressItems.add(pickupItem);
-            adressItems.add(deliveryItem);
+            addressItems.add(pickupItem);
+            addressItems.add(deliveryItem);
         }
     }
 
@@ -52,29 +52,29 @@ public class RequestListView extends Region implements PropertyChangeListener {
 
 
         AddressItem item = new AddressItem(depot.getDepartureTime(), 0, -1, "Depot",0, false);
-        adressItems.add(item);
+        addressItems.add(item);
         int index = 0;
         for(Pair<Long, String > step : tour.getSteps()){
             if(Objects.equals(step.getValue(), "pickup"))
             {
                 item = new AddressItem(requests.get(step.getKey()).getPickup().getArrivalTime(), requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index, false);
-                adressItems.add(item);
+                addressItems.add(item);
             }
             if(Objects.equals(step.getValue(), "delivery")){
                 item = new AddressItem(requests.get(step.getKey()).getDelivery().getArrivalTime(), requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index, false);
-                adressItems.add(item);
+                addressItems.add(item);
             }
             index++;
         }
 
         Date finalDate = new Date((long) (depot.getDepartureTime().getTime() + tour.getTourDuration()*1000));
         item = new AddressItem(finalDate, 0, -2,"Depot",(index-1),false);
-        adressItems.add(item);
+        addressItems.add(item);
 
     }
 
     public ObservableList<AddressItem> getList(){
-        return adressItems;
+        return addressItems;
     }
 
     @Override
@@ -91,7 +91,7 @@ public class RequestListView extends Region implements PropertyChangeListener {
         }
         if(Objects.equals(propertyName, "planningRequestUpdate")){
             this.planningRequest = (PlanningRequest) evt.getNewValue();
-            renderUnorered();
+            renderUnordered();
         }
     }
 }

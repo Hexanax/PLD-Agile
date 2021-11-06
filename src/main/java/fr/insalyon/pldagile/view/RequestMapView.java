@@ -2,12 +2,10 @@ package fr.insalyon.pldagile.view;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.view.maps.LineLayer;
-import fr.insalyon.pldagile.view.maps.MapLayer;
-import fr.insalyon.pldagile.view.maps.MapPoint;
-import fr.insalyon.pldagile.view.maps.PointLayer;
+import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.RequestItem;
 import fr.insalyon.pldagile.view.menu.RequestMenuView;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
@@ -74,25 +72,29 @@ public class RequestMapView implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        String propertyName = evt.getPropertyName();
-        //System.out.println(propertyName);
         this.planningRequest = (PlanningRequest) evt.getNewValue();
         render();
     }
 
-    //    public void activeRequestIntersectionsListener() {
-//        for (Pair<MapPoint, Node> point : requestPoints) {
-//            point.getValue().setOnMouseClicked(event-> {
-//                controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
-//                //System.out.println("active request:" + point.getKey().getStepIndex());
-//            });
-//        }
-//    }
-//
-//    public void disableRequestIntersectionsListener() {
-//        for (Pair<MapPoint, Node> point : requestPoints) {
-//            point.getValue().setOnMouseClicked(null);
-//        }
-//    }
+    /**
+     * Makes request points clickable
+     */
+        public void activeRequestIntersectionsListener() {
+        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
+            point.getValue().setOnMouseClicked(event-> {
+                controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
+                //System.out.println("active request:" + point.getKey().getStepIndex());
+            });
+        }
+    }
+
+    /**
+     * Makes request point non-clickable
+     */
+    public void disableRequestIntersectionsListener() {
+        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
+            point.getValue().setOnMouseClicked(null);
+        }
+    }
 
 }

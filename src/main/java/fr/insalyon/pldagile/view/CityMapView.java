@@ -6,7 +6,10 @@ import fr.insalyon.pldagile.model.Intersection;
 import fr.insalyon.pldagile.view.maps.MapLayer;
 import fr.insalyon.pldagile.view.maps.MapPoint;
 import fr.insalyon.pldagile.view.maps.PointLayer;
+import javafx.scene.Node;
 import javafx.scene.shape.Circle;
+import javafx.util.Pair;
+
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -54,18 +57,24 @@ public class CityMapView implements PropertyChangeListener {
         render();
     }
 
-//    public void activeMapIntersectionsListener() {
-//        for (Pair<MapPoint, Node> point : cityPointLayer.get) {
-//            point.getValue().setOnMouseClicked(event-> {
-//                controller.modifyClick(point.getKey().getId(),"Intersection", -1);
-//            });
-//        }
-//    }
-//
-//    public void disableMapIntersectionsListener() {
-//        for (Pair<MapPoint, Node> point : intersectionPoints) {
-//            point.getValue().setOnMouseClicked(null);
-//        }
-//    }
+    /**
+     * Makes map intersections clickable
+     */
+    public void activeMapIntersectionsListener() {
+        for (Pair<MapPoint, Node> point : cityPointLayer.getPoints()) {
+            point.getValue().setOnMouseClicked(event-> {
+                controller.modifyClick(point.getKey().getId(),"Intersection", -1);
+            });
+        }
+    }
+
+    /**
+     * Disables clickable map intersections
+     */
+    public void disableMapIntersectionsListener() {
+        for (Pair<MapPoint, Node> point : cityPointLayer.getPoints()) {
+            point.getValue().setOnMouseClicked(null);
+        }
+    }
 
 }
