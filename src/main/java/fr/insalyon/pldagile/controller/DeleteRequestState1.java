@@ -4,14 +4,15 @@ import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.model.Request;
 import fr.insalyon.pldagile.model.Tour;
+import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
 
 public class DeleteRequestState1 implements State{
     @Override
-    public void deleteRequest(Controller controller, CityMap citymap, PCLTour pcltour, Request request, Window window, ListOfCommands listOfCdes) {
+    public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Request request, Window window, ListOfCommands listOfCdes) {
         if(request != null){
-            listOfCdes.add(new DeleteRequestCommand(citymap,pcltour,request));
+            listOfCdes.add(new DeleteRequestCommand(citymap,pclPlanningRequest, pcltour,request));
             controller.setCurrentState(controller.tourComputedState);
             window.addStateFollow("Suppresion successfully completed");
         } else {

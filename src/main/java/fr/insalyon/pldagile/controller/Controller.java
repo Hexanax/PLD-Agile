@@ -108,7 +108,7 @@ public class Controller {
     }
 
     public void deleteRequest(Long idRequest) {
-        currentState.deleteRequest(this, pclCityMap.getCityMap(), pclTour, pclTour.getTour().getRequests().get(idRequest), window, listOfCommands);
+        currentState.deleteRequest(this, pclCityMap.getCityMap(), pclPlanningRequest, pclTour, pclTour.getTour().getRequests().get(idRequest), window, listOfCommands);
     }
 
     public void modifyClick(Long id, String type, int stepIndex) {

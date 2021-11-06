@@ -50,7 +50,7 @@ public class TourComputedState implements State{
     }
 
     @Override
-    public void deleteRequest(Controller controller, CityMap citymap, PCLTour pcltour, Request request, Window window, ListOfCommands listOfCdes) {
+    public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Request request, Window window, ListOfCommands listOfCdes) {
         if(pcltour.getTour().getRequests().size()==1){
             window.addWarningStateFollow("Tour can't be empty \n You can't delete the last request of the tour");
         } else {
@@ -66,7 +66,7 @@ public class TourComputedState implements State{
         controller.setCurrentState(controller.addRequestState1);
         window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
         //TODO Display only the intersection
-        window.clearTour();
+        //window.clearTour();
 
     }
 

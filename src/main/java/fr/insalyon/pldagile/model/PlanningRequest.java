@@ -73,4 +73,8 @@ public class PlanningRequest {
     public Request getLastRequest() {
         return requests.get(requests.size()-1);
     }
+
+    public void setRequest(Request deletedRequest) {
+        requests.add(deletedRequest);
+    }
 }

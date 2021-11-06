@@ -41,7 +41,7 @@ public interface State {
 
     public default void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window){};
 
-    public default void deleteRequest(Controller controller,CityMap citymap, PCLTour pcltour, Request request, Window window,ListOfCommands listOfCdes){};
+    public default void deleteRequest(Controller controller,CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Request request, Window window,ListOfCommands listOfCdes){};
 
 
     public default void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window){};

@@ -270,7 +270,7 @@ public class Window {
         if (!result.isPresent() || result.get() != ButtonType.OK) {
             controller.cancel();
         } else {
-            controller.confirm();
+            controller.confirm("");
         }
     }
 
