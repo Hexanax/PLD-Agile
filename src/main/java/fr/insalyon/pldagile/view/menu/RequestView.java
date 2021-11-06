@@ -66,6 +66,10 @@ public class RequestView extends Region {
         requestList.setItems(list);
     }
 
+    public ListView<AddressItem> getRequestList() {
+        return requestList;
+    }
+
     private EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent e) {

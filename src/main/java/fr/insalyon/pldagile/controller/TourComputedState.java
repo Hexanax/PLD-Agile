@@ -58,6 +58,7 @@ public class TourComputedState implements State{
             window.clearTour();
             window.getSidePanel().getRequestView().activeRowListener();
             window.getRequestMapView().activeRequestIntersectionsListener();
+            window.disableItemListener();
             window.showWarningAlert("How to delete a request", null, "Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
         }
     }
@@ -67,6 +68,7 @@ public class TourComputedState implements State{
         controller.setCurrentState(controller.addRequestState1);
         window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
         window.clearTour();
+        window.disableItemListener();
 
 
     }

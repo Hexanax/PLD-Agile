@@ -75,7 +75,7 @@ public class Controller {
     }
 
     protected void setTour(Tour tour) {
-        System.out.println("setting tour");
+        //System.out.println("setting tour");
         this.pclTour.setTour(tour);
     }
 

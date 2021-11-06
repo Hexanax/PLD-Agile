@@ -44,6 +44,8 @@ import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * A layer that allows to visualise points of interest.
@@ -51,6 +53,8 @@ import java.util.ArrayList;
 public class PointLayer extends MapLayer {
 
     private final ObservableList<Pair<MapPoint, Node>> points = FXCollections.observableArrayList();
+    private static Pair<MapPoint, Node> lastHighlighted = null;
+    private static final double highlightIconFactor = 1.3;
 
     public PointLayer() { }
 
@@ -81,4 +85,38 @@ public class PointLayer extends MapLayer {
     public ObservableList<Pair<MapPoint, Node>> getPoints() {
         return points;
     }
+
+    public void highlightIcon(Long id){
+        // unhighlight last listened icon when disabling the itemView listener
+        if (lastHighlighted != null){
+            unHighlightIcon(lastHighlighted.getKey().getRequestId());
+        }
+        // looking for the mapPoints that matches the listened request
+        List<Pair<MapPoint, Node>> candidates = points.stream()
+                .filter(point -> point.getKey().getRequestId() == id)
+                .collect(Collectors.toList());
+        candidates.forEach((candidate) -> {
+                    candidate.getValue().setScaleX(highlightIconFactor);
+                    candidate.getValue().setScaleY(highlightIconFactor);
+                    lastHighlighted = candidate;
+                }
+        );
+    }
+
+    public void unHighlightIcon(Long id){
+        // looking for the mapPoints that matches the listened request
+        List<Pair<MapPoint, Node>> candidates = points.stream()
+                .filter(point -> point.getKey().getRequestId() == id)
+                .collect(Collectors.toList());
+        candidates.forEach((candidate) -> {
+                    candidate.getValue().setScaleX(1.0);
+                    candidate.getValue().setScaleY(1.0);
+                }
+        );
+    }
+
+    public static Pair<MapPoint, Node> getLastHighlighted() {
+        return lastHighlighted;
+    }
+
 }

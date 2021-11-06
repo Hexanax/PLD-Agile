@@ -198,7 +198,7 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-        System.out.println(propertyName);
+        //System.out.println(propertyName);
         if (propertyName.equals("tourUpdate")){
             Tour newTourValue = (Tour) evt.getNewValue();
             renderOrderedSteps(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());

@@ -5,7 +5,9 @@ import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.RequestItem;
 import fr.insalyon.pldagile.view.menu.RequestMenuView;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
@@ -83,7 +85,7 @@ public class RequestMapView implements PropertyChangeListener {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             point.getValue().setOnMouseClicked(event-> {
                 controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
-                //System.out.println("active request:" + point.getKey().getStepIndex());
+                ////System.out.println("active request:" + point.getKey().getStepIndex());
             });
         }
     }
@@ -97,4 +99,8 @@ public class RequestMapView implements PropertyChangeListener {
         }
     }
 
+
+    public PointLayer getPlanningRequestPoints() {
+        return planningRequestPoints;
+    }
 }

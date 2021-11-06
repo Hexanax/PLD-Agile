@@ -2,12 +2,10 @@ package fr.insalyon.pldagile.view;
 
 import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
-import fr.insalyon.pldagile.xml.ExceptionXML;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,9 +13,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -39,12 +37,9 @@ public class Window {
     private final BottomPanel bottomPanel;
 
 
-
-
     private ButtonListener buttonListener;
     private KeyboardListener keyboardListener;
     private MouseListener mouseListener;
-
 
 
     public Window(Controller controller) {
@@ -113,7 +108,7 @@ public class Window {
         AnchorPane.setRightAnchor(bp, 0D);
 
         mainPane.getChildren().add(bp);
-        loadSidePanel(this.sidePanel);
+        loadSidePanel();
         loadBottomPanel();
 
         Scene scene = new Scene(mainPane, screenWidth, screenHeight);
@@ -135,8 +130,8 @@ public class Window {
         stage.show();
     }
 
-    private void loadSidePanel(SidePanel sidePanel) {
-        sidePanel.MainSidePanel(this.requestListView.getList());
+    private void loadSidePanel() {
+        sidePanel.MainSidePanel(this.requestListView.getAddressItems());
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
@@ -151,12 +146,10 @@ public class Window {
         mainPane.getChildren().add(sidePanel);
     }
 
-    private void loadBottomPanel(){
+    private void loadBottomPanel() {
         AnchorPane.setTopAnchor(bottomPanel, 650D);
         AnchorPane.setBottomAnchor(bottomPanel, 16D);
         AnchorPane.setLeftAnchor(bottomPanel, 16D);
-
-
         mainPane.getChildren().add(bottomPanel);
     }
 
@@ -299,7 +292,6 @@ public class Window {
     }
 
 
-
     public void clearTour() {
         lineLayer.clearPoints();
     }
@@ -316,6 +308,36 @@ public class Window {
     public void addWarningStateFollow(String message) {
         TextItem item = new TextItem(message, "#FF0000");
         LogView.addTextItem(item);
+    }
+
+
+    /**
+     * Highlights request points on hover on map
+     */
+    private EventHandler<MouseEvent> onRequestPinClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getClickCount() == 1) {
+                System.out.println("MouseEvent" + event);
+                if (sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem() != null) {
+                    System.out.println("condition");
+                    requestMapView.getPlanningRequestPoints().highlightIcon(sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem().getRequestNumber());
+                }
+
+            }
+        }
+    };
+
+    public void activeItemListener(){
+        sidePanel.getRequestView().getRequestList().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
+    }
+
+
+    public void disableItemListener(){
+        sidePanel.getRequestView().getRequestList().removeEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
+        if (requestMapView.getPlanningRequestPoints().getLastHighlighted() != null) {
+            requestMapView.getPlanningRequestPoints().unHighlightIcon(requestMapView.getPlanningRequestPoints().getLastHighlighted().getKey().getRequestId());
+        }
     }
 
 
@@ -404,7 +426,7 @@ public class Window {
 //    @Override
 //    public void propertyChange(PropertyChangeEvent evt) {
 //        String propertyName = evt.getPropertyName();
-//        //System.out.println(propertyName);
+//        ////System.out.println(propertyName);
 //        if(propertyName.equals("cityMapUpdate")) {
 //            CityMap newCityMapValue = (CityMap) evt.getNewValue();
 //            clearMap();
