@@ -75,7 +75,7 @@ public class TourComputedState implements State{
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.undo();
         Tour modify = new Tour(tour); //TODO Implement and use the clone() from Java Cloneable which itself calls the copy constructor
-        controller.setTour(modify);
+        //controller.setTour(modify); //TODO Inspect if to keep or breaks other commands undo/redo
         window.addStateFollow("Undo");
     }
 
