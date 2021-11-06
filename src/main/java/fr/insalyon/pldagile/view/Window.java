@@ -36,6 +36,8 @@ public class Window {
     private final TourView tourView;
     private final RequestListView requestListView;
     private final SidePanel sidePanel;
+    private final BottomPanel bottomPanel;
+
 
 
 
@@ -58,6 +60,7 @@ public class Window {
         this.tourView = new TourView(controller);
         this.requestListView = new RequestListView(controller);
         this.sidePanel = new SidePanel(controller);
+        this.bottomPanel = new BottomPanel(controller);
 
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
@@ -149,13 +152,12 @@ public class Window {
     }
 
     private void loadBottomPanel(){
-        BottomPanel bottom = new BottomPanel();
-        AnchorPane.setTopAnchor(bottom, 650D);
-        AnchorPane.setBottomAnchor(bottom, 16D);
-        AnchorPane.setLeftAnchor(bottom, 16D);
+        AnchorPane.setTopAnchor(bottomPanel, 650D);
+        AnchorPane.setBottomAnchor(bottomPanel, 16D);
+        AnchorPane.setLeftAnchor(bottomPanel, 16D);
 
 
-        mainPane.getChildren().add(bottom);
+        mainPane.getChildren().add(bottomPanel);
     }
 
     private Label headerLabel() {
