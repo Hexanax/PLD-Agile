@@ -7,6 +7,7 @@ import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -34,12 +35,14 @@ public class Window {
     private final RequestMapView requestMapView;
     private final TourView tourView;
     private final RequestListView requestListView;
+    private final SidePanel sidePanel;
 
 
 
     private ButtonListener buttonListener;
     private KeyboardListener keyboardListener;
     private MouseListener mouseListener;
+
 
 
     public Window(Controller controller) {
@@ -54,6 +57,7 @@ public class Window {
         this.mapView = new MapView(controller);
         this.tourView = new TourView(controller);
         this.requestListView = new RequestListView(controller);
+        this.sidePanel = new SidePanel(controller);
 
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
@@ -67,6 +71,14 @@ public class Window {
 
     public RequestMapView getRequestMapView() {
         return requestMapView;
+    }
+
+    public CityMapView getCityMapView() {
+        return cityMapView;
+    }
+
+    public SidePanel getSidePanel() {
+        return sidePanel;
     }
 
     public void render(Stage stage) throws Exception {
@@ -98,7 +110,7 @@ public class Window {
         AnchorPane.setRightAnchor(bp, 0D);
 
         mainPane.getChildren().add(bp);
-        loadSidePanel();
+        loadSidePanel(this.sidePanel);
         loadBottomPanel();
 
         Scene scene = new Scene(mainPane, screenWidth, screenHeight);
@@ -120,8 +132,7 @@ public class Window {
         stage.show();
     }
 
-    private void loadSidePanel() {
-        SidePanel sidePanel = new SidePanel();
+    private void loadSidePanel(SidePanel sidePanel) {
         sidePanel.MainSidePanel(this.requestListView.getList());
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setBottomAnchor(sidePanel, 16D);

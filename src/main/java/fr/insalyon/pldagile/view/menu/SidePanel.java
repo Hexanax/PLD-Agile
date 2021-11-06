@@ -6,15 +6,19 @@ import javafx.scene.layout.*;
 
 public class SidePanel extends Region {
     private GridPane mainBorderPane;
+    private final Controller controller;
+    private final RequestView requestView;
+    private final ImportView importView;
 
-    public SidePanel() {
 
+    public SidePanel(Controller controller) {
+        this.controller=controller;
+        this.importView = new ImportView();
+        this.requestView = new RequestView(controller);
     }
 
     public void MainSidePanel(ObservableList<AddressItem> list) {
-        ImportView importView = new ImportView();
-        RequestView requestView = new RequestView();
-        requestView.setView(list);
+        this.requestView.setView(list);
         mainBorderPane = new GridPane();
         mainBorderPane.add(importView, 0, 0, 1, 1);
         mainBorderPane.add(requestView, 0, 1, 1, 1);
@@ -22,4 +26,7 @@ public class SidePanel extends Region {
         this.getChildren().add(mainBorderPane);
     }
 
+    public RequestView getRequestView() {
+        return requestView;
+    }
 }

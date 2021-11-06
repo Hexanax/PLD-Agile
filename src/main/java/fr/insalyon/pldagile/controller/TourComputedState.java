@@ -56,8 +56,8 @@ public class TourComputedState implements State{
             //TODO Update
 //            window.disableEventListener();
             window.clearTour();
-//            window.activeRowListener();
-//            window.activeRequestIntersectionsListener();
+            window.getSidePanel().getRequestView().activeRowListener();
+            window.getRequestMapView().activeRequestIntersectionsListener();
             window.showWarningAlert("How to delete a request", null, "Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
         }
     }

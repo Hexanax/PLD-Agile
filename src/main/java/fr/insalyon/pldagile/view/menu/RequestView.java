@@ -1,16 +1,15 @@
 package fr.insalyon.pldagile.view.menu;
 
-import fr.insalyon.pldagile.model.Address;
-import fr.insalyon.pldagile.model.Request;
-import fr.insalyon.pldagile.view.IconProvider;
+import fr.insalyon.pldagile.controller.Controller;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
-import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
@@ -19,10 +18,12 @@ public class RequestView extends Region {
     protected static final String ADD_REQUEST = "Add Request";
     protected static final String REDO = "Redo";
     protected static final String UNDO = "Undo";
+    private final Controller controller;
 
     private final ListView<AddressItem> requestList;
 
-    public RequestView(){
+    public RequestView(Controller controller){
+        this.controller = controller;
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
@@ -41,10 +42,6 @@ public class RequestView extends Region {
         requestList.setOrientation(Orientation.VERTICAL);
         requestList.setMaxHeight(200D);
         gridPane.add(requestList, 0, 1, 2, 1);
-
-
-
-
 
         Button addRequest = new Button(ADD_REQUEST);
         createButton(addRequest, gridPane,0, 2, 1, 1);
@@ -67,5 +64,22 @@ public class RequestView extends Region {
 
     public void setView(ObservableList<AddressItem> list) {
         requestList.setItems(list);
+    }
+
+    private EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                controller.modifyClick(requestList.getSelectionModel().getSelectedItem().getRequestNumber(), requestList.getSelectionModel().getSelectedItem().getType(), requestList.getSelectionModel().getSelectedItem().getStepIndex());
+            }
+        }
+    };
+
+    public void activeRowListener() {
+        requestList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
+    public void disableRowListener() {
+        requestList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 }

@@ -4,6 +4,8 @@ import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.util.Pair;
 
@@ -76,6 +78,8 @@ public class RequestListView extends Region implements PropertyChangeListener {
     public ObservableList<AddressItem> getList(){
         return addressItems;
     }
+
+
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
