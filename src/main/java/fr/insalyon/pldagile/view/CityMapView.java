@@ -40,16 +40,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
         });
     }
 
-    /**
-     * Makes map intersections clickable
-     */
-    public void activeMapIntersectionsListener() {
-        for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
-            point.getValue().setOnMouseClicked(event -> {
-                controller.modifyClick(point.getKey().getId(), "Intersection", -1); //TODO Intersection click instead of modify click
-            });
-        }
-    }
+
 
     @Override
     public void hide() {
@@ -65,7 +56,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
     public void render() {
         if (cityMap != null) {
             System.out.println("Entered");
-            clear();
+           // clear();
             for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
                 Intersection intersection = entry.getValue();
                 MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
@@ -90,7 +81,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
      * Makes map intersections clickable
      */
     public void activeMapIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : cityPointLayer.getPoints()) {
+        for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
             point.getValue().setOnMouseClicked(event-> {
                 System.out.println(event);
                 controller.intersectionClick(point.getKey().getId());

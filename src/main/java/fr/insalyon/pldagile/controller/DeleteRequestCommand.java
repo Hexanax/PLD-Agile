@@ -45,12 +45,12 @@ public class DeleteRequestCommand implements Command {
 
     @Override
     public void doCommand() {
-        PCLtour.setTour(tourbuilder.deleteRequest(citymap,PCLtour.getTour(), requestDeleted));
+        pclTour.setTour(tourBuilder.deleteRequest(cityMap,pclTour.getTour(), deletedRequest));
     }
 
     @Override
     public void undoCommand() {
-        PCLtour.setTour(tourbuilder.addRequest(citymap, PCLtour.getTour(), requestDeleted.getId()));
+        pclTour.setTour(tourBuilder.addRequest(cityMap, pclTour.getTour(), deletedRequest.getId()));
     }
 
 }
