@@ -2,10 +2,7 @@ package fr.insalyon.pldagile.view;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.view.maps.LineLayer;
-import fr.insalyon.pldagile.view.maps.MapLayer;
-import fr.insalyon.pldagile.view.maps.MapPoint;
-import fr.insalyon.pldagile.view.maps.PointLayer;
+import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.RequestItem;
 
 import javafx.scene.paint.Color;
@@ -55,14 +52,14 @@ public class RequestMapView implements PropertyChangeListener {
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        IconProvider.getPickupIcon()
+                        new RequestMapPin(RequestType.PICKUP)
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        IconProvider.getDropoffIcon()
+                        new RequestMapPin(RequestType.DELIVERY)
                 );
             });
             planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());

@@ -17,15 +17,17 @@ public class InitialState implements State {
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if (importFile != null) {
+                window.addStateFollow("Loading the map ...");
                 CityMap newCityMap = XMLDeserializer.load(importFile);
                 controller.setCityMap(newCityMap);
                 window.updateMapFileName(importFile.getName());
                 controller.setCurrentState(controller.mapDisplayedState);
+                window.addStateFollow("Map loaded");
             } else {
                 controller.setCurrentState(controller.initialState);
             }
         } catch (Exception e) {
-            window.showWarningAlert("Error when reading the XML map file", e.getMessage(), null);
+            window.addWarningStateFollow("Error when reading the XML map file : " + e.getMessage());
         }
     }
 }

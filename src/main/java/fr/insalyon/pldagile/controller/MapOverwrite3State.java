@@ -19,18 +19,19 @@ public class MapOverwrite3State implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
+                window.addStateFollow("Loading the new map ...");
                 CityMap newCityMap = XMLDeserializer.load(importFile);
                 controller.setCityMap(newCityMap);
                 controller.setPlanningRequest(new PlanningRequest());
                 controller.setTour(new Tour());
                 window.updateMapFileName(importFile.getName());
                 controller.setCurrentState(controller.mapDisplayedState);
+                window.addStateFollow("New map loaded");
             } else {
                 controller.setCurrentState(controller.tourComputedState);
             }
         } catch(Exception e) {
-            System.out.println(e);
-            window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            window.addWarningStateFollow("Error when reading the XML map file : " + e.getMessage());
             controller.setCurrentState(controller.tourComputedState);
         }
     }

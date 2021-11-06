@@ -25,7 +25,7 @@ import java.util.*;
 public class Window {
 
     private static Stage mainStage = null;
-    private Controller controller = null;
+    private Controller controller;
     private final AnchorPane mainPane = new AnchorPane();
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
@@ -37,12 +37,16 @@ public class Window {
 
 
     private ButtonListener buttonListener;
+    private KeyboardListener keyboardListener;
+    private MouseListener mouseListener;
 
 
     public Window(Controller controller) {
         this.controller = controller;
 
         buttonListener = new ButtonListener(controller);
+        keyboardListener = new KeyboardListener(controller);
+        mouseListener = new MouseListener(controller);
 
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
@@ -90,9 +94,13 @@ public class Window {
 
         mainPane.getChildren().add(bp);
         loadSidePanel();
+        loadBottomPanel();
 
         Scene scene = new Scene(mainPane, screenWidth, screenHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
+        scene.setOnKeyPressed(KeyboardListener::keyPressed);
+        scene.setOnMouseClicked(MouseListener::mouseClicked);
+
         bp.getChildren().addAll(mapView, headerLabel, copyright);
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
@@ -110,8 +118,6 @@ public class Window {
     private void loadSidePanel() {
         SidePanel sidePanel = new SidePanel();
         sidePanel.MainSidePanel(this.requestListView.getList());
-
-
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
@@ -124,6 +130,16 @@ public class Window {
             }
         }
         mainPane.getChildren().add(sidePanel);
+    }
+
+    private void loadBottomPanel(){
+        BottomPanel bottom = new BottomPanel();
+        AnchorPane.setTopAnchor(bottom, 650D);
+        AnchorPane.setBottomAnchor(bottom, 16D);
+        AnchorPane.setLeftAnchor(bottom, 16D);
+
+
+        mainPane.getChildren().add(bottom);
     }
 
     private Label headerLabel() {
@@ -274,6 +290,16 @@ public class Window {
         //loadSidePanel(true);
     }
 
+    public void addStateFollow(String message) {
+        TextItem item = new TextItem(message, "#000000");
+        LogView.addTextItem(item);
+    }
+
+    public void addWarningStateFollow(String message) {
+        TextItem item = new TextItem(message, "#FF0000");
+        LogView.addTextItem(item);
+    }
+
 
     //TODO Update modify view
 //    public void hideModifyMenu() {
@@ -338,7 +364,7 @@ public class Window {
 
     }*/
 
-    public void addMapRequest(Request request) {
+    /*public void addMapRequest(Request request) {
         Pickup pickup = request.getPickup();
         Delivery delivery = request.getDelivery();
         MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
@@ -355,7 +381,7 @@ public class Window {
                 mapPoint,
                 IconProvider.getDropoffIcon()
         );
-    }
+    }*/
 
 //    @Override
 //    public void propertyChange(PropertyChangeEvent evt) {

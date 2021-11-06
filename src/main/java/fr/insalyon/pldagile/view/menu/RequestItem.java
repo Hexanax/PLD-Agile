@@ -14,6 +14,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//TODO delete
+
 public class RequestItem extends Region {
     private long requestNumber;
     private String type;

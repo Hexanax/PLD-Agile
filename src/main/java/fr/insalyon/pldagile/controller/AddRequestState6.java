@@ -32,7 +32,7 @@ public class AddRequestState6 implements State{
             controller.pickupToAdd.getValue().setDuration(duration);
             listOfCdes.add(new AddRequestCommand(citymap, tour,controller.pickupToAdd, controller.deliveryToAdd));
             controller.setTour(tour);
-            window.addMapRequest(tour.getRequests().get(tour.getNextRequestId()-1));
+            //window.addMapRequest(tour.getRequests().get(tour.getNextRequestId()-1));
             //window.orderListRequests(tour.getSteps(), tour.getRequests(), tour.getDepot());
             controller.setCurrentState(controller.tourComputedState);
             window.showWarningAlert("Modification", "Addition successfully completed", null);

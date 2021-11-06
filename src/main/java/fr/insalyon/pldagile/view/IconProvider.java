@@ -36,7 +36,7 @@ public abstract class IconProvider {
     public static ImageView getDropoffIcon() {
         ImageView img = new ImageView(
                 new Image(
-                        "img/dropoffPin/dropoff@2x.png",
+                        "img/deliveryPin/delivery@2x.png",
                         ICON_SIZE, ICON_SIZE,
                         true, true
                 ));

@@ -6,6 +6,7 @@ import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.CityMapView;
 import fr.insalyon.pldagile.view.Window;
+import javafx.scene.input.KeyCode;
 import javafx.util.Pair;
 
 import static javafx.application.Application.launch;
@@ -146,5 +147,8 @@ public class Controller {
 
     public Window getWindow() {
         return window;
+    }
+
+    public void keystroke(KeyCode code, boolean controlDown) { currentState.keystroke(this, code, window, controlDown);
     }
 }

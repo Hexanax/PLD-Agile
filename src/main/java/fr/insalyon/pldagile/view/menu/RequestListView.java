@@ -80,9 +80,14 @@ public class RequestListView extends Region implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
+        System.out.println("------------");
+        System.out.println(propertyName);
+        System.out.println("------------");
         if(Objects.equals(propertyName, "tourUpdate")){
             this.tour = (Tour) evt.getNewValue();
-            renderOrdered();
+            if(this.tour.getPath()!=null) {
+                renderOrdered();
+            }
         }
         if(Objects.equals(propertyName, "planningRequestUpdate")){
             this.planningRequest = (PlanningRequest) evt.getNewValue();
