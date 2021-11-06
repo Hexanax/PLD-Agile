@@ -34,7 +34,7 @@ public class AddRequestState3 implements State{
             //TODO Update
 //            window.disableEventListener();
             window.getRequestMapView().activeRequestIntersectionsListener();
-            window.getSidePanel().getRequestView().activeRowListener();
+           // window.getSidePanel().getRequestView().activeRowListener();
             window.showWarningAlert("How to add a request", null, "Select the depot, a pickup or a delivery after which you want to place the delivery of your new request");
         } else {
             window.showWarningAlert("Error","Wrong format, number must be a positive Integer" ,null);

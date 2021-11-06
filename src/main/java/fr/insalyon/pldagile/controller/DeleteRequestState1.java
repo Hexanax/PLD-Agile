@@ -13,9 +13,9 @@ public class DeleteRequestState1 implements State{
             listOfCdes.add(new DeleteRequestCommand(citymap,tour,request));
             controller.setTour(tour);
             controller.setCurrentState(controller.tourComputedState);
-            window.showWarningAlert("Modification", "Suppresion successfully completed", null);
+            window.addStateFollow("Suppresion successfully completed");
         } else {
-            window.showWarningAlert("How to delete a request", "Request number unknown, please try again", null);
+            window.addWarningStateFollow("Request number unknown, please try again");
         }
     }
 

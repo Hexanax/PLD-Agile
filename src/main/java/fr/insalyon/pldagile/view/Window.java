@@ -2,10 +2,12 @@ package fr.insalyon.pldagile.view;
 
 import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -16,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -37,9 +40,12 @@ public class Window {
     private final BottomPanel bottomPanel;
 
 
+
+
     private ButtonListener buttonListener;
     private KeyboardListener keyboardListener;
     private MouseListener mouseListener;
+
 
 
     public Window(Controller controller) {
@@ -426,7 +432,7 @@ public class Window {
 //    @Override
 //    public void propertyChange(PropertyChangeEvent evt) {
 //        String propertyName = evt.getPropertyName();
-//        ////System.out.println(propertyName);
+//        //System.out.println(propertyName);
 //        if(propertyName.equals("cityMapUpdate")) {
 //            CityMap newCityMapValue = (CityMap) evt.getNewValue();
 //            clearMap();

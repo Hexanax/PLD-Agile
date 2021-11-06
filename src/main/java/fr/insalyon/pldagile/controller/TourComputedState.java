@@ -50,16 +50,15 @@ public class TourComputedState implements State{
     @Override
     public void deleteRequest(Controller controller,CityMap citymap, Tour tour, Request request, Window window,ListOfCommands listOfCdes) {
         if(tour.getRequests().size()==1){
-            window.showWarningAlert("Tour can't be empty", "You can't delete the last request of the tour", null);
+            window.addWarningStateFollow("Tour can't be empty \n You can't delete the last request of the tour");
         } else {
             controller.setCurrentState(controller.deleteRequestState1);
-            //TODO Update
-//            window.disableEventListener();
+            //TODO Display only the planning request
             window.clearTour();
             window.getSidePanel().getRequestView().activeRowListener();
             window.getRequestMapView().activeRequestIntersectionsListener();
             window.disableItemListener();
-            window.showWarningAlert("How to delete a request", null, "Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
+            window.addStateFollow("How to delete a request : Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
         }
     }
 

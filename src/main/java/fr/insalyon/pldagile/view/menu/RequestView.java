@@ -53,6 +53,7 @@ public class RequestView extends Region {
         createButton(undo, gridPane,1, 3, 1, 1);
 
 
+        requestList.setOnMouseClicked(MouseListener::mouseClicked);
         this.getChildren().add(gridPane);
     }
 
