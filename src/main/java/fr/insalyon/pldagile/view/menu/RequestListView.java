@@ -23,12 +23,16 @@ public class RequestListView extends Region implements PropertyChangeListener {
     private Tour tour;
     private final ObservableList<AddressItem> addressItems = FXCollections.observableArrayList();
 
+    private MouseListener mouseListener;
+
     public RequestListView(Controller controller) {
         this.controller = controller;
         this.planningRequest = controller.getPclPlanningRequest().getPlanningRequest();
         controller.getPclPlanningRequest().addPropertyChangeListener(this);
         this.tour = controller.getPclTour().getTour();
         controller.getPclTour().addPropertyChangeListener(this);
+
+        mouseListener = new MouseListener(controller);
     }
 
     public void clear(){
