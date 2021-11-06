@@ -12,12 +12,14 @@ import javafx.util.Pair;
 import static javafx.application.Application.launch;
 
 public class Controller {
-    private PCLCityMap pclCityMap;
-    private PCLPlanningRequest pclPlanningRequest;
-    private PCLTour pclTour;
+
+    //The controller and application's state
     private State currentState;
-    private Window window;
-    private ListOfCommands listOfCommands;
+    private final PCLCityMap pclCityMap;
+    private final PCLPlanningRequest pclPlanningRequest;
+    private final PCLTour pclTour;
+    private final Window window;
+    private final ListOfCommands listOfCommands;
 
     protected Pair<Integer, Pickup> pickupToAdd;
     protected Pair<Integer, Delivery> deliveryToAdd;
@@ -52,7 +54,6 @@ public class Controller {
         return pclCityMap;
     }
 
-
     protected void setCurrentState(State state) {
         currentState = state;
     }
@@ -74,7 +75,7 @@ public class Controller {
     }
 
     protected void setTour(Tour tour) {
-        System.out.println("setting tour");
+        //System.out.println("setting tour");
         this.pclTour.setTour(tour);
     }
 
@@ -101,7 +102,6 @@ public class Controller {
     public void confirm(String result) {
         currentState.confirm(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), result, window, listOfCommands);
     }
-
 
     public void generateRoadMap() {
         currentState.generateRoadMap(this, pclTour.getTour(), window);
@@ -137,8 +137,9 @@ public class Controller {
         return window;
     }
 
-    public void keystroke(KeyCode code, boolean controlDown) { currentState.keystroke(this, code, window, controlDown); }
-
+    public void keystroke(KeyCode code, boolean controlDown) {
+        currentState.keystroke(this, code, window, controlDown);
+    }
 
     public void intersectionClick(long id) { currentState.intersectionClick(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), id, window);}
 }

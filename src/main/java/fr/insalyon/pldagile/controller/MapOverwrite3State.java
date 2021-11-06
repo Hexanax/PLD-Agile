@@ -13,7 +13,7 @@ import java.io.File;
 /**
  *  MapOverwrite2State is the state when map & requests & tour are loaded in the system and the user wants to load a new map
  */
-public class MapOverwrite3State implements State{
+public class MapOverwrite3State implements State {
     @Override
     public void loadMap(Controller controller, Window window) {
         try {

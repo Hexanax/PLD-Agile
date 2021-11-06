@@ -12,8 +12,8 @@ import javafx.scene.input.KeyCode;
 import java.io.File;
 
 /**
- *  TourComputedState is the state when map & requests & tour computed
- *  are loaded in the system and the user
+ * TourComputedState is the state when map & requests & tour computed
+ * are loaded in the system and the user
  */
 public class TourComputedState implements State{
     @Override
@@ -39,7 +39,7 @@ public class TourComputedState implements State{
         try {
             window.addStateFollow("Road Map calculation ...");
             File html = XMLFileOpener.getInstance().open(FileChooseOption.SAVE);
-            if(html != null){
+            if (html != null) {
                 HTMLSerializer.renderHTMLroadMap(tour, html);
                 window.addStateFollow("Road Map rendered");
             }
@@ -56,7 +56,7 @@ public class TourComputedState implements State{
         } else {
             controller.setCurrentState(controller.deleteRequestState1);
             //TODO Display only the planning request
-            window.clearTour();
+            //window.clearTour(); //TODO Check if it works without, it should
             window.addStateFollow("How to delete a request : Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
         }
     }
@@ -74,13 +74,13 @@ public class TourComputedState implements State{
     @Override
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.undo();
-        Tour modify = new Tour(tour);
+        Tour modify = new Tour(tour); //TODO Implement and use the clone() from Java Cloneable which itself calls the copy constructor
         controller.setTour(modify);
         window.addStateFollow("Undo");
     }
 
     @Override
-    public void redo(Controller controller, ListOfCommands listOfCdes,Window window, Tour tour){
+    public void redo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.redo();
         controller.setTour(tour);
         window.addStateFollow("Redo");
@@ -88,16 +88,15 @@ public class TourComputedState implements State{
 
     @Override
     public void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown) {
-        if(isControlDown){
-            if(code == KeyCode.Z){
+        if (isControlDown) {
+            if (code == KeyCode.Z) {
                 controller.undo();
             }
 
-            if(code== KeyCode.Y){
+            if (code == KeyCode.Y) {
                 controller.redo();
             }
         }
     }
-
 
 }

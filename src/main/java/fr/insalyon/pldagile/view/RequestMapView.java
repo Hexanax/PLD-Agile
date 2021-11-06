@@ -3,24 +3,16 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
-import fr.insalyon.pldagile.view.menu.RequestItem;
-import fr.insalyon.pldagile.view.menu.RequestMenuView;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
 
-public class RequestMapView implements PropertyChangeListener {
+public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
-
-    private final PointLayer planningRequestPoints = new PointLayer();
-    private Controller controller;
+    private final PointLayer<ImageView> planningRequestPoints = new PointLayer<>();
+    private final Controller controller;
     private PlanningRequest planningRequest;
 
     public RequestMapView(Controller controller) {
@@ -29,12 +21,9 @@ public class RequestMapView implements PropertyChangeListener {
         controller.getPclPlanningRequest().addPropertyChangeListener(this);
     }
 
-    public void clear() {
-        planningRequestPoints.clearPoints();
-    }
-
+    @Override
     public void render() {
-        clear();
+        planningRequestPoints.clearPoints();
         PlanningRequest planningRequest = this.planningRequest;
         if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             // Render the planning request
@@ -51,14 +40,14 @@ public class RequestMapView implements PropertyChangeListener {
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        new RequestMapPin(RequestType.PICKUP)
+                        new RequestMapPin(RequestType.PICKUP, request.getId())
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        new RequestMapPin(RequestType.DELIVERY)
+                        new RequestMapPin(RequestType.DELIVERY, request.getId())
                 );
             });
             planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());
@@ -79,10 +68,11 @@ public class RequestMapView implements PropertyChangeListener {
     /**
      * Makes request points clickable
      */
-        public void activeRequestIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
-            point.getValue().setOnMouseClicked(event-> {
-                controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
+    //TODO Always listen for the request points click and just handle it depending on the test in the controller/state
+    public void activeRequestIntersectionsListener() {
+        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+            point.getValue().setOnMouseClicked(event -> {
+                controller.modifyClick(point.getKey().getRequestId(), "Intersection", point.getKey().getStepIndex());
                 //System.out.println("active request:" + point.getKey().getStepIndex());
             });
         }
@@ -92,9 +82,24 @@ public class RequestMapView implements PropertyChangeListener {
      * Makes request point non-clickable
      */
     public void disableRequestIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
+        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
             point.getValue().setOnMouseClicked(null);
         }
+    }
+
+    //TODO Inspect usage and maybe improve
+    public PointLayer<ImageView> getPlanningRequestPoints() {
+        return planningRequestPoints;
+    }
+
+    @Override
+    public void hide() {
+        planningRequestPoints.hide();
+    }
+
+    @Override
+    public void show() {
+        planningRequestPoints.show();
     }
 
 }

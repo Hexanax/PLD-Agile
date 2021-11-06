@@ -7,6 +7,7 @@ import fr.insalyon.pldagile.view.maps.MapLayer;
 import fr.insalyon.pldagile.view.maps.MapPoint;
 import fr.insalyon.pldagile.view.maps.PointLayer;
 import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 
@@ -15,10 +16,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Map;
 
-public class CityMapView implements PropertyChangeListener {
+public class CityMapView implements PropertyChangeListener, View, Hideable {
 
-    private final PointLayer cityPointLayer = new PointLayer();
-    private Controller controller;
+    private final PointLayer<Circle> cityPointLayer = new PointLayer<>();
+    private final Controller controller;
     private CityMap cityMap;
 
     public CityMapView(Controller controller) {
@@ -28,11 +29,39 @@ public class CityMapView implements PropertyChangeListener {
         render();
     }
 
-    public void clear(){
-        cityPointLayer.clearPoints();
+    public MapLayer getLayer() {
+        return cityPointLayer;
     }
 
-    //TODO Add View interface with render method
+    public void setIntersectionColor(Color color) {
+        cityPointLayer.getPoints().forEach(point -> {
+            Circle circle = point.getValue();
+            circle.setFill(color);
+        });
+    }
+
+    /**
+     * Makes map intersections clickable
+     */
+    public void activeMapIntersectionsListener() {
+        for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
+            point.getValue().setOnMouseClicked(event -> {
+                controller.modifyClick(point.getKey().getId(), "Intersection", -1); //TODO Intersection click instead of modify click
+            });
+        }
+    }
+
+    @Override
+    public void hide() {
+        cityPointLayer.hide();
+    }
+
+    @Override
+    public void show() {
+        cityPointLayer.show();
+    }
+
+    @Override
     public void render() {
         if (cityMap != null) {
             System.out.println("Entered");
@@ -48,9 +77,7 @@ public class CityMapView implements PropertyChangeListener {
         }
     }
 
-    public MapLayer getLayer() {
-        return cityPointLayer;
-    }
+
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
@@ -70,7 +97,5 @@ public class CityMapView implements PropertyChangeListener {
             });
         }
     }
-
-
 
 }

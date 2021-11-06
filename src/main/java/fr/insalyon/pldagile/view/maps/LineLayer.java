@@ -1,6 +1,7 @@
 package fr.insalyon.pldagile.view.maps;
 
 import fr.insalyon.pldagile.view.Colors;
+import fr.insalyon.pldagile.view.Hideable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
@@ -14,7 +15,7 @@ import java.awt.*;
 /**
  * A layer that allows to draw lines between two map points.
  */
-public class LineLayer extends MapLayer {
+public class LineLayer extends MapLayer implements Hideable {
 
     private final ObservableList<Pair<MapDestination, Line>> lines = FXCollections.observableArrayList();
 
@@ -53,6 +54,18 @@ public class LineLayer extends MapLayer {
             line.setEndY(endProjected.getY());
             line.setVisible(true);
         }
+    }
+
+    @Override
+    public void hide() {
+        this.getChildren().clear();
+        this.markDirty();
+    }
+
+    @Override
+    public void show() {
+        lines.forEach(line -> this.getChildren().add(line.getValue()));
+        this.markDirty();
     }
 
 }

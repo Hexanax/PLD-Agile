@@ -15,11 +15,10 @@ import java.util.List;
 
 public class LogView extends Region {
 
-
     private static final ObservableList<TextItem> textItems = FXCollections.observableArrayList();
     private static ListView<TextItem> textList;
 
-    public LogView (){
+    public LogView () {
 
         //TODO larger
         GridPane gridPane = new GridPane();
@@ -41,7 +40,6 @@ public class LogView extends Region {
         textList.setOrientation(Orientation.VERTICAL);
         textList.setMaxHeight(80);
         gridPane.add(textList, 0, 1, 2, 1);
-
 
         this.getChildren().add(gridPane);
     }

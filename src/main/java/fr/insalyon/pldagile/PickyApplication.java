@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile.picky;
+package fr.insalyon.pldagile;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.Window;

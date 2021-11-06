@@ -10,7 +10,8 @@ public class RequestMapPin extends MapPin {
     private final String PICKUP_ICON_URL = "img/pickupPin/pickup@2x.png";
     private final String DELIVERY_ICON_URL = "img/deliveryPin/delivery@2x.png";
 
-    public RequestMapPin(RequestType type){
+    public RequestMapPin(RequestType type, Long requestId){
+        this.requestId = requestId;
         double iconSize = DEFAULT_ICON_SIZE;
         this.type = type;
         String imgURL, styleClass;
@@ -36,4 +37,7 @@ public class RequestMapPin extends MapPin {
         return requestId;
     }
 
+    public RequestType getType() {
+        return type;
+    }
 }

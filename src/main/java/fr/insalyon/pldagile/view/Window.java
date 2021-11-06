@@ -2,12 +2,11 @@ package fr.insalyon.pldagile.view;
 
 import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.model.RequestType;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
-import fr.insalyon.pldagile.xml.ExceptionXML;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,8 +14,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -28,8 +29,6 @@ public class Window {
     private static Stage mainStage = null;
     private Controller controller;
     private final AnchorPane mainPane = new AnchorPane();
-    private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests, one tour)
-    private final LineLayer lineLayer = new LineLayer();
     private final MapView mapView;
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
@@ -37,16 +36,11 @@ public class Window {
     private final RequestListView requestListView;
     private final SidePanel sidePanel;
     private final BottomPanel bottomPanel;
-
-
-
+    private boolean selectingIntersection;
 
     private ButtonListener buttonListener;
     private KeyboardListener keyboardListener;
     private MouseListener mouseListener;
-
-
-
 
     public Window(Controller controller) {
         this.controller = controller;
@@ -63,6 +57,7 @@ public class Window {
         this.sidePanel = new SidePanel(controller);
         this.bottomPanel = new BottomPanel(controller);
 
+        //Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
         mapView.addLayer(tourView.getTourLineLayer());
@@ -114,7 +109,7 @@ public class Window {
         AnchorPane.setRightAnchor(bp, 0D);
 
         mainPane.getChildren().add(bp);
-        loadSidePanel(this.sidePanel);
+        loadSidePanel();
         loadBottomPanel();
 
         Scene scene = new Scene(mainPane, screenWidth, screenHeight);
@@ -136,8 +131,8 @@ public class Window {
         stage.show();
     }
 
-    private void loadSidePanel(SidePanel sidePanel) {
-        sidePanel.MainSidePanel(this.requestListView.getList());
+    private void loadSidePanel() {
+        sidePanel.MainSidePanel(this.requestListView.getAddressItems());
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
@@ -152,12 +147,10 @@ public class Window {
         mainPane.getChildren().add(sidePanel);
     }
 
-    private void loadBottomPanel(){
+    private void loadBottomPanel() {
         AnchorPane.setTopAnchor(bottomPanel, 650D);
         AnchorPane.setBottomAnchor(bottomPanel, 16D);
         AnchorPane.setLeftAnchor(bottomPanel, 16D);
-
-
         mainPane.getChildren().add(bottomPanel);
     }
 
@@ -174,10 +167,6 @@ public class Window {
         copyright.setAlignment(Pos.CENTER);
         copyright.setMaxWidth(Double.MAX_VALUE);
         return new Group(copyright);
-    }
-
-    public void clearMap() {
-        pointLayer.clearPoints();
     }
 
 //    public void renderMapAndRequests(CityMap cityMap, PlanningRequest planningRequest) {
@@ -281,7 +270,7 @@ public class Window {
         if (!result.isPresent() || result.get() != ButtonType.OK) {
             controller.cancel();
         } else {
-            controller.confirm("");
+            controller.confirm();
         }
     }
 
@@ -299,11 +288,9 @@ public class Window {
         }
     }
 
-
-
-    public void clearTour() {
-        lineLayer.clearPoints();
-    }
+//    public void clearTour() {
+//        lineLayer.clearPoints();
+//    }
 
     public void showModifyMenu() {
         //loadSidePanel(true);
@@ -319,6 +306,60 @@ public class Window {
         LogView.addTextItem(item);
     }
 
+    public void setSelectingIntersection(boolean selectingIntersection) {
+        this.selectingIntersection = selectingIntersection;
+        if(selectingIntersection) {
+            cityMapView.setIntersectionColor(Colors.getMapIntersectionSelectColor());
+        } else {
+            cityMapView.setIntersectionColor(Colors.getMapIntersectionColor());
+        }
+    }
+
+    public boolean isSelectingIntersection(boolean selecting) {
+        return selectingIntersection;
+    }
+
+    /**
+     * Highlights request pins on click in request list
+     */
+    private EventHandler<MouseEvent> onRequestListItemClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getClickCount() == 1) {
+                System.out.println("MouseEvent" + event);
+                if (sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem() != null) {
+                    System.out.println("condition");
+                    //requestMapView.getPlanningRequestPoints().highlightIcon(sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem().getRequestNumber()); //TODO Reimplement
+                }
+
+            }
+        }
+    };
+
+    //TODO : show in list selected request when selecting a pin on the map
+    private EventHandler<MouseEvent> onRequestPinClick = event -> {
+        if (event.getClickCount() == 1) {
+            System.out.println("MouseEvent" + event);
+            RequestMapPin rmp = (RequestMapPin) event.getTarget();
+            Long requestId = rmp.getRequestId();
+            RequestType type = rmp.getType();
+
+        }
+    };
+
+    public void activeItemListener() {
+        sidePanel.getRequestView().getRequestList().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestListItemClick);
+        requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
+    }
+
+    public void disableItemListener() {
+        sidePanel.getRequestView().getRequestList().removeEventHandler(MouseEvent.MOUSE_CLICKED, onRequestListItemClick);
+        //TOOD Reimplement
+//        if (requestMapView.getPlanningRequestPoints().getLastHighlighted() != null) {
+//            requestMapView.getPlanningRequestPoints().unHighlightIcon(requestMapView.getPlanningRequestPoints().getLastHighlighted().getKey().getRequestId());
+//        }
+        requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
+    }
 
     //TODO Update modify view
 //    public void hideModifyMenu() {
