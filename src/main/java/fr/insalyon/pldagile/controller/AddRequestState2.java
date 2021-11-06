@@ -8,21 +8,30 @@ public class AddRequestState2 implements State{
 
 
     @Override
-    public void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window) {
-        controller.addRequest(id);
+    public void intersectionClick(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Long intersectionID, Window window) {
+        Intersection intersection = cityMap.getIntersection(intersectionID);
+        if(intersection == null){
+            window.addWarningStateFollow("Intersection number unknown, please try again");
+        } else if(intersectionID == planningRequest.getLastRequest().getPickup().getIntersection().getId()){
+            window.addWarningStateFollow("You can't add a request with the same address for pickup and delivery, try again");
+        }else {
+            //TODO display the delivery on the map and all other address
+            //TODO hide intersection
+            planningRequest.getLastRequest().setDelivery(new Delivery(intersection, 300));
+            PlanningRequest modify = new PlanningRequest(planningRequest);
+            controller.setPlanningRequest(modify);
+            controller.setCurrentState(controller.addRequestState3);
+            window.addStateFollow("Delivery intersection selected, Now left click on the depot, pickup or delivery visiting before the pickup");
+        }
     }
 
     @Override
-    public void addRequest(Controller controller, CityMap citymap, Tour tour, Long intersectionId, Window window) {
-        Intersection intersection = citymap.getIntersection(intersectionId);
-        if(intersection == null){
-            window.showWarningAlert("How to add a request", "Intersection number unknown, please try again", null);
-        } else {
-            controller.pickupToAdd = new Pair<Integer, Pickup>(controller.pickupToAdd.getKey(), new Pickup(intersection, 300));
-            //TODO Update
-//            window.disableEventListener();
-            controller.setCurrentState(controller.addRequestState3);
-            window.showInputAlert("Pickup Duration", "Please select the duration in second", "Pickup duration :");
-        }
+    public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        //TODO display the tour
+        planningRequest.deleteLastRequest();
+        PlanningRequest modify = new PlanningRequest(planningRequest);
+        controller.setPlanningRequest(modify);
+        window.addStateFollow("Add request cancel");
+        controller.setCurrentState(controller.tourComputedState);
     }
 }

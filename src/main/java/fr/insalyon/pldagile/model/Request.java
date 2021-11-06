@@ -30,4 +30,8 @@ public class Request {
         return this.id;
     }
 
+    public void setDelivery(Delivery delivery) {
+        this.delivery = delivery;
+    }
+
 }

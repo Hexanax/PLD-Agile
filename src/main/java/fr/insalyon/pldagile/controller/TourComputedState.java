@@ -1,6 +1,8 @@
 package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.observer.PCLPlanningRequest;
+import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
 import fr.insalyon.pldagile.xml.FileChooseOption;
 import fr.insalyon.pldagile.xml.HTMLSerializer;
@@ -48,8 +50,8 @@ public class TourComputedState implements State{
     }
 
     @Override
-    public void deleteRequest(Controller controller,CityMap citymap, Tour tour, Request request, Window window,ListOfCommands listOfCdes) {
-        if(tour.getRequests().size()==1){
+    public void deleteRequest(Controller controller, CityMap citymap, PCLTour pcltour, Request request, Window window, ListOfCommands listOfCdes) {
+        if(pcltour.getTour().getRequests().size()==1){
             window.addWarningStateFollow("Tour can't be empty \n You can't delete the last request of the tour");
         } else {
             controller.setCurrentState(controller.deleteRequestState1);
@@ -60,9 +62,10 @@ public class TourComputedState implements State{
     }
 
     @Override
-    public void addRequest(Controller controller, CityMap citymap, Tour tour, Long intersectionID,  Window window) {
+    public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
         controller.setCurrentState(controller.addRequestState1);
         window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
+        //TODO Display only the intersection
         window.clearTour();
 
     }

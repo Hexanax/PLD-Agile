@@ -1,44 +1,37 @@
 package fr.insalyon.pldagile.controller;
 
-import fr.insalyon.pldagile.model.CityMap;
-import fr.insalyon.pldagile.model.PlanningRequest;
-import fr.insalyon.pldagile.model.Tour;
+import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.Window;
+import javafx.util.Pair;
+
+import java.util.Objects;
 
 public class AddRequestState3 implements State{
     @Override
-    public void cancel(Controller controller, Tour tour, Window window,ListOfCommands listOfCdes) {
-        controller.setTour(tour);
-        //TODO Update
-//        window.hideModifyMenu();
-        listOfCdes.reset();
+    public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        //TODO display the tour
+        window.addStateFollow("Add request cancel");
+        planningRequest.deleteLastRequest();
+        PlanningRequest modify = new PlanningRequest(planningRequest);
+        controller.setPlanningRequest(modify);
         controller.setCurrentState(controller.tourComputedState);
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, String result, Window window,ListOfCommands listOfCdes) {
-        int duration = 0;
-        boolean valid = false;
-        try {
-            duration = Integer.parseInt(result);
-            if(duration>=0){
-                valid = true;
-            }
-        } catch (NumberFormatException e){
-            valid = false;
-        }
+    public void modifyClick(Controller controller,PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
+        if(Objects.equals(type, "Depot") && stepIndex!=0)
+        {
+            window.addWarningStateFollow( "You can't add a request after the arrival of the tour");
 
-        if(valid){
-            controller.pickupToAdd.getValue().setDuration(duration);
-            controller.setCurrentState(controller.addRequestState4);
-            //TODO Update
-//            window.disableEventListener();
-            window.getRequestMapView().activeRequestIntersectionsListener();
-           // window.getSidePanel().getRequestView().activeRowListener();
-            window.showWarningAlert("How to add a request", null, "Select the depot, a pickup or a delivery after which you want to place the delivery of your new request");
         } else {
-            window.showWarningAlert("Error","Wrong format, number must be a positive Integer" ,null);
-            window.showInputAlert("Pickup Duration", "Please select the duration in second", "Pickup duration :");
+            Request request = planningRequest.getLastRequest();
+            tour.addRequest(planningRequest.getLastRequest());
+            tour.addStep(stepIndex,new Pair<>(request.getId(), "pickup"));
+            Tour modify = new Tour(tour);
+            controller.setTour(modify);
+
+            window.addStateFollow("Pickup previous address selected, Now left click on the depot, pickup or delivery visiting before the pickup");
+            controller.setCurrentState(controller.addRequestState4);
         }
     }
 }

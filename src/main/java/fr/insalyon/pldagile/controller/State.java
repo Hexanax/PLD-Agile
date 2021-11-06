@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.controller;
 
 
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
 import javafx.scene.input.KeyCode;
@@ -34,16 +35,16 @@ public interface State {
 
     public default void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, String result, Window window, ListOfCommands l){};
 
-    public default void cancel(Controller controller,Tour tour, Window window, ListOfCommands l){};
+    public default void cancel(Controller controller,PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l){};
 
     public default void generateRoadMap(Controller controller, Tour tour, Window window){};
 
-    public default void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window){};
+    public default void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window){};
 
-    public default void deleteRequest(Controller controller,CityMap citymap, Tour tour, Request request, Window window,ListOfCommands listOfCdes){};
+    public default void deleteRequest(Controller controller,CityMap citymap, PCLTour pcltour, Request request, Window window,ListOfCommands listOfCdes){};
 
 
-    public default void addRequest(Controller controller, CityMap citymap, Tour tour, Long intersectionID, Window window){};
+    public default void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window){};
 
     /**
      * Method called by the controller after a click on the button "Undo"
@@ -61,5 +62,7 @@ public interface State {
     public default void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown){};
 
     public default void entryAction(Controller controller, PCLTour pclTour){};
+
+    public default void intersectionClick(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Long intersectionID, Window window){};
 
 }

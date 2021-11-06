@@ -1,27 +1,32 @@
 package fr.insalyon.pldagile.controller;
 
-import fr.insalyon.pldagile.model.CityMap;
-import fr.insalyon.pldagile.model.Pickup;
-import fr.insalyon.pldagile.model.PlanningRequest;
-import fr.insalyon.pldagile.model.Tour;
+import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.Window;
 import javafx.util.Pair;
 
 public class AddRequestState1 implements State {
 
-    @Override
-    public void modifyClick(Controller controller, Long id, String type, int stepIndex, Window window) {
-        if(type=="Depot" && stepIndex!=0)
-        {
-            window.showWarningAlert("How to add a request", "You can't add a request after the arrival of the tour", null);
-        } else {
-            controller.pickupToAdd = new Pair<Integer, Pickup>(stepIndex, null);
-            window.showWarningAlert("How to add a request", "Please select on the map the intersection of your pickup", null);
-            //TODO Update
-//            window.disableEventListener();
-            window.getCityMapView().activeMapIntersectionsListener();
-            controller.setCurrentState(controller.addRequestState2);
-        }
 
+    @Override
+    public void intersectionClick(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Long intersectionID, Window window) {
+        Intersection intersection = cityMap.getIntersection(intersectionID);
+        if(intersection == null){
+            window.addStateFollow("Intersection number unknown, please try again");
+        } else {
+            //TODO display the pickup on the map
+            Request request = new Request(new Pickup(intersection, 300), null);
+            planningRequest.add(request);
+            PlanningRequest modify = new PlanningRequest(planningRequest);
+            controller.setPlanningRequest(modify);
+            controller.setCurrentState(controller.addRequestState2);
+            window.addStateFollow("Pickup intersection selected, Now left click on the intersection where the delivery will take place or right click to cancel");
+        }
+    }
+
+    @Override
+    public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        //TODO display the tour
+        window.addStateFollow("Add request cancel");
+        controller.setCurrentState(controller.tourComputedState);
     }
 }

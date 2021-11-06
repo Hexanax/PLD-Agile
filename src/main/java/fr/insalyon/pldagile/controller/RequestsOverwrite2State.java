@@ -42,7 +42,7 @@ public class RequestsOverwrite2State implements State{
     }
 
     @Override
-    public void cancel(Controller controller,Tour tour,Window window,ListOfCommands listOfCdes) {
+    public void cancel(Controller controller,PlanningRequest planningRequest,Tour tour,Window window,ListOfCommands listOfCdes) {
         controller.setCurrentState(controller.tourComputedState);
     }
 }

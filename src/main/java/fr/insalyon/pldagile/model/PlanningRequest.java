@@ -14,6 +14,11 @@ public class PlanningRequest {
         this.depot = depot;
     }
 
+    public PlanningRequest(PlanningRequest planningRequest){
+        this.requests = planningRequest.requests;
+        this.depot = planningRequest.depot;
+    }
+
     public PlanningRequest() {
         requests = new ArrayList<Request>();
     }
@@ -44,6 +49,14 @@ public class PlanningRequest {
         requests.add(request);
     }
 
+    public void deleteLastRequest(){
+        int index = requests.size()-1;
+        requests.remove(index);
+    }
+    
+    
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -55,5 +68,9 @@ public class PlanningRequest {
     @Override
     public int hashCode() {
         return Objects.hash(requests, depot);
+    }
+
+    public Request getLastRequest() {
+        return requests.get(requests.size()-1);
     }
 }

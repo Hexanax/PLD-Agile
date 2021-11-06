@@ -53,6 +53,6 @@ public class DeleteRequestCommand implements Command {
 
     @Override
     public void undoCommand() {
-        PCLtour.setTour(tourbuilder.addRequest(citymap, PCLtour.getTour(), pickup, delivery, requestDeleted.getId()));
+        PCLtour.setTour(tourbuilder.addRequest(citymap, PCLtour.getTour(), requestDeleted.getId()));
     }
 }

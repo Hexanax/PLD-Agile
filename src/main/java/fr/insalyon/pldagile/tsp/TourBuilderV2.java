@@ -236,19 +236,7 @@ public class TourBuilderV2 {
     //TODO refactor
     //TODO test
     //TODO enhance
-    public Tour addRequest(CityMap cityMap, Tour tour, Pair<Integer,Pickup> pickup, Pair<Integer,Delivery> delivery, long planningRequestId) {
-
-
-        //Create and add the new request
-        Request newRequest = new Request(pickup.getValue(), delivery.getValue());
-        if(planningRequestId == -1){
-            newRequest.setId(tour.getNextRequestId());
-        } else {
-            newRequest.setId(planningRequestId);
-        }
-        tour.addRequest(newRequest);
-        Map<Long,Request> requests = tour.getRequests();
-
+    public Tour addRequest(CityMap cityMap, Tour tour, long planningRequestId) {
 
         //Rebuild the tour
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
@@ -257,55 +245,55 @@ public class TourBuilderV2 {
         List<Intersection> newIntersections = new ArrayList<>();
         ArrayList<Pair<Long,String>> steps =tour.getSteps();
 
+        Map<Long, Request> requests = tour.getRequests();
+        Request request = requests.get(planningRequestId);
+        Pickup pickup = request.getPickup();
+        Delivery delivery = request.getDelivery();
 
-
-
-        ArrayList<Pair<Long,String>> newSteps = new ArrayList<>();
-
-        simulatedAnnealing.addBestPath(pickup.getValue().getIntersection().getId());
-        simulatedAnnealing.addBestPath(delivery.getValue().getIntersection().getId());
+        simulatedAnnealing.addBestPath(pickup.getIntersection().getId());
+        simulatedAnnealing.addBestPath(delivery.getIntersection().getId());
         Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
 
         int indexStep =0;
         int indexIntersection = 0;
         boolean add= true;
         boolean complete = false;
+        boolean pickupDone = false;
+
+
+
+
 
         for(Pair<Long,String> step : tour.getSteps()) {
-            newSteps.add(step);
-            long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(indexStep));
 
-            while(intersections.get(indexIntersection).getId()!=nextSpecificIntersection){
-                if(add){
-                    newIntersections.add(intersections.get(indexIntersection));
-                }
-                indexIntersection++;
-            }
-            if(indexStep == pickup.getKey()){
-                newSteps.add(new Pair(newRequest.getId(),"pickup"));
+            if(Objects.equals(step.getKey(), request.getId()) && !pickupDone){
 
+                pickupDone = true;
+                long beforePickupAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep-1));
                 long afterPickupAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep+1));
 
-                Dijkstra dijkstra = bestPaths.get(nextSpecificIntersection);
+                Dijkstra dijkstra = bestPaths.get(beforePickupAction);
 
-                for(long idIntersection : dijkstra.getShortestPath(pickup.getValue().getIntersection().getId())){
+                for(long idIntersection : dijkstra.getShortestPath(pickup.getIntersection().getId())){
                     newIntersections.add(intersectionsMap.get(idIntersection));
                 }
 
                 newIntersections.remove(newIntersections.size()-1);
 
-                long idIntersectionRelay = pickup.getValue().getIntersection().getId();
-                if(Objects.equals(pickup.getKey(), delivery.getKey())){
+                long idIntersectionRelay = pickup.getIntersection().getId();
+                if(Objects.equals(steps.get(indexStep + 1).getKey(), request.getId())){
                     complete = true;
-                    newSteps.add(new Pair(newRequest.getId(),"delivery"));
+
                     dijkstra = bestPaths.get(idIntersectionRelay);
 
-                    for(long idIntersection : dijkstra.getShortestPath(delivery.getValue().getIntersection().getId())){
+                    for(long idIntersection : dijkstra.getShortestPath(delivery.getIntersection().getId())){
                         newIntersections.add(intersectionsMap.get(idIntersection));
                     }
 
                     newIntersections.remove(newIntersections.size()-1);
-                    idIntersectionRelay = delivery.getValue().getIntersection().getId();
+                    idIntersectionRelay = delivery.getIntersection().getId();
+
+                    afterPickupAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep+2));
 
                 }
 
@@ -320,19 +308,20 @@ public class TourBuilderV2 {
 
 
             }
-            else if(indexStep == delivery.getKey() && !complete){
-                newSteps.add(new Pair(newRequest.getId(),"delivery"));
+            else if(Objects.equals(step.getKey(), request.getId()) && !complete){
 
+
+                long beforeDeliveryAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep-1));
                 long afterDeliveryAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep+1));
 
-                Dijkstra dijkstra = bestPaths.get(nextSpecificIntersection);
+                Dijkstra dijkstra = bestPaths.get(beforeDeliveryAction);
 
-                for(long idIntersection : dijkstra.getShortestPath(delivery.getValue().getIntersection().getId())){
+                for(long idIntersection : dijkstra.getShortestPath(delivery.getIntersection().getId())){
                     newIntersections.add(intersectionsMap.get(idIntersection));
                 }
                 newIntersections.remove(newIntersections.size()-1);
 
-                dijkstra = bestPaths.get(delivery.getValue().getIntersection().getId());
+                dijkstra = bestPaths.get(delivery.getIntersection().getId());
 
                 for(long idIntersection : dijkstra.getShortestPath(afterDeliveryAction)){
                     newIntersections.add(intersectionsMap.get(idIntersection));
@@ -341,8 +330,18 @@ public class TourBuilderV2 {
 
 
                 add=false;
-            } else {
+            } else if(!Objects.equals(step.getKey(), request.getId())){
+
+                long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(indexStep));
+
+                while(intersections.get(indexIntersection).getId()!=nextSpecificIntersection && !Objects.equals(step.getKey(), request.getId())){
+                    if(add){
+                        newIntersections.add(intersections.get(indexIntersection));
+                    }
+                    indexIntersection++;
+                }
                 add=true;
+
             }
             indexStep++;
 
@@ -354,8 +353,8 @@ public class TourBuilderV2 {
 
 
 
+
         tour.setIntersections(newIntersections);
-        tour.setStepsIdentifiers(newSteps);
         tour.reset();
 
 
@@ -407,6 +406,8 @@ public class TourBuilderV2 {
         for(Intersection intersection : copyIntersections){
             long current = intersection.getId();
             Segment currentSegment = segments.get(new Pair<>(previous,current));
+
+
             tour.addSegment(currentSegment);
             if(current == nextSpecificIntersection){
                 double tourDuration = tour.getTourDuration()*1000;

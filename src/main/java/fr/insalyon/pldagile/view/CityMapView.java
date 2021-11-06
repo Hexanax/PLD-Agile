@@ -43,6 +43,8 @@ public class CityMapView implements PropertyChangeListener {
                 mapPoint.setId(intersection.getId());
                 cityPointLayer.addPoint(mapPoint, new Circle(2, Colors.getMapIntersectionColor()));
             }
+            activeMapIntersectionsListener();
+
         }
     }
 
@@ -63,18 +65,12 @@ public class CityMapView implements PropertyChangeListener {
     public void activeMapIntersectionsListener() {
         for (Pair<MapPoint, Node> point : cityPointLayer.getPoints()) {
             point.getValue().setOnMouseClicked(event-> {
-                controller.modifyClick(point.getKey().getId(),"Intersection", -1);
+                System.out.println(event);
+                controller.intersectionClick(point.getKey().getId());
             });
         }
     }
 
-    /**
-     * Disables clickable map intersections
-     */
-    public void disableMapIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : cityPointLayer.getPoints()) {
-            point.getValue().setOnMouseClicked(null);
-        }
-    }
+
 
 }

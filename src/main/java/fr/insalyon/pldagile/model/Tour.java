@@ -138,4 +138,32 @@ public class Tour {
     public void setNextRequestId(long l) {
         this.nextRequestId = l;
     }
+
+    public void addStep(int index, Pair<Long, String> step) {
+        ArrayList<Pair<Long, String>> newSteps = new ArrayList<>();
+
+        int currentIndex = 0;
+        for(Pair<Long, String> stepIdentify : this.stepsIdentifiers){
+            newSteps.add(stepIdentify);
+            if(currentIndex == index){
+                newSteps.add(step);
+            }
+            currentIndex++;
+        }
+
+        this.stepsIdentifiers = newSteps;
+    }
+
+
+
+    public void deleteRequest(long idRequestDelete) {
+        this.requests.remove(idRequestDelete);
+        int index = 0;
+        for(Pair<Long, String> stepIdentify : this.stepsIdentifiers){
+            if(stepIdentify.getKey() == idRequestDelete){
+                this.stepsIdentifiers.remove(index);
+            }
+            index++;
+        }
+    }
 }

@@ -1,11 +1,15 @@
 package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.observer.PCLPlanningRequest;
+import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import javafx.util.Pair;
 
+import java.util.Objects;
+
 public class AddRequestCommand implements Command {
-    private Tour tour;
+    /*private Tour tour;
     private CityMap cityMap;
     private Pair<Integer, Pickup> pickup;
     private Pair<Integer, Delivery> delivery;
@@ -18,19 +22,71 @@ public class AddRequestCommand implements Command {
         this.delivery = delivery;
         this.tourBuilder = new TourBuilderV2();
         this.cityMap = citymap;
+    }*/
+
+    private CityMap cityMap;
+    private PCLPlanningRequest pclPlanningRequest;
+    private PCLTour pcltour;
+    private Request request;
+    private TourBuilderV2 tourBuilder;
+
+    private int indexBeforePickup;
+    private int indexBeforeDelivery;
+
+    private boolean delete;
+
+    public AddRequestCommand(CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour) {
+        this.request = pclPlanningRequest.getPlanningRequest().getLastRequest();
+        this.cityMap = citymap;
+        this.pclPlanningRequest = pclPlanningRequest;
+        this.pcltour = pcltour;
+        this.tourBuilder = new TourBuilderV2();
+
+        int index =0;
+        for(Pair<Long,String> step : pcltour.getTour().getSteps()){
+            if(Objects.equals(step.getKey(), request.getId())){
+                if(step.getValue()=="pickup"){
+                    indexBeforePickup = index-1;
+                } else {
+                    indexBeforeDelivery = index -1;
+                }
+            }
+            index++;
+        }
+
+        delete = false;
+
+
     }
 
 
     @Override
     public void doCommand() {
-        tour = tourBuilder.addRequest(cityMap, tour, pickup, delivery, -1);
+        if(delete){
+            PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
+            planningRequest.add(request);
+            pclPlanningRequest.setPlanningRequest(planningRequest);
+            this.request = planningRequest.getLastRequest();
 
-        requestAdded = tour.getRequests().get(tour.getNextRequestId()-1);
+            Tour tour = new Tour(pcltour.getTour());
+            tour.addRequest(request);
+            tour.addStep(indexBeforePickup, new Pair<>(request.getId(),"pickup"));
+            tour.addStep(indexBeforeDelivery, new Pair<>(request.getId(),"delivery"));
+            pcltour.setTour(tour);
+
+        }
+        delete = false;
+
+        pcltour.setTour(tourBuilder.addRequest(cityMap, pcltour.getTour(), request.getId()));
     }
 
     @Override
     public void undoCommand() {
-        tour = tourBuilder.deleteRequest(cityMap, tour, requestAdded);
-        tour.setNextRequestId(requestAdded.getId());
+        delete = true;
+        PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
+        planningRequest.deleteLastRequest();
+        pclPlanningRequest.setPlanningRequest(planningRequest);
+
+        pcltour.setTour(tourBuilder.deleteRequest(cityMap, pcltour.getTour(), request));
     }
 }

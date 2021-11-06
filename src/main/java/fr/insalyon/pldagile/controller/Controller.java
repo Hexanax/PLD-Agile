@@ -38,7 +38,6 @@ public class Controller {
     protected final AddRequestState3 addRequestState3 = new AddRequestState3();
     protected final AddRequestState4 addRequestState4 = new AddRequestState4();
     protected final AddRequestState5 addRequestState5 = new AddRequestState5();
-    protected final AddRequestState6 addRequestState6 = new AddRequestState6();
 
     public Controller() {
         this.pclCityMap = new PCLCityMap();
@@ -96,7 +95,7 @@ public class Controller {
     }
 
     public void cancel() {
-        currentState.cancel(this, pclTour.getTour(), window, listOfCommands);
+        currentState.cancel(this, pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), window, listOfCommands);
     }
 
     public void confirm(String result) {
@@ -109,15 +108,15 @@ public class Controller {
     }
 
     public void deleteRequest(Long idRequest) {
-        currentState.deleteRequest(this, pclCityMap.getCityMap(), pclTour.getTour(), pclTour.getTour().getRequests().get(idRequest), window, listOfCommands);
+        currentState.deleteRequest(this, pclCityMap.getCityMap(), pclTour, pclTour.getTour().getRequests().get(idRequest), window, listOfCommands);
     }
 
     public void modifyClick(Long id, String type, int stepIndex) {
-        currentState.modifyClick(this, id, type, stepIndex, window);
+        currentState.modifyClick(this,pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), id, type, stepIndex, window);
     }
 
     public void addRequest(Long id) {
-        currentState.addRequest(this, pclCityMap.getCityMap(), pclTour.getTour(), id, window);
+        currentState.addRequest(this, pclCityMap.getCityMap(), pclPlanningRequest, pclTour, listOfCommands, window);
     }
 
     /**
@@ -141,4 +140,5 @@ public class Controller {
     public void keystroke(KeyCode code, boolean controlDown) { currentState.keystroke(this, code, window, controlDown); }
 
 
+    public void intersectionClick(long id) { currentState.intersectionClick(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), id, window);}
 }

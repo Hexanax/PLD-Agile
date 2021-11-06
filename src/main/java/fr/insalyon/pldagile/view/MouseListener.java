@@ -22,6 +22,6 @@ public class MouseListener {
         if(event.getButton() == MouseButton.SECONDARY){
             controller.cancel();
         }
-        //controller.leftClick(event);
+
     }
 }
