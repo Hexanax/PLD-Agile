@@ -55,6 +55,7 @@ import java.util.function.Supplier;
 public class MapView extends Region implements PropertyChangeListener {
 
 
+    public static final int ZOOM = 12;
     private final BaseMap baseMap;
     private Timeline timeline;
     private final List<MapLayer> layers = new LinkedList<>();
@@ -270,7 +271,8 @@ public class MapView extends Region implements PropertyChangeListener {
         System.out.println("CityMapViewCenter event " + evt);
         CityMap newCityMap = (CityMap) evt.getNewValue();
         Coordinates center = newCityMap.getCenter();
-        setCenter(center.getLatitude(),center.getLongitude());
-        setZoom(13.5);
+        MapPoint mapCenter = new MapPoint(center.getLatitude(), center.getLongitude());
+        setCenter(mapCenter);
+        setZoom(ZOOM);
     }
 }

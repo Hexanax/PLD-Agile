@@ -32,6 +32,9 @@ public class Window {
     private final MapView mapView;
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
+    private final TourView tourView;
+    private final RequestMenuView RequestMenuView;
+
 
     private ButtonListener buttonListener;
 
@@ -46,8 +49,12 @@ public class Window {
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
         this.mapView = new MapView(controller);
+        this.tourView = new TourView(controller);
+        this.RequestMenuView = new RequestMenuView(controller);
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
+        mapView.addLayer(tourView.getTourLineLayer());
+        mapView.addLayer(tourView.getTourPointLayer());
     }
 
     public static Stage getMainStage() {
@@ -152,21 +159,21 @@ public class Window {
         ImportView.setImportRequestLabel(fileName);
     }
 
-    /**
-     * Centers the map around the central coordinates of the city map sets the zoom
-     * the level of a city in the map
-     *
-     * @param cityMap
-     */
-    public void centerMap(CityMap cityMap) throws ExceptionXML {
-        Coordinates coordinates = cityMap.getCenter();
-        MapPoint mapCenter = new MapPoint(coordinates.getLatitude(), coordinates.getLongitude());
-        // center the map around the calculated center coordinates
-        mapView.setCenter(mapCenter);
-        // sets the zoom at level 12: approximately the level of a city in our case
-        int centeredZoomValue = 12;
-        mapView.setZoom(centeredZoomValue);
-    }
+//    /**
+//     * Centers the map around the central coordinates of the city map sets the zoom
+//     * the level of a city in the map
+//     *
+//     * @param cityMap
+//     */
+//    public void centerMap(CityMap cityMap) throws ExceptionXML {
+//        Coordinates coordinates = cityMap.getCenter();
+//        MapPoint mapCenter = new MapPoint(coordinates.getLatitude(), coordinates.getLongitude());
+//        // center the map around the calculated center coordinates
+//        mapView.setCenter(mapCenter);
+//        // sets the zoom at level 12: approximately the level of a city in our case
+//        int centeredZoomValue = 12;
+//        mapView.setZoom(centeredZoomValue);
+//    }
 
    /* public void renderPlanningRequest(PlanningRequest planningRequest) {
         if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
@@ -206,21 +213,21 @@ public class Window {
         }
     }*/
 
-    public void renderTour(Tour tour) {
-        // TODO Update RequestView
-        Intersection previousIntersection = tour.getDepot().getIntersection();
-        for (Segment segment : tour.getPath()) {
-            Intersection destinationIntersection = segment.getDestination();
-            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
-            MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
-            MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
-            pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
-            pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
-            lineLayer.addLine(mapDestination, Colors.getTourIntersectionColor());
-            //Update prev intersection
-            previousIntersection = destinationIntersection;
-        }
-    }
+//    public void renderTour(Tour tour) {
+//        // TODO Update RequestView
+//        Intersection previousIntersection = tour.getDepot().getIntersection();
+//        for (Segment segment : tour.getPath()) {
+//            Intersection destinationIntersection = segment.getDestination();
+//            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
+//            MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
+//            MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
+//            pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
+//            pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
+//            lineLayer.addLine(mapDestination, Colors.getTourIntersectionColor());
+//            //Update prev intersection
+//            previousIntersection = destinationIntersection;
+//        }
+//    }
 
     public void showWarningAlert(String title, String header, String text) {
         Alert alert = new Alert(Alert.AlertType.WARNING);

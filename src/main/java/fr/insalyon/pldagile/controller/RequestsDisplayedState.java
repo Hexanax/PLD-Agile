@@ -29,8 +29,7 @@ public class RequestsDisplayedState implements State{
 
     @Override
     public void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window) {
-        //TODO change ALL
-        ////System.out.println("Render tour called");
+        System.out.println("Compute tour called");
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
         Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap);
         controller.setTour(tour);
