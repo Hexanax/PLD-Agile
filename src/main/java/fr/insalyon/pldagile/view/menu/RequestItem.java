@@ -14,6 +14,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//TODO delete
+
 public class RequestItem extends Region {
     private long requestNumber;
     private String type;
@@ -82,6 +84,9 @@ public class RequestItem extends Region {
 
         this.getChildren().add(maingp);
 
+    }
+
+    public RequestItem(Date date, int duration, Long id, String delivery, int stepIndex, boolean b) {
     }
 
     public long getRequestNumber() {

@@ -32,7 +32,7 @@ public class CityMapView implements PropertyChangeListener {
     //TODO Add View interface with render method
     public void render() {
         if (cityMap != null) {
-            ////System.out.printlnln("Entered");
+            System.out.println("Entered");
             clear();
             for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
                 Intersection intersection = entry.getValue();

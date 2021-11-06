@@ -53,17 +53,17 @@ public class RequestMapView implements PropertyChangeListener {
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        IconProvider.getPickupIcon()
+                        new RequestMapPin(RequestType.PICKUP)
                 );
                 mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                 mapPoint.setId(delivery.getIntersection().getId());
                 mapPoint.setRequestId(request.getId());
                 planningRequestPoints.addPoint(
                         mapPoint,
-                        IconProvider.getDropoffIcon()
+                        new RequestMapPin(RequestType.DELIVERY)
                 );
             });
-            planningRequestPoints.addPoint(depotPoint, new Circle(7, Color.ORANGE));
+            planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());
             //TODO Scale it with zoom level
         }
     }
@@ -84,7 +84,7 @@ public class RequestMapView implements PropertyChangeListener {
 //        for (Pair<MapPoint, Node> point : requestPoints) {
 //            point.getValue().setOnMouseClicked(event-> {
 //                controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
-//                ////System.out.println("active request:" + point.getKey().getStepIndex());
+//                //System.out.println("active request:" + point.getKey().getStepIndex());
 //            });
 //        }
 //    }

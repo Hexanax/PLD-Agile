@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.Window;
+import javafx.scene.input.KeyCode;
 
 public interface State {
 
@@ -54,4 +55,7 @@ public interface State {
      * @param l the current list of commands
      */
     public default void redo(Controller controller, ListOfCommands l,Window w, Tour tour){};
+
+
+    public default void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown){};
 }

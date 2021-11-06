@@ -20,16 +20,18 @@ public class RequestsOverwrite2State implements State{
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
+                window.addStateFollow("Loading the new requests ...");
                 PlanningRequest newPlanningRequest = XMLDeserializer.load(cityMap, importFile);
                 controller.setTour(new Tour());
                 controller.setPlanningRequest(newPlanningRequest);
                 window.updateRequestFileName(importFile.getName());
                 controller.setCurrentState(controller.requestsDisplayedState);
+                window.addStateFollow("New requests loaded");
             } else {
                 controller.setCurrentState(controller.tourComputedState);
             }
         } catch(Exception e) {
-            window.showWarningAlert("Error when reading the XML map file",e.getMessage() ,null);
+            window.addWarningStateFollow("Error when reading the XML requests file " +e.getMessage());
             controller.setCurrentState(controller.tourComputedState);
         }
     }

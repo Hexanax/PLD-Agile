@@ -6,6 +6,7 @@ import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.CityMapView;
 import fr.insalyon.pldagile.view.Window;
+import javafx.scene.input.KeyCode;
 import javafx.util.Pair;
 
 import static javafx.application.Application.launch;
@@ -44,8 +45,8 @@ public class Controller {
         this.pclCityMap = new PCLCityMap();
         this.pclPlanningRequest = new PCLPlanningRequest();
         this.pclTour = new PCLTour();
-        listOfCommands = new ListOfCommands();
-        currentState = initialState;
+        this.listOfCommands = new ListOfCommands();
+        this.currentState = initialState;
         this.window = new Window(this);
     }
 
@@ -70,7 +71,7 @@ public class Controller {
     }
 
     protected void setPlanningRequest(PlanningRequest planningRequest) {
-        this.pclPlanningRequest.setPlanningRequest(planningRequest);
+        pclPlanningRequest.setPlanningRequest(planningRequest);
     }
 
     protected void setTour(Tour tour) {
@@ -146,5 +147,8 @@ public class Controller {
 
     public Window getWindow() {
         return window;
+    }
+
+    public void keystroke(KeyCode code, boolean controlDown) { currentState.keystroke(this, code, window, controlDown);
     }
 }

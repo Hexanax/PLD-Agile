@@ -5,6 +5,7 @@ import fr.insalyon.pldagile.view.Window;
 import fr.insalyon.pldagile.xml.FileChooseOption;
 import fr.insalyon.pldagile.xml.HTMLSerializer;
 import fr.insalyon.pldagile.xml.XMLFileOpener;
+import javafx.scene.input.KeyCode;
 
 import java.io.File;
 
@@ -15,7 +16,6 @@ import java.io.File;
 public class TourComputedState implements State{
     @Override
     public void loadMap(Controller controller, Window window) {
-        System.out.println("going to map overwrite3");
         controller.setCurrentState(controller.mapOverwrite3State);
         window.showValidationAlert("Load a new map",
                 "Are you sure you want to load a new map? ",
@@ -35,9 +35,11 @@ public class TourComputedState implements State{
     @Override
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
         try {
+            window.addStateFollow("Road Map calculation ...");
             File html = XMLFileOpener.getInstance().open(FileChooseOption.SAVE);
             if(html != null){
                 HTMLSerializer.renderHTMLroadMap(tour, html);
+                window.addStateFollow("Road Map rendered");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,12 +65,9 @@ public class TourComputedState implements State{
     @Override
     public void addRequest(Controller controller, CityMap citymap, Tour tour,Long intersectionID,  Window window) {
         controller.setCurrentState(controller.addRequestState1);
-        //TODO Update
-//        window.disableEventListener();
+        window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
         window.clearTour();
-//        window.activeRowListener();
-//        window.activeRequestIntersectionsListener();
-        window.showWarningAlert("How to add a request", null, "Select the depot, a pickup or a delivery after which you want to place the pickup of your new request");
+
 
     }
 
@@ -77,12 +76,27 @@ public class TourComputedState implements State{
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.undo();
         controller.setTour(tour);
+        window.addStateFollow("Undo");
     }
 
     @Override
     public void redo(Controller controller, ListOfCommands listOfCdes,Window window, Tour tour){
         listOfCdes.redo();
         controller.setTour(tour);
+        window.addStateFollow("Redo");
+    }
+
+    @Override
+    public void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown) {
+        if(isControlDown){
+            if(code == KeyCode.Z){
+                controller.undo();
+            }
+
+            if(code== KeyCode.Y){
+                controller.redo();
+            }
+        }
     }
 
 

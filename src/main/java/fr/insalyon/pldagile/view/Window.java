@@ -16,20 +16,16 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.util.Pair;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 
 public class Window {
 
     private static Stage mainStage = null;
-    private Controller controller = null;
+    private Controller controller;
     private final AnchorPane mainPane = new AnchorPane();
     private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests, one tour)
     private final LineLayer lineLayer = new LineLayer();
@@ -37,19 +33,27 @@ public class Window {
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
     private final TourView tourView;
-    private final RequestMenuView RequestMenuView;
+    private final RequestListView requestListView;
+
+
+    private ButtonListener buttonListener;
+    private KeyboardListener keyboardListener;
+    private MouseListener mouseListener;
 
 
     public Window(Controller controller) {
         this.controller = controller;
-//        this.controller.getPclCityMap().addPropertyChangeListener(this);
-//        this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
-//        this.controller.getPclTour().addPropertyChangeListener(this);
+
+        buttonListener = new ButtonListener(controller);
+        keyboardListener = new KeyboardListener(controller);
+        mouseListener = new MouseListener(controller);
+
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
         this.mapView = new MapView(controller);
         this.tourView = new TourView(controller);
-        this.RequestMenuView = new RequestMenuView(controller);
+        this.requestListView = new RequestListView(controller);
+
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
         mapView.addLayer(tourView.getTourLineLayer());
@@ -67,8 +71,8 @@ public class Window {
         stage.getIcons().add(desktopIcon);
         // cityMap = new CityMap();
         // planningRequest = new PlanningRequest();
-        mapView.addLayer(pointLayer); // Add the map layer
-        mapView.addLayer(lineLayer); // Add the line (tour) layer
+        //mapView.addLayer(pointLayer); // Add the map layer
+        //mapView.addLayer(lineLayer); // Add the line (tour) layer
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
@@ -89,10 +93,14 @@ public class Window {
         AnchorPane.setRightAnchor(bp, 0D);
 
         mainPane.getChildren().add(bp);
-        loadSidePanel(false);
+        loadSidePanel();
+        loadBottomPanel();
 
         Scene scene = new Scene(mainPane, screenWidth, screenHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
+        scene.setOnKeyPressed(KeyboardListener::keyPressed);
+        scene.setOnMouseClicked(MouseListener::mouseClicked);
+
         bp.getChildren().addAll(mapView, headerLabel, copyright);
         headerLabel.setManaged(false);
         headerLabel.setVisible(false);
@@ -107,14 +115,9 @@ public class Window {
         stage.show();
     }
 
-    private void loadSidePanel(boolean modifyMode) {
-        SidePanel sidePanel = new SidePanel(controller);
-        if (modifyMode) {
-            sidePanel.ModifyPanel();
-        } else {
-            sidePanel.MainSidePanel();
-        }
-
+    private void loadSidePanel() {
+        SidePanel sidePanel = new SidePanel();
+        sidePanel.MainSidePanel(this.requestListView.getList());
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
@@ -127,6 +130,16 @@ public class Window {
             }
         }
         mainPane.getChildren().add(sidePanel);
+    }
+
+    private void loadBottomPanel(){
+        BottomPanel bottom = new BottomPanel();
+        AnchorPane.setTopAnchor(bottom, 650D);
+        AnchorPane.setBottomAnchor(bottom, 16D);
+        AnchorPane.setLeftAnchor(bottom, 16D);
+
+
+        mainPane.getChildren().add(bottom);
     }
 
     private Label headerLabel() {
@@ -274,7 +287,17 @@ public class Window {
     }
 
     public void showModifyMenu() {
-        loadSidePanel(true);
+        //loadSidePanel(true);
+    }
+
+    public void addStateFollow(String message) {
+        TextItem item = new TextItem(message, "#000000");
+        LogView.addTextItem(item);
+    }
+
+    public void addWarningStateFollow(String message) {
+        TextItem item = new TextItem(message, "#FF0000");
+        LogView.addTextItem(item);
     }
 
 
@@ -341,7 +364,7 @@ public class Window {
 
     }*/
 
-    public void addMapRequest(Request request) {
+    /*public void addMapRequest(Request request) {
         Pickup pickup = request.getPickup();
         Delivery delivery = request.getDelivery();
         MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
@@ -358,7 +381,7 @@ public class Window {
                 mapPoint,
                 IconProvider.getDropoffIcon()
         );
-    }
+    }*/
 
 //    @Override
 //    public void propertyChange(PropertyChangeEvent evt) {
