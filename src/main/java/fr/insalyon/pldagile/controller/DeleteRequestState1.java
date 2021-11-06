@@ -10,8 +10,7 @@ public class DeleteRequestState1 implements State{
     @Override
     public void deleteRequest(Controller controller,CityMap citymap, Tour tour,  Request request, Window window,ListOfCommands listOfCdes) {
         if(request != null){
-            listOfCdes.add(new DeleteRequestCommand(citymap,tour,request));
-            controller.setTour(tour);
+            listOfCdes.add(new DeleteRequestCommand(citymap,controller.getPclTour(),request));
             controller.setCurrentState(controller.tourComputedState);
             window.addStateFollow("Suppresion successfully completed");
         } else {

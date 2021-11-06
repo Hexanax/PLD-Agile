@@ -15,7 +15,6 @@ public class Controller {
     private PCLCityMap pclCityMap;
     private PCLPlanningRequest pclPlanningRequest;
     private PCLTour pclTour;
-    private Tour modifyTour; //TODO Check usage (maybe delete)
     private State currentState;
     private Window window;
     private ListOfCommands listOfCommands;
@@ -54,6 +53,7 @@ public class Controller {
         return pclCityMap;
     }
 
+
     protected void setCurrentState(State state) {
         currentState = state;
     }
@@ -79,17 +79,6 @@ public class Controller {
         this.pclTour.setTour(tour);
     }
 
-    protected void initializeModifyTour() {
-        modifyTour = new Tour(pclTour.getTour());
-    }
-
-    protected void validModifyTour() {
-        pclTour.setTour(modifyTour);
-    }
-
-    protected void setModifyTour(Tour tour) {
-        this.modifyTour = tour;
-    }
 
     /**
      * Method called by window after a click on the button "Load a plan"
@@ -149,6 +138,7 @@ public class Controller {
         return window;
     }
 
-    public void keystroke(KeyCode code, boolean controlDown) { currentState.keystroke(this, code, window, controlDown);
-    }
+    public void keystroke(KeyCode code, boolean controlDown) { currentState.keystroke(this, code, window, controlDown); }
+
+
 }

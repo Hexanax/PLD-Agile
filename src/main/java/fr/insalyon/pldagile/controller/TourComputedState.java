@@ -60,11 +60,10 @@ public class TourComputedState implements State{
     }
 
     @Override
-    public void addRequest(Controller controller, CityMap citymap, Tour tour,Long intersectionID,  Window window) {
+    public void addRequest(Controller controller, CityMap citymap, Tour tour, Long intersectionID,  Window window) {
         controller.setCurrentState(controller.addRequestState1);
         window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
         window.clearTour();
-
 
     }
 
@@ -72,7 +71,8 @@ public class TourComputedState implements State{
     @Override
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.undo();
-        controller.setTour(tour);
+        Tour modify = new Tour(tour);
+        controller.setTour(modify);
         window.addStateFollow("Undo");
     }
 
