@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.controller;
 
 
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
 import javafx.scene.input.KeyCode;
 
@@ -59,6 +60,6 @@ public interface State {
 
     public default void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown){};
 
-
+    public default void entryAction(Controller controller, PCLTour pclTour){};
 
 }
