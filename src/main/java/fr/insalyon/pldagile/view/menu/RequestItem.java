@@ -84,6 +84,9 @@ public class RequestItem extends Region {
 
     }
 
+    public RequestItem(Date date, int duration, Long id, String delivery, int stepIndex, boolean b) {
+    }
+
     public long getRequestNumber() {
         return requestNumber;
     }

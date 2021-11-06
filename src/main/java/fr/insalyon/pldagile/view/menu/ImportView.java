@@ -66,6 +66,7 @@ public class ImportView extends Region {
         computeButton = new Button(COMPUTE_TOUR);
         createButton(computeButton, gridPane, 0,3,2,1, true);
 
+        //Generate roadmap button
         generateRoadMap = new Button(GENERATE_ROADMAP);
         createButton(generateRoadMap, gridPane, 0,4,2,1, true);
 

@@ -29,11 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class RequestMenuView extends Region implements PropertyChangeListener {
+//public class RequestMenuView extends Region implements PropertyChangeListener {
 
-    protected static final String MODIFY_ICON = "edit";
-    protected static final String COMPUTE_ICON = "compute";
-    protected static final String DELETE_REQUEST = "Delete Request";
+    /*protected static final String DELETE_REQUEST = "Delete Request";
     protected static final String ADD_REQUEST = "Add Request";
     protected static final String REDO = "Redo";
     protected static final String UNDO = "Undo";
@@ -109,9 +107,9 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
                 controller.undo();
                 break;
         }
-    }
+    }*/
 
-    public void renderRequestMenu(PlanningRequest planningRequest) {
+   /* public void renderRequestMenu(PlanningRequest planningRequest) {
         if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
             // Render the planning request
             Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
@@ -163,7 +161,7 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
 
     public void clearItems() {
         pickupItems.clear();
-    }
+    }*/
 
 //    private static EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
 //        @Override
@@ -182,7 +180,7 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
 //        pickupList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
 //    }
 //
-    @Override
+   /* @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
         if (propertyName.equals("tourUpdate")){
@@ -190,5 +188,5 @@ public class RequestMenuView extends Region implements PropertyChangeListener {
             clearItems();
             orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
         }
-    }
-}
+    }*/
+//}

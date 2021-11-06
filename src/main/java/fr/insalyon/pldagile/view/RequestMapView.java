@@ -7,7 +7,7 @@ import fr.insalyon.pldagile.view.maps.MapLayer;
 import fr.insalyon.pldagile.view.maps.MapPoint;
 import fr.insalyon.pldagile.view.maps.PointLayer;
 import fr.insalyon.pldagile.view.menu.RequestItem;
-import fr.insalyon.pldagile.view.menu.RequestMenuView;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
@@ -29,6 +29,7 @@ public class RequestMapView implements PropertyChangeListener {
         this.controller = controller;
         this.planningRequest = controller.getPclPlanningRequest().getPlanningRequest();
         controller.getPclPlanningRequest().addPropertyChangeListener(this);
+
     }
 
     public void clear() {
@@ -77,43 +78,9 @@ public class RequestMapView implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
         System.out.println(propertyName);
-        PlanningRequest newPlanningRequest = (PlanningRequest) evt.getNewValue()
-        this.planningRequest = ;
+        PlanningRequest newPlanningRequest = (PlanningRequest) evt.getNewValue();
+        this.planningRequest = newPlanningRequest;
         render();
-    }
-
-    public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
-        ArrayList<RequestItem> items = new ArrayList<>();
-        int index = 0;
-        for (Pair<Long, String> step : steps) {
-            if (Objects.equals(step.getValue(), "pickup")) {
-                double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
-                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
-                mapPoint.setId(requests.get(step.getKey()).getPickup().getIntersection().getId());
-                mapPoint.setRequestId(requests.get(step.getKey()).getId());
-                mapPoint.setStepIndex(index);
-                planningRequestPoints.addPoint(
-                        mapPoint,
-                        IconProvider.getPickupIcon()
-                );
-            }
-            if (Objects.equals(step.getValue(), "delivery")) {
-                double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
-                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
-                mapPoint.setId(requests.get(step.getKey()).getDelivery().getIntersection().getId());
-                mapPoint.setRequestId(requests.get(step.getKey()).getId());
-                mapPoint.setStepIndex(index);
-                planningRequestPoints.addPoint(
-                        mapPoint,
-                        IconProvider.getDropoffIcon()
-                );
-            }
-
-            index++;
-        }
-
     }
 
 //    public void activeRequestIntersectionsListener() {

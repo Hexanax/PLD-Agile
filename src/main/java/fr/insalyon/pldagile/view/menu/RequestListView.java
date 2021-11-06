@@ -1,0 +1,92 @@
+package fr.insalyon.pldagile.view.menu;
+
+import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.model.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.layout.Region;
+import javafx.util.Pair;
+
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.Date;
+import java.util.Map;
+import java.util.Objects;
+
+public class RequestListView extends Region implements PropertyChangeListener {
+
+
+    private final Controller controller;
+    private PlanningRequest planningRequest;
+    private Tour tour;
+    private final ObservableList<AddressItem> adressItems = FXCollections.observableArrayList();
+
+    public RequestListView(Controller controller) {
+        this.controller = controller;
+        this.planningRequest = controller.getPclPlanningRequest().getPlanningRequest();
+        controller.getPclPlanningRequest().addPropertyChangeListener(this);
+        this.tour = controller.getPclTour().getTour();
+        controller.getPclTour().addPropertyChangeListener(this);
+    }
+
+    public void clear(){
+        adressItems.clear();
+    }
+
+    public void renderUnorered(){
+        clear();
+        for(Request request : planningRequest.getRequests()){
+            Pickup pickup = request.getPickup();
+            AddressItem pickupItem = new AddressItem(new Date(), pickup.getDuration(), request.getId(), "Pickup",-1, false);
+            Delivery delivery = request.getDelivery();
+            AddressItem deliveryItem = new AddressItem(new Date(), delivery.getDuration(), request.getId(), "Delivery",-1,false);
+            adressItems.add(pickupItem);
+            adressItems.add(deliveryItem);
+        }
+    }
+
+    public void renderOrdered(){
+        clear();
+        Depot depot = tour.getDepot();
+        Map<Long, Request> requests = tour.getRequests();
+
+
+        AddressItem item = new AddressItem(depot.getDepartureTime(), 0, -1, "Depot",0, false);
+        adressItems.add(item);
+        int index = 0;
+        for(Pair<Long, String > step : tour.getSteps()){
+            if(Objects.equals(step.getValue(), "pickup"))
+            {
+                item = new AddressItem(requests.get(step.getKey()).getPickup().getArrivalTime(), requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup",index, false);
+                adressItems.add(item);
+            }
+            if(Objects.equals(step.getValue(), "delivery")){
+                item = new AddressItem(requests.get(step.getKey()).getDelivery().getArrivalTime(), requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(),"Delivery",index, false);
+                adressItems.add(item);
+            }
+            index++;
+        }
+
+        Date finalDate = new Date((long) (depot.getDepartureTime().getTime() + tour.getTourDuration()*1000));
+        item = new AddressItem(finalDate, 0, -2,"Depot",(index-1),false);
+        adressItems.add(item);
+
+    }
+
+    public ObservableList<AddressItem> getList(){
+        return adressItems;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String propertyName = evt.getPropertyName();
+        if(Objects.equals(propertyName, "tourUpdate")){
+            this.tour = (Tour) evt.getNewValue();
+            renderOrdered();
+        }
+        if(Objects.equals(propertyName, "planningRequestUpdate")){
+            this.planningRequest = (PlanningRequest) evt.getNewValue();
+            renderUnorered();
+        }
+    }
+}

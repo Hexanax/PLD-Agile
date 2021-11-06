@@ -26,6 +26,20 @@ public class ButtonListener {
             case ImportView.GENERATE_ROADMAP:
                 controller.generateRoadMap();
                 break;
+            case RequestView.DELETE_REQUEST:
+                controller.deleteRequest(null);
+                break;
+            case RequestView.ADD_REQUEST:
+                controller.addRequest(null);
+                break;
+            case RequestView.REDO:
+                controller.redo();
+                break;
+            case RequestView.UNDO:
+                controller.undo();
+                break;
+
+
         }
 
     }

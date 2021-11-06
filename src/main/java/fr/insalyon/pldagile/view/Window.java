@@ -33,7 +33,7 @@ public class Window {
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
     private final TourView tourView;
-    private final RequestMenuView RequestMenuView;
+    private final RequestListView requestListView;
 
 
     private ButtonListener buttonListener;
@@ -43,14 +43,13 @@ public class Window {
         this.controller = controller;
 
         buttonListener = new ButtonListener(controller);
-//        this.controller.getPclCityMap().addPropertyChangeListener(this);
-//        this.controller.getPclPlanningRequest().addPropertyChangeListener(this);
-//        this.controller.getPclTour().addPropertyChangeListener(this);
+
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
         this.mapView = new MapView(controller);
         this.tourView = new TourView(controller);
-        this.RequestMenuView = new RequestMenuView(controller);
+        this.requestListView = new RequestListView(controller);
+
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
         mapView.addLayer(tourView.getTourLineLayer());
@@ -109,8 +108,8 @@ public class Window {
     }
 
     private void loadSidePanel() {
-        SidePanel sidePanel = new SidePanel(controller);
-        sidePanel.MainSidePanel();
+        SidePanel sidePanel = new SidePanel();
+        sidePanel.MainSidePanel(this.requestListView.getList());
 
 
         AnchorPane.setTopAnchor(sidePanel, 16D);
