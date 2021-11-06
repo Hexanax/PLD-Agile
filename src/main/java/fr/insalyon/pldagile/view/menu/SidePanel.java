@@ -14,7 +14,7 @@ public class SidePanel extends Region {
     public SidePanel(Controller controller) {
         this.controller=controller;
         this.importView = new ImportView();
-        this.requestView = new RequestView();
+        this.requestView = new RequestView(controller);
     }
 
     public void MainSidePanel(ObservableList<AddressItem> list) {

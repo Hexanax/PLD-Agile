@@ -58,7 +58,6 @@ public class Tour {
     }
 
 
-
     public Map<Long,Request> getRequests() {
         return requests;
     }

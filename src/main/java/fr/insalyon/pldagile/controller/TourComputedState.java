@@ -53,6 +53,9 @@ public class TourComputedState implements State {
             controller.setCurrentState(controller.deleteRequestState1);
             //TODO Display only the planning request
             //window.clearTour(); //TODO Check if it works without, it should
+            window.getSidePanel().getRequestView().activeRowListener();
+            window.getRequestMapView().activeRequestIntersectionsListener();
+            window.disableItemListener();
             window.addStateFollow("How to delete a request : Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
         }
     }
@@ -61,13 +64,16 @@ public class TourComputedState implements State {
     public void addRequest(Controller controller, CityMap citymap, Tour tour, Long intersectionID, Window window) {
         controller.setCurrentState(controller.addRequestState1);
         window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
+        //window.clearTour(); //TODO Clear tour shouldn't be used anymore, check if it works well without
+        window.disableItemListener();
         window.setSelectingIntersection(true);
     }
 
     @Override
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.undo();
-        controller.setTour(tour);
+        Tour modify = new Tour(tour); //TODO Implement and use the clone() from Java Cloneable which itself calls the copy constructor
+        controller.setTour(modify);
         window.addStateFollow("Undo");
     }
 

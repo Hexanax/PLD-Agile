@@ -53,7 +53,7 @@ public class RequestMapView implements PropertyChangeListener {
                         new RequestMapPin(RequestType.DELIVERY)
                 );
             });
-            planningRequestPoints.addPoint(depotPoint, IconProvider.getDepotIcon());
+            planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());
             //TODO Scale it with zoom level
         }
     }

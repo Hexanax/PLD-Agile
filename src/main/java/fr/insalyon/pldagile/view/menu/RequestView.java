@@ -18,12 +18,12 @@ public class RequestView extends Region {
     protected static final String ADD_REQUEST = "Add Request";
     protected static final String REDO = "Redo";
     protected static final String UNDO = "Undo";
-
+    private final Controller controller;
 
     private final ListView<AddressItem> requestList;
 
-    public RequestView(){
-
+    public RequestView(Controller controller){
+        this.controller = controller;
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
@@ -67,5 +67,26 @@ public class RequestView extends Region {
         requestList.setItems(list);
     }
 
+    public ListView<AddressItem> getRequestList() {
+        return requestList;
+    }
 
+
+
+    private EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                controller.modifyClick(requestList.getSelectionModel().getSelectedItem().getRequestNumber(), requestList.getSelectionModel().getSelectedItem().getType(), requestList.getSelectionModel().getSelectedItem().getStepIndex());
+            }
+        }
+    };
+
+    public void activeRowListener() {
+        requestList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
+
+    public void disableRowListener() {
+        requestList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    }
 }

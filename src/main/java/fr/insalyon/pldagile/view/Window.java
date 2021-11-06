@@ -2,12 +2,11 @@ package fr.insalyon.pldagile.view;
 
 import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.model.RequestType;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
-import fr.insalyon.pldagile.xml.ExceptionXML;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -109,7 +109,7 @@ public class Window {
         AnchorPane.setRightAnchor(bp, 0D);
 
         mainPane.getChildren().add(bp);
-        loadSidePanel(this.sidePanel);
+        loadSidePanel();
         loadBottomPanel();
 
         Scene scene = new Scene(mainPane, screenWidth, screenHeight);
@@ -131,8 +131,8 @@ public class Window {
         stage.show();
     }
 
-    private void loadSidePanel(SidePanel sidePanel) {
-        sidePanel.MainSidePanel(this.requestListView.getList());
+    private void loadSidePanel() {
+        sidePanel.MainSidePanel(this.requestListView.getAddressItems());
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
@@ -147,12 +147,10 @@ public class Window {
         mainPane.getChildren().add(sidePanel);
     }
 
-    private void loadBottomPanel(){
+    private void loadBottomPanel() {
         AnchorPane.setTopAnchor(bottomPanel, 650D);
         AnchorPane.setBottomAnchor(bottomPanel, 16D);
         AnchorPane.setLeftAnchor(bottomPanel, 16D);
-
-
         mainPane.getChildren().add(bottomPanel);
     }
 
@@ -320,6 +318,53 @@ public class Window {
     public boolean isSelectingIntersection(boolean selecting) {
         return selectingIntersection;
     }
+
+    /**
+     * Highlights request pins on click in request list
+     */
+    private EventHandler<MouseEvent> onRequestListItemClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getClickCount() == 1) {
+                System.out.println("MouseEvent" + event);
+                if (sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem() != null) {
+                    System.out.println("condition");
+                    requestMapView.getPlanningRequestPoints().highlightIcon(sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem().getRequestNumber());
+                }
+
+            }
+        }
+    };
+
+
+    //TODO : show in list selected request when selecting a pin on the map
+    private EventHandler<MouseEvent> onRequestPinClick = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+            if (event.getClickCount() == 1) {
+                System.out.println("MouseEvent" + event);
+                RequestMapPin rmp = (RequestMapPin) event.getTarget();
+                Long requestId = rmp.getRequestId();
+                RequestType type = rmp.getType();
+
+            }
+        }
+    };
+
+    public void activeItemListener() {
+        sidePanel.getRequestView().getRequestList().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestListItemClick);
+        requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
+    }
+
+
+    public void disableItemListener() {
+        sidePanel.getRequestView().getRequestList().removeEventHandler(MouseEvent.MOUSE_CLICKED, onRequestListItemClick);
+        if (requestMapView.getPlanningRequestPoints().getLastHighlighted() != null) {
+            requestMapView.getPlanningRequestPoints().unHighlightIcon(requestMapView.getPlanningRequestPoints().getLastHighlighted().getKey().getRequestId());
+        }
+        requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
+    }
+
 
     //TODO Update modify view
 //    public void hideModifyMenu() {

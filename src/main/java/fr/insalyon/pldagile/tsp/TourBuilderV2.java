@@ -223,8 +223,7 @@ public class TourBuilderV2 {
             tour.addDeliveryTime(m.getValue().getDelivery().getDuration());
         }*/
 
-
-        return computeTour(cityMap, tour, newIntersections);
+        return new Tour(computeTour(cityMap, tour, newIntersections));
     }
 
 
@@ -368,7 +367,7 @@ public class TourBuilderV2 {
             tour.addDeliveryTime(m.getValue().getDelivery().getDuration());
         }*/
 
-        return computeTour(cityMap, tour, newIntersections);
+        return new Tour(computeTour(cityMap, tour, newIntersections));
     }
 
 

@@ -79,7 +79,7 @@ public class RequestListView extends Region implements PropertyChangeListener {
 
     }
 
-    public ObservableList<AddressItem> getList(){
+    public ObservableList<AddressItem> getAddressItems(){
         return addressItems;
     }
 
@@ -88,9 +88,9 @@ public class RequestListView extends Region implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-        System.out.println("------------");
-        System.out.println(propertyName);
-        System.out.println("------------");
+        //System.out.println("------------");
+        //System.out.println(propertyName);
+        //System.out.println("------------");
         if(Objects.equals(propertyName, "tourUpdate")){
             this.tour = (Tour) evt.getNewValue();
             if(this.tour.getPath()!=null) {
