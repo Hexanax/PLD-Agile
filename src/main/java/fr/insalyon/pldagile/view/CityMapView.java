@@ -6,7 +6,7 @@ import fr.insalyon.pldagile.model.Intersection;
 import fr.insalyon.pldagile.view.maps.MapLayer;
 import fr.insalyon.pldagile.view.maps.MapPoint;
 import fr.insalyon.pldagile.view.maps.PointLayer;
-import javafx.scene.Node;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Pair;
 
@@ -17,8 +17,8 @@ import java.util.Map;
 
 public class CityMapView implements PropertyChangeListener {
 
-    private final PointLayer cityPointLayer = new PointLayer();
-    private Controller controller;
+    private final PointLayer<Circle> cityPointLayer = new PointLayer<>();
+    private final Controller controller;
     private CityMap cityMap;
 
     public CityMapView(Controller controller) {
@@ -50,6 +50,13 @@ public class CityMapView implements PropertyChangeListener {
         return cityPointLayer;
     }
 
+    public void setIntersectionColor(Color color) {
+        cityPointLayer.getPoints().forEach(point -> {
+            Circle circle = point.getValue();
+            circle.setFill(color);
+        });
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         //System.out.println("CityMapView event " + evt);
@@ -61,19 +68,10 @@ public class CityMapView implements PropertyChangeListener {
      * Makes map intersections clickable
      */
     public void activeMapIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : cityPointLayer.getPoints()) {
+        for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
             point.getValue().setOnMouseClicked(event-> {
-                controller.modifyClick(point.getKey().getId(),"Intersection", -1);
+                controller.modifyClick(point.getKey().getId(),"Intersection", -1); //TODO Intersection click instead of modify click
             });
-        }
-    }
-
-    /**
-     * Disables clickable map intersections
-     */
-    public void disableMapIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : cityPointLayer.getPoints()) {
-            point.getValue().setOnMouseClicked(null);
         }
     }
 

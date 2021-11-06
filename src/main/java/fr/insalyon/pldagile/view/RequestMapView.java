@@ -3,23 +3,15 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
-import fr.insalyon.pldagile.view.menu.RequestItem;
-import fr.insalyon.pldagile.view.menu.RequestMenuView;
-import javafx.scene.Node;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Objects;
 
 public class RequestMapView implements PropertyChangeListener {
 
-
-    private final PointLayer planningRequestPoints = new PointLayer();
+    private final PointLayer<ImageView> planningRequestPoints = new PointLayer();
     private Controller controller;
     private PlanningRequest planningRequest;
 
@@ -61,7 +53,7 @@ public class RequestMapView implements PropertyChangeListener {
                         new RequestMapPin(RequestType.DELIVERY)
                 );
             });
-            planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());
+            planningRequestPoints.addPoint(depotPoint, IconProvider.getDepotIcon());
             //TODO Scale it with zoom level
         }
     }
@@ -79,10 +71,10 @@ public class RequestMapView implements PropertyChangeListener {
     /**
      * Makes request points clickable
      */
-        public void activeRequestIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
-            point.getValue().setOnMouseClicked(event-> {
-                controller.modifyClick(point.getKey().getRequestId(),"Intersection", point.getKey().getStepIndex());
+    public void activeRequestIntersectionsListener() {
+        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+            point.getValue().setOnMouseClicked(event -> {
+                controller.modifyClick(point.getKey().getRequestId(), "Intersection", point.getKey().getStepIndex());
                 //System.out.println("active request:" + point.getKey().getStepIndex());
             });
         }
@@ -92,7 +84,7 @@ public class RequestMapView implements PropertyChangeListener {
      * Makes request point non-clickable
      */
     public void disableRequestIntersectionsListener() {
-        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
+        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
             point.getValue().setOnMouseClicked(null);
         }
     }

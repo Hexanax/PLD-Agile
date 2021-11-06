@@ -21,7 +21,6 @@ public class DeleteRequestCommand implements Command {
         this.requestDeleted = request;
         this.tourbuilder = new TourBuilderV2();
 
-
         int index = 0;
         for(Pair<Long, String> step: tour.getSteps()){
 
@@ -39,11 +38,7 @@ public class DeleteRequestCommand implements Command {
             }
             index++;
         }
-
-
-
     }
-
 
     @Override
     public void doCommand() {
@@ -54,4 +49,5 @@ public class DeleteRequestCommand implements Command {
     public void undoCommand() {
         this.tour = tourbuilder.addRequest(citymap, tour, pickup, delivery, requestDeleted.getId());
     }
+
 }

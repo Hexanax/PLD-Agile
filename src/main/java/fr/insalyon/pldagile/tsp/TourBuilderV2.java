@@ -72,19 +72,14 @@ public class TourBuilderV2 {
 
     }
 
-
     //TODO enhance
     //TODO replace dijskra
     //TODO test
-    public Tour deleteRequest(CityMap cityMap, Tour tour, Request request){
-
-
-
+    public Tour deleteRequest(CityMap cityMap, Tour tour, Request request) {
         Map<Long, Request> requests = tour.getRequests();
         Depot depot = tour.getDepot();
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
         Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
-
 
         int [] indexAroundStep = new int[4];
 
@@ -139,7 +134,6 @@ public class TourBuilderV2 {
 
         //Remove the steps linked to the deleted request from the tour
         tour.getSteps().removeIf(step -> Objects.equals(step.getKey(), request.getId()));
-
 
         index = 0;
         while(index != indexAroundStep[0]){

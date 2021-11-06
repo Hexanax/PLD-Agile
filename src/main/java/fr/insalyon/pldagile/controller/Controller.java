@@ -110,6 +110,10 @@ public class Controller {
         currentState.cancel(this, pclTour.getTour(), window, listOfCommands);
     }
 
+    public void confirm() {
+        confirm("");
+    }
+
     public void confirm(String result) {
         currentState.confirm(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), result, window, listOfCommands);
     }

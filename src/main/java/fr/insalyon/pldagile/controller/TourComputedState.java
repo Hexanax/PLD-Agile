@@ -10,10 +10,10 @@ import javafx.scene.input.KeyCode;
 import java.io.File;
 
 /**
- *  TourComputedState is the state when map & requests & tour computed
- *  are loaded in the system and the user
+ * TourComputedState is the state when map & requests & tour computed
+ * are loaded in the system and the user
  */
-public class TourComputedState implements State{
+public class TourComputedState implements State {
     @Override
     public void loadMap(Controller controller, Window window) {
         controller.setCurrentState(controller.mapOverwrite3State);
@@ -30,14 +30,12 @@ public class TourComputedState implements State{
                 "This will remove the requests already loaded and lose the calculated tour");
     }
 
-
-
     @Override
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
         try {
             window.addStateFollow("Road Map calculation ...");
             File html = XMLFileOpener.getInstance().open(FileChooseOption.SAVE);
-            if(html != null){
+            if (html != null) {
                 HTMLSerializer.renderHTMLroadMap(tour, html);
                 window.addStateFollow("Road Map rendered");
             }
@@ -48,26 +46,23 @@ public class TourComputedState implements State{
     }
 
     @Override
-    public void deleteRequest(Controller controller,CityMap citymap, Tour tour, Request request, Window window,ListOfCommands listOfCdes) {
-        if(tour.getRequests().size()==1){
+    public void deleteRequest(Controller controller, CityMap citymap, Tour tour, Request request, Window window, ListOfCommands listOfCdes) {
+        if (tour.getRequests().size() == 1) {
             window.addWarningStateFollow("Tour can't be empty \n You can't delete the last request of the tour");
         } else {
             controller.setCurrentState(controller.deleteRequestState1);
             //TODO Display only the planning request
-            window.clearTour();
+            //window.clearTour(); //TODO Check if it works without, it should
             window.addStateFollow("How to delete a request : Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
         }
     }
 
     @Override
-    public void addRequest(Controller controller, CityMap citymap, Tour tour,Long intersectionID,  Window window) {
+    public void addRequest(Controller controller, CityMap citymap, Tour tour, Long intersectionID, Window window) {
         controller.setCurrentState(controller.addRequestState1);
         window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
-        window.clearTour();
-
-
+        window.setSelectingIntersection(true);
     }
-
 
     @Override
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
@@ -77,7 +72,7 @@ public class TourComputedState implements State{
     }
 
     @Override
-    public void redo(Controller controller, ListOfCommands listOfCdes,Window window, Tour tour){
+    public void redo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.redo();
         controller.setTour(tour);
         window.addStateFollow("Redo");
@@ -85,16 +80,15 @@ public class TourComputedState implements State{
 
     @Override
     public void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown) {
-        if(isControlDown){
-            if(code == KeyCode.Z){
+        if (isControlDown) {
+            if (code == KeyCode.Z) {
                 controller.undo();
             }
 
-            if(code== KeyCode.Y){
+            if (code == KeyCode.Y) {
                 controller.redo();
             }
         }
     }
-
 
 }

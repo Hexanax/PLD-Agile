@@ -17,6 +17,7 @@ import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -28,8 +29,6 @@ public class Window {
     private static Stage mainStage = null;
     private Controller controller;
     private final AnchorPane mainPane = new AnchorPane();
-    private final PointLayer pointLayer = new PointLayer(); // TODO Split point layers in 3 (one city map, one requests, one tour)
-    private final LineLayer lineLayer = new LineLayer();
     private final MapView mapView;
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
@@ -37,16 +36,11 @@ public class Window {
     private final RequestListView requestListView;
     private final SidePanel sidePanel;
     private final BottomPanel bottomPanel;
-
-
-
+    private boolean selectingIntersection;
 
     private ButtonListener buttonListener;
     private KeyboardListener keyboardListener;
     private MouseListener mouseListener;
-
-
-
 
     public Window(Controller controller) {
         this.controller = controller;
@@ -63,6 +57,7 @@ public class Window {
         this.sidePanel = new SidePanel(controller);
         this.bottomPanel = new BottomPanel(controller);
 
+        //Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
         mapView.addLayer(tourView.getTourLineLayer());
@@ -176,10 +171,6 @@ public class Window {
         return new Group(copyright);
     }
 
-    public void clearMap() {
-        pointLayer.clearPoints();
-    }
-
 //    public void renderMapAndRequests(CityMap cityMap, PlanningRequest planningRequest) {
 //        renderCityMap(cityMap);
 //        renderPlanningRequest(planningRequest);
@@ -281,7 +272,7 @@ public class Window {
         if (!result.isPresent() || result.get() != ButtonType.OK) {
             controller.cancel();
         } else {
-            controller.confirm("");
+            controller.confirm();
         }
     }
 
@@ -299,11 +290,9 @@ public class Window {
         }
     }
 
-
-
-    public void clearTour() {
-        lineLayer.clearPoints();
-    }
+//    public void clearTour() {
+//        lineLayer.clearPoints();
+//    }
 
     public void showModifyMenu() {
         //loadSidePanel(true);
@@ -319,6 +308,18 @@ public class Window {
         LogView.addTextItem(item);
     }
 
+    public void setSelectingIntersection(boolean selectingIntersection) {
+        this.selectingIntersection = selectingIntersection;
+        if(selectingIntersection) {
+            cityMapView.setIntersectionColor(Colors.getMapIntersectionSelectColor());
+        } else {
+            cityMapView.setIntersectionColor(Colors.getMapIntersectionColor());
+        }
+    }
+
+    public boolean isSelectingIntersection(boolean selecting) {
+        return selectingIntersection;
+    }
 
     //TODO Update modify view
 //    public void hideModifyMenu() {
