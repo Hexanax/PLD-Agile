@@ -116,12 +116,14 @@ public class TourView implements PropertyChangeListener, View, Hideable {
     public void hide() {
         tourPointLayer.hide();
         tourLineLayer.hide();
+        tourDirectionLayer.hide();
     }
 
     @Override
     public void show() {
         tourLineLayer.show();
         tourPointLayer.show();
+        tourDirectionLayer.show();
     }
 
     @Override
