@@ -55,7 +55,7 @@ public class Window {
         this.tourView = new TourView(controller);
         this.requestListView = new RequestListView(controller);
         this.sidePanel = new SidePanel(controller);
-        this.bottomPanel = new BottomPanel(controller);
+        this.bottomPanel = new BottomPanel();
 
         requestMapView.setRequestListView(requestListView);
         requestListView.setRequestMapView(requestMapView);
@@ -141,8 +141,7 @@ public class Window {
     }
 
     private void loadBottomPanel() {
-        AnchorPane.setTopAnchor(bottomPanel, 650D);
-        AnchorPane.setBottomAnchor(bottomPanel, 16D);
+        AnchorPane.setTopAnchor(bottomPanel, 550D);
         AnchorPane.setLeftAnchor(bottomPanel, 16D);
         mainPane.getChildren().add(bottomPanel);
     }
