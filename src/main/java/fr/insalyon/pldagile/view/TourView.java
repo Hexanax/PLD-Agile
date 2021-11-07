@@ -32,6 +32,7 @@ public class TourView implements PropertyChangeListener, View, Hideable {
     public void clear() {
         tourLineLayer.clearPoints();
         tourPointLayer.clearPoints();
+        tourDirectionLayer.clearPoints();
     }
 
     public PointLayer<Circle> getTourPointLayer() {
