@@ -50,26 +50,8 @@ public class TourBuilderV2 {
             tour.addIntersection(intersections.get(idIntersection));
         }
 
-
-        /*Long previous = tourIntersections.get(0);
-        tour.addIntersection(intersections.get(previous));
-        tourIntersections.remove(0);
-        for(Long idIntersection : tourIntersections){
-            Long current = idIntersection;
-            Segment currentSegment = segments.get(new Pair<>(previous,current));
-            tour.addSegment(currentSegment);
-            previous = current;
-            tour.addIntersection(intersections.get(previous));
-        }
-        for(Request request : planningRequest.getRequests()){
-            tour.addPickupTime(request.getPickup().getDuration());
-            tour.addDeliveryTime(request.getDelivery().getDuration());
-        }*/
         tour.setStepsIdentifiers(simulatedAnnealing.getStepsIdentifiers());
         return computeTour(cityMap,tour, tour.getIntersections());
-        //return tour;
-
-
     }
 
     //TODO enhance
@@ -141,18 +123,9 @@ public class TourBuilderV2 {
             index ++;
         }
 
-        //if intersection before pickup is the same as before delivery
-
-
-
-
-
         if(indexAroundStep[0]==indexAroundStep[2]){
             Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
             Dijkstra dijkstra = bestPaths.get(intersections.get(indexAroundStep[0]).getId());
-
-
-
 
             for(long idIntersection : dijkstra.getShortestPath(intersections.get(indexAroundStep[1]).getId())){
                 newIntersections.add(intersectionsMap.get(idIntersection));
@@ -201,28 +174,8 @@ public class TourBuilderV2 {
             index ++;
         }
 
-
-
-
         tour.setIntersections(newIntersections);
         tour.reset();
-
-
-
-        /*long previous = newIntersections.get(0).getId();
-        newIntersections.remove(0);
-        for(Intersection intersection : newIntersections){
-            Long current = intersection.getId();
-            Segment currentSegment = segments.get(new Pair<>(previous,current));
-            tour.addSegment(currentSegment);
-            previous = current;
-        }
-        tour.getRequests().remove(request.getId());
-        for (Map.Entry<Long,Request> m : tour.getRequests().entrySet()) {
-            tour.addPickupTime(m.getValue().getPickup().getDuration());
-            tour.addDeliveryTime(m.getValue().getDelivery().getDuration());
-        }*/
-
         return new Tour(computeTour(cityMap, tour, newIntersections));
     }
 
@@ -253,10 +206,6 @@ public class TourBuilderV2 {
         boolean add= true;
         boolean complete = false;
         boolean pickupDone = false;
-
-
-
-
 
         for(Pair<Long,String> step : tour.getSteps()) {
 
@@ -291,7 +240,6 @@ public class TourBuilderV2 {
 
                 }
 
-
                 dijkstra = bestPaths.get(idIntersectionRelay);
 
                 for(long idIntersection : dijkstra.getShortestPath(afterPickupAction)){
@@ -300,10 +248,8 @@ public class TourBuilderV2 {
                 newIntersections.remove(newIntersections.size()-1);
                 add=false;
 
-
             }
             else if(Objects.equals(step.getKey(), request.getId()) && !complete){
-
 
                 long beforeDeliveryAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep-1));
                 long afterDeliveryAction = getValueOfNextIntersection(depot, requests, steps.get(indexStep+1));
@@ -345,26 +291,8 @@ public class TourBuilderV2 {
             newIntersections.add(depot.getIntersection());
         }
 
-
-
-
         tour.setIntersections(newIntersections);
         tour.reset();
-
-
-        /*Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
-        long previous = newIntersections.get(0).getId();
-        newIntersections.remove(0);
-        for(Intersection intersection : newIntersections){
-            Long current = intersection.getId();
-            Segment currentSegment = segments.get(new Pair<>(previous,current));
-            tour.addSegment(currentSegment);
-            previous = current;
-        }
-        for (Map.Entry<Long,Request> m : tour.getRequests().entrySet()) {
-            tour.addPickupTime(m.getValue().getPickup().getDuration());
-            tour.addDeliveryTime(m.getValue().getDelivery().getDuration());
-        }*/
 
         return new Tour(computeTour(cityMap, tour, newIntersections));
     }
@@ -373,7 +301,6 @@ public class TourBuilderV2 {
 
     private long getValueOfNextIntersection(Depot depot, Map<Long, Request> requests, Pair<Long, String> step)
     {
-
         if(Objects.equals(step.getValue(), "pickup")){
             return requests.get(step.getKey()).getPickup().getIntersection().getId();
         }
@@ -426,15 +353,5 @@ public class TourBuilderV2 {
 
         return tour;
     }
-
-
-
-
-
-
-
-
-
-
 
 }
