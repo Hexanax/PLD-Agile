@@ -250,17 +250,17 @@ public class Window {
     }
 
     public void showInputAlert(String title, String header, String text){
-        TextInputDialog dialog = new TextInputDialog("300");
-        dialog.setTitle(title);
-        dialog.setHeaderText(header);
-        dialog.setContentText(text);
+            TextInputDialog dialog = new TextInputDialog("300");
+            dialog.setTitle(title);
+            dialog.setHeaderText(header);
+            dialog.setContentText(text);
 
-        Optional<String> result = dialog.showAndWait();
-        if(result.isPresent()) {
-            controller.confirm(result.get());
-        } else {
-            controller.cancel();
-        }
+            Optional<String> result = dialog.showAndWait();
+            if(result.isPresent()) {
+                controller.confirm(result.get());
+            } else {
+                controller.cancel();
+            }
     }
 
     public void clearRequest() {

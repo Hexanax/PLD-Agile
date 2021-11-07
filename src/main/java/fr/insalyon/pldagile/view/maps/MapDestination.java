@@ -1,5 +1,7 @@
 package fr.insalyon.pldagile.view.maps;
 
+import java.util.Objects;
+
 public class MapDestination {
 
     private MapPoint start;
@@ -18,4 +20,16 @@ public class MapDestination {
         return end;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MapDestination)) return false;
+        MapDestination that = (MapDestination) o;
+        return getStart().equals(that.getStart()) && getEnd().equals(that.getEnd());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getStart(), getEnd());
+    }
 }

@@ -29,6 +29,8 @@ package fr.insalyon.pldagile.view.maps;
 
 import javafx.beans.NamedArg;
 
+import java.util.Objects;
+
 /**
  *
  */
@@ -83,5 +85,16 @@ public class MapPoint {
         this.longitude = lon;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MapPoint)) return false;
+        MapPoint mapPoint = (MapPoint) o;
+        return Double.compare(mapPoint.getLatitude(), getLatitude()) == 0 && Double.compare(mapPoint.getLongitude(), getLongitude()) == 0;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getLatitude(), getLongitude());
+    }
 }

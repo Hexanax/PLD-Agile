@@ -18,7 +18,7 @@ import javafx.util.Pair;
  */
 public class LineLayer extends MapLayer {
 
-    private final ObservableList<Pair<MapDestination, Pair<Line, ImageView>>> lines = FXCollections
+    private final ObservableList<DirectedLine> lines = FXCollections
             .observableArrayList();
 
     public LineLayer() {
@@ -26,15 +26,19 @@ public class LineLayer extends MapLayer {
     }
 
     public void addLine(MapDestination mapDestination) {
-        Line line = new Line();
-        line.setStroke(Colors.getTourLineColor());
-        line.setStrokeWidth(4);
-        DropShadow borderEffect = new DropShadow(BlurType.THREE_PASS_BOX, Colors.getTourLineStrokeColor(), 2, 1, 0, 0);
-        line.setEffect(borderEffect);
-        ImageView direction = IconProvider.getDirectionIcon(20);
-        lines.add(new Pair<>(mapDestination, new Pair<>(line, direction)));
-        this.getChildren().add(line);
-        this.getChildren().add(direction);
+
+        MapDestination invertedDirectionMD = new MapDestination(mapDestination.getEnd(), mapDestination.getStart());
+        DirectedLine  invertedDirectionDL = new DirectedLine(invertedDirectionMD);
+        ImageView directionIcon = lines.contains(invertedDirectionDL) ?
+                IconProvider.getDoubleDirectionIcon(20) :
+                IconProvider.getDirectionIcon(20);
+
+        DirectedLine directedLine = new DirectedLine(mapDestination);
+        directedLine.setDirection(directionIcon);
+
+        lines.add(directedLine);
+        this.getChildren().add(directedLine.getLine());
+        this.getChildren().add(directedLine.getDirection());
         this.markDirty();
     }
 
@@ -46,10 +50,11 @@ public class LineLayer extends MapLayer {
 
     @Override
     protected void layoutLayer() {
-        for (Pair<MapDestination, Pair<Line, ImageView>> candidate : lines) {
-            MapDestination destination = candidate.getKey();
-            Line line = candidate.getValue().getKey();
-            ImageView direction = candidate.getValue().getValue();
+        // Pair<MapDestination, Pair<Line, ImageView>>
+        for (DirectedLine candidate : lines) {
+            MapDestination destination = candidate.getMapDestination();
+            Line line = candidate.getLine();
+            ImageView direction = candidate.getDirection();
             MapPoint start = destination.getStart();
             MapPoint end = destination.getEnd();
 

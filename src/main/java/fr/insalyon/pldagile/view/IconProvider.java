@@ -24,4 +24,12 @@ public abstract class IconProvider {
             img.setX(-iconSize / 2);
             return img;
     }
+    public static ImageView getDoubleDirectionIcon(double iconSize) {
+        ImageView img = new ImageView(
+                new Image("img/doubleDirectionIcon/doubleDirectionIcon.png", iconSize, iconSize, true, true));
+        img.setY(-iconSize / 2);
+        img.setX(-iconSize / 2);
+        System.out.println("double sens picked");
+        return img;
+    }
 }
