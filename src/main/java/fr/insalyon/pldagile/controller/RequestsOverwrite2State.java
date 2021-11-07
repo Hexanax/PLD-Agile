@@ -37,7 +37,7 @@ public class RequestsOverwrite2State implements State{
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour,String result, Window window,ListOfCommands listOfCdes) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, Window window,ListOfCommands listOfCdes) {
         this.loadRequests(controller, citymap, window);
     }
 

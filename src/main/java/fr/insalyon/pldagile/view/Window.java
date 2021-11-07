@@ -144,6 +144,7 @@ public class Window {
                 break;
             }
         }
+
         mainPane.getChildren().add(sidePanel);
     }
 
@@ -187,23 +188,11 @@ public class Window {
         if (!result.isPresent() || result.get() != ButtonType.OK) {
             controller.cancel();
         } else {
-            controller.confirm("");
+            controller.confirm();
         }
     }
 
-    public void showInputAlert(String title, String header, String text) {
-        TextInputDialog dialog = new TextInputDialog("300");
-        dialog.setTitle(title);
-        dialog.setHeaderText(header);
-        dialog.setContentText(text);
 
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            controller.confirm(result.get());
-        } else {
-            controller.cancel();
-        }
-    }
 
 
     public void addStateFollow(String message) {

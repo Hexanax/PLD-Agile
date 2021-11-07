@@ -99,8 +99,8 @@ public class Controller {
         currentState.cancel(this, pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), window, listOfCommands);
     }
 
-    public void confirm(String result) {
-        currentState.confirm(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), result, window, listOfCommands);
+    public void confirm() {
+        currentState.confirm(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), window, listOfCommands);
     }
 
     public void generateRoadMap() {
@@ -115,7 +115,7 @@ public class Controller {
         currentState.modifyClick(this,pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), id, type, stepIndex, window);
     }
 
-    public void addRequest(Long id) {
+    public void addRequest() {
         currentState.addRequest(this, pclCityMap.getCityMap(), pclPlanningRequest, pclTour, listOfCommands, window);
     }
 
@@ -123,14 +123,14 @@ public class Controller {
      * Method called by window after a click on the button "Undo"
      */
     public void undo() {
-        currentState.undo(this, listOfCommands, window, pclTour.getTour());
+        currentState.undo(this, listOfCommands, window);
     }
 
     /**
      * Method called by window after a click on the button "Redo"
      */
     public void redo() {
-        currentState.redo(this, listOfCommands, window, pclTour.getTour());
+        currentState.redo(this, listOfCommands, window);
     }
 
     public Window getWindow() {
@@ -138,7 +138,7 @@ public class Controller {
     }
 
     public void keystroke(KeyCode code, boolean controlDown) {
-        currentState.keystroke(this, code, window, controlDown);
+        currentState.keystroke(this, code, controlDown);
     }
 
     public void intersectionClick(long id) { currentState.intersectionClick(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), id, window);}

@@ -30,6 +30,7 @@ public class AddRequestState4 implements State{
 
     @Override
     public void modifyClick(Controller controller,PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
+        validClick =false;
         if(Objects.equals(type, "Depot") && stepIndex!=0)
         {
             window.addWarningStateFollow("You can't add a request after the arrival of the tour");
@@ -41,7 +42,9 @@ public class AddRequestState4 implements State{
             if(id == request.getId() && type=="delivery"){
                 window.addWarningStateFollow( "You can't make the request after the request itself");
             } else {
+                boolean bufferClicks = false;
                 if(stepIndex==-1){
+                    bufferClicks = true;
                     if(type=="depot"){
                         stepIndex =0;
                     } else {
@@ -58,7 +61,12 @@ public class AddRequestState4 implements State{
                     controller.setTour(modify);
 
 
-                    controller.addRequest(null);
+                    controller.addRequest();
+                    if(bufferClicks){
+                        validClick = true;
+                    } else {
+                        controller.setCurrentState(controller.addRequestState5);
+                    }
                 }
             }
 
@@ -71,9 +79,19 @@ public class AddRequestState4 implements State{
 
         l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
 
-        controller.setCurrentState(controller.addRequestState5);
+
         window.showCityMap();
         window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
         window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
+    }
+
+    private boolean validClick;
+
+    @Override
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        if(validClick){
+            validClick = false;
+            controller.setCurrentState(controller.addRequestState5);
+        }
     }
 }

@@ -30,7 +30,7 @@ public class ButtonListener {
                 controller.deleteRequest(null);
                 break;
             case RequestView.ADD_REQUEST:
-                controller.addRequest(null);
+                controller.addRequest();
                 break;
             case RequestView.REDO:
                 controller.redo();

@@ -14,7 +14,7 @@ public class AddRequestState5 implements State{
     }
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, String result, Window window, ListOfCommands l) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         //TODO read value
         String[] values = window.getEditableRequestDuration();
         if(values == null){

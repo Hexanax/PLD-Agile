@@ -51,8 +51,7 @@ public class TourComputedState implements State{
 
     @Override
     public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window, ListOfCommands listOfCdes) {
-        //TODO FIX BUG OF SIZE
-        if(pcltour.getTour().getRequests().size()==1){
+        if(pclPlanningRequest.getPlanningRequest().getRequests().size()==1){
             window.addWarningStateFollow("Tour can't be empty \n You can't delete the last request of the tour");
         } else {
             controller.setCurrentState(controller.deleteRequestState1);
@@ -70,19 +69,19 @@ public class TourComputedState implements State{
 
 
     @Override
-    public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
+    public void undo(Controller controller, ListOfCommands listOfCdes, Window window) {
         listOfCdes.undo();
         window.addStateFollow("Undo");
     }
 
     @Override
-    public void redo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
+    public void redo(Controller controller, ListOfCommands listOfCdes, Window window) {
         listOfCdes.redo();
         window.addStateFollow("Redo");
     }
 
     @Override
-    public void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown) {
+    public void keystroke(Controller controller, KeyCode code, boolean isControlDown) {
         if (isControlDown) {
             if (code == KeyCode.Z) {
                 controller.undo();

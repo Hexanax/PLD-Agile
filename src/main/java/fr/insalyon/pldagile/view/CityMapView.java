@@ -71,7 +71,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
     public void render() {
         if (cityMap != null) {
             System.out.println("Entered");
-           // clear();
+            clear();
             for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
                 Intersection intersection = entry.getValue();
                 MapPoint mapPoint = new MapPoint(intersection.getCoordinates().getLatitude(), intersection.getCoordinates().getLongitude());
@@ -83,6 +83,9 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
         }
     }
 
+    private void clear() {
+        cityPointLayer.clearPoints();
+    }
 
 
     @Override

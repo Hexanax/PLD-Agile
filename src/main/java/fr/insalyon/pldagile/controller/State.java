@@ -33,7 +33,7 @@ public interface State {
      */
     public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window){};
 
-    public default void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, String result, Window window, ListOfCommands l){};
+    public default void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, Window window, ListOfCommands l){};
 
     public default void cancel(Controller controller,PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l){};
 
@@ -50,16 +50,16 @@ public interface State {
      * Method called by the controller after a click on the button "Undo"
      * @param l the current list of commands
      */
-    public default void undo(Controller controller, ListOfCommands l, Window w, Tour tour){};
+    public default void undo(Controller controller, ListOfCommands l, Window w){};
 
     /**
      * Method called by the controller after a click on the button "Redo"
      * @param l the current list of commands
      */
-    public default void redo(Controller controller, ListOfCommands l,Window w, Tour tour){};
+    public default void redo(Controller controller, ListOfCommands l,Window w){};
 
 
-    public default void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown){};
+    public default void keystroke(Controller controller, KeyCode code, boolean isControlDown){};
 
 
     public default void intersectionClick(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Long intersectionID, Window window){};
