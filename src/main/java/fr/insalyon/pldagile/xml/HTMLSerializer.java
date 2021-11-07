@@ -46,7 +46,7 @@ public class HTMLSerializer {
         Depot depot = tour.getDepot();
         boolean stepindepot = false;
         while(nextSpecificIntersection!= null && intersections.get(0).getId() == nextSpecificIntersection.getIntersection().getId()){
-            rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue()));
+            rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
             stepindepot=true;
             stepsIdentifiers.remove(0);
             nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
@@ -64,7 +64,7 @@ public class HTMLSerializer {
             boolean step = false;
             while(nextSpecificIntersection!= null && current.getId() == nextSpecificIntersection.getIntersection().getId()){
 
-                rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue()));
+                rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
                 step=true;
                 stepsIdentifiers.remove(0);
                 nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
@@ -101,6 +101,8 @@ public class HTMLSerializer {
         context.put("depot", tour.getDepot());
         context.put("rows", rows);
 
+        System.out.println(context.toString());
+
         Writer writer = new StringWriter();
         compiledTemplate.evaluate(writer, context);
 
@@ -120,9 +122,10 @@ public class HTMLSerializer {
         return buffer;
     }
 
-    public static Map<String, Object> createSpecificIntersection(Address address, String subtype){
+    public static Map<String, Object> createSpecificIntersection(Address address, String subtype, long requestID){
         Map<String, Object> buffer = new HashMap<>();
         buffer.put("type", "Address");
+        buffer.put("request", requestID+1);
         buffer.put("subtype", subtype);
         buffer.put("object",address );
         return buffer;

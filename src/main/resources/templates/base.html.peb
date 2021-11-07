@@ -49,7 +49,7 @@
                 <div class="estimation-col">
                     <p>Distance in meters :</p>
                     <div class="estimated-val">
-                        {{ lenght | numberformat("#.##") }}
+                        {{ length | numberformat("#.##") }}
                     </div>
                 </div>
             </div>
@@ -67,7 +67,6 @@
                 </div>
             </div>
         </div>
-        {{ depot }}
     {% for row in rows %}
             <div class="path-seg">
                 {% if row.type == "Segment"%}
@@ -128,7 +127,10 @@
                             </div>
                             <div class="pickup-txt icon-container-txt">
                                 <div>
-                                    You have a package to pick up. This will take about <span class="estimated-val">{{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s</span>
+                                    Arrival expected at about {{ row.object.arrivalTime| date("HH:mm:ss", timeZone="Europe/Paris") }}
+                                </div>
+                                <div>
+                                    You have a package to pick up (request n°{{ row.request }}). This will take about <span class="estimated-val">{{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s</span>
                                 </div>
                             </div>
                         </div>
@@ -139,7 +141,10 @@
                             </div>
                             <div class="delivery-txt icon-container-txt">
                                 <div>
-                                    You have a package to deliver. This will take about <span class="estimated-val"> {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s </span>
+                                    Arrival expected at about {{ row.object.arrivalTime| date("HH:mm:ss", timeZone="Europe/Paris") }}
+                                </div>
+                                <div>
+                                    You have a package to deliver(request n°{{ row.request }}). This will take about <span class="estimated-val"> {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s </span>
                                 </div>
                             </div>
 
