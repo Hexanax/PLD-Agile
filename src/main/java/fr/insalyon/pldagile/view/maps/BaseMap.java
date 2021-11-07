@@ -258,7 +258,7 @@ public class BaseMap extends Group {
                 zoom.set(zp + delta);
                 markDirty();
             } else {
-                logger.warning("sorry, would be too small");
+                logger.fine("sorry, would be too small");
             }
         }
         logger.fine("after, zp = " + zoom.get() + ", tx = " + getTranslateX());
@@ -522,6 +522,10 @@ public class BaseMap extends Group {
 
     private double getMyHeight() {
         return this.getParent().getLayoutBounds().getHeight();
+    }
+
+    public boolean canZoomOut (double maxZoomOut) {
+        return zoom.get() > maxZoomOut;
     }
 
 }

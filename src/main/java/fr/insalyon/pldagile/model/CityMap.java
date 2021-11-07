@@ -84,8 +84,73 @@ public class CityMap implements Cloneable {
     }
 
 
+    /**
+     *
+     * @return min/max values for latitude/longitude, corresponding to a minimum bounding rectangle for
+     * the current CityMap
+     */
+    private Map<String, Double> getMinimumBoundingRectangle(){
+
+        double minLongitude = intersections.values().iterator().next().getCoordinates().getLongitude();
+        double minLatitude = intersections.values().iterator().next().getCoordinates().getLatitude();
+        double maxLongitude = intersections.values().iterator().next().getCoordinates().getLongitude();
+        double maxLatitude = intersections.values().iterator().next().getCoordinates().getLatitude();
+
+        Map<String, Double> boundingRectangle = new HashMap<String, Double>();
 
 
+        for(Intersection intersection : intersections.values()){
+            // Convert each pair lat/long to a 3D vector
+            double longitude = intersection.getCoordinates().getLongitude();
+            double latitude = intersection.getCoordinates().getLatitude();
+            minLongitude = (longitude < minLongitude)  ? longitude : minLongitude;
+            minLatitude = (latitude < minLatitude)  ? latitude : minLatitude;
+            maxLongitude = (longitude > maxLongitude)  ? longitude : maxLongitude;
+            maxLatitude = (latitude > maxLatitude)  ? latitude : maxLatitude;
+        }
+        boundingRectangle.put("minLongitude",minLongitude);
+        boundingRectangle.put("minLatitude",minLatitude);
+        boundingRectangle.put("maxLongitude",maxLongitude);
+        boundingRectangle.put("maxLatitude",maxLatitude);
+        return boundingRectangle;
+    }
+
+    /**
+     * converts latitude to radiants
+     * @param lat
+     * @return
+     */
+    private double latRad(double lat){
+        double sin = Math.sin(lat * Math.PI/180);
+        double radX2 = Math.log((1+sin)/(1-sin))/2;
+        return Math.max(Math.min(radX2,Math.PI),-Math.PI)/2;
+    }
+
+    /**
+     *
+     * @return optimal zoom value to display the minimum bounding rectangle
+     */
+    public double getOptimalZoom(){
+        Map<String, Double> boundingRectangle = new HashMap<>(getMinimumBoundingRectangle());
+        double minLongitude =boundingRectangle.get("minLongitude");
+        double minLatitude =boundingRectangle.get("minLatitude");
+        double maxLongitude =boundingRectangle.get("maxLongitude");
+        double maxLatitude =boundingRectangle.get("maxLatitude");
+
+        System.out.println("minLong"+minLongitude+ "minLat"+ minLatitude+ "maxLong"+ maxLongitude+ "maxLat"+maxLatitude);
+        double latDif = Math.abs(latRad(maxLatitude) - latRad(minLatitude));
+        double longDif = Math.abs(maxLongitude - minLongitude);
+
+        double latFrac = latDif/ Math.PI;
+        double longFrac = longDif/360;
+
+        double latZoom = Math.log(1/latFrac)/Math.log(2);
+        double longZoom = Math.log(1/longFrac)/Math.log(2);
+
+        System.out.println("longZoom"+longZoom+"latZoom"+latZoom);
+        return Math.min(longZoom,latZoom);
+
+    }
     /**
      * Calculates the central coordinates of the map based on the intersections loaded from the XML file
      */
