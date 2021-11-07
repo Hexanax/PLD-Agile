@@ -6,21 +6,25 @@ import java.util.Objects;
 
 public class PlanningRequest {
 
+    private long currentID;
     private List<Request> requests;
     private Depot depot;
 
     public PlanningRequest(List<Request> requests, Depot depot) {
         this.requests = requests;
         this.depot = depot;
+        this.currentID = requests.size();
     }
 
     public PlanningRequest(PlanningRequest planningRequest){
         this.requests = planningRequest.requests;
         this.depot = planningRequest.depot;
+        this.currentID = planningRequest.currentID;
     }
 
     public PlanningRequest() {
         requests = new ArrayList<Request>();
+        this.currentID = 0;
     }
 
     public List<Request> getRequests() {
@@ -49,8 +53,8 @@ public class PlanningRequest {
 
     public void add(Request request, boolean assignId) {
         if(assignId) {
-            Long availableId = (long) requests.size();
-            request.setId(availableId);
+            request.setId(currentID);
+            currentID++;
         }
         requests.add(request);
     }

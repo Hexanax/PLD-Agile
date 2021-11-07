@@ -48,9 +48,9 @@ public class RequestView extends Region {
         Button deleteRequest = new Button(DELETE_REQUEST);
         createButton(deleteRequest, gridPane,1, 2, 1, 1);
         Button redo = new Button(REDO);
-        createButton(redo, gridPane,0, 3, 1, 1);
+        createButton(redo, gridPane,1, 3, 1, 1);
         Button undo = new Button(UNDO);
-        createButton(undo, gridPane,1, 3, 1, 1);
+        createButton(undo, gridPane,0, 3, 1, 1);
 
 
         requestList.setOnMouseClicked(MouseListener::mouseClicked);

@@ -169,95 +169,12 @@ public class Window {
         return new Group(copyright);
     }
 
-//    public void renderMapAndRequests(CityMap cityMap, PlanningRequest planningRequest) {
-//        renderCityMap(cityMap);
-//        renderPlanningRequest(planningRequest);
-//    }
-
     public void updateMapFileName(String fileName) {
         ImportView.setImportMapLabel(fileName);
     }
 
     public void updateRequestFileName(String fileName) {
         ImportView.setImportRequestLabel(fileName);
-    }
-
-//    /**
-//     * Centers the map around the central coordinates of the city map sets the zoom
-//     * the level of a city in the map
-//     *
-//     * @param cityMap
-//     */
-//    public void centerMap(CityMap cityMap) throws ExceptionXML {
-//        Coordinates coordinates = cityMap.getCenter();
-//        MapPoint mapCenter = new MapPoint(coordinates.getLatitude(), coordinates.getLongitude());
-//        // center the map around the calculated center coordinates
-//        mapView.setCenter(mapCenter);
-//        // sets the zoom at level 12: approximately the level of a city in our case
-//        int centeredZoomValue = 12;
-//        mapView.setZoom(centeredZoomValue);
-//    }
-
-   /* public void renderPlanningRequest(PlanningRequest planningRequest) {
-        if (!planningRequest.getRequests().isEmpty() && planningRequest.getDepot() != null) {
-            // Render the planning request
-            Coordinates depotCoordinates = planningRequest.getDepot().getIntersection().getCoordinates();
-            MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
-            depotPoint.setId(planningRequest.getDepot().getIntersection().getId());
-            ArrayList<RequestItem> items = new ArrayList<>();
-            planningRequest.getRequests().forEach(request -> {
-                // Items in list
-                Pickup pickup = request.getPickup();
-                RequestItem pickupItem = new RequestItem("Pickup at " + request.getPickup().getIntersection().getId(), "Duration: " + request.getPickup().getDuration(), request.getId(), "Pickup", -1);
-                Delivery delivery = request.getDelivery();
-                RequestItem deliveryItem = new RequestItem("Delivery at " + request.getDelivery().getIntersection().getId(), "Duration: " + request.getDelivery().getDuration(), request.getId(), "Delivery", -1);
-                items.add(pickupItem);
-                items.add(deliveryItem);
-                //Map points
-                MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
-                mapPoint.setId(pickup.getIntersection().getId());
-                mapPoint.setRequestId(request.getId());
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        IconProvider.getPickupIcon()
-                );
-                mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
-                mapPoint.setId(delivery.getIntersection().getId());
-                mapPoint.setRequestId(request.getId());
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        IconProvider.getDropoffIcon()
-                );
-            });
-            RequestMenuView.setPickupItems(items);
-
-            pointLayer.addPoint(depotPoint, new Circle(7, Color.ORANGE));
-            //TODO Scale it with zoom level
-        }
-    }*/
-
-//    public void renderTour(Tour tour) {
-//        // TODO Update RequestView
-//        Intersection previousIntersection = tour.getDepot().getIntersection();
-//        for (Segment segment : tour.getPath()) {
-//            Intersection destinationIntersection = segment.getDestination();
-//            MapPoint originPoint = new MapPoint(previousIntersection.getCoordinates().getLatitude(), previousIntersection.getCoordinates().getLongitude());
-//            MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
-//            MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
-//            pointLayer.addPoint(originPoint, new Circle(4, Colors.getTourIntersectionColor()));
-//            pointLayer.addPoint(destinationPoint, new Circle(4, Colors.getTourIntersectionColor()));
-//            lineLayer.addLine(mapDestination, Colors.getTourIntersectionColor());
-//            //Update prev intersection
-//            previousIntersection = destinationIntersection;
-//        }
-//    }
-
-    public void showWarningAlert(String title, String header, String text) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
-        alert.setTitle(title);
-        alert.setHeaderText(header);
-        alert.setContentText(text);
-        alert.showAndWait();
     }
 
     public void showValidationAlert(String title, String header, String text) {
@@ -288,13 +205,6 @@ public class Window {
         }
     }
 
-//    public void clearTour() {
-//        lineLayer.clearPoints();
-//    }
-
-    public void showModifyMenu() {
-        //loadSidePanel(true);
-    }
 
     public void addStateFollow(String message) {
         TextItem item = new TextItem(message, "#000000");
@@ -352,123 +262,37 @@ public class Window {
         requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
     }
 
-    public void disableItemListener() {
-        sidePanel.getRequestView().getRequestList().removeEventHandler(MouseEvent.MOUSE_CLICKED, onRequestListItemClick);
-        //TOOD Reimplement
-//        if (requestMapView.getPlanningRequestPoints().getLastHighlighted() != null) {
-//            requestMapView.getPlanningRequestPoints().unHighlightIcon(requestMapView.getPlanningRequestPoints().getLastHighlighted().getKey().getRequestId());
-//        }
-        requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
+    public void deleteView() {
+        hideTour();
     }
 
-    //TODO Update modify view
-//    public void hideModifyMenu() {
-//        RequestMenuView.disableRowListener();
-//        pointLayer.disableMapIntersectionsListener();
-//        loadSidePanel(false);
-//    }
-//
-//    public void disableEventListener() {
-//        RequestMenuView.disableRowListener();
-//        pointLayer.disableMapIntersectionsListener();
-//        pointLayer.disableRequestIntersectionsListener();
-//    }
-//
-//    public void activeRowListener() {
-//        RequestMenuView.activeRowListener();
-//    }
+    public void addView() {
+        hideTour();
+        cityMapView.highlight();
+        renderOrderedList();
+    }
 
-   /* public void orderListRequests(ArrayList<Pair<Long, String>> steps, Map<Long, Request> requests, Depot depot) {
-        pointLayer.clearRequestPoints();
-        ArrayList<RequestItem> items = new ArrayList<>();
-        int index = 0;
-        RequestItem item = new RequestItem("Depot at " + depot.getIntersection().getId(), "Departure time : " + depot.getDepartureTime(), -1, "Depot", 0);
-        items.add(item);
-        for (Pair<Long, String> step : steps) {
-            if (Objects.equals(step.getValue(), "pickup")) {
-                item = new RequestItem("Pickup at " + requests.get(step.getKey()).getPickup().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getPickup().getDuration(), step.getKey(), "Pickup", index);
-                items.add(item);
-                double mapPointLatitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getPickup().getIntersection().getCoordinates().getLongitude();
-                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
-                mapPoint.setId(requests.get(step.getKey()).getPickup().getIntersection().getId());
-                mapPoint.setRequestId(requests.get(step.getKey()).getId());
-                mapPoint.setStepIndex(index);
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        IconProvider.getPickupIcon()
-                );
-            }
-            if (Objects.equals(step.getValue(), "delivery")) {
-                item = new RequestItem("Delivery at " + requests.get(step.getKey()).getDelivery().getIntersection().getId(), "Duration: " + requests.get(step.getKey()).getDelivery().getDuration(), step.getKey(), "Delivery", index);
-                items.add(item);
-                double mapPointLatitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLatitude();
-                double mapPointLongitude = requests.get(step.getKey()).getDelivery().getIntersection().getCoordinates().getLongitude();
-                MapPoint mapPoint = new MapPoint(mapPointLatitude, mapPointLongitude);
-                mapPoint.setId(requests.get(step.getKey()).getDelivery().getIntersection().getId());
-                mapPoint.setRequestId(requests.get(step.getKey()).getId());
-                mapPoint.setStepIndex(index);
-                pointLayer.addRequestPoint(
-                        mapPoint,
-                        IconProvider.getDropoffIcon()
-                );
-            }
+    public void mainView() {
+        tourView.show();
+        cityMapView.unHighlight();
+        showCityMap();
+        renderOrderedList();
+    }
 
-            index++;
-        }
-        item = new RequestItem("Depot at " + depot.getIntersection().getId(), "", -2, "Depot", (index - 1));
-        items.add(item);
-        RequestMenuView.clearItems();
+    public void hideCityMap() {
+        cityMapView.unHighlight();
+        cityMapView.hide();
+    }
 
-        RequestMenuView.setPickupItems(items);
+    public void showCityMap(){
+        cityMapView.show();
+    }
 
-    }*/
+    public void renderOrderedList(){
+        requestListView.renderOrdered();
+    }
 
-    /*public void addMapRequest(Request request) {
-        Pickup pickup = request.getPickup();
-        Delivery delivery = request.getDelivery();
-        MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
-        mapPoint.setId(pickup.getIntersection().getId());
-        mapPoint.setRequestId(request.getId());
-        pointLayer.addPoint(
-                mapPoint,
-                IconProvider.getPickupIcon()
-        );
-        mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
-        mapPoint.setId(delivery.getIntersection().getId());
-        mapPoint.setRequestId(request.getId());
-        pointLayer.addPoint(
-                mapPoint,
-                IconProvider.getDropoffIcon()
-        );
-    }*/
-
-//    @Override
-//    public void propertyChange(PropertyChangeEvent evt) {
-//        String propertyName = evt.getPropertyName();
-//        //System.out.println(propertyName);
-//        if(propertyName.equals("cityMapUpdate")) {
-//            CityMap newCityMapValue = (CityMap) evt.getNewValue();
-//            clearMap();
-//            clearRequest();
-//            clearTour();
-//            renderCityMap(newCityMapValue);
-//            try {
-//                centerMap(newCityMapValue);
-//            } catch (ExceptionXML e) {
-//                e.printStackTrace();
-//            }
-//        } else if (propertyName.equals("planningRequestUpdate")){
-//            clearRequest();
-//            clearTour();
-//            PlanningRequest newPlanningRequestValue = (PlanningRequest) evt.getNewValue();
-//            renderPlanningRequest(newPlanningRequestValue);
-//
-//        } else if (propertyName.equals("tourUpdate")){
-//            Tour newTourValue = (Tour) evt.getNewValue();
-//            clearTour();
-//            orderListRequests(newTourValue.getSteps(), newTourValue.getRequests(), newTourValue.getDepot());
-//            renderTour(newTourValue);
-//        }
-//    }
+    public void hideTour() {
+        tourView.hide();
+    }
 }

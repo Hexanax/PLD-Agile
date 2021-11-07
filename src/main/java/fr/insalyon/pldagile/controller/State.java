@@ -41,7 +41,7 @@ public interface State {
 
     public default void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window){};
 
-    public default void deleteRequest(Controller controller,CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Request request, Window window,ListOfCommands listOfCdes){};
+    public default void deleteRequest(Controller controller,CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window,ListOfCommands listOfCdes){};
 
 
     public default void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window){};
@@ -61,7 +61,6 @@ public interface State {
 
     public default void keystroke(Controller controller, KeyCode code, Window window, boolean isControlDown){};
 
-    public default void entryAction(Controller controller, PCLTour pclTour){};
 
     public default void intersectionClick(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Long intersectionID, Window window){};
 

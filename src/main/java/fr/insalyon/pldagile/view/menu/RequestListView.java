@@ -43,11 +43,16 @@ public class RequestListView extends Region implements PropertyChangeListener {
         clear();
         for(Request request : planningRequest.getRequests()){
             Pickup pickup = request.getPickup();
-            AddressItem pickupItem = new AddressItem(new Date(), pickup.getDuration(), request.getId(), "Pickup",-1, false);
+            if(pickup != null){
+                AddressItem pickupItem = new AddressItem(new Date(), pickup.getDuration(), request.getId(), "Pickup",-1, false);
+                addressItems.add(pickupItem);
+            }
             Delivery delivery = request.getDelivery();
-            AddressItem deliveryItem = new AddressItem(new Date(), delivery.getDuration(), request.getId(), "Delivery",-1,false);
-            addressItems.add(pickupItem);
-            addressItems.add(deliveryItem);
+            if(delivery != null){
+                AddressItem deliveryItem = new AddressItem(new Date(), delivery.getDuration(), request.getId(), "Delivery",-1,false);
+                addressItems.add(deliveryItem);
+            }
+
         }
     }
 
@@ -102,4 +107,6 @@ public class RequestListView extends Region implements PropertyChangeListener {
             renderUnordered();
         }
     }
+
+
 }

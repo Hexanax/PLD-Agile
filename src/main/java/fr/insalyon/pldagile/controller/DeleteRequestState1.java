@@ -10,7 +10,8 @@ import fr.insalyon.pldagile.view.Window;
 
 public class DeleteRequestState1 implements State{
     @Override
-    public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Request request, Window window, ListOfCommands listOfCdes) {
+    public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window, ListOfCommands listOfCdes) {
+        Request request = pcltour.getTour().getRequests().get(idRequest);
         if(request != null){
             listOfCdes.add(new DeleteRequestCommand(citymap,pclPlanningRequest, pcltour,request));
             controller.setCurrentState(controller.tourComputedState);

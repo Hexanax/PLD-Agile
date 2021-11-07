@@ -24,7 +24,7 @@ public class MouseListener {
 
 
         AddressItem item = ((ListView<AddressItem>) event.getSource()).getSelectionModel().getSelectedItem();
-        if(event.getClickCount()==1 && event.getButton()==MouseButton.PRIMARY){
+        if(item != null && event.getClickCount()==1 && event.getButton()==MouseButton.PRIMARY){
             controller.modifyClick(item.getRequestNumber(), item.getType(), item.getStepIndex());
         }
 

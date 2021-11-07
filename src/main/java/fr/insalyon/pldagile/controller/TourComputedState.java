@@ -50,13 +50,13 @@ public class TourComputedState implements State{
     }
 
     @Override
-    public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Request request, Window window, ListOfCommands listOfCdes) {
+    public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window, ListOfCommands listOfCdes) {
+        //TODO FIX BUG OF SIZE
         if(pcltour.getTour().getRequests().size()==1){
             window.addWarningStateFollow("Tour can't be empty \n You can't delete the last request of the tour");
         } else {
             controller.setCurrentState(controller.deleteRequestState1);
-            //TODO Display only the planning request
-            //window.clearTour(); //TODO Check if it works without, it should
+            window.deleteView();
             window.addStateFollow("How to delete a request : Select the pickup or the delivery address on the map or by double tap in the list of the request you want to delete");
         }
     }
@@ -65,24 +65,19 @@ public class TourComputedState implements State{
     public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
         controller.setCurrentState(controller.addRequestState1);
         window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
-        //TODO Display only the intersection
-        //window.clearTour();
-
+        window.addView();
     }
 
 
     @Override
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.undo();
-        Tour modify = new Tour(tour); //TODO Implement and use the clone() from Java Cloneable which itself calls the copy constructor
-        //controller.setTour(modify); //TODO Inspect if to keep or breaks other commands undo/redo
         window.addStateFollow("Undo");
     }
 
     @Override
     public void redo(Controller controller, ListOfCommands listOfCdes, Window window, Tour tour) {
         listOfCdes.redo();
-        controller.setTour(tour);
         window.addStateFollow("Redo");
     }
 

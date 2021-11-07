@@ -13,7 +13,6 @@ public class AddRequestState1 implements State {
         if(intersection == null){
             window.addStateFollow("Intersection number unknown, please try again");
         } else {
-            //TODO display the pickup on the map
             Request request = new Request(new Pickup(intersection, 300), null);
             planningRequest.add(request);
             PlanningRequest modify = new PlanningRequest(planningRequest);
@@ -25,8 +24,8 @@ public class AddRequestState1 implements State {
 
     @Override
     public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        //TODO display the tour
         window.addStateFollow("Add request cancel");
+        window.mainView();
         controller.setCurrentState(controller.tourComputedState);
     }
 }

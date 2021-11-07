@@ -9,12 +9,12 @@ import java.util.Objects;
 public class AddRequestState3 implements State{
     @Override
     public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        //TODO display the tour
         window.addStateFollow("Add request cancel");
         planningRequest.deleteLastRequest();
         PlanningRequest modify = new PlanningRequest(planningRequest);
         controller.setPlanningRequest(modify);
         controller.setCurrentState(controller.tourComputedState);
+        window.mainView();
     }
 
     @Override
@@ -31,6 +31,7 @@ public class AddRequestState3 implements State{
             controller.setTour(modify);
 
             window.addStateFollow("Pickup previous address selected, Now left click on the depot, pickup or delivery visiting before the pickup");
+            window.hideTour();
             controller.setCurrentState(controller.addRequestState4);
         }
     }

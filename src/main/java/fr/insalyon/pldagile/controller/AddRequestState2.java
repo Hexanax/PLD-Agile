@@ -15,19 +15,19 @@ public class AddRequestState2 implements State{
         } else if(intersectionID == planningRequest.getLastRequest().getPickup().getIntersection().getId()){
             window.addWarningStateFollow("You can't add a request with the same address for pickup and delivery, try again");
         }else {
-            //TODO display the delivery on the map and all other address
-            //TODO hide intersection
             planningRequest.getLastRequest().setDelivery(new Delivery(intersection, 300));
             PlanningRequest modify = new PlanningRequest(planningRequest);
             controller.setPlanningRequest(modify);
             controller.setCurrentState(controller.addRequestState3);
             window.addStateFollow("Delivery intersection selected, Now left click on the depot, pickup or delivery visiting before the pickup");
+            window.hideCityMap();
+            window.renderOrderedList();
         }
     }
 
     @Override
     public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        //TODO display the tour
+        window.mainView();
         planningRequest.deleteLastRequest();
         PlanningRequest modify = new PlanningRequest(planningRequest);
         controller.setPlanningRequest(modify);

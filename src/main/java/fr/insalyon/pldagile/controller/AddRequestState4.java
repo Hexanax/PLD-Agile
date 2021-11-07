@@ -23,6 +23,7 @@ public class AddRequestState4 implements State{
         Tour modifyTour = new Tour(tour);
         controller.setTour(modifyTour);
 
+        window.showCityMap();
         window.addStateFollow("Add request cancel");
         controller.setCurrentState(controller.tourComputedState);
     }
@@ -36,7 +37,6 @@ public class AddRequestState4 implements State{
             window.addWarningStateFollow("You can't add a request with delivery before pickups");
         }
         else {
-            //TODO Display delivery in the list
 
             Request request = planningRequest.getLastRequest();
             tour.addStep(stepIndex,new Pair<>(request.getId(), "delivery"));
@@ -57,6 +57,7 @@ public class AddRequestState4 implements State{
         l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
 
         controller.setCurrentState(controller.addRequestState5);
+        window.showCityMap();
         window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
 
     }

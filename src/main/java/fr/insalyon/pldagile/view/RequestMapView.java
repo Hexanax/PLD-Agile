@@ -35,20 +35,24 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                 Pickup pickup = request.getPickup();
                 Delivery delivery = request.getDelivery();
                 //Map points
-                MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
-                mapPoint.setId(pickup.getIntersection().getId());
-                mapPoint.setRequestId(request.getId());
-                planningRequestPoints.addPoint(
-                        mapPoint,
-                        new RequestMapPin(RequestType.PICKUP, request.getId())
-                );
-                mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
-                mapPoint.setId(delivery.getIntersection().getId());
-                mapPoint.setRequestId(request.getId());
-                planningRequestPoints.addPoint(
-                        mapPoint,
-                        new RequestMapPin(RequestType.DELIVERY, request.getId())
-                );
+                if(pickup!=null) {
+                    MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
+                    mapPoint.setId(pickup.getIntersection().getId());
+                    mapPoint.setRequestId(request.getId());
+                    planningRequestPoints.addPoint(
+                            mapPoint,
+                            new RequestMapPin(RequestType.PICKUP, request.getId())
+                    );
+                }
+                if(delivery!=null){
+                    MapPoint mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
+                    mapPoint.setId(delivery.getIntersection().getId());
+                    mapPoint.setRequestId(request.getId());
+                    planningRequestPoints.addPoint(
+                            mapPoint,
+                            new RequestMapPin(RequestType.DELIVERY, request.getId())
+                    );
+                }
             });
             planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());
             //TODO Scale it with zoom level

@@ -52,6 +52,21 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
         cityPointLayer.show();
     }
 
+
+    public void highlight(){
+        for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
+            point.getValue().setRadius(4);
+            point.getValue().setFill(Colors.getMapIntersectionSelectColor());
+        }
+    }
+
+    public void unHighlight(){
+        for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
+            point.getValue().setRadius(2);
+            point.getValue().setFill(Colors.getMapIntersectionColor());
+        }
+    }
+
     @Override
     public void render() {
         if (cityMap != null) {

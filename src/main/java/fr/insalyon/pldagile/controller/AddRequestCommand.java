@@ -64,9 +64,8 @@ public class AddRequestCommand implements Command {
     public void doCommand() {
         if(delete){
             PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
-            planningRequest.add(request);
+            planningRequest.add(request, false);
             pclPlanningRequest.setPlanningRequest(planningRequest);
-            this.request = planningRequest.getLastRequest();
 
             Tour tour = new Tour(pcltour.getTour());
             tour.addRequest(request);
