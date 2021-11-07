@@ -1,6 +1,8 @@
 package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.observer.PCLPlanningRequest;
+import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
 import javafx.util.Pair;
 
@@ -15,7 +17,6 @@ public class AddRequestState5 implements State{
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        //TODO read value
         String[] values = window.getEditableRequestDuration();
         if(values == null){
             window.addWarningStateFollow("Error : duration can't be null");
@@ -49,5 +50,48 @@ public class AddRequestState5 implements State{
         }
 
         return valid;
+    }
+
+
+    @Override
+    public void loadMap(Controller controller, Window window) {
+        controller.confirm();
+        controller.loadMap();
+    }
+
+    @Override
+    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
+        controller.confirm();
+        controller.loadRequests();
+    }
+
+    @Override
+    public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
+        controller.confirm();
+        controller.loadRequests();
+    }
+
+    @Override
+    public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window, ListOfCommands listOfCdes) {
+        controller.confirm();
+        controller.deleteRequest(null);
+    }
+
+    @Override
+    public void undo(Controller controller, ListOfCommands l, Window w) {
+        controller.confirm();
+        controller.undo();
+    }
+
+    @Override
+    public void redo(Controller controller, ListOfCommands l, Window w) {
+        controller.confirm();
+        controller.redo();
+    }
+
+    @Override
+    public void generateRoadMap(Controller controller, Tour tour, Window window) {
+        controller.confirm();
+        controller.generateRoadMap();
     }
 }

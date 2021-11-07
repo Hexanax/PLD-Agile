@@ -8,7 +8,7 @@ public class BottomPanel extends Region {
     private GridPane mainBorderPane;
     private LogView logView;
 
-    public BottomPanel(Controller controller){
+    public BottomPanel(){
         this.logView = new LogView();
         this.mainBorderPane = new GridPane();
         mainBorderPane.add(logView, 0, 0, 1, 1);

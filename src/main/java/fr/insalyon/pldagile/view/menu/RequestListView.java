@@ -2,9 +2,12 @@ package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.view.RequestMapView;
+import fr.insalyon.pldagile.view.maps.MapPoint;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Region;
 import javafx.util.Pair;
@@ -27,6 +30,8 @@ public class RequestListView extends Region implements PropertyChangeListener {
 
     private AddressItem pickupObserver;
     private AddressItem deliveryObserver;
+    private RequestMapView requestMapView;
+    private RequestView requestView;
 
     public RequestListView(Controller controller) {
         this.controller = controller;
@@ -56,7 +61,9 @@ public class RequestListView extends Region implements PropertyChangeListener {
                 addressItems.add(deliveryItem);
             }
 
+
         }
+        activeHoverEvent();
     }
 
     public void renderOrdered(){
@@ -84,8 +91,11 @@ public class RequestListView extends Region implements PropertyChangeListener {
         Date finalDate = new Date((long) (depot.getDepartureTime().getTime() + tour.getTourDuration()*1000));
         item = new AddressItem(finalDate, 0, -2,"Depot",(index-1),false);
         addressItems.add(item);
+        activeHoverEvent();
 
     }
+
+
 
     public ObservableList<AddressItem> getAddressItems(){
         return addressItems;
@@ -96,9 +106,6 @@ public class RequestListView extends Region implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propertyName = evt.getPropertyName();
-        //System.out.println("------------");
-        //System.out.println(propertyName);
-        //System.out.println("------------");
         if(Objects.equals(propertyName, "tourUpdate")){
             this.tour = (Tour) evt.getNewValue();
             if(this.tour.getPath()!=null) {
@@ -135,5 +142,39 @@ public class RequestListView extends Region implements PropertyChangeListener {
             return new String[]{pickupObserver.getValue(), deliveryObserver.getValue()};
         }
         return null;
+    }
+
+    public void setRequestMapView(RequestMapView view) {
+        this.requestMapView = view;
+    }
+
+    public void setSelected(long requestId, String type) {
+        type = type.substring(0, 1).toUpperCase() + type.substring(1);
+        int index=0;
+        for(AddressItem item : addressItems){
+            if(item.getRequestNumber()==requestId && Objects.equals(item.getType(), type)){
+                requestView.setFirstFocus(item, index);
+            }
+            index++;
+        }
+    }
+
+    private void activeHoverEvent() {
+        for(AddressItem item : addressItems){
+            item.setOnMouseEntered(event->{
+                requestView.setHover(item);
+                requestMapView.hoverRequest(item.getRequestNumber());
+            });
+            item.setOnMouseExited(event->{
+                requestMapView.unHoverRequest(item.getRequestNumber());
+
+            });
+
+        }
+    }
+
+
+    public void setRequestView(RequestView requestView) {
+        this.requestView = requestView;
     }
 }

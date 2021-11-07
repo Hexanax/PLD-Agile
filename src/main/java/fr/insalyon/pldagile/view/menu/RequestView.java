@@ -12,18 +12,17 @@ import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 
 public class RequestView extends Region {
     protected static final String DELETE_REQUEST = "Delete Request";
     protected static final String ADD_REQUEST = "Add Request";
     protected static final String REDO = "Redo";
     protected static final String UNDO = "Undo";
-    private final Controller controller;
 
     private final ListView<AddressItem> requestList;
 
-    public RequestView(Controller controller){
-        this.controller = controller;
+    public RequestView(){
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
@@ -71,22 +70,14 @@ public class RequestView extends Region {
         return requestList;
     }
 
+    public void setFirstFocus(AddressItem item, int index) {
+        requestList.scrollTo(item);
+        requestList.getSelectionModel().select(index);
+       // requestList.getSelectionModel().getSelectedItem().setStyle("-fx-background-color: #3C8AFF");
 
-
-    private EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent e) {
-            if (e.getClickCount() == 2) {
-                controller.modifyClick(requestList.getSelectionModel().getSelectedItem().getRequestNumber(), requestList.getSelectionModel().getSelectedItem().getType(), requestList.getSelectionModel().getSelectedItem().getStepIndex());
-            }
-        }
-    };
-
-    public void activeRowListener() {
-        requestList.addEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
-    public void disableRowListener() {
-        requestList.removeEventHandler(MouseEvent.MOUSE_CLICKED, eventHandler);
+    public void setHover(AddressItem item) {
+        requestList.getSelectionModel().select(item);
     }
 }
