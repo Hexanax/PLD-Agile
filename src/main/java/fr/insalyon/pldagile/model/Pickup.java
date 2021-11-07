@@ -11,7 +11,7 @@ public class Pickup extends Address {
     public Pickup(Intersection intersection, int duration) {
         super(intersection);
         this.duration = duration;
-        this.arrivalTime = new Date();
+        this.arrivalTime = null;
     }
 
     public Pickup(){
@@ -27,6 +27,7 @@ public class Pickup extends Address {
     }
 
     public void setArrivalTime(int time) {
+        arrivalTime = new Date();
         arrivalTime.setTime(time);
     }
 

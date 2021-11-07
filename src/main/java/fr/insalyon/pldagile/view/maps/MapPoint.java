@@ -37,10 +37,12 @@ public class MapPoint {
     private double latitude, longitude;
     private long special_id, request_id;
     private int stepIndex;
+    private String type;
 
     public MapPoint(@NamedArg("latitude") double lat, @NamedArg("longitude") double lon) {
         this.latitude = lat;
         this.longitude = lon;
+        this.type = "Intersection";
         special_id=-1;
         request_id=-1;
         stepIndex=-1;
@@ -83,5 +85,11 @@ public class MapPoint {
         this.longitude = lon;
     }
 
+    public String getType() {
+        return type;
+    }
 
+    public void setType(String type) {
+        this.type = type;
+    }
 }

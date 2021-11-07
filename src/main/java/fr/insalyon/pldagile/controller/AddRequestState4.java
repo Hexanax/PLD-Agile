@@ -30,22 +30,37 @@ public class AddRequestState4 implements State{
 
     @Override
     public void modifyClick(Controller controller,PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
-        if(type=="Depot" && stepIndex!=0)
+        if(Objects.equals(type, "Depot") && stepIndex!=0)
         {
             window.addWarningStateFollow("You can't add a request after the arrival of the tour");
-        } else if(stepIndex < tour.getSteps().indexOf(planningRequest.getLastRequest().getId())) {
-            window.addWarningStateFollow("You can't add a request with delivery before pickups");
         }
         else {
 
             Request request = planningRequest.getLastRequest();
-            tour.addStep(stepIndex,new Pair<>(request.getId(), "delivery"));
-            Tour modify = new Tour(tour);
-            controller.setTour(modify);
+
+            if(id == request.getId() && type=="delivery"){
+                window.addWarningStateFollow( "You can't make the request after the request itself");
+            } else {
+                if(stepIndex==-1){
+                    if(type=="depot"){
+                        stepIndex =0;
+                    } else {
+                        Pair<Long, String> stepToFound = new Pair<Long, String>(id,type);
+                        stepIndex = tour.getSteps().indexOf(stepToFound);
+                    }
+                }
+
+                if(stepIndex<tour.getSteps().indexOf(new Pair<Long, String>(request.getId(),"pickup"))){
+                    window.addWarningStateFollow( "You can't make the delivery before the pickup");
+                } else {
+                    tour.addStep(stepIndex,new Pair<>(request.getId(), "delivery"));
+                    Tour modify = new Tour(tour);
+                    controller.setTour(modify);
 
 
-            controller.addRequest(null);
-
+                    controller.addRequest(null);
+                }
+            }
 
         }
     }
@@ -59,6 +74,6 @@ public class AddRequestState4 implements State{
         controller.setCurrentState(controller.addRequestState5);
         window.showCityMap();
         window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
-
+        window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
     }
 }

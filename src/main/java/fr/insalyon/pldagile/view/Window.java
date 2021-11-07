@@ -269,7 +269,7 @@ public class Window {
     public void addView() {
         hideTour();
         cityMapView.highlight();
-        renderOrderedList();
+        requestListView.renderUnordered();
     }
 
     public void mainView() {
@@ -294,5 +294,13 @@ public class Window {
 
     public void hideTour() {
         tourView.hide();
+    }
+
+    public void makeLastRequestAddedEditable(boolean editable, long id) {
+        requestListView.makeLastRequestAddedEditable(editable, id);
+    }
+
+    public String[] getEditableRequestDuration(){
+        return requestListView.getEditableDuration();
     }
 }

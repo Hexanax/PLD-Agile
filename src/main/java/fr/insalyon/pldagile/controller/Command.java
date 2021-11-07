@@ -11,4 +11,6 @@ public interface Command {
      * Execute the reverse command of this
      */
     void undoCommand();
+
+    void editRequestDuration(int pickupDuration, int deliveryDuration);
 }

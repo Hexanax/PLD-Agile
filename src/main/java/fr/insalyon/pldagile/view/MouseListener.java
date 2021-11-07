@@ -13,8 +13,6 @@ public class MouseListener {
     }
 
     public static void mouseClicked(MouseEvent event) {
-        //System.out.println(event.getTarget().getClass().getSimpleName());
-        //System.out.println(event);
         if(event.getButton() == MouseButton.PRIMARY){
             controller.confirm("");
         }

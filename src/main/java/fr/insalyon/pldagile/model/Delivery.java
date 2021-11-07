@@ -10,7 +10,7 @@ public class Delivery extends Address {
     public Delivery(Intersection intersection, int duration) {
         super(intersection);
         this.duration = duration;
-        this.arrivalTime = new Date();
+        this.arrivalTime = null;
     }
 
     public Delivery(){}
@@ -24,6 +24,7 @@ public class Delivery extends Address {
     }
 
     public void setArrivalTime(int time) {
+        arrivalTime=new Date();
         arrivalTime.setTime(time);
     }
 

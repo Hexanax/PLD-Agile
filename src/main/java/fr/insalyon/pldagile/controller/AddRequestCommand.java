@@ -88,4 +88,17 @@ public class AddRequestCommand implements Command {
 
         pcltour.setTour(tourBuilder.deleteRequest(cityMap, pcltour.getTour(), request));
     }
+
+    @Override
+    public void editRequestDuration(int pickupDuration, int deliveryDuration) {
+        request.getPickup().setDuration(pickupDuration);
+        request.getDelivery().setDuration(deliveryDuration);
+
+        Tour modifyTourDuration = new Tour(pcltour.getTour());
+
+        modifyTourDuration.reset();
+        modifyTourDuration = tourBuilder.computeTour(cityMap, modifyTourDuration, modifyTourDuration.getIntersections());
+        pcltour.setTour(modifyTourDuration);
+
+    }
 }

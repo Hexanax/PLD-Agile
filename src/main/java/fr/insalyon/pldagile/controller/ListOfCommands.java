@@ -66,4 +66,8 @@ public class ListOfCommands {
         currentIndex = -1;
         list.clear();
     }
+
+    public Command getLastCommand(){
+        return list.get(currentIndex);
+    }
 }

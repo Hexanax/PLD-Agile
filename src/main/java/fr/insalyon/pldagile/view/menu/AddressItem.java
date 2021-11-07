@@ -46,7 +46,7 @@ public class AddressItem extends Region {
             GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
 
-            if(!editable){
+            if(arrivalDate != null){
                 Label arrivalLabel = new Label("Arrival time : " + dateFormat.format(arrivalDate));
                 titleLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
                 maingp.add(arrivalLabel, 0, 1, 4, 1);
@@ -54,7 +54,7 @@ public class AddressItem extends Region {
                 GridPane.setMargin(arrivalLabel, new Insets(5, 5, 5, 0));
             }
 
-            Label timeLabel = new Label(type + " duration : "); //TODO Display time: dateFormat.format(pickupTime)
+            Label timeLabel = new Label(type + " duration : ");
             timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
             maingp.add(timeLabel, 0, 2, 1, 1);
             GridPane.setHalignment(timeLabel, HPos.LEFT);

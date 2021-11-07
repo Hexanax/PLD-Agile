@@ -25,6 +25,9 @@ public class RequestListView extends Region implements PropertyChangeListener {
 
     private MouseListener mouseListener;
 
+    private AddressItem pickupObserver;
+    private AddressItem deliveryObserver;
+
     public RequestListView(Controller controller) {
         this.controller = controller;
         this.planningRequest = controller.getPclPlanningRequest().getPlanningRequest();
@@ -44,12 +47,12 @@ public class RequestListView extends Region implements PropertyChangeListener {
         for(Request request : planningRequest.getRequests()){
             Pickup pickup = request.getPickup();
             if(pickup != null){
-                AddressItem pickupItem = new AddressItem(new Date(), pickup.getDuration(), request.getId(), "Pickup",-1, false);
+                AddressItem pickupItem = new AddressItem(null, pickup.getDuration(), request.getId(), "Pickup",-1, false);
                 addressItems.add(pickupItem);
             }
             Delivery delivery = request.getDelivery();
             if(delivery != null){
-                AddressItem deliveryItem = new AddressItem(new Date(), delivery.getDuration(), request.getId(), "Delivery",-1,false);
+                AddressItem deliveryItem = new AddressItem(null, delivery.getDuration(), request.getId(), "Delivery",-1,false);
                 addressItems.add(deliveryItem);
             }
 
@@ -109,4 +112,28 @@ public class RequestListView extends Region implements PropertyChangeListener {
     }
 
 
+    public void makeLastRequestAddedEditable(boolean editable , long id) {
+        for(AddressItem item : addressItems){
+            if(item.getRequestNumber() == id){
+                item.setEditable(editable);
+                if(editable) {
+                    if (item.getType() == "Pickup") {
+                        pickupObserver = item;
+                    } else {
+                        deliveryObserver = item;
+                    }
+                } else {
+                    pickupObserver = null;
+                    deliveryObserver = null;
+                }
+            }
+        }
+    }
+
+    public String[] getEditableDuration(){
+        if(pickupObserver !=null && deliveryObserver !=null){
+            return new String[]{pickupObserver.getValue(), deliveryObserver.getValue()};
+        }
+        return null;
+    }
 }

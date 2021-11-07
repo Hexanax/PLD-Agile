@@ -384,7 +384,7 @@ public class TourBuilderV2 {
         return depot.getIntersection().getId();
     }
 
-    private Tour computeTour(CityMap cityMap, Tour tour, List<Intersection> intersections){
+    public Tour computeTour(CityMap cityMap, Tour tour, List<Intersection> intersections){
 
         Map<Pair<Long,Long>,Segment> segments = cityMap.getSegments();
         Depot depot = tour.getDepot();

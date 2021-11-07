@@ -67,4 +67,17 @@ public class DeleteRequestCommand implements Command {
         pclTour.setTour(tourBuilder.addRequest(cityMap, tour, deletedRequest.getId()));
     }
 
+    @Override
+    public void editRequestDuration(int pickupDuration, int deliveryDuration) {
+        deletedRequest.getPickup().setDuration(pickupDuration);
+        deletedRequest.getDelivery().setDuration(deliveryDuration);
+
+        Tour modifyTourDuration = new Tour(pclTour.getTour());
+
+        modifyTourDuration.reset();
+        modifyTourDuration = tourBuilder.computeTour(cityMap, modifyTourDuration, modifyTourDuration.getIntersections());
+        pclTour.setTour(modifyTourDuration);
+
+    }
+
 }
