@@ -27,26 +27,13 @@
  */
 package fr.insalyon.pldagile.view.maps;
 
-import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.Hideable;
-import fr.insalyon.pldagile.view.menu.RequestItem;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.util.Pair;
-
-import java.util.ArrayList;
 
 /**
  * A layer that allows to visualise points of interest.
