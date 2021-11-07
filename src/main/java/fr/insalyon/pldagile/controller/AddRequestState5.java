@@ -29,7 +29,7 @@ public class AddRequestState5 implements State{
                 window.addStateFollow("Request suscesfully added");
                 controller.setCurrentState(controller.tourComputedState);
             } else {
-                window.addStateFollow("Wrong format, number must be a positive Integer, try again" );
+                window.addWarningStateFollow("Wrong format, number must be a positive Integer, try again" );
             }
 
         }
