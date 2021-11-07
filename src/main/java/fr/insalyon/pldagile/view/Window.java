@@ -57,6 +57,9 @@ public class Window {
         this.sidePanel = new SidePanel(controller);
         this.bottomPanel = new BottomPanel(controller);
 
+        requestMapView.setRequestListView(requestListView);
+        requestListView.setRequestMapView(requestMapView);
+
         //Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(requestMapView.getLayer());
@@ -66,18 +69,6 @@ public class Window {
 
     public static Stage getMainStage() {
         return mainStage;
-    }
-
-    public RequestMapView getRequestMapView() {
-        return requestMapView;
-    }
-
-    public CityMapView getCityMapView() {
-        return cityMapView;
-    }
-
-    public SidePanel getSidePanel() {
-        return sidePanel;
     }
 
     public void render(Stage stage) throws Exception {
@@ -145,6 +136,7 @@ public class Window {
             }
         }
 
+        requestListView.setRequestView(sidePanel.getRequestView());
         mainPane.getChildren().add(sidePanel);
     }
 
@@ -192,9 +184,6 @@ public class Window {
         }
     }
 
-
-
-
     public void addStateFollow(String message) {
         TextItem item = new TextItem(message, "#000000");
         LogView.addTextItem(item);
@@ -203,52 +192,6 @@ public class Window {
     public void addWarningStateFollow(String message) {
         TextItem item = new TextItem(message, "#FF0000");
         LogView.addTextItem(item);
-    }
-
-    public void setSelectingIntersection(boolean selectingIntersection) {
-        this.selectingIntersection = selectingIntersection;
-        if(selectingIntersection) {
-            cityMapView.setIntersectionColor(Colors.getMapIntersectionSelectColor());
-        } else {
-            cityMapView.setIntersectionColor(Colors.getMapIntersectionColor());
-        }
-    }
-
-    public boolean isSelectingIntersection(boolean selecting) {
-        return selectingIntersection;
-    }
-
-    /**
-     * Highlights request pins on click in request list
-     */
-    private EventHandler<MouseEvent> onRequestListItemClick = new EventHandler<MouseEvent>() {
-        @Override
-        public void handle(MouseEvent event) {
-            if (event.getClickCount() == 1) {
-                System.out.println("MouseEvent" + event);
-                if (sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem() != null) {
-                    System.out.println("condition");
-                    //requestMapView.getPlanningRequestPoints().highlightIcon(sidePanel.getRequestView().getRequestList().getSelectionModel().getSelectedItem().getRequestNumber()); //TODO Reimplement
-                }
-
-            }
-        }
-    };
-
-    //TODO : show in list selected request when selecting a pin on the map
-    private EventHandler<MouseEvent> onRequestPinClick = event -> {
-        if (event.getClickCount() == 1) {
-            System.out.println("MouseEvent" + event);
-            RequestMapPin rmp = (RequestMapPin) event.getTarget();
-            Long requestId = rmp.getRequestId();
-            RequestType type = rmp.getType();
-
-        }
-    };
-
-    public void activeItemListener() {
-        sidePanel.getRequestView().getRequestList().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestListItemClick);
-        requestMapView.getPlanningRequestPoints().addEventHandler(MouseEvent.MOUSE_CLICKED, onRequestPinClick);
     }
 
     public void deleteView() {

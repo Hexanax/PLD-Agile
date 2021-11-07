@@ -23,7 +23,6 @@ public class MapOverwrite1State implements State{
                 CityMap newCityMap = XMLDeserializer.load(importFile);
                 controller.setCityMap(newCityMap);
                 window.updateMapFileName(importFile.getName());
-                window.activeItemListener();
                 window.addStateFollow("New map loaded");
             }
         } catch(Exception e) {

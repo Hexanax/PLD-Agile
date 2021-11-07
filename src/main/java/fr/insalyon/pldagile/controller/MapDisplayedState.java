@@ -30,8 +30,7 @@ public class MapDisplayedState implements State{
                 window.addStateFollow("Loading the requests ...");
                 PlanningRequest newPlanningRequest = XMLDeserializer.load(cityMap, importFile);
                 controller.setPlanningRequest(newPlanningRequest);
-                window.updateRequestFileName(importFile.getName());
-                window.activeItemListener();
+                window.updateRequestFileName(importFile.getName());;
                 controller.setCurrentState(controller.requestsDisplayedState);
                 window.addStateFollow("Requests loaded");
             } else {

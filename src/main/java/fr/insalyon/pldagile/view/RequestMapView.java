@@ -3,17 +3,21 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
+import fr.insalyon.pldagile.view.menu.RequestListView;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
     private final PointLayer<ImageView> planningRequestPoints = new PointLayer<>();
     private final Controller controller;
     private PlanningRequest planningRequest;
+
+    private RequestListView requestListView;
 
     public RequestMapView(Controller controller) {
         this.controller = controller;
@@ -32,6 +36,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
             MapPoint depotPoint = new MapPoint(depotCoordinates.getLatitude(), depotCoordinates.getLongitude());
             depotPoint.setId(planningRequest.getDepot().getIntersection().getId());
             depotPoint.setType("depot");
+            depotPoint.setRequestId(-1);
             planningRequest.getRequests().forEach(request -> {
                 // Items in list
                 Pickup pickup = request.getPickup();
@@ -83,12 +88,43 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
             point.getValue().setOnMouseClicked(event -> {
                 controller.modifyClick(point.getKey().getRequestId(), point.getKey().getType(), point.getKey().getStepIndex());
             });
+
+
+            Pair<MapPoint, ImageView> neighbor = searchneighbor(point);
+            point.getValue().setOnMouseEntered(event -> {
+                ((ImageView) event.getTarget()).setScaleX(1.2);
+                ((ImageView) event.getTarget()).setScaleY(1.2);
+
+                if(neighbor!=null){
+                    neighbor.getValue().setScaleX(1.2);
+                    neighbor.getValue().setScaleY(1.2);
+                }
+
+
+                this.requestListView.setSelected(point.getKey().getRequestId(), point.getKey().getType());
+            });
+
+            point.getValue().setOnMouseExited(event -> {
+                ((ImageView) event.getTarget()).setScaleX(1.0);
+                ((ImageView) event.getTarget()).setScaleY(1.0);
+
+                if(neighbor!=null){
+                    neighbor.getValue().setScaleX(1.0);
+                    neighbor.getValue().setScaleY(1.0);
+                }
+            });
+
+
         }
     }
 
-    //TODO Inspect usage and maybe improve
-    public PointLayer<ImageView> getPlanningRequestPoints() {
-        return planningRequestPoints;
+    private Pair<MapPoint, ImageView> searchneighbor(Pair<MapPoint, ImageView> pointHover) {
+        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+            if(point.getKey().getRequestId() == pointHover.getKey().getRequestId() && pointHover.getKey().getType() != point.getKey().getType()){
+                return point;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -101,4 +137,26 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         planningRequestPoints.show();
     }
 
+    public void setRequestListView(RequestListView view) {
+        this.requestListView = view;
+    }
+
+    public void hoverRequest(long requestNumber) {
+        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+            if(point.getKey().getRequestId() == requestNumber){
+                point.getValue().setScaleX(1.2);
+                point.getValue().setScaleY(1.2);
+            }
+        }
+
+    }
+
+    public void unHoverRequest(long requestNumber) {
+        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+            if(point.getKey().getRequestId() == requestNumber){
+                point.getValue().setScaleX(1.0);
+                point.getValue().setScaleY(1.0);
+            }
+        }
+    }
 }
