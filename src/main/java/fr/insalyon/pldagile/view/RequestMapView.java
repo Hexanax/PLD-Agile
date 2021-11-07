@@ -19,7 +19,6 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         this.controller = controller;
         this.planningRequest = controller.getPclPlanningRequest().getPlanningRequest();
         controller.getPclPlanningRequest().addPropertyChangeListener(this);
-
     }
 
     @Override
@@ -37,7 +36,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                 Pickup pickup = request.getPickup();
                 Delivery delivery = request.getDelivery();
                 //Map points
-                if(pickup!=null) {
+                if (pickup != null) {
                     MapPoint mapPoint = new MapPoint(pickup.getIntersection().getCoordinates().getLatitude(), pickup.getIntersection().getCoordinates().getLongitude());
                     mapPoint.setId(pickup.getIntersection().getId());
                     mapPoint.setRequestId(request.getId());
@@ -47,7 +46,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                             new RequestMapPin(RequestType.PICKUP, request.getId())
                     );
                 }
-                if(delivery!=null){
+                if (delivery != null) {
                     MapPoint mapPoint = new MapPoint(delivery.getIntersection().getCoordinates().getLatitude(), delivery.getIntersection().getCoordinates().getLongitude());
                     mapPoint.setId(delivery.getIntersection().getId());
                     mapPoint.setRequestId(request.getId());
@@ -58,7 +57,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                     );
                 }
             });
-            planningRequestPoints.addPoint(depotPoint,  IconProvider.getDepotIcon());
+            planningRequestPoints.addPoint(depotPoint, new DepotMapPin());
         }
         activeRequestIntersectionsListener();
     }

@@ -59,9 +59,10 @@ public class Window {
 
         //Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());
-        mapView.addLayer(requestMapView.getLayer());
         mapView.addLayer(tourView.getTourLineLayer());
         mapView.addLayer(tourView.getTourPointLayer());
+        mapView.addLayer(tourView.getTourDirectionLayer());
+        mapView.addLayer(requestMapView.getLayer());
     }
 
     public static Stage getMainStage() {
@@ -191,9 +192,6 @@ public class Window {
             controller.confirm();
         }
     }
-
-
-
 
     public void addStateFollow(String message) {
         TextItem item = new TextItem(message, "#000000");

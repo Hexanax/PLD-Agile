@@ -38,6 +38,8 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -55,8 +57,13 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
 
     public PointLayer() { }
 
-    public void addPoint(MapPoint p, T icon) {
-        points.add(new Pair<>(p, icon));
+    public void addPoint(MapPoint mapPoint, T icon) {
+        addPoint(mapPoint, icon, null);
+    }
+
+    public void addPoint(MapPoint mapPoint, T icon, Effect effect) {
+        icon.setEffect(effect);
+        points.add(new Pair<>(mapPoint, icon));
         this.getChildren().add(icon);
         this.markDirty();
     }

@@ -4,7 +4,7 @@ package fr.insalyon.pldagile.view.maps;
 import javafx.scene.image.ImageView;
 
 public abstract class MapPin extends ImageView {
-    static protected double DEFAULT_ICON_SIZE = 35D;
+    protected static double DEFAULT_ICON_SIZE = 35D;
     protected double iconSize = DEFAULT_ICON_SIZE;
 
     /**

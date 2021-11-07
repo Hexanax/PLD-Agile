@@ -6,11 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 /**
  * A layer that allows to draw lines between two map points.
@@ -18,17 +21,21 @@ import java.awt.*;
 public class LineLayer extends MapLayer implements Hideable {
 
     private final ObservableList<Pair<MapDestination, Line>> lines = FXCollections.observableArrayList();
+    private final ArrayList<LineLayoutEffect> layoutEffects = new ArrayList<>();
 
-    public LineLayer() {
-        
+    public LineLayer() { }
+
+    public void addLineLayoutEffect(LineLayoutEffect lineLayoutEffect) {
+        layoutEffects.add(lineLayoutEffect);
     }
 
-    public void addLine(MapDestination mapDestination, Color color) {
+    public void addLine(MapDestination mapDestination, Color color, Effect effect, double strokeWidth) {
         Line line = new Line();
         line.setStroke(color);
-        line.setStrokeWidth(4);
+        line.setStrokeWidth(strokeWidth);
+        line.setEffect(effect);
         lines.add(new Pair<>(mapDestination, line));
-        this.getChildren().add(line); // TODO Reflect where to add the line node child the cleanest way
+        this.getChildren().add(line);
         this.markDirty();
     }
 
@@ -41,6 +48,7 @@ public class LineLayer extends MapLayer implements Hideable {
     @Override
     protected void layoutLayer() {
         for (Pair<MapDestination, Line> candidate : lines) {
+            //Render the line
             MapDestination destination = candidate.getKey();
             Line line = candidate.getValue();
             MapPoint start = destination.getStart();
@@ -53,6 +61,9 @@ public class LineLayer extends MapLayer implements Hideable {
             line.setEndX(endProjected.getX());
             line.setEndY(endProjected.getY());
             line.setVisible(true);
+
+            //Call the additional layout effects
+            layoutEffects.forEach(layoutEffect -> layoutEffect.layout(destination, line, startProjected, endProjected));
         }
     }
 

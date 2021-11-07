@@ -1,6 +1,5 @@
 package fr.insalyon.pldagile.view.maps;
 
-
 import fr.insalyon.pldagile.model.RequestType;
 import javafx.scene.image.Image;
 
@@ -10,12 +9,12 @@ public class RequestMapPin extends MapPin {
     private final String PICKUP_ICON_URL = "img/pickupPin/pickup@2x.png";
     private final String DELIVERY_ICON_URL = "img/deliveryPin/delivery@2x.png";
 
-    public RequestMapPin(RequestType type, Long requestId){
+    public RequestMapPin(RequestType type, Long requestId) {
         this.requestId = requestId;
         double iconSize = DEFAULT_ICON_SIZE;
         this.type = type;
         String imgURL, styleClass;
-        if (type.equals(RequestType.PICKUP)){
+        if (type.equals(RequestType.PICKUP)) {
             imgURL = PICKUP_ICON_URL;
             styleClass = "pickup-pin";
 
