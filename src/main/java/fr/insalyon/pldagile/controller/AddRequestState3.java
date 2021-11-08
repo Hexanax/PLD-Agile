@@ -19,9 +19,6 @@ public class AddRequestState3 implements State{
 
     @Override
     public void modifyClick(Controller controller,PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
-        System.out.println(id);
-        System.out.println(type);
-        System.out.println(stepIndex);
         if(Objects.equals(type, "Depot") && stepIndex!=0)
         {
             window.addWarningStateFollow( "You can't add a request after the arrival of the tour");

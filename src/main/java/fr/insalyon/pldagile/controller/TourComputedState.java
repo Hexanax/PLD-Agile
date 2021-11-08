@@ -44,7 +44,7 @@ public class TourComputedState implements State{
                 window.addStateFollow("Road Map rendered");
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            window.addWarningStateFollow(e.getMessage());
         }
 
     }
@@ -70,14 +70,23 @@ public class TourComputedState implements State{
 
     @Override
     public void undo(Controller controller, ListOfCommands listOfCdes, Window window) {
-        listOfCdes.undo();
-        window.addStateFollow("Undo");
+        try{
+            listOfCdes.undo();
+            window.addStateFollow("Undo");
+        } catch (Exception e) {
+            window.addWarningStateFollow(e.getMessage());
+        }
+
     }
 
     @Override
     public void redo(Controller controller, ListOfCommands listOfCdes, Window window) {
-        listOfCdes.redo();
-        window.addStateFollow("Redo");
+        try {
+            listOfCdes.redo();
+            window.addStateFollow("Redo");
+        } catch (Exception e) {
+            window.addWarningStateFollow(e.getMessage());
+        }
     }
 
     @Override

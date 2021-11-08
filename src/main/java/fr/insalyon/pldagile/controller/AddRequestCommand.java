@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
+import fr.insalyon.pldagile.tsp.ExceptionCityMap;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import javafx.util.Pair;
 
@@ -61,7 +62,7 @@ public class AddRequestCommand implements Command {
 
 
     @Override
-    public void doCommand() {
+    public void doCommand() throws ExceptionCityMap {
         if(delete){
             PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
             planningRequest.add(request, false);
@@ -80,7 +81,7 @@ public class AddRequestCommand implements Command {
     }
 
     @Override
-    public void undoCommand() {
+    public void undoCommand() throws ExceptionCityMap {
         delete = true;
         PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
         planningRequest.deleteLastRequest();
@@ -90,7 +91,7 @@ public class AddRequestCommand implements Command {
     }
 
     @Override
-    public void editRequestDuration(int pickupDuration, int deliveryDuration) {
+    public void editRequestDuration(int pickupDuration, int deliveryDuration) throws ExceptionCityMap {
         request.getPickup().setDuration(pickupDuration);
         request.getDelivery().setDuration(deliveryDuration);
 

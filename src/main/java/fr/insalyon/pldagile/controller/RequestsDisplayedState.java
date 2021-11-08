@@ -3,6 +3,7 @@ package fr.insalyon.pldagile.controller;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.model.Tour;
+import fr.insalyon.pldagile.tsp.ExceptionCityMap;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
 
@@ -31,9 +32,14 @@ public class RequestsDisplayedState implements State{
     public void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window) {
         window.addStateFollow("Tour calculation ...");
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
-        Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap);
-        controller.setTour(tour);
-        window.addStateFollow("Tour computed");
-        controller.setCurrentState(controller.tourComputedState);
+        try {
+            Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap);
+            controller.setTour(tour);
+            window.addStateFollow("Tour computed");
+            controller.setCurrentState(controller.tourComputedState);
+        } catch (ExceptionCityMap e) {
+            window.addWarningStateFollow(e.getMessage());
+        }
+
     }
 }

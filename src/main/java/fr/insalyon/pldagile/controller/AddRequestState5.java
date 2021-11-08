@@ -10,7 +10,11 @@ public class AddRequestState5 implements State{
 
     @Override
     public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        l.cancel();
+        try {
+            l.cancel();
+        }catch (Exception e) {
+            window.addWarningStateFollow(e.getMessage());
+        }
         window.addStateFollow("Add request cancel");
         controller.setCurrentState(controller.tourComputedState);
     }
@@ -24,10 +28,15 @@ public class AddRequestState5 implements State{
             if(validity(values[0]) && validity(values[1])){
                 int pickupDuration = Integer.parseInt(values[0]);
                 int deliveryDuration = Integer.parseInt(values[0]);
-                l.getLastCommand().editRequestDuration(pickupDuration, deliveryDuration);
-                window.makeLastRequestAddedEditable(false, planningRequest.getLastRequest().getId());
-                window.addStateFollow("Request suscesfully added");
-                controller.setCurrentState(controller.tourComputedState);
+                try {
+                    l.getLastCommand().editRequestDuration(pickupDuration, deliveryDuration);
+                    window.makeLastRequestAddedEditable(false, planningRequest.getLastRequest().getId());
+                    window.addStateFollow("Request suscesfully added");
+                    controller.setCurrentState(controller.tourComputedState);
+                } catch (Exception e) {
+                    window.addWarningStateFollow(e.getMessage());
+                    controller.cancel();
+                }
             } else {
                 window.addWarningStateFollow("Wrong format, number must be a positive Integer, try again" );
             }
@@ -68,7 +77,7 @@ public class AddRequestState5 implements State{
     @Override
     public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
         controller.confirm();
-        controller.loadRequests();
+        controller.addRequest();
     }
 
     @Override

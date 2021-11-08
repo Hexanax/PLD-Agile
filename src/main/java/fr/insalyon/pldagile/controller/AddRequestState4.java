@@ -13,7 +13,6 @@ public class AddRequestState4 implements State{
 
     @Override
     public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        //TODO display the tour
         long idRequestDelete = planningRequest.getLastRequest().getId();
         planningRequest.deleteLastRequest();
         PlanningRequest modify = new PlanningRequest(planningRequest);
@@ -39,7 +38,7 @@ public class AddRequestState4 implements State{
 
             Request request = planningRequest.getLastRequest();
 
-            if(id == request.getId() && type=="delivery"){
+            if(Objects.equals(id, request.getId()) && Objects.equals(type, "delivery")){
                 window.addWarningStateFollow( "You can't make the request after the request itself");
             } else {
                 boolean bufferClicks = false;
@@ -60,7 +59,6 @@ public class AddRequestState4 implements State{
                     Tour modify = new Tour(tour);
                     controller.setTour(modify);
 
-
                     controller.addRequest();
                     if(bufferClicks){
                         validClick = true;
@@ -76,13 +74,18 @@ public class AddRequestState4 implements State{
     @Override
     public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
 
+        try{
+            l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
 
-        l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
 
+            window.showCityMap();
+            window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
+            window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
+        } catch(Exception e) {
+            window.addWarningStateFollow(e.getMessage());
+            controller.cancel();
+        }
 
-        window.showCityMap();
-        window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
-        window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
     }
 
     private boolean validClick;

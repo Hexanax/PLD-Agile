@@ -13,9 +13,15 @@ public class DeleteRequestState1 implements State{
     public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window, ListOfCommands listOfCdes) {
         Request request = pcltour.getTour().getRequests().get(idRequest);
         if(request != null){
-            listOfCdes.add(new DeleteRequestCommand(citymap,pclPlanningRequest, pcltour,request));
+            try {
+                listOfCdes.add(new DeleteRequestCommand(citymap,pclPlanningRequest, pcltour,request));
+                window.addStateFollow("Suppresion successfully completed");
+            } catch(Exception e) {
+                window.addWarningStateFollow(e.getMessage());
+            }
+
             controller.setCurrentState(controller.tourComputedState);
-            window.addStateFollow("Suppresion successfully completed");
+
         } else {
             window.addWarningStateFollow("Request number unknown, please try again");
         }

@@ -10,7 +10,7 @@ public class TourBuilderV2 {
 
     private static SimulatedAnnealing simulatedAnnealing;
 
-    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap) {
+    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap) throws ExceptionCityMap {
 
         //List of ordered intersections to visit during the tour
         List<Long> tourIntersections = new ArrayList<>();
@@ -57,7 +57,7 @@ public class TourBuilderV2 {
     //TODO enhance
     //TODO replace dijskra
     //TODO test
-    public Tour deleteRequest(CityMap cityMap, Tour tour, Request request) {
+    public Tour deleteRequest(CityMap cityMap, Tour tour, Request request) throws ExceptionCityMap {
         Map<Long, Request> requests = tour.getRequests();
         Depot depot = tour.getDepot();
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
@@ -183,7 +183,7 @@ public class TourBuilderV2 {
     //TODO refactor
     //TODO test
     //TODO enhance
-    public Tour addRequest(CityMap cityMap, Tour tour, long planningRequestId) {
+    public Tour addRequest(CityMap cityMap, Tour tour, long planningRequestId) throws ExceptionCityMap {
 
         //Rebuild the tour
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
@@ -311,7 +311,7 @@ public class TourBuilderV2 {
         return depot.getIntersection().getId();
     }
 
-    public Tour computeTour(CityMap cityMap, Tour tour, List<Intersection> intersections){
+    public Tour computeTour(CityMap cityMap, Tour tour, List<Intersection> intersections) throws ExceptionCityMap {
 
         Map<Pair<Long,Long>,Segment> segments = cityMap.getSegments();
         Depot depot = tour.getDepot();
@@ -327,6 +327,10 @@ public class TourBuilderV2 {
         for(Intersection intersection : copyIntersections){
             long current = intersection.getId();
             Segment currentSegment = segments.get(new Pair<>(previous,current));
+            if(currentSegment == null){
+                throw new ExceptionCityMap("An address of a request is unreachable with the current loaded city map");
+            }
+
 
 
             tour.addSegment(currentSegment);
@@ -352,6 +356,29 @@ public class TourBuilderV2 {
         }
 
         return tour;
+    }
+
+    public boolean deadEndIntersection(CityMap cityMap, Long idIntersection){
+        boolean result = true;
+
+        Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
+
+        boolean origin = false;
+        boolean destination = false;
+        for ( Pair<Long, Long> intersections : segments.keySet() ) {
+            if(Objects.equals(intersections.getKey(), idIntersection)){
+                origin = true;
+            }
+            if(Objects.equals(intersections.getValue(), idIntersection)){
+                destination = true;
+            }
+        }
+
+        if(origin && destination){
+            result = false;
+        }
+
+        return result;
     }
 
 }

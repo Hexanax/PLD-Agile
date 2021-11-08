@@ -1,5 +1,7 @@
 package fr.insalyon.pldagile.controller;
 
+import fr.insalyon.pldagile.tsp.ExceptionCityMap;
+
 import java.util.LinkedList;
 
 public class ListOfCommands {
@@ -15,7 +17,7 @@ public class ListOfCommands {
      * Add command c to this
      * @param c the command to add
      */
-    public void add(Command c){
+    public void add(Command c) throws ExceptionCityMap {
         int i = currentIndex+1;
         while(i<list.size()){
             list.remove(i);
@@ -28,7 +30,7 @@ public class ListOfCommands {
     /**
      * Temporary remove the last added command (this command may be reinserted again with redo)
      */
-    public void undo(){
+    public void undo() throws ExceptionCityMap {
         if (currentIndex >= 0){
             Command cde = list.get(currentIndex);
             currentIndex--;
@@ -39,7 +41,7 @@ public class ListOfCommands {
     /**
      * Permanently remove the last added command (this command cannot be reinserted again with redo)
      */
-    public void cancel(){
+    public void cancel() throws ExceptionCityMap {
         if (currentIndex >= 0){
             Command cde = list.get(currentIndex);
             list.remove(currentIndex);
@@ -51,7 +53,7 @@ public class ListOfCommands {
     /**
      * Reinsert the last command removed by undo
      */
-    public void redo(){
+    public void redo() throws ExceptionCityMap {
         if (currentIndex < list.size()-1){
             currentIndex++;
             Command cde = list.get(currentIndex);
