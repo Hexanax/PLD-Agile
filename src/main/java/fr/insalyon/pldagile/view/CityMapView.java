@@ -40,8 +40,6 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
         });
     }
 
-
-
     @Override
     public void hide() {
         cityPointLayer.hide();

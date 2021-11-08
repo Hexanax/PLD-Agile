@@ -41,6 +41,7 @@ import javafx.util.Pair;
 public class PointLayer<T extends Node> extends MapLayer implements Hideable {
 
     private final ObservableList<Pair<MapPoint, T>> points = FXCollections.observableArrayList();
+    private boolean shown = true;
 
     public PointLayer() { }
 
@@ -51,8 +52,10 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
     public void addPoint(MapPoint mapPoint, T icon, Effect effect) {
         icon.setEffect(effect);
         points.add(new Pair<>(mapPoint, icon));
-        this.getChildren().add(icon);
-        this.markDirty();
+        if(shown) {
+            this.getChildren().add(icon);
+            this.markDirty();
+        }
     }
 
     public void clearPoints() {
@@ -81,12 +84,16 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
     public void hide() {
         this.getChildren().clear();
         this.markDirty();
+        shown = false;
     }
 
     @Override
     public void show() {
-        points.forEach(point -> this.getChildren().add(point.getValue()));
-        this.markDirty();
+        if(!shown) {
+            points.forEach(point -> this.getChildren().add(point.getValue()));
+            this.markDirty();
+            shown = true;
+        }
     }
 
 }

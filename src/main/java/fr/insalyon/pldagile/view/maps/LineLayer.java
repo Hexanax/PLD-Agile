@@ -22,6 +22,7 @@ public class LineLayer extends MapLayer implements Hideable {
 
     private final ObservableList<Pair<MapDestination, Line>> lines = FXCollections.observableArrayList();
     private final ArrayList<LineLayoutEffect> layoutEffects = new ArrayList<>();
+    private boolean shown = true;
 
     public LineLayer() { }
 
@@ -35,8 +36,10 @@ public class LineLayer extends MapLayer implements Hideable {
         line.setStrokeWidth(strokeWidth);
         line.setEffect(effect);
         lines.add(new Pair<>(mapDestination, line));
-        this.getChildren().add(line);
-        this.markDirty();
+        if(shown) {
+            this.getChildren().add(line);
+            this.markDirty();
+        }
     }
 
     public void clearPoints() {
@@ -71,12 +74,16 @@ public class LineLayer extends MapLayer implements Hideable {
     public void hide() {
         this.getChildren().clear();
         this.markDirty();
+        shown = false;
     }
 
     @Override
     public void show() {
-        lines.forEach(line -> this.getChildren().add(line.getValue()));
-        this.markDirty();
+        if(!shown) {
+            lines.forEach(line -> this.getChildren().add(line.getValue()));
+            this.markDirty();
+            shown = true;
+        }
     }
 
 }
