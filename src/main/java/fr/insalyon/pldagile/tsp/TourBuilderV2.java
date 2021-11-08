@@ -319,9 +319,13 @@ public class TourBuilderV2 {
         ArrayList<Pair<Long, String>> steps = tour.getSteps();
         List<Intersection> copyIntersections = new ArrayList<>(intersections);
 
+        if(intersections.get(0).getId()!= intersections.get(intersections.size()-1).getId() || intersections.get(0).getId() != depot.getIntersection().getId()){
+            throw new ExceptionCityMap("An address of a request is unreachable with the current loaded city map");
+        }
+
+
         int stepIndex = 1;
         long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(stepIndex));
-
         long previous = copyIntersections.get(0).getId();
         copyIntersections.remove(0);
         for(Intersection intersection : copyIntersections){
@@ -380,5 +384,6 @@ public class TourBuilderV2 {
 
         return result;
     }
+
 
 }

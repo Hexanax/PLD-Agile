@@ -101,6 +101,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
     public void activeMapIntersectionsListener() {
         for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
             point.getValue().setOnMouseClicked(event-> {
+                System.out.println(point.getKey().getId());
                 controller.intersectionClick(point.getKey().getId());
             });
         }
