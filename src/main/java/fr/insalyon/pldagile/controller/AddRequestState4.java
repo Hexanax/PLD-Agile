@@ -18,6 +18,7 @@ public class AddRequestState4 implements State {
 
     @Override
     public synchronized void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        System.out.println("Cancelled called " + System.currentTimeMillis());
         long idRequestDelete = planningRequest.getLastRequest().getId();
         planningRequest.deleteLastRequest();
         PlanningRequest modify = new PlanningRequest(planningRequest);
@@ -34,6 +35,7 @@ public class AddRequestState4 implements State {
 
     @Override
     public synchronized void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
+        System.out.println("Modify click called " + System.currentTimeMillis());
 //        System.out.println("Called modify click");
 //        System.out.println("Is locked = " + reentrantLock.isLocked());
 //        System.out.println("Lock held by current thread = " + reentrantLock.isHeldByCurrentThread());
@@ -83,8 +85,10 @@ public class AddRequestState4 implements State {
             window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
             isProcessingRequest.set(false);
         } catch (Exception e) {
+            System.out.println("Exception caught");
+            e.printStackTrace();
             window.addWarningStateFollow(e.getMessage());
-            controller.cancel();
+            //controller.cancel();
         }
     }
 

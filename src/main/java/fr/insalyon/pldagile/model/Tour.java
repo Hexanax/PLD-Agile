@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Tour {
     private final double SPEED_KMH = 15.0;
@@ -18,7 +17,7 @@ public class Tour {
     private Map<Long,Request> requests;
     private List<Segment> path;
     private List<Intersection> intersections;
-    private CopyOnWriteArrayList<Pair<Long, String>> stepsIdentifiers;
+    private ArrayList<Pair<Long, String>> stepsIdentifiers;
     private Depot depot;
     private double pickupsDuration;
     private double deliveriesDuration;
@@ -54,7 +53,7 @@ public class Tour {
         this.deliveriesDuration = tour.deliveriesDuration;
         this.travelsDuration = tour.travelsDuration;
         this.length = tour.length;
-        this.stepsIdentifiers = new CopyOnWriteArrayList<>(tour.stepsIdentifiers);
+        this.stepsIdentifiers = new ArrayList<>(tour.stepsIdentifiers);
         this.nextRequestId = tour.nextRequestId;
     }
 
@@ -63,7 +62,7 @@ public class Tour {
         return requests;
     }
 
-    public CopyOnWriteArrayList<Pair<Long,String>> getSteps(){return stepsIdentifiers;}
+    public synchronized ArrayList<Pair<Long,String>> getSteps(){ return stepsIdentifiers; }
     public List<Segment> getPath() {
         return path;
     }
@@ -124,7 +123,7 @@ public class Tour {
         this.depot = depot;
     }
 
-    public void setStepsIdentifiers(CopyOnWriteArrayList<Pair<Long,String>> stepsIdentifiers) {this.stepsIdentifiers = stepsIdentifiers;}
+    public synchronized void setStepsIdentifiers(ArrayList<Pair<Long,String>> stepsIdentifiers) {this.stepsIdentifiers = stepsIdentifiers;}
 
     public void setIntersections(List<Intersection> intersections) {
         this.intersections = new ArrayList<Intersection>(intersections);}
@@ -141,7 +140,7 @@ public class Tour {
     }
 
     public synchronized void addStep(int index, Pair<Long, String> step) {
-        CopyOnWriteArrayList<Pair<Long, String>> newSteps = new CopyOnWriteArrayList<>();
+        ArrayList<Pair<Long, String>> newSteps = new ArrayList<>();
 
         int currentIndex = 0;
         for(Pair<Long, String> stepIdentify : this.stepsIdentifiers){

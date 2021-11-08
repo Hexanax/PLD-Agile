@@ -5,7 +5,6 @@ import fr.insalyon.pldagile.tsp.Dijkstra;
 import javafx.util.Pair;
 
 import java.util.*;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TourBuilderV2 {
 
@@ -191,7 +190,7 @@ public class TourBuilderV2 {
         Depot depot = tour.getDepot();
         List<Intersection> intersections = tour.getIntersections();
         List<Intersection> newIntersections = new ArrayList<>();
-        CopyOnWriteArrayList<Pair<Long,String>> steps = tour.getSteps();
+        ArrayList<Pair<Long,String>> steps = tour.getSteps();
 
         Map<Long, Request> requests = tour.getRequests();
         Request request = requests.get(planningRequestId);
@@ -317,7 +316,7 @@ public class TourBuilderV2 {
         Map<Pair<Long,Long>,Segment> segments = cityMap.getSegments();
         Depot depot = tour.getDepot();
         Map<Long, Request> requests = tour.getRequests();
-        CopyOnWriteArrayList<Pair<Long, String>> steps = tour.getSteps();
+        ArrayList<Pair<Long, String>> steps = tour.getSteps();
         List<Intersection> copyIntersections = new ArrayList<>(intersections);
 
         if(intersections.get(0).getId()!= intersections.get(intersections.size()-1).getId() || intersections.get(0).getId() != depot.getIntersection().getId()){

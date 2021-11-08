@@ -21,7 +21,7 @@ public class AddRequestState5 implements State{
     @Override
     public synchronized void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         String[] values = window.getEditableRequestDuration();
-        if(values == null){
+        if(values == null) {
             window.addWarningStateFollow("Error : duration can't be null");
         } else {
             if(validity(values[0]) && validity(values[1])){
