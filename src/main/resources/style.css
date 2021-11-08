@@ -56,18 +56,28 @@
 .requests-list{
     -fx-border-radius: 0px;
 }
+
+.requests-list .scroll-bar:horizontal .increment-arrow,
+.requests-list .scroll-bar:horizontal .decrement-arrow,
+.requests-list .scroll-bar:horizontal .increment-button,
+.requests-list .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}
+
 .side-panel{
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 32px;
-    -fx-background-color: #FFFFFF;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 22, 0, 4, 22);
     -fx-max-width: 350px;
     -fx-padding: 24px 0px 24px 0px;
 
 }
+.side-panel-vbox{
+    -fx-background-color: #FFFFFF;
+}
 
 .side-panel-section{
-    /* must be equal or under the width of the side panel (300px) */
+    /* must be equal or under the width of the side panel */
     -fx-max-width: 350px;
     -fx-padding: 0px 24px 0px 24px;
 }

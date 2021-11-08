@@ -1,18 +1,14 @@
 package fr.insalyon.pldagile.view.menu;
 
-import fr.insalyon.pldagile.controller.Controller;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.paint.Color;
 
 public class RequestView extends Region {
     protected static final String DELETE_REQUEST = "Delete Request";
@@ -25,6 +21,7 @@ public class RequestView extends Region {
     public RequestView(){
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("side-panel-section");
+        gridPane.setPrefWidth(Double.POSITIVE_INFINITY);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(16);
         gridPane.setVgap(16);
@@ -38,8 +35,10 @@ public class RequestView extends Region {
         // List of steps
         requestList = new ListView<>();
         requestList.getStyleClass().add("requests-list");
+        requestList.setPrefWidth(Double.POSITIVE_INFINITY);
         requestList.setOrientation(Orientation.VERTICAL);
-        requestList.setMaxHeight(200D);
+
+        // requestList.setMaxHeight(200D);
         gridPane.add(requestList, 0, 1, 2, 1);
 
         Button addRequest = new Button(ADD_REQUEST);
