@@ -17,7 +17,7 @@ public class AddRequestState4 implements State {
     private boolean done = false;
 
     @Override
-    public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+    public synchronized void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         long idRequestDelete = planningRequest.getLastRequest().getId();
         planningRequest.deleteLastRequest();
         PlanningRequest modify = new PlanningRequest(planningRequest);
@@ -39,45 +39,43 @@ public class AddRequestState4 implements State {
 //        System.out.println("Lock held by current thread = " + reentrantLock.isHeldByCurrentThread());
 //        reentrantLock.lock();
 //        System.out.println("Done = " + done);
-            validClick = false;
-            if (Objects.equals(type, "Depot") && stepIndex != 0) {
-                window.addWarningStateFollow("You can't add a request after the arrival of the tour");
+        validClick = false;
+        if (Objects.equals(type, "Depot") && stepIndex != 0) {
+            window.addWarningStateFollow("You can't add a request after the arrival of the tour");
+        } else {
+            Request request = planningRequest.getLastRequest();
+            if (Objects.equals(id, request.getId()) && Objects.equals(type, "delivery")) {
+                window.addWarningStateFollow("You can't make the request after the request itself");
             } else {
-                Request request = planningRequest.getLastRequest();
-                if (Objects.equals(id, request.getId()) && Objects.equals(type, "delivery")) {
-                    window.addWarningStateFollow("You can't make the request after the request itself");
-                } else {
-                    boolean bufferClicks = false;
-                    if (stepIndex == -1) {
-                        bufferClicks = true;
-                        if (type.equals("depot")) {
-                            stepIndex = 0;
-                        } else {
-                            Pair<Long, String> stepToFound = new Pair<Long, String>(id, type);
-                            stepIndex = tour.getSteps().indexOf(stepToFound);
-                        }
-                    }
-                    if (stepIndex < tour.getSteps().indexOf(new Pair<Long, String>(request.getId(), "pickup"))) {
-                        window.addWarningStateFollow("You can't make the delivery before the pickup");
+                boolean bufferClicks = false;
+                if (stepIndex == -1) {
+                    bufferClicks = true;
+                    if (type.equals("depot")) {
+                        stepIndex = 0;
                     } else {
-                        tour.addStep(stepIndex, new Pair<>(request.getId(), "delivery"));
-                        //Tour modify = new Tour(tour);
-                        //controller.setTour(modify); //CRASH HERE => RequestListView propertyChange => renderOrdered
-                        controller.addRequest();
-                        if (bufferClicks) {
-                            validClick = true;
-                        } else {
-                            controller.setCurrentState(controller.addRequestState5);
-                        }
+                        Pair<Long, String> stepToFound = new Pair<Long, String>(id, type);
+                        stepIndex = tour.getSteps().indexOf(stepToFound);
+                    }
+                }
+                if (stepIndex < tour.getSteps().indexOf(new Pair<>(request.getId(), "pickup"))) {
+                    window.addWarningStateFollow("You can't make the delivery before the pickup");
+                } else {
+                    tour.addStep(stepIndex, new Pair<>(request.getId(), "delivery"));
+                    controller.addRequest();
+                    if (bufferClicks) {
+                        validClick = true;
+                    } else {
+                        controller.setCurrentState(controller.addRequestState5);
                     }
                 }
             }
+        }
 //            done = true;
 //            reentrantLock.unlock();
     }
 
     @Override
-    public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
+    public synchronized void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
         try {
             l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
             window.mainView();
@@ -93,7 +91,7 @@ public class AddRequestState4 implements State {
     private boolean validClick;
 
     @Override
-    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+    public synchronized void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         if (validClick) {
             validClick = false;
             controller.setCurrentState(controller.addRequestState5);

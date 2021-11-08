@@ -7,6 +7,7 @@ import fr.insalyon.pldagile.model.Request;
 import javafx.util.Pair;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SimulatedAnnealing { //TODO ideally, planningRequest is updated with the new order.
 
@@ -25,12 +26,12 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
     //The steps the Traveling Salesman has to visit
     private PlanningRequest planningRequest;
 
-    private ArrayList<Pair<Long, String>> stepsIdentifiers;
-    private ArrayList<Long> stepsIntersectionId;
+    private CopyOnWriteArrayList<Pair<Long, String>> stepsIdentifiers;
+    private CopyOnWriteArrayList<Long> stepsIntersectionId;
 
     //used for the revert function
-    private ArrayList<Pair<Long, String>> oldStepsIdentifiers;
-    private ArrayList<Long> oldIntersectionIds;
+    private CopyOnWriteArrayList<Pair<Long, String>> oldStepsIdentifiers;
+    private CopyOnWriteArrayList<Long> oldIntersectionIds;
 
 
 
@@ -38,8 +39,8 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         this.planningRequest = planningRequest;
         this.cityMapGraph = cityMapGraph;
         this.bestPaths = new HashMap<>();
-        this.stepsIdentifiers = new ArrayList<>();
-        this.stepsIntersectionId = new ArrayList<>();
+        this.stepsIdentifiers = new CopyOnWriteArrayList<>();
+        this.stepsIntersectionId = new CopyOnWriteArrayList<>();
         computeAllShortestPaths();
         runSimulatedAnnealing(temperature,numberOfIterations,coolingRate);
     }
@@ -114,8 +115,8 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         for (int i = 0; i < numberOfIterations; i++) {
             if (t > 0.1) {
                 //Store the old values to revert the swap if it's not suitable
-                oldStepsIdentifiers = (ArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
-                oldIntersectionIds = (ArrayList<Long>) stepsIntersectionId.clone();
+                oldStepsIdentifiers = (CopyOnWriteArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
+                oldIntersectionIds = (CopyOnWriteArrayList<Long>) stepsIntersectionId.clone();
                 do {
                     int stepsSize = stepsIntersectionId.size();
                     //Generates random number between zero and stepsSize-1
@@ -164,7 +165,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
     public boolean swapSteps(int swapFirstIndex, int swapSecondIndex) {
 
 
-        ArrayList<Pair<Long, String>> cloneIdentifier = (ArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
+        CopyOnWriteArrayList<Pair<Long, String>> cloneIdentifier = (CopyOnWriteArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
         int stepsSize = stepsIntersectionId.size();
         //int swapFirstIndex = 1 + (int) (Math.random() * stepsSize);
         //int swapSecondIndex = 1 + (int) (Math.random() * stepsSize);
@@ -235,7 +236,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
      * @param oldStepsIdentifiers
      * @param oldIntersectionIds
      */
-    public void revertSwapSteps(ArrayList<Pair<Long,String>> oldStepsIdentifiers, ArrayList<Long> oldIntersectionIds) {
+    public void revertSwapSteps(CopyOnWriteArrayList<Pair<Long,String>> oldStepsIdentifiers, CopyOnWriteArrayList<Long> oldIntersectionIds) {
         stepsIdentifiers = oldStepsIdentifiers;
         stepsIntersectionId = oldIntersectionIds;
     }
@@ -250,7 +251,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
      *
      * @return ArrayList of ordered steps Pairs(RequestId, typeOfRequest)
      */
-    public ArrayList<Pair<Long, String>> getStepsIdentifiers() {
+    public CopyOnWriteArrayList<Pair<Long, String>> getStepsIdentifiers() {
         return stepsIdentifiers;
     }
 
@@ -258,7 +259,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
      *
      * @return ArrayList of ordered steps intersection Ids
      */
-    public ArrayList<Long> getStepsIntersectionId() {
+    public CopyOnWriteArrayList<Long> getStepsIntersectionId() {
         return stepsIntersectionId;
     }
 

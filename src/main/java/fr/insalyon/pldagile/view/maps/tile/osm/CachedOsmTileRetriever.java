@@ -43,7 +43,7 @@ public class CachedOsmTileRetriever extends OsmTileRetriever {
 
     private static final Logger logger = Logger.getLogger(CachedOsmTileRetriever.class.getName());
     private static final int TIMEOUT = 10000;
-    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(2, new DaemonThreadFactory());
+    private static final ExecutorService EXECUTOR = Executors.newFixedThreadPool(8, new DaemonThreadFactory());
 
     static File cacheRoot;
     static boolean hasFileCache;
