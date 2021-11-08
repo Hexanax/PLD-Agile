@@ -86,21 +86,18 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
     public void activeRequestIntersectionsListener() {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             point.getValue().setOnMouseClicked(event -> {
+                if (event.getClickCount() > 1) return; //TODO Check usage
                 controller.modifyClick(point.getKey().getRequestId(), point.getKey().getType(), point.getKey().getStepIndex());
             });
-
 
             Pair<MapPoint, Node> neighbor = searchneighbor(point);
             point.getValue().setOnMouseEntered(event -> {
                 ((Node) event.getTarget()).setScaleX(1.2);
                 ((Node) event.getTarget()).setScaleY(1.2);
-
-                if(neighbor!=null){
+                if (neighbor != null) {
                     neighbor.getValue().setScaleX(1.2);
                     neighbor.getValue().setScaleY(1.2);
                 }
-
-
                 this.requestListView.setSelected(point.getKey().getRequestId(), point.getKey().getType());
             });
 
@@ -108,19 +105,17 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                 ((Node) event.getTarget()).setScaleX(1.0);
                 ((Node) event.getTarget()).setScaleY(1.0);
 
-                if(neighbor!=null){
+                if (neighbor != null) {
                     neighbor.getValue().setScaleX(1.0);
                     neighbor.getValue().setScaleY(1.0);
                 }
             });
-
-
         }
     }
 
     private Pair<MapPoint, Node> searchneighbor(Pair<MapPoint, Node> pointHover) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
-            if(point.getKey().getRequestId() == pointHover.getKey().getRequestId() && pointHover.getKey().getType() != point.getKey().getType()){
+            if (point.getKey().getRequestId() == pointHover.getKey().getRequestId() && pointHover.getKey().getType() != point.getKey().getType()) {
                 return point;
             }
         }
@@ -143,17 +138,16 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
     public void hoverRequest(long requestNumber) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
-            if(point.getKey().getRequestId() == requestNumber){
+            if (point.getKey().getRequestId() == requestNumber) {
                 point.getValue().setScaleX(1.2);
                 point.getValue().setScaleY(1.2);
             }
         }
-
     }
 
     public void unHoverRequest(long requestNumber) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
-            if(point.getKey().getRequestId() == requestNumber){
+            if (point.getKey().getRequestId() == requestNumber) {
                 point.getValue().setScaleX(1.0);
                 point.getValue().setScaleY(1.0);
             }
