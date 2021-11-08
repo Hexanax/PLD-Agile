@@ -82,11 +82,11 @@ public class AddRequestCommand implements Command {
 
     @Override
     public void undoCommand() throws ExceptionCityMap {
+        System.out.println("Undo command for the add request");
         delete = true;
         PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
         planningRequest.deleteLastRequest();
         pclPlanningRequest.setPlanningRequest(planningRequest);
-
         pcltour.setTour(tourBuilder.deleteRequest(cityMap, pcltour.getTour(), request));
     }
 

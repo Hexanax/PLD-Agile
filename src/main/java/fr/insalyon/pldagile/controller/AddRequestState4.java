@@ -8,7 +8,7 @@ import javafx.util.Pair;
 
 import java.util.Objects;
 
-public class AddRequestState4 implements State{
+public class AddRequestState4 implements State {
 
 
     @Override
@@ -22,77 +22,66 @@ public class AddRequestState4 implements State{
         Tour modifyTour = new Tour(tour);
         controller.setTour(modifyTour);
 
-        window.showCityMap();
+        window.mainView();
         window.addStateFollow("Add request cancel");
         controller.setCurrentState(controller.tourComputedState);
     }
 
     @Override
-    public void modifyClick(Controller controller,PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
-        validClick =false;
-        if(Objects.equals(type, "Depot") && stepIndex!=0)
-        {
+    public void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
+        validClick = false;
+        if (Objects.equals(type, "Depot") && stepIndex != 0) {
             window.addWarningStateFollow("You can't add a request after the arrival of the tour");
-        }
-        else {
-
+        } else {
             Request request = planningRequest.getLastRequest();
-
-            if(Objects.equals(id, request.getId()) && Objects.equals(type, "delivery")){
-                window.addWarningStateFollow( "You can't make the request after the request itself");
+            if (Objects.equals(id, request.getId()) && Objects.equals(type, "delivery")) {
+                window.addWarningStateFollow("You can't make the request after the request itself");
             } else {
                 boolean bufferClicks = false;
-                if(stepIndex==-1){
+                if (stepIndex == -1) {
                     bufferClicks = true;
-                    if(type=="depot"){
-                        stepIndex =0;
+                    if (type.equals("depot")) {
+                        stepIndex = 0;
                     } else {
-                        Pair<Long, String> stepToFound = new Pair<Long, String>(id,type);
+                        Pair<Long, String> stepToFound = new Pair<Long, String>(id, type);
                         stepIndex = tour.getSteps().indexOf(stepToFound);
                     }
                 }
-
-                if(stepIndex<tour.getSteps().indexOf(new Pair<Long, String>(request.getId(),"pickup"))){
-                    window.addWarningStateFollow( "You can't make the delivery before the pickup");
+                if (stepIndex < tour.getSteps().indexOf(new Pair<Long, String>(request.getId(), "pickup"))) {
+                    window.addWarningStateFollow("You can't make the delivery before the pickup");
                 } else {
-                    tour.addStep(stepIndex,new Pair<>(request.getId(), "delivery"));
+                    tour.addStep(stepIndex, new Pair<>(request.getId(), "delivery"));
                     Tour modify = new Tour(tour);
                     controller.setTour(modify);
-
                     controller.addRequest();
-                    if(bufferClicks){
+                    if (bufferClicks) {
                         validClick = true;
                     } else {
                         controller.setCurrentState(controller.addRequestState5);
                     }
                 }
             }
-
         }
     }
 
     @Override
     public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
-
-        try{
+        try {
             l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
-
-
-            window.showCityMap();
+            window.mainView();
             window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
             window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
-        } catch(Exception e) {
+        } catch (Exception e) {
             window.addWarningStateFollow(e.getMessage());
             controller.cancel();
         }
-
     }
 
     private boolean validClick;
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        if(validClick){
+        if (validClick) {
             validClick = false;
             controller.setCurrentState(controller.addRequestState5);
         }
