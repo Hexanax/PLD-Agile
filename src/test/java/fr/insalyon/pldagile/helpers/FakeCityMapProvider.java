@@ -41,7 +41,7 @@ public abstract class FakeCityMapProvider {
         for (Intersection i : intersections) {
             cityMap.add(i);
         }
-        cityMap.addAll(List.of(segments));
+        cityMap.addAllSegments(List.of(segments));
         return cityMap;
     }
 
@@ -67,7 +67,7 @@ public abstract class FakeCityMapProvider {
         for (Intersection i : intersections) {
             cityMap.add(i);
         }
-        cityMap.addAll(List.of(segments));
+        cityMap.addAllSegments(List.of(segments));
         return cityMap;
     }
 }

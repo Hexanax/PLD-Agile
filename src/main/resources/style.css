@@ -90,10 +90,25 @@
     -fx-scale-x: 0.9;
 }
 
+.pickup-request-id{
+    -fx-font-family: Roboto;
+    -fx-font-size: 10px;
+    -fx-font-style: normal;
+    -fx-align-items: center;
+    -fx-text-fill: #002153;
+}
+
 .delivery-pin:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(255, 111, 66, 1), 24, 0, -4, 0);
 }
 .delivery-pin:pressed {
     -fx-scale-y: 0.9;
     -fx-scale-x: 0.9;
+}
+.delivery-request-id{
+    -fx-font-family: Roboto;
+    -fx-font-size: 10px;
+    -fx-font-style: normal;
+    -fx-align-items: center;
+    -fx-text-fill: #532800;
 }
