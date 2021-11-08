@@ -40,7 +40,6 @@ public class AddRequestState3 implements State{
                 Tour modify = new Tour(tour);
                 controller.setTour(modify);
                 window.addStateFollow("Pickup previous address selected, Now left click on the depot, pickup or delivery visiting before the pickup");
-                window.hideTour();
                 controller.setCurrentState(controller.addRequestState4);
             }
         }

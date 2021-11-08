@@ -74,6 +74,7 @@ public class TourComputedState implements State{
             listOfCdes.undo();
             window.addStateFollow("Undo");
         } catch (Exception e) {
+            e.printStackTrace();
             window.addWarningStateFollow(e.getMessage());
         }
 

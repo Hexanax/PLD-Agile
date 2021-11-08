@@ -20,6 +20,7 @@ public class DeleteRequestState1 implements State{
                 window.addWarningStateFollow(e.getMessage());
             }
 
+            window.mainView();
             controller.setCurrentState(controller.tourComputedState);
 
         } else {

@@ -55,13 +55,17 @@ public class XMLDeserializer {
      * @param rootNode the root element of the XML map file
      * @throws ExceptionXML
      */
-    private static CityMap buildFromDOMXML(Element rootNode) throws ExceptionXML, CloneNotSupportedException {
+    private static CityMap buildFromDOMXML(Element rootNode) throws ExceptionXML {
         CityMap newCityMap = new CityMap();
+
+        //build intersections
         NodeList intersectionsList = rootNode.getElementsByTagName("intersection");
         for (int i = 0; i < intersectionsList.getLength(); i++) {
             Intersection intersection = createIntersection((Element) intersectionsList.item(i));
             newCityMap.add(intersection);
         }
+
+        //build segments
         NodeList segmentsList = rootNode.getElementsByTagName("segment");
         for (int i = 0; i < segmentsList.getLength(); i++) {
             Segment segment = createSegment((Element) segmentsList.item(i), newCityMap.getIntersections());
@@ -152,6 +156,8 @@ public class XMLDeserializer {
      */
     private static PlanningRequest buildFromDOMXML(Element rootNode, CityMap map) throws ExceptionXML, ParseException {
         PlanningRequest planningRequest = new PlanningRequest();
+
+        //build the depot
         NodeList depotNodeList = rootNode.getElementsByTagName("depot");
         if (depotNodeList.getLength() != 1) {
             throw new ExceptionXML("Error when reading file : Depot is undefined");
@@ -160,6 +166,7 @@ public class XMLDeserializer {
         Depot depot = createDepot((Element) depotNodeList.item(0), intersections);
         planningRequest.add(depot);
 
+        //build requests
         NodeList requests = rootNode.getElementsByTagName("request");
         for (int i = 0; i < requests.getLength(); i++) {
             planningRequest.add(createRequest((Element) requests.item(i), intersections));
@@ -240,6 +247,7 @@ public class XMLDeserializer {
             throw new ExceptionXML("Error file is null");
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+        //Initialize the Dom element
         Document document = docBuilder.parse(xmlFile);
         return document.getDocumentElement();
     }

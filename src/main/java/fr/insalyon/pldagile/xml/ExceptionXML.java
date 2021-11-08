@@ -8,8 +8,15 @@ package fr.insalyon.pldagile.xml;
  */
 public class ExceptionXML extends Exception {
 
+    /**
+     * version number
+     */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Constructor use to create a xml exeption with a specific message
+     * @param message the error message that is throwed
+     */
     public ExceptionXML(String message) {
         super(message);
     }

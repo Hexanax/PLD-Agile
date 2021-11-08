@@ -51,8 +51,6 @@ public class AddRequestState4 implements State {
                     window.addWarningStateFollow("You can't make the delivery before the pickup");
                 } else {
                     tour.addStep(stepIndex, new Pair<>(request.getId(), "delivery"));
-                    Tour modify = new Tour(tour);
-                    controller.setTour(modify);
                     controller.addRequest();
                     if (bufferClicks) {
                         validClick = true;

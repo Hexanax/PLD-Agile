@@ -2,48 +2,38 @@ package fr.insalyon.pldagile.xml;
 
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.ClasspathLoader;
-import com.mitchellbosecke.pebble.loader.FileLoader;
-import com.mitchellbosecke.pebble.loader.StringLoader;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import javafx.util.Pair;
-import org.apache.log4j.PropertyConfigurator;
 
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
+/**
+ * This class allows to save the raod map of a tour in a .html file using the Pebble java template based on Twig the equivalent in PHP.
+ * <a href="https://pebbletemplates.io/"> pebbletemplates </a>
+ */
 public class HTMLSerializer {
-    public static void renderHTMLroadMap(Tour tour, File html) throws IOException, TransformerConfigurationException {
 
-
-
-
+    /**
+     * Allows by using Pebble to compile the informations of the Tour we need to create the road map
+     * The road map is rendered by following an html Pebble template and saved in the html file in parameter
+     * @param tour The tour
+     * @param html
+     * @throws IOException
+     */
+    public static void renderHTMLroadMap(Tour tour, File html) throws IOException {
         List<Segment> segments = tour.getPath();
-
         List<Pair<Long, String>> stepsIdentifiers = tour.getSteps();
         stepsIdentifiers.remove(0);
 
-
-
         List<Intersection> intersections = tour.getIntersections();
-
         Map<Long, Request> requests = tour.getRequests();
-
-
         Address nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
-
         List<Map<String,Object>> rows = new ArrayList<>();
-
-
-
         Depot depot = tour.getDepot();
+
+        //Build the Pebble specific intersection
         boolean stepindepot = false;
         while(nextSpecificIntersection!= null && intersections.get(0).getId() == nextSpecificIntersection.getIntersection().getId()){
             rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
@@ -54,25 +44,31 @@ public class HTMLSerializer {
         if(stepindepot){
             rows.add(createIntersection(intersections.get(0), true, null, segments.get(0).getName(),-1));
         }
-
         intersections.remove(0);
 
+        //Build the pebble segments and intersections
         double currentAngle = getAngleFromNorth(segments.get(0));
         for(Intersection current : intersections){
+
+            //create and add the segment
             rows.add(createSegment(segments.get(0)));
             segments.remove(0);
             boolean step = false;
-            while(nextSpecificIntersection!= null && current.getId() == nextSpecificIntersection.getIntersection().getId()){
 
+            //Add the next specific intersection if needed
+            while(nextSpecificIntersection!= null && current.getId() == nextSpecificIntersection.getIntersection().getId()){
                 rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
                 step=true;
                 stepsIdentifiers.remove(0);
                 nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
             }
 
+            //Check the orientation of the next segment
             if(segments.size()>0){
+                //Orientation between the two segments
                 double followingAngle = getAngleFromNorth(segments.get(0));
                 int orientation = compareOrientation(currentAngle, followingAngle);
+                //Add the intersection with the direction to follow
                 rows.add(createIntersection(current, step, depot.getIntersection().getId(), segments.get(0).getName(), orientation));
                 currentAngle = followingAngle;
             } else {
@@ -81,17 +77,15 @@ public class HTMLSerializer {
 
         }
 
-
-
-
-
-
-
-
+        //Initialize the FileWriter to edit the .html file
         FileWriter fstream = new FileWriter(html.getAbsolutePath(), false);
         BufferedWriter out = new BufferedWriter(fstream);
+
+        //Initialize the Pebble engine to load the .html templates
         PebbleEngine engine = new PebbleEngine.Builder().loader(new ClasspathLoader()).build();
         PebbleTemplate compiledTemplate = engine.getTemplate("templates/base.html.peb");
+
+        //Contains all the information of the raod map loaded in the template by Pebble
         Map<String, Object> context = new HashMap<>();
         context.put("travels_time", getTime(tour.getTravelsDuration()));
         context.put("pickups_time", getTime(tour.getPickupsDuration()));
@@ -101,20 +95,19 @@ public class HTMLSerializer {
         context.put("depot", tour.getDepot());
         context.put("rows", rows);
 
-        System.out.println(context.toString());
-
+        //Pebble compiles the information in the template and copies it into a Writer to give the result
         Writer writer = new StringWriter();
         compiledTemplate.evaluate(writer, context);
-
         String output = writer.toString();
         out.write(output);
         out.close();
-
     }
 
-
-
-
+    /**
+     * Allows to put a segment in a map used by pebble to compile the information in the template
+     * @param segment the segment whose information we want to collect
+     * @return the segment information usable by pebble
+     */
     public static Map<String, Object> createSegment(Segment segment){
         Map<String, Object> buffer = new HashMap<>();
         buffer.put("type", "Segment");
@@ -122,6 +115,13 @@ public class HTMLSerializer {
         return buffer;
     }
 
+    /**
+     * Allows to put an address in a map used by pebble to compile the information in the template
+     * @param address the address whose information we want to collect
+     * @param subtype type of the address : depot, pickup or delivery
+     * @param requestID the id of the request associated with the address
+     * @return the address information usable by pebble
+     */
     public static Map<String, Object> createSpecificIntersection(Address address, String subtype, long requestID){
         Map<String, Object> buffer = new HashMap<>();
         buffer.put("type", "Address");
@@ -131,6 +131,15 @@ public class HTMLSerializer {
         return buffer;
     }
 
+    /**
+     * Allows to put an intersection in a map used by pebble to compile the information in the template
+     * @param intersection the intersection whose information we want to collect
+     * @param parcels true if the intersection is also a specific intersection with an Address related
+     * @param idDepot the intersection id of the depot
+     * @param segment_name the next segment name
+     * @param orientation the next orientation to follow at the intersection
+     * @return the intersection information usable by pebble
+     */
     public static Map<String, Object> createIntersection(Intersection intersection, boolean parcels, Long idDepot, String segment_name, int orientation ){
         Map<String, Object> buffer = new HashMap<>();
         buffer.put("type", "Intersection");
@@ -146,8 +155,12 @@ public class HTMLSerializer {
     }
 
     /**
-     * https://www.dcode.fr/azimut
-     *
+     * Allows to compute the azimut of a segment
+     * We use the geographical north
+     * Inspired from <a> https://www.dcode.fr/azimut </a> method
+     * The azimut is the angle between the direction on the earth and the north by using 2 GPS points
+     * @param segment the segment that we want to know the azimut
+     * @return the azimut of the segment
      */
     public static double getAngleFromNorth(Segment segment){
         Coordinates origin = segment.getOrigin().getCoordinates();
@@ -162,18 +175,21 @@ public class HTMLSerializer {
     }
 
     /**
+     * Allow to compute the angle between two directions and give the orientation
+     * The two angles are computed between the direction and the north
      * 0 Front
      * 1 right
      * 2 left
      * 3 back
-     * @param angle1
-     * @param angle2
-     * @return
+     * @param angle1 the angle between the current direction and the north
+     * @param angle2 the angle between the next direction and the north
+     * @return an int corresponding to the next orientation to follow
      */
     public static int compareOrientation(double angle1, double angle2) {
         int res = 0;
         double diff = (angle1 - angle2);
-
+        //diff goes from -180° to 180°
+        //We use the horary direction
         if(diff < 35 && diff > -35) return 0;
         if(diff > 145 || diff < -145) return 3;
         if(diff>0) return 1;
@@ -181,10 +197,15 @@ public class HTMLSerializer {
 
     }
 
-    public static String getTime(double seconde){
-        int hour = (int) (seconde/3600);
-        int min = (int) ((seconde-hour*3600)/60);
-        int seconde_arround = (int) (seconde - min*60 - hour*3600);
+    /**
+     * Allow to convert a time in seconds in H:min:s
+     * @param second time in seconds
+     * @return the time in H:m:s format as a String
+     */
+    public static String getTime(double second){
+        int hour = (int) (second/3600);
+        int min = (int) ((second-hour*3600)/60);
+        int seconde_arround = (int) (second - min*60 - hour*3600);
 
         String time ="";
         if(hour>0){
@@ -200,6 +221,12 @@ public class HTMLSerializer {
         return time;
     }
 
+    /**
+     * Allows to get the next Address of the incoming step in the tour
+     * @param requests requests list of the tour
+     * @param step next step in the tour
+     * @return the next specific address, a pickup, a delivery or null if its a depot
+     */
     public static Address getNextSpecificIntersection(Map<Long, Request> requests, Pair<Long, String> step){
         Address result = null;
         Request request = requests.get(step.getKey());
