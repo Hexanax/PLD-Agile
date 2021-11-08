@@ -6,12 +6,13 @@ public class DepotMapPin extends MapPin {
     private static final String IMG_URL = "img/depotPin/depot@2x.png";
 
     public DepotMapPin(){
-        this.setImage(new Image(
+        pin.setImage(new Image(
                 IMG_URL,
                 iconSize, iconSize,
                 true, true
         ));
-        super.centerCoordinates();
         this.getStyleClass().add("depot-pin");
+        getChildren().addAll(pin);
+        super.centerCoordinates();
     }
 }

@@ -30,6 +30,16 @@ public class Request {
         return this.id;
     }
 
+    /**
+     * The actual ID of the request is not as readable for the user and must be
+     * adapted. This method provides an adapted Id for the views.
+     * 
+     * @return The Id of the request that is meant to be displayed
+     */
+    public Long getDisplayId() {
+        return this.id + 1;
+    }
+
     public void setDelivery(Delivery delivery) {
         this.delivery = delivery;
     }

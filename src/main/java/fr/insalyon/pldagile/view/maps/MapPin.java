@@ -2,10 +2,14 @@ package fr.insalyon.pldagile.view.maps;
 
 
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 
-public abstract class MapPin extends ImageView {
+public abstract class MapPin extends StackPane {
     protected static double DEFAULT_ICON_SIZE = 35D;
     protected double iconSize = DEFAULT_ICON_SIZE;
+    protected ImageView pin = new ImageView();
+    protected double yOffsetFactor = 0.5;
+    protected double xOffsetFactor = 0.05;
 
     /**
      * Adjusts the coordinates of the view so that their origin is at the bottom center of
@@ -20,15 +24,14 @@ public abstract class MapPin extends ImageView {
      * Sets the new Y origin on the icon
      */
     private void setCenteredY(){
-        setY(-iconSize);
+        this.setLayoutY(getLayoutBounds().getMinY() - iconSize * yOffsetFactor);
     }
 
     /**
      * Sets the new X origin on the icon
      */
     private void setCenteredX(){
-        super.setX(-iconSize / 2.6); // Somehow, dividing by 2 makes it not on the intersection
-        // dividing by 2.6 looks closer to the real intersection
+        this.setLayoutX(getLayoutBounds().getMinX() - iconSize * xOffsetFactor);
     }
 
 }

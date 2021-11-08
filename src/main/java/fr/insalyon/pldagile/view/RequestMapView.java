@@ -4,6 +4,7 @@ import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.RequestListView;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 
@@ -13,7 +14,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
-    private final PointLayer<ImageView> planningRequestPoints = new PointLayer<>();
+    private final PointLayer<Node> planningRequestPoints = new PointLayer<>();
     private final Controller controller;
     private PlanningRequest planningRequest;
 
@@ -48,7 +49,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                     mapPoint.setType("pickup");
                     planningRequestPoints.addPoint(
                             mapPoint,
-                            new RequestMapPin(RequestType.PICKUP, request.getId())
+                            new RequestMapPin(RequestType.PICKUP, request.getDisplayId())
                     );
                 }
                 if (delivery != null) {
@@ -58,7 +59,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                     mapPoint.setType("delivery");
                     planningRequestPoints.addPoint(
                             mapPoint,
-                            new RequestMapPin(RequestType.DELIVERY, request.getId())
+                            new RequestMapPin(RequestType.DELIVERY, request.getDisplayId())
                     );
                 }
             });
@@ -83,16 +84,16 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
      */
     //TODO Always listen for the request points click and just handle it depending on the test in the controller/state
     public void activeRequestIntersectionsListener() {
-        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             point.getValue().setOnMouseClicked(event -> {
                 controller.modifyClick(point.getKey().getRequestId(), point.getKey().getType(), point.getKey().getStepIndex());
             });
 
 
-            Pair<MapPoint, ImageView> neighbor = searchneighbor(point);
+            Pair<MapPoint, Node> neighbor = searchneighbor(point);
             point.getValue().setOnMouseEntered(event -> {
-                ((ImageView) event.getTarget()).setScaleX(1.2);
-                ((ImageView) event.getTarget()).setScaleY(1.2);
+                ((Node) event.getTarget()).setScaleX(1.2);
+                ((Node) event.getTarget()).setScaleY(1.2);
 
                 if(neighbor!=null){
                     neighbor.getValue().setScaleX(1.2);
@@ -104,8 +105,8 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
             });
 
             point.getValue().setOnMouseExited(event -> {
-                ((ImageView) event.getTarget()).setScaleX(1.0);
-                ((ImageView) event.getTarget()).setScaleY(1.0);
+                ((Node) event.getTarget()).setScaleX(1.0);
+                ((Node) event.getTarget()).setScaleY(1.0);
 
                 if(neighbor!=null){
                     neighbor.getValue().setScaleX(1.0);
@@ -117,8 +118,8 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         }
     }
 
-    private Pair<MapPoint, ImageView> searchneighbor(Pair<MapPoint, ImageView> pointHover) {
-        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+    private Pair<MapPoint, Node> searchneighbor(Pair<MapPoint, Node> pointHover) {
+        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if(point.getKey().getRequestId() == pointHover.getKey().getRequestId() && pointHover.getKey().getType() != point.getKey().getType()){
                 return point;
             }
@@ -141,7 +142,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
     }
 
     public void hoverRequest(long requestNumber) {
-        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if(point.getKey().getRequestId() == requestNumber){
                 point.getValue().setScaleX(1.2);
                 point.getValue().setScaleY(1.2);
@@ -151,7 +152,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
     }
 
     public void unHoverRequest(long requestNumber) {
-        for (Pair<MapPoint, ImageView> point : planningRequestPoints.getPoints()) {
+        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if(point.getKey().getRequestId() == requestNumber){
                 point.getValue().setScaleX(1.0);
                 point.getValue().setScaleY(1.0);
