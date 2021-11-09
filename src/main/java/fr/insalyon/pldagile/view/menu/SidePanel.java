@@ -21,12 +21,15 @@ public class SidePanel extends Region {
         this.requestView = new RequestView();
     }
 
-    public void MainSidePanel(ObservableList<AddressItem> list, int height) {
+    public void mainSidePanel(ObservableList<AddressItem> list, int height) {
         this.requestView.setView(list);
 
         VBox vb = new VBox();
         vb.getChildren().add(importView);
-        vb.getChildren().add(requestView);
+        if (list.size() > 0) {
+            vb.getChildren().add(requestView);
+        }
+
         mainBorderPane.setContent(vb);
         VBox.setVgrow(mainBorderPane, Priority.ALWAYS);
 

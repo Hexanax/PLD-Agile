@@ -4,6 +4,7 @@ import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -31,8 +32,8 @@ public class Window {
     private final SidePanel sidePanel;
     private final BottomPanel bottomPanel;
 
-    private int windowWidth;
-    private int windowHeight;
+    private int windowWidth = 400;
+    private int windowHeight = 400;
 
     public Window(Controller controller) {
         this.controller = controller;
@@ -59,6 +60,13 @@ public class Window {
         mapView.addLayer(tourView.getTourPointLayer());
         mapView.addLayer(tourView.getTourDirectionLayer());
         mapView.addLayer(requestMapView.getLayer());
+
+        this.requestListView.getAddressItems().addListener(new ListChangeListener<AddressItem>() {
+            @Override
+            public void onChanged(ListChangeListener.Change c) {
+                loadSidePanel();
+            }
+        });
     }
 
     public static Stage getMainStage() {
@@ -120,7 +128,7 @@ public class Window {
     }
 
     private void loadSidePanel() {
-        sidePanel.MainSidePanel(this.requestListView.getAddressItems(), windowHeight);
+        sidePanel.mainSidePanel(this.requestListView.getAddressItems(), windowHeight);
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);

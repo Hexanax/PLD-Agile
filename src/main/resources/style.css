@@ -55,6 +55,7 @@
 
 .requests-list{
     -fx-border-radius: 0px;
+    -fx-background-insets: 0;
 }
 
 .requests-list .scroll-bar:horizontal .increment-arrow,
@@ -63,6 +64,22 @@
 .requests-list .scroll-bar:horizontal .decrement-button {
     -fx-padding:0;
 }
+
+.side-panel .scroll-bar:vertical .increment-arrow,
+.side-panel .scroll-bar:vertical .decrement-arrow,
+.side-panel .scroll-bar:vertical .increment-button,
+.side-panel .scroll-bar:vertical .decrement-button {
+    -fx-padding:0;
+}
+
+.list-cell:odd { /* <=== changed to even */
+    -fx-background-color: white;
+  }
+  
+  .list-cell:filled:selected:focused, .list-cell:filled:selected, .list-cell:filled:hover {
+    -fx-background-color: #D9E8FF;
+    -fx-background-radius: 12px;
+  }
 
 .side-panel{
     -fx-background-color: #FFFFFF;
@@ -78,6 +95,38 @@
 .side-panel .scroll-bar:horizontal .increment-button,
 .side-panel .scroll-bar:horizontal .decrement-button {
     -fx-padding:0;
+}
+
+.side-panel:empty {
+    -fx-opacity: 0;
+}
+
+.side-panel .scroll-bar:vertical .thumb {
+    -fx-background-insets: 0 2 0 0;
+}
+
+.side-panel .scroll-bar:horizontal .thumb {
+    -fx-background-insets: 0 0 2 0;
+}
+
+.side-panel .scroll-bar .decrement-arrow,
+.side-panel .scroll-bar .increment-arrow {
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+.side-panel .scroll-bar {
+    -fx-background-color: transparent;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
+    -fx-padding: 2;
+}
+
+.side-panel .scroll-bar .thumb {
+    -fx-background-color: rgba(0, 0, 0, .2);
+    -fx-background-radius: 1000;
+    -fx-pref-width: 12;
+    -fx-pref-height: 12;
 }
 
 .side-panel-vbox{

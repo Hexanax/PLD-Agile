@@ -1,5 +1,7 @@
 package fr.insalyon.pldagile.view.menu;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
@@ -15,6 +17,7 @@ public class RequestView extends Region {
     protected static final String ADD_REQUEST = "Add Request";
     protected static final String REDO = "Redo";
     protected static final String UNDO = "Undo";
+    private ObservableList<AddressItem> addressItems = FXCollections.observableArrayList();
 
     private final ListView<AddressItem> requestList;
 
@@ -32,23 +35,23 @@ public class RequestView extends Region {
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
+        // Buttons
+        Button addRequest = new Button(ADD_REQUEST);
+        createButton(addRequest, gridPane, 0, 1, 1, 1);
+        Button deleteRequest = new Button(DELETE_REQUEST);
+        createButton(deleteRequest, gridPane, 1, 1, 1, 1);
+        Button redo = new Button(REDO);
+        createButton(redo, gridPane, 1, 2, 1, 1);
+        Button undo = new Button(UNDO);
+        createButton(undo, gridPane, 0, 2, 1, 1);
+
         // List of steps
         requestList = new ListView<>();
         requestList.getStyleClass().add("requests-list");
         requestList.setPrefWidth(Double.POSITIVE_INFINITY);
         requestList.setOrientation(Orientation.VERTICAL);
 
-        // requestList.setMaxHeight(200D);
-        gridPane.add(requestList, 0, 1, 2, 1);
-
-        Button addRequest = new Button(ADD_REQUEST);
-        createButton(addRequest, gridPane,0, 2, 1, 1);
-        Button deleteRequest = new Button(DELETE_REQUEST);
-        createButton(deleteRequest, gridPane,1, 2, 1, 1);
-        Button redo = new Button(REDO);
-        createButton(redo, gridPane,1, 3, 1, 1);
-        Button undo = new Button(UNDO);
-        createButton(undo, gridPane,0, 3, 1, 1);
+        gridPane.add(requestList, 0, 3, 2, 1);
 
 
         requestList.setOnMouseClicked(MouseListener::mouseClicked);
@@ -62,7 +65,13 @@ public class RequestView extends Region {
     }
 
     public void setView(ObservableList<AddressItem> list) {
-        requestList.setItems(list);
+        addressItems.clear();
+        addressItems.addAll(list);
+        for (AddressItem addressItem : list) {
+            addressItem.enforceHeight();
+        }
+        requestList.setPrefHeight(addressItems.size() * AddressItem.addressItemHeight * 1.1);
+        requestList.setItems(addressItems);
     }
 
     public ListView<AddressItem> getRequestList() {
@@ -71,9 +80,9 @@ public class RequestView extends Region {
 
     public void setFirstFocus(AddressItem item, int index) {
         requestList.scrollTo(item);
-        requestList.getSelectionModel().select(index);
-       // requestList.getSelectionModel().getSelectedItem().setStyle("-fx-background-color: #3C8AFF");
-
+        requestList.getSelectionModel().select(index + 2);
+        // requestList.getSelectionModel().getSelectedItem().setStyle("-fx-background-color:
+        // #3C8AFF");
     }
 
     public void setHover(AddressItem item) {

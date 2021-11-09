@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class AddressItem extends Region {
+    public static final double addressItemHeight = 75.0;
     private Date date;
     private String type;
     private int duration;
@@ -32,7 +33,6 @@ public class AddressItem extends Region {
 
         GridPane maingp = new GridPane();
         maingp.setAlignment(Pos.BASELINE_CENTER);
-        maingp.setPadding(new Insets(5, 5, 5, 5));
         maingp.setHgap(5);
         maingp.setVgap(5);
 
@@ -40,7 +40,7 @@ public class AddressItem extends Region {
 
         if(requestNumber >= 0) {
             Label titleLabel = new Label(type + " n°" + (requestNumber + 1));
-            titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+            titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
             maingp.add(titleLabel, 0, 0, 4, 1);
             GridPane.setHalignment(titleLabel, HPos.LEFT);
             GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
@@ -48,24 +48,25 @@ public class AddressItem extends Region {
 
             if(arrivalDate != null){
                 Label arrivalLabel = new Label("Arrival time : " + dateFormat.format(arrivalDate));
-                titleLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+                titleLabel.setFont(Font.font("Roboto", FontWeight.NORMAL, 10));
                 maingp.add(arrivalLabel, 0, 1, 4, 1);
                 GridPane.setHalignment(arrivalLabel, HPos.LEFT);
                 GridPane.setMargin(arrivalLabel, new Insets(5, 5, 5, 0));
             }
 
             Label timeLabel = new Label(type + " duration : ");
-            timeLabel.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            timeLabel.setFont(Font.font("Roboto", FontWeight.NORMAL, 10));
             maingp.add(timeLabel, 0, 2, 1, 1);
             GridPane.setHalignment(timeLabel, HPos.LEFT);
             GridPane.setMargin(timeLabel, new Insets(5, 5, 5, 0));
 
 
             value = new TextField(String.valueOf(duration));
-            value.setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+            value.setFont(Font.font("Roboto", FontWeight.NORMAL, 10));
             maingp.add(value, 1, 2, 1, 1);
             GridPane.setHalignment(value, HPos.LEFT);
             GridPane.setMargin(value, new Insets(5, 5, 5, 0));
+            value.setMaxWidth(50);
             value.setEditable(false);
             value.setDisable(false);
 
@@ -82,13 +83,12 @@ public class AddressItem extends Region {
         } else {
             //depot
             Label titleLabel = new Label(type + " - " + dateFormat.format(arrivalDate));
-            titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+            titleLabel.setFont(Font.font("Roboto", FontWeight.BOLD, 12));
             maingp.add(titleLabel, 0, 0, 4, 1);
             GridPane.setHalignment(titleLabel, HPos.LEFT);
             GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
 
         }
-
         this.getChildren().add(maingp);
 
     }
@@ -112,6 +112,10 @@ public class AddressItem extends Region {
 
     public void setEditable(boolean b) {
         this.value.setEditable(b);
+    }
+
+    public void enforceHeight() {
+        this.setPrefHeight(AddressItem.addressItemHeight);
     }
 
 }
