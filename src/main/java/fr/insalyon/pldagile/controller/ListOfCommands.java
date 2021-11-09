@@ -8,18 +8,19 @@ public class ListOfCommands {
     private LinkedList<Command> list;
     private int currentIndex;
 
-    public ListOfCommands(){
+    public ListOfCommands() {
         currentIndex = -1;
         list = new LinkedList<Command>();
     }
 
     /**
      * Add command c to this
+     *
      * @param c the command to add
      */
     public void add(Command c) throws ExceptionCityMap {
-        int i = currentIndex+1;
-        while(i<list.size()){
+        int i = currentIndex + 1;
+        while (i < list.size()) {
             list.remove(i);
         }
         currentIndex++;
@@ -31,7 +32,7 @@ public class ListOfCommands {
      * Temporary remove the last added command (this command may be reinserted again with redo)
      */
     public void undo() throws ExceptionCityMap {
-        if (currentIndex >= 0){
+        if (currentIndex >= 0) {
             Command cde = list.get(currentIndex);
             currentIndex--;
             cde.undoCommand();
@@ -42,7 +43,7 @@ public class ListOfCommands {
      * Permanently remove the last added command (this command cannot be reinserted again with redo)
      */
     public void cancel() throws ExceptionCityMap {
-        if (currentIndex >= 0){
+        if (currentIndex >= 0) {
             Command cde = list.get(currentIndex);
             list.remove(currentIndex);
             currentIndex--;
@@ -54,7 +55,7 @@ public class ListOfCommands {
      * Reinsert the last command removed by undo
      */
     public void redo() throws ExceptionCityMap {
-        if (currentIndex < list.size()-1){
+        if (currentIndex < list.size() - 1) {
             currentIndex++;
             Command cde = list.get(currentIndex);
             cde.doCommand();
@@ -64,12 +65,12 @@ public class ListOfCommands {
     /**
      * Permanently remove all commands from the list
      */
-    public void reset(){
+    public void reset() {
         currentIndex = -1;
         list.clear();
     }
 
-    public Command getLastCommand(){
+    public Command getLastCommand() {
         return list.get(currentIndex);
     }
 }

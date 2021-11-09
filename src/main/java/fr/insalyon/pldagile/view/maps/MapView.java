@@ -100,18 +100,17 @@ public class MapView extends Region implements PropertyChangeListener {
             if (zooming) return;
             baseMap.x0 = t.getX();
             baseMap.y0 = t.getY();
-            System.out.println("point :" + t.getX() + "y : " + t.getY());
             centerPoint = null; // once the user starts moving, we don't track the center anymore.
             // dragging is enabled only after a pressed event, to prevent dragging right after zooming
             enableDragging = true;
         });
-       setOnMouseDragged(t -> {
+        setOnMouseDragged(t -> {
             if (zooming || !enableDragging) {
                 return;
             }
             baseMap.moveX(baseMap.x0 - t.getX());
-            baseMap.x0 = t.getX();
             baseMap.moveY(baseMap.y0 - t.getY());
+            baseMap.x0 = t.getX();
             baseMap.y0 = t.getY();
         });
         setOnMouseReleased(t -> enableDragging = false);
@@ -121,7 +120,7 @@ public class MapView extends Region implements PropertyChangeListener {
         });
         setOnZoomFinished(t -> zooming = false);
         setOnZoom(t -> {
-            System.out.println("Zoom factor = " + (t.getZoomFactor() - 1));
+            logger.fine("Zoom factor = " + (t.getZoomFactor() - 1));
             boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
             boolean isZooming = t.getZoomFactor() > 0.0;
             double zoomFactoring;
@@ -310,13 +309,13 @@ public class MapView extends Region implements PropertyChangeListener {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("CityMapViewCenter event " + evt);
+        ////System.out.println("CityMapViewCenter event " + evt);
         CityMap newCityMap = (CityMap) evt.getNewValue();
         Coordinates center = newCityMap.getCenter();
         MapPoint mapCenter = new MapPoint(center.getLatitude(), center.getLongitude());
         setCenter(mapCenter);
-        System.out.println("zoom : " + newCityMap.getOptimalZoom());
-        double optimalZoom = newCityMap.getOptimalZoom() + 1;
+        System.out.println(newCityMap.getOptimalZoom());
+        double optimalZoom = newCityMap.getOptimalZoom();
         setZoom(optimalZoom);
         setMaxZoomOut(optimalZoom);
         registerInputListeners();

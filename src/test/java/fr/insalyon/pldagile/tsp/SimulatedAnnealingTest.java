@@ -69,7 +69,7 @@ public class SimulatedAnnealingTest {
             final Double expectedResult;
             final SimulatedAnnealing simulatedAnnealing;
 
-            public TestCase(Double expectedResult) {
+            public TestCase(Double expectedResult) throws InterruptedException {
                 this.expectedResult = expectedResult;
                 this.simulatedAnnealing = new SimulatedAnnealing(planningRequest,cityMapGraph);
 
@@ -96,7 +96,7 @@ public class SimulatedAnnealingTest {
             final int swapFirstIndex;
             final int swapSecondIndex;
 
-            public TestCase(boolean expectedResult, int swapFirstIndex, int swapSecondIndex) {
+            public TestCase(boolean expectedResult, int swapFirstIndex, int swapSecondIndex) throws InterruptedException {
                 this.expectedResult = expectedResult;
                 this.simulatedAnnealing = new SimulatedAnnealing(planningRequest,cityMapGraph);
                 this.swapFirstIndex=swapFirstIndex;
@@ -132,7 +132,7 @@ public class SimulatedAnnealingTest {
     }
 
     @Test
-    void revertSwapSteps() {
+    void revertSwapSteps() throws InterruptedException {
         SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(planningRequest, cityMapGraph);
 
         ArrayList<Pair<Long, String>> testCopyOfIdentifiers = (ArrayList<Pair<Long, String>>) simulatedAnnealing.getStepsIdentifiers().clone();

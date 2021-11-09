@@ -37,7 +37,7 @@ public class RequestsDisplayedState implements State{
             controller.setTour(tour);
             window.addStateFollow("Tour computed");
             controller.setCurrentState(controller.tourComputedState);
-        } catch (ExceptionCityMap e) {
+        } catch (ExceptionCityMap | InterruptedException e) {
             window.addWarningStateFollow(e.getMessage());
         }
 

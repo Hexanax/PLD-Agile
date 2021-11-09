@@ -129,7 +129,7 @@ public class TourView implements PropertyChangeListener, View, Hideable {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("TourViewEvent event " + evt);
+        //System.out.println("TourViewEvent event " + evt);
         this.tour = (Tour) evt.getNewValue();
         render();
     }

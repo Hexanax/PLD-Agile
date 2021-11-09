@@ -4,7 +4,6 @@ import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
-import javafx.util.Pair;
 
 public class AddRequestState5 implements State{
 
@@ -22,7 +21,7 @@ public class AddRequestState5 implements State{
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         String[] values = window.getEditableRequestDuration();
-        if(values == null){
+        if(values == null) {
             window.addWarningStateFollow("Error : duration can't be null");
         } else {
             if(validity(values[0]) && validity(values[1])){
@@ -31,7 +30,7 @@ public class AddRequestState5 implements State{
                 try {
                     l.getLastCommand().editRequestDuration(pickupDuration, deliveryDuration);
                     window.makeLastRequestAddedEditable(false, planningRequest.getLastRequest().getId());
-                    window.addStateFollow("Request suscesfully added");
+                    window.addStateFollow("Request successfully added");
                     controller.setCurrentState(controller.tourComputedState);
                 } catch (Exception e) {
                     window.addWarningStateFollow(e.getMessage());
@@ -40,9 +39,7 @@ public class AddRequestState5 implements State{
             } else {
                 window.addWarningStateFollow("Wrong format, number must be a positive Integer, try again" );
             }
-
         }
-
     }
 
 
@@ -57,7 +54,6 @@ public class AddRequestState5 implements State{
         } catch (NumberFormatException e){
             valid = false;
         }
-
         return valid;
     }
 

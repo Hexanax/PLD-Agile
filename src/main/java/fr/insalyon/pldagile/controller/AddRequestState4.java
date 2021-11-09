@@ -7,19 +7,21 @@ import fr.insalyon.pldagile.view.Window;
 import javafx.util.Pair;
 
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class AddRequestState4 implements State {
 
-
     @Override
     public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        System.out.println("Cancelled called " + System.currentTimeMillis());
         long idRequestDelete = planningRequest.getLastRequest().getId();
         planningRequest.deleteLastRequest();
         PlanningRequest modify = new PlanningRequest(planningRequest);
         controller.setPlanningRequest(modify);
 
-        tour.deleteRequest(idRequestDelete);
         Tour modifyTour = new Tour(tour);
+        modifyTour.deleteRequest(idRequestDelete);
         controller.setTour(modifyTour);
 
         window.mainView();
@@ -47,7 +49,7 @@ public class AddRequestState4 implements State {
                         stepIndex = tour.getSteps().indexOf(stepToFound);
                     }
                 }
-                if (stepIndex < tour.getSteps().indexOf(new Pair<Long, String>(request.getId(), "pickup"))) {
+                if (stepIndex < tour.getSteps().indexOf(new Pair<>(request.getId(), "pickup"))) {
                     window.addWarningStateFollow("You can't make the delivery before the pickup");
                 } else {
                     tour.addStep(stepIndex, new Pair<>(request.getId(), "delivery"));
@@ -55,6 +57,7 @@ public class AddRequestState4 implements State {
                     if (bufferClicks) {
                         validClick = true;
                     } else {
+                        window.unHighlightAddress(planningRequest.getLastRequest().getId());
                         controller.setCurrentState(controller.addRequestState5);
                     }
                 }
@@ -70,6 +73,8 @@ public class AddRequestState4 implements State {
             window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
             window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
         } catch (Exception e) {
+            System.out.println("Exception caught, we have to the cancel the add request");
+            e.printStackTrace();
             window.addWarningStateFollow(e.getMessage());
             controller.cancel();
         }
@@ -81,6 +86,7 @@ public class AddRequestState4 implements State {
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         if (validClick) {
             validClick = false;
+            window.unHighlightAddress(planningRequest.getLastRequest().getId());
             controller.setCurrentState(controller.addRequestState5);
         }
     }
