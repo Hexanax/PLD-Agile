@@ -174,19 +174,7 @@ public class Tour {
 
     public void deleteRequest(long idRequestDelete) {
         this.requests.remove(idRequestDelete);
-        int index = 0;
-
-
-
-        for (Pair<Long, String> stepIdentify : this.stepsIdentifiers) {
-            if (stepIdentify.getKey() == idRequestDelete) {
-                this.stepsIdentifiers.remove(index);
-            }
-            index++;
-        }
-
-
-        stepsIdentifiers.removeIf(value -> value.getKey() == idRequestDelete);
+        stepsIdentifiers.removeIf(nextElement -> nextElement.getKey() == idRequestDelete);
     }
 
 }

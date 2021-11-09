@@ -25,10 +25,8 @@ public class AddRequestState4 implements State {
         PlanningRequest modify = new PlanningRequest(planningRequest);
         controller.setPlanningRequest(modify);
 
-        System.out.println(tour.getSteps());
         Tour modifyTour = new Tour(tour);
         modifyTour.deleteRequest(idRequestDelete);
-        System.out.println(tour.getSteps());
         controller.setTour(modifyTour);
 
         window.mainView();
