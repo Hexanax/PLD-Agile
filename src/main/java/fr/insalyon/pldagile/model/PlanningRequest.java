@@ -64,6 +64,10 @@ public class PlanningRequest {
         requests.remove(index);
     }
 
+    public void deleteRequest(long idRequest){
+        requests.removeIf(value -> value.getId() == idRequest);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

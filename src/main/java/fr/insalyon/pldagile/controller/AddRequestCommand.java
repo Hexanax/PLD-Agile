@@ -63,6 +63,7 @@ public class AddRequestCommand implements Command {
 
     @Override
     public void doCommand() throws ExceptionCityMap {
+        //System.out.println("Do command for the add request");
         if(delete){
             PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
             planningRequest.add(request, false);
@@ -85,7 +86,7 @@ public class AddRequestCommand implements Command {
         //System.out.println("Undo command for the add request");
         delete = true;
         PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
-        planningRequest.deleteLastRequest();
+        planningRequest.deleteRequest(request.getId());
         pclPlanningRequest.setPlanningRequest(planningRequest);
         pcltour.setTour(tourBuilder.deleteRequest(cityMap, pcltour.getTour(), request));
     }

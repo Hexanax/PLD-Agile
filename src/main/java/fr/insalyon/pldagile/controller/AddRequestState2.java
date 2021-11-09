@@ -3,7 +3,6 @@ package fr.insalyon.pldagile.controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
-import javafx.util.Pair;
 
 public class AddRequestState2 implements State{
 
@@ -28,7 +27,6 @@ public class AddRequestState2 implements State{
                 window.addStateFollow("Delivery intersection selected, Now left click on the depot, pickup or delivery visiting before the pickup");
                 window.hideCityMap();
                 window.renderOrderedList();
-                System.out.println("scale");
                 window.highlightAddress(planningRequest.getLastRequest().getId(), "pickup");
             }
         }
