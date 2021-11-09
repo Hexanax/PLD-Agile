@@ -205,7 +205,7 @@ public class Window {
     }
 
     public void mainView() {
-        System.out.println("Main view called");
+        //System.out.println("Main view called");
         tourView.show();
         cityMapView.unHighlight();
         showCityMap();

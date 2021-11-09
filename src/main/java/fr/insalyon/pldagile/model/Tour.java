@@ -2,10 +2,7 @@ package fr.insalyon.pldagile.model;
 
 import javafx.util.Pair;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Tour {
     private final double SPEED_KMH = 15.0;
@@ -178,12 +175,18 @@ public class Tour {
     public void deleteRequest(long idRequestDelete) {
         this.requests.remove(idRequestDelete);
         int index = 0;
+
+
+
         for (Pair<Long, String> stepIdentify : this.stepsIdentifiers) {
             if (stepIdentify.getKey() == idRequestDelete) {
                 this.stepsIdentifiers.remove(index);
             }
             index++;
         }
+
+
+        stepsIdentifiers.removeIf(value -> value.getKey() == idRequestDelete);
     }
 
 }

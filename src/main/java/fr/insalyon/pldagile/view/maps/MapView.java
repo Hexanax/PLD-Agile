@@ -297,7 +297,7 @@ public class MapView extends Region implements PropertyChangeListener {
         Coordinates center = newCityMap.getCenter();
         MapPoint mapCenter = new MapPoint(center.getLatitude(), center.getLongitude());
         setCenter(mapCenter);
-        System.out.println(newCityMap.getOptimalZoom());
+        //System.out.println(newCityMap.getOptimalZoom());
         double optimalZoom = newCityMap.getOptimalZoom();
         setZoom(optimalZoom);
         setMaxZoomOut(optimalZoom-1);
