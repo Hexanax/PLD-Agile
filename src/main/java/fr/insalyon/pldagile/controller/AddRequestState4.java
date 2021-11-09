@@ -76,12 +76,7 @@ public class AddRequestState4 implements State {
             System.out.println("Exception caught, we have to the cancel the add request");
             e.printStackTrace();
             window.addWarningStateFollow(e.getMessage());
-            try {
-                Thread.sleep(2000);
-                controller.cancel();
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
+            controller.cancel();
         }
     }
 
