@@ -57,6 +57,7 @@ public class AddRequestState4 implements State {
                     if (bufferClicks) {
                         validClick = true;
                     } else {
+                        window.unHighlightAddress(planningRequest.getLastRequest().getId());
                         controller.setCurrentState(controller.addRequestState5);
                     }
                 }
@@ -90,6 +91,7 @@ public class AddRequestState4 implements State {
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         if (validClick) {
             validClick = false;
+            window.unHighlightAddress(planningRequest.getLastRequest().getId());
             controller.setCurrentState(controller.addRequestState5);
         }
     }

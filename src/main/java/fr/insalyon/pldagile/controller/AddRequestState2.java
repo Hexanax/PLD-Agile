@@ -28,6 +28,8 @@ public class AddRequestState2 implements State{
                 window.addStateFollow("Delivery intersection selected, Now left click on the depot, pickup or delivery visiting before the pickup");
                 window.hideCityMap();
                 window.renderOrderedList();
+                System.out.println("scale");
+                window.highlightAddress(planningRequest.getLastRequest().getId(), "pickup");
             }
         }
     }

@@ -236,4 +236,12 @@ public class Window {
     public String[] getEditableRequestDuration(){
         return requestListView.getEditableDuration();
     }
+
+    public void highlightAddress(long id, String type) {
+        requestMapView.scaleUpAddress(id, type);
+    }
+
+    public void unHighlightAddress(long id) {
+        requestMapView.unScaleUpAddresses(id);
+    }
 }
