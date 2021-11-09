@@ -92,7 +92,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         }
 
         //end the travel with the depot
-        stepsIdentifiers.add(new Pair((long) stepsIdentifiers.size(), "end"));
+        stepsIdentifiers.add(new Pair(-2, "end"));
         stepsIntersectionId.add(depotId);
 
 

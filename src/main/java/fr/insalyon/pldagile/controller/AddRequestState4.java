@@ -17,7 +17,8 @@ public class AddRequestState4 implements State {
     private boolean done = false;
 
     @Override
-    public synchronized void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+    public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        reentrantLock.lock();
         System.out.println("Cancelled called " + System.currentTimeMillis());
         long idRequestDelete = planningRequest.getLastRequest().getId();
         planningRequest.deleteLastRequest();
@@ -31,16 +32,15 @@ public class AddRequestState4 implements State {
         window.mainView();
         window.addStateFollow("Add request cancel");
         controller.setCurrentState(controller.tourComputedState);
+        reentrantLock.unlock();
     }
 
     @Override
-    public synchronized void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
+    public void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
         System.out.println("Modify click called " + System.currentTimeMillis());
-//        System.out.println("Called modify click");
-//        System.out.println("Is locked = " + reentrantLock.isLocked());
-//        System.out.println("Lock held by current thread = " + reentrantLock.isHeldByCurrentThread());
-//        reentrantLock.lock();
-//        System.out.println("Done = " + done);
+        System.out.println("Is locked = " + reentrantLock.isLocked());
+        System.out.println("Lock held by current thread = " + reentrantLock.isHeldByCurrentThread());
+        reentrantLock.lock();
         validClick = false;
         if (Objects.equals(type, "Depot") && stepIndex != 0) {
             window.addWarningStateFollow("You can't add a request after the arrival of the tour");
@@ -72,12 +72,12 @@ public class AddRequestState4 implements State {
                 }
             }
         }
-//            done = true;
-//            reentrantLock.unlock();
+            reentrantLock.unlock();
     }
 
     @Override
-    public synchronized void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
+    public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
+        reentrantLock.lock();
         try {
             l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
             window.mainView();
@@ -85,20 +85,27 @@ public class AddRequestState4 implements State {
             window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
             isProcessingRequest.set(false);
         } catch (Exception e) {
-            System.out.println("Exception caught");
+            System.out.println("Exception caught, we have to the cancel the add request");
             e.printStackTrace();
             window.addWarningStateFollow(e.getMessage());
-            //controller.cancel();
+            try {
+                Thread.sleep(2000);
+                controller.cancel();
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
         }
     }
 
     private boolean validClick;
 
     @Override
-    public synchronized void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        reentrantLock.lock();
         if (validClick) {
             validClick = false;
             controller.setCurrentState(controller.addRequestState5);
         }
+        reentrantLock.unlock();
     }
 }

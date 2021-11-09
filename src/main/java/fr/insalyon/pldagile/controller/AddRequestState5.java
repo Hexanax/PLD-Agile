@@ -8,7 +8,7 @@ import fr.insalyon.pldagile.view.Window;
 public class AddRequestState5 implements State{
 
     @Override
-    public synchronized void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+    public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         try {
             l.cancel();
         }catch (Exception e) {
@@ -19,7 +19,7 @@ public class AddRequestState5 implements State{
     }
 
     @Override
-    public synchronized void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+    public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         String[] values = window.getEditableRequestDuration();
         if(values == null) {
             window.addWarningStateFollow("Error : duration can't be null");
@@ -43,7 +43,7 @@ public class AddRequestState5 implements State{
     }
 
 
-    private synchronized boolean validity(String result){
+    private boolean validity(String result){
         boolean valid = false;
         int duration = 0;
         try {
@@ -71,13 +71,13 @@ public class AddRequestState5 implements State{
     }
 
     @Override
-    public synchronized void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
+    public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
         controller.confirm();
         controller.addRequest();
     }
 
     @Override
-    public synchronized void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window, ListOfCommands listOfCdes) {
+    public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window, ListOfCommands listOfCdes) {
         controller.confirm();
         controller.deleteRequest(null);
     }

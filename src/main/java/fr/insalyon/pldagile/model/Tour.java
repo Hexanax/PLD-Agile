@@ -9,12 +9,12 @@ import java.util.Map;
 
 public class Tour {
     private final double SPEED_KMH = 15.0;
-    private final double SPEED_MS = 15.0/3.6;
+    private final double SPEED_MS = 15.0 / 3.6;
 
     private Long nextRequestId;
 
     // An ordered list of requests
-    private Map<Long,Request> requests;
+    private Map<Long, Request> requests;
     private List<Segment> path;
     private List<Intersection> intersections;
     private ArrayList<Pair<Long, String>> stepsIdentifiers;
@@ -26,8 +26,8 @@ public class Tour {
 
     public Tour(List<Request> requests, Depot depot) {
         this.requests = new HashMap<>();
-        for(Request request : requests) {
-            this.requests.put(request.getId(),request);
+        for (Request request : requests) {
+            this.requests.put(request.getId(), request);
         }
         this.nextRequestId = Long.parseLong(String.valueOf(this.requests.size()));
         this.path = new ArrayList<>();
@@ -58,11 +58,14 @@ public class Tour {
     }
 
 
-    public Map<Long,Request> getRequests() {
+    public Map<Long, Request> getRequests() {
         return requests;
     }
 
-    public synchronized ArrayList<Pair<Long,String>> getSteps(){ return stepsIdentifiers; }
+    public ArrayList<Pair<Long, String>> getSteps() {
+        return stepsIdentifiers;
+    }
+
     public List<Segment> getPath() {
         return path;
     }
@@ -71,33 +74,48 @@ public class Tour {
         return depot;
     }
 
-    public List<Intersection> getIntersections() {return intersections;}
+    public List<Intersection> getIntersections() {
+        return intersections;
+    }
 
-    public double getTravelsDuration() { return travelsDuration;}
+    public double getTravelsDuration() {
+        return travelsDuration;
+    }
 
-    public double getPickupsDuration() {return pickupsDuration;}
+    public double getPickupsDuration() {
+        return pickupsDuration;
+    }
 
-    public double getDeliveriesDuration(){return deliveriesDuration;}
+    public double getDeliveriesDuration() {
+        return deliveriesDuration;
+    }
 
-    public double getTourDuration() {return travelsDuration+pickupsDuration+deliveriesDuration;}
+    public double getTourDuration() {
+        return travelsDuration + pickupsDuration + deliveriesDuration;
+    }
 
-    public double getLength() {return length;}
+    public double getLength() {
+        return length;
+    }
 
-    public void addIntersection(Intersection intersection){
+    public void addIntersection(Intersection intersection) {
         intersections.add(intersection);
     }
 
     public void addSegment(Segment segment) {
-        this.travelsDuration += segment.getLength()/SPEED_MS;
+        this.travelsDuration += segment.getLength() / SPEED_MS;
         this.length += segment.getLength();
         path.add(segment);
     }
 
-    public void addRequest(Request request){
+    public void addRequest(Request request) {
         this.requests.put(request.getId(), request);
         nextRequestId++;
     }
-    public long getNextRequestId() {return nextRequestId;}
+
+    public long getNextRequestId() {
+        return nextRequestId;
+    }
 
     public void addPickupTime(double time) {
         this.pickupsDuration += time;
@@ -111,7 +129,7 @@ public class Tour {
         this.travelsDuration += time;
     }
 
-    public void setRequests(Map<Long,Request> requests) {
+    public void setRequests(Map<Long, Request> requests) {
         this.requests = requests;
     }
 
@@ -123,15 +141,18 @@ public class Tour {
         this.depot = depot;
     }
 
-    public synchronized void setStepsIdentifiers(ArrayList<Pair<Long,String>> stepsIdentifiers) {this.stepsIdentifiers = stepsIdentifiers;}
+    public void setStepsIdentifiers(ArrayList<Pair<Long, String>> stepsIdentifiers) {
+        this.stepsIdentifiers = stepsIdentifiers;
+    }
 
     public void setIntersections(List<Intersection> intersections) {
-        this.intersections = new ArrayList<Intersection>(intersections);}
+        this.intersections = new ArrayList<Intersection>(intersections);
+    }
 
-    public void reset(){
-        pickupsDuration =0;
-        deliveriesDuration =0;
-        travelsDuration =0;
+    public void reset() {
+        pickupsDuration = 0;
+        deliveriesDuration = 0;
+        travelsDuration = 0;
         this.path = new ArrayList<>();
     }
 
@@ -139,13 +160,13 @@ public class Tour {
         this.nextRequestId = l;
     }
 
-    public synchronized void addStep(int index, Pair<Long, String> step) {
+    public void addStep(int index, Pair<Long, String> step) {
         ArrayList<Pair<Long, String>> newSteps = new ArrayList<>();
 
         int currentIndex = 0;
-        for(Pair<Long, String> stepIdentify : this.stepsIdentifiers){
+        for (Pair<Long, String> stepIdentify : this.stepsIdentifiers) {
             newSteps.add(stepIdentify);
-            if(currentIndex == index){
+            if (currentIndex == index) {
                 newSteps.add(step);
             }
             currentIndex++;
@@ -154,11 +175,11 @@ public class Tour {
         this.stepsIdentifiers = newSteps;
     }
 
-    public synchronized void deleteRequest(long idRequestDelete) {
+    public void deleteRequest(long idRequestDelete) {
         this.requests.remove(idRequestDelete);
         int index = 0;
-        for(Pair<Long, String> stepIdentify : this.stepsIdentifiers){
-            if(stepIdentify.getKey() == idRequestDelete){
+        for (Pair<Long, String> stepIdentify : this.stepsIdentifiers) {
+            if (stepIdentify.getKey() == idRequestDelete) {
                 this.stepsIdentifiers.remove(index);
             }
             index++;

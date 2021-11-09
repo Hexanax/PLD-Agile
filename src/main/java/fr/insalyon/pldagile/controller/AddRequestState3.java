@@ -8,7 +8,7 @@ import java.util.Objects;
 
 public class AddRequestState3 implements State{
     @Override
-    public synchronized void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+    public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         window.addStateFollow("Add request cancel");
         planningRequest.deleteLastRequest();
         PlanningRequest modify = new PlanningRequest(planningRequest);
@@ -18,7 +18,7 @@ public class AddRequestState3 implements State{
     }
 
     @Override
-    public synchronized void modifyClick(Controller controller,PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
+    public void modifyClick(Controller controller,PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
         if(Objects.equals(type, "Depot") && stepIndex!=0)
         {
             window.addWarningStateFollow( "You can't add a request after the arrival of the tour");

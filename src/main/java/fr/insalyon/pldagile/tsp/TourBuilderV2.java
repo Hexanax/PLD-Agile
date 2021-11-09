@@ -312,7 +312,6 @@ public class TourBuilderV2 {
     }
 
     public Tour computeTour(CityMap cityMap, Tour tour, List<Intersection> intersections) throws ExceptionCityMap {
-
         Map<Pair<Long,Long>,Segment> segments = cityMap.getSegments();
         Depot depot = tour.getDepot();
         Map<Long, Request> requests = tour.getRequests();
@@ -323,16 +322,15 @@ public class TourBuilderV2 {
             throw new ExceptionCityMap("An address of a request is unreachable with the current loaded city map");
         }
 
-
         int stepIndex = 1;
         long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(stepIndex));
         long previous = copyIntersections.get(0).getId();
         copyIntersections.remove(0);
         for(Intersection intersection : copyIntersections){
             long current = intersection.getId();
-            Segment currentSegment = segments.get(new Pair<>(previous,current));
-            if(currentSegment == null){
-                throw new ExceptionCityMap("An address of a request is unreachable with the current loaded city map");
+            Segment currentSegment = segments.get(new Pair<>(previous, current));
+            if(currentSegment == null) {
+                throw new ExceptionCityMap("Segment is null");
             }
 
 
