@@ -12,13 +12,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class AddRequestState4 implements State {
 
-    private final AtomicBoolean isProcessingRequest = new AtomicBoolean(false);
-    private final ReentrantLock reentrantLock = new ReentrantLock(true);
-    private boolean done = false;
-
     @Override
     public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        reentrantLock.lock();
         System.out.println("Cancelled called " + System.currentTimeMillis());
         long idRequestDelete = planningRequest.getLastRequest().getId();
         planningRequest.deleteLastRequest();
@@ -32,15 +27,10 @@ public class AddRequestState4 implements State {
         window.mainView();
         window.addStateFollow("Add request cancel");
         controller.setCurrentState(controller.tourComputedState);
-        reentrantLock.unlock();
     }
 
     @Override
     public void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
-        System.out.println("Modify click called " + System.currentTimeMillis());
-        System.out.println("Is locked = " + reentrantLock.isLocked());
-        System.out.println("Lock held by current thread = " + reentrantLock.isHeldByCurrentThread());
-        reentrantLock.lock();
         validClick = false;
         if (Objects.equals(type, "Depot") && stepIndex != 0) {
             window.addWarningStateFollow("You can't add a request after the arrival of the tour");
@@ -72,18 +62,15 @@ public class AddRequestState4 implements State {
                 }
             }
         }
-            reentrantLock.unlock();
     }
 
     @Override
     public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
-        reentrantLock.lock();
         try {
             l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
             window.mainView();
             window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
             window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
-            isProcessingRequest.set(false);
         } catch (Exception e) {
             System.out.println("Exception caught, we have to the cancel the add request");
             e.printStackTrace();
@@ -101,11 +88,9 @@ public class AddRequestState4 implements State {
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        reentrantLock.lock();
         if (validClick) {
             validClick = false;
             controller.setCurrentState(controller.addRequestState5);
         }
-        reentrantLock.unlock();
     }
 }
