@@ -10,6 +10,7 @@ import javafx.util.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class RequestMapView implements PropertyChangeListener, View, Hideable {
@@ -136,6 +137,10 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         this.requestListView = view;
     }
 
+    /**
+     * highlighting the requests' icons when hovering the item's correspondant ID
+     * @param requestNumber
+     */
     public void hoverRequest(long requestNumber) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if (point.getKey().getRequestId() == requestNumber) {
