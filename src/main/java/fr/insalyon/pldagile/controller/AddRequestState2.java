@@ -11,8 +11,7 @@ public class AddRequestState2 implements State{
     public void intersectionClick(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Long intersectionID, Window window) {
         TourBuilderV2 tourBuilder = new TourBuilderV2();
         if(tourBuilder.deadEndIntersection(cityMap, intersectionID)){
-            window.addWarningStateFollow("The intersection is a dead end Intersection with the current loaded city map, you can't use it");
-            window.addWarningStateFollow("Try again");
+            window.addWarningStateFollow("The intersection is a dead end Intersection with the current loaded city map, you can't use it \n Try again");
         } else {
             Intersection intersection = cityMap.getIntersection(intersectionID);
             if(intersection == null){
