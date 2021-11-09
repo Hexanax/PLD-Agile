@@ -25,6 +25,8 @@ public class DeleteRequestState1 implements State{
         } else {
             window.addWarningStateFollow("Request number unknown, please try again");
         }
+
+        window.mainView();
     }
 
     @Override

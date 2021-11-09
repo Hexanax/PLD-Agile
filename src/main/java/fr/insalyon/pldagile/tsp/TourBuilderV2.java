@@ -330,7 +330,7 @@ public class TourBuilderV2 {
             long current = intersection.getId();
             Segment currentSegment = segments.get(new Pair<>(previous, current));
             if(currentSegment == null) {
-                throw new ExceptionCityMap("Segment is null");
+                throw new ExceptionCityMap("Segment is unreachable, an address of a request is unreachable with the current loaded city map");
             }
 
 
