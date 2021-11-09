@@ -6,7 +6,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 
 public class SidePanel extends Region {
-    private static final double HEIGHT_FACTOR = 0.8f;
+    private static final double HEIGHT_FACTOR = 0.9f;
     private static final double PANEL_WIDTH = 350d;
 
     private ScrollPane mainBorderPane = new ScrollPane();;
@@ -34,6 +34,8 @@ public class SidePanel extends Region {
         vb.getStyleClass().add("side-panel-vbox");
 
         mainBorderPane.setVmax(height * HEIGHT_FACTOR);
+        mainBorderPane.setPrefHeight(height * HEIGHT_FACTOR);
+        mainBorderPane.setFitToWidth(true);
         mainBorderPane.setPrefWidth(PANEL_WIDTH);
 
         mainBorderPane.getStyleClass().add("side-panel");

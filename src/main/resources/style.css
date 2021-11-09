@@ -72,6 +72,14 @@
     -fx-padding: 24px 0px 24px 0px;
 
 }
+
+.side-panel .scroll-bar:horizontal .increment-arrow,
+.side-panel .scroll-bar:horizontal .decrement-arrow,
+.side-panel .scroll-bar:horizontal .increment-button,
+.side-panel .scroll-bar:horizontal .decrement-button {
+    -fx-padding:0;
+}
+
 .side-panel-vbox{
     -fx-background-color: #FFFFFF;
 }
@@ -81,7 +89,6 @@
     -fx-max-width: 350px;
     -fx-padding: 0px 24px 0px 24px;
 }
-
 
 .depot-pin:hover {
     -fx-effect: dropshadow(three-pass-box, rgba(255, 215, 6, 1), 24, 0, -4, 0);
