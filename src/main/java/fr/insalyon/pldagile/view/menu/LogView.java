@@ -8,6 +8,7 @@ import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
@@ -16,7 +17,7 @@ import java.util.List;
 public class LogView extends Region {
 
     private static final ObservableList<TextItem> textItems = FXCollections.observableArrayList();
-    private static ListView<TextItem> textList;
+    private static TextArea textarea;
 
     public LogView () {
 
@@ -33,29 +34,31 @@ public class LogView extends Region {
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
-        // List of steps
-        textList = new ListView<>();
-        textList.setItems(textItems);
-        textList.getStyleClass().add("requests-list");
-        textList.setOrientation(Orientation.VERTICAL);
-        textList.setMaxHeight(80);
-        gridPane.add(textList, 0, 1, 2, 1);
+        //logs display
+        textarea = new TextArea();
+        textarea.setEditable(false);
+        textarea.getStyleClass().add("requests-list");
+        textarea.setMaxHeight(130);
+        textarea.setMaxWidth(800);
+        gridPane.add(textarea, 0, 1, 2, 1);
 
         this.getChildren().add(gridPane);
     }
+    
 
-    public static void setTextItems(List<TextItem> textList) {
-        clearItems();
-        textItems.addAll(textList);
-    }
-
-    public static void addTextItem(TextItem textItem) {
-        textItems.add(textItem);
-        textList.scrollTo(textItem);
+    public static void addText(String text) {
+        textarea.appendText("> ");
+        while (text.length() > 50) {
+            textarea.appendText(text.substring(0, 50));
+            text = text.substring(50);
+            textarea.appendText("\n\r");
+            textarea.setScrollTop(Double.MAX_VALUE);
+        }
+        textarea.appendText(text + "\r\n");
+        textarea.setScrollTop(Double.MAX_VALUE);
     }
 
     public static void clearItems() {
-        textItems.clear();
+        textarea.clear();
     }
-
 }
