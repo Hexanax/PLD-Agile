@@ -8,13 +8,26 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class SimulatedAnnealing extends InterruptedException { //TODO ideally, planningRequest is updated with the new order.
+public class SimulatedAnnealing extends InterruptedException {
 
 
+    public static final int MAXIMUM_TIME = 100;
     //Parameters of our Simulated Annealing algorithm
-    private final double temperature = 25.0;
-    private final double coolingRate = 0.99;
-    private final int numberOfIterations = 1000000;
+    private double temperature = 25.0;
+    private double coolingRate = 0.99;
+    private int numberOfIterations = 10000;
+
+    public double getTemperature() {
+        return temperature;
+    }
+
+    public double getCoolingRate() {
+        return coolingRate;
+    }
+
+    public int getNumberOfIterations() {
+        return numberOfIterations;
+    }
 
     //Holds all the best paths from an originId to each intersection of the graph
     private Map<Long, Dijkstra> bestPaths;
@@ -45,7 +58,6 @@ public class SimulatedAnnealing extends InterruptedException { //TODO ideally, p
         this.stepsIdentifiers = new ArrayList<>();
         this.stepsIntersectionId = new ArrayList<>();
         computeAllShortestPaths();
-        runSimulatedAnnealing(temperature,numberOfIterations,coolingRate);
     }
 
     /**
@@ -110,20 +122,19 @@ public class SimulatedAnnealing extends InterruptedException { //TODO ideally, p
      * @param numberOfIterations
      * @param coolingRate
      */
-    public void runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate) throws InterruptedException{
+    public boolean runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate, boolean timeoutEnabled) throws InterruptedException{
         boolean swapResult;
         double bestDistance = getTotalDistance();
         double t = startingTemperature;
         long start = System.currentTimeMillis();
         long timeElapsed=0;
 
-        for (int i = 0; i < numberOfIterations; i++) {
-            if(mustStop) return;
-            timeElapsed = System.currentTimeMillis()-start;
-            if(timeElapsed > 20000){
-                System.out.println("Time elapsed:"+System.currentTimeMillis());
-                //interrompre thread et changer etat d'interface
-            return;
+        while(numberOfIterations>0) {
+            numberOfIterations--;
+            timeElapsed = System.currentTimeMillis() - start;
+            if (timeElapsed > MAXIMUM_TIME && timeoutEnabled) {
+                System.out.println("Time elapsed:" + System.currentTimeMillis());
+                return false;
             }
             if (t > 0.1) {
                 //Store the old values to revert the swap if it's not suitable
@@ -132,9 +143,9 @@ public class SimulatedAnnealing extends InterruptedException { //TODO ideally, p
                 do {
                     int stepsSize = stepsIntersectionId.size();
                     //Generates random number between zero and stepsSize-1
-                    int swapFirstIndex = 1 + (int) (Math.random() * (stepsSize-1));
-                    int swapSecondIndex = 1 + (int) (Math.random() * (stepsSize-1));
-                    swapResult = swapSteps(swapFirstIndex,swapSecondIndex);
+                    int swapFirstIndex = 1 + (int) (Math.random() * (stepsSize - 1));
+                    int swapSecondIndex = 1 + (int) (Math.random() * (stepsSize - 1));
+                    swapResult = swapSteps(swapFirstIndex, swapSecondIndex);
 
                     //If the swap is not allowed (can't have delivery X prior to pickup X, we retry to swap)
                 } while (swapResult == false);
@@ -148,12 +159,9 @@ public class SimulatedAnnealing extends InterruptedException { //TODO ideally, p
             } else {
                 continue;
             }
-            t*=coolingRate;
+            t *= coolingRate;
         }
-    }
-
-    public void stop() {
-        mustStop=true;
+        return true;
     }
 
     /**

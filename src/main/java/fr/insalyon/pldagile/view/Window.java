@@ -184,6 +184,20 @@ public class Window {
         }
     }
 
+    public boolean continueTourCompute() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("title");
+        alert.setHeaderText("header");
+        alert.setContentText("text");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (!result.isPresent() || result.get() != ButtonType.OK) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public void addStateFollow(String message) {
         TextItem item = new TextItem(message, "#000000");
         LogView.addTextItem(item);

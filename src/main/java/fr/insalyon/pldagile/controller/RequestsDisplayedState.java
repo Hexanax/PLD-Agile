@@ -33,7 +33,21 @@ public class RequestsDisplayedState implements State{
         window.addStateFollow("Tour calculation ...");
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
         try {
-            Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap);
+            Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap, () -> {
+                if(window.continueTourCompute()){
+                    try {
+                        tourBuilderV2.getSimulatedAnnealing().runSimulatedAnnealing(
+                                tourBuilderV2.getSimulatedAnnealing().getTemperature(),
+                                tourBuilderV2.getSimulatedAnnealing().getNumberOfIterations(),
+                                tourBuilderV2.getSimulatedAnnealing().getCoolingRate(),
+                                false
+                                );
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                };
+
+            });
             controller.setTour(tour);
             window.addStateFollow("Tour computed");
             controller.setCurrentState(controller.tourComputedState);
