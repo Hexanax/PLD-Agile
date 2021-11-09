@@ -10,6 +10,7 @@ import javafx.util.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class RequestMapView implements PropertyChangeListener, View, Hideable {
@@ -74,8 +75,9 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("RequestMapView event " + evt);
+        //System.out.println("RequestMapView event " + evt);
         this.planningRequest = (PlanningRequest) evt.getNewValue();
+        System.out.println(this.planningRequest.getRequests().toString());
         render();
     }
 
@@ -102,12 +104,12 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
             });
 
             point.getValue().setOnMouseExited(event -> {
-                ((Node) event.getTarget()).setScaleX(1.0);
-                ((Node) event.getTarget()).setScaleY(1.0);
+                ((Node) event.getTarget()).setScaleX(point.getKey().getDefaultScale());
+                ((Node) event.getTarget()).setScaleY(point.getKey().getDefaultScale());
 
                 if (neighbor != null) {
-                    neighbor.getValue().setScaleX(1.0);
-                    neighbor.getValue().setScaleY(1.0);
+                    neighbor.getValue().setScaleX(neighbor.getKey().getDefaultScale());
+                    neighbor.getValue().setScaleY(neighbor.getKey().getDefaultScale());
                 }
             });
         }
@@ -148,9 +150,37 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
     public void unHoverRequest(long requestNumber) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if (point.getKey().getRequestId() == requestNumber) {
+                point.getValue().setScaleX(point.getKey().getDefaultScale());
+                point.getValue().setScaleY(point.getKey().getDefaultScale());
+            }
+        }
+    }
+
+    public void scaleUpAddress(long id, String type) {
+        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
+            if (point.getKey().getRequestId() == id && Objects.equals(point.getKey().getType(), type)) {
+                point.getKey().setDefaultScale(1.35);
+                point.getValue().setScaleX(1.35);
+                point.getValue().setScaleY(1.35);
+            }
+
+            if (point.getKey().getRequestId() == id && !Objects.equals(point.getKey().getType(), type)) {
+                point.getKey().setDefaultScale(1.0);
                 point.getValue().setScaleX(1.0);
                 point.getValue().setScaleY(1.0);
             }
+        }
+    }
+
+    public void unScaleUpAddresses(long id){
+        for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
+            if (point.getKey().getRequestId() == id ) {
+                point.getKey().setDefaultScale(1.0);
+                point.getValue().setScaleX(1.0);
+                point.getValue().setScaleY(1.0);
+            }
+
+
         }
     }
 }

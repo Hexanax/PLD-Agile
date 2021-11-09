@@ -205,7 +205,7 @@ public class Window {
     }
 
     public void mainView() {
-        System.out.println("Main view called");
+        //System.out.println("Main view called");
         tourView.show();
         cityMapView.unHighlight();
         showCityMap();
@@ -235,5 +235,13 @@ public class Window {
 
     public String[] getEditableRequestDuration(){
         return requestListView.getEditableDuration();
+    }
+
+    public void highlightAddress(long id, String type) {
+        requestMapView.scaleUpAddress(id, type);
+    }
+
+    public void unHighlightAddress(long id) {
+        requestMapView.unScaleUpAddresses(id);
     }
 }

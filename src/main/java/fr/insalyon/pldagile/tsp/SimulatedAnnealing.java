@@ -96,7 +96,7 @@ public class SimulatedAnnealing extends InterruptedException { //TODO ideally, p
         }
 
         //end the travel with the depot
-        stepsIdentifiers.add(new Pair((long) stepsIdentifiers.size(), "end"));
+        stepsIdentifiers.add(new Pair(-2L, "end"));
         stepsIntersectionId.add(depotId);
 
 

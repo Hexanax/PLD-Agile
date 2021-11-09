@@ -40,22 +40,17 @@ public class DeleteRequestCommand implements Command {
 
     @Override
     public void doCommand() throws ExceptionCityMap {
+        //System.out.println("Do command for the delete request");
         PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
-        int index = 0;
-        for (Request request : planningRequest.getRequests()) {
-            if (Objects.equals(request.getId(), deletedRequest.getId())) {
-                planningRequest.getRequests().remove(index);
-                break;
-            }
-            index++;
-        }
+        planningRequest.deleteRequest(deletedRequest.getId());
         pclPlanningRequest.setPlanningRequest(planningRequest);
         pclTour.setTour(tourBuilder.deleteRequest(cityMap, pclTour.getTour(), deletedRequest));
     }
 
     @Override
     public void undoCommand() throws ExceptionCityMap {
-        System.out.println("UNDO CALLED");
+        //System.out.println("UNDO CALLED");
+        System.out.println("undo command for the delete request");
         PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
         planningRequest.add(deletedRequest, false);
 

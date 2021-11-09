@@ -34,6 +34,7 @@ import javafx.beans.NamedArg;
  */
 public class MapPoint {
 
+    private double defaultScale;
     private double latitude, longitude;
     private long special_id, request_id;
     private int stepIndex;
@@ -46,6 +47,7 @@ public class MapPoint {
         special_id=-1;
         request_id=-1;
         stepIndex=-1;
+        this.defaultScale = 1.0;
     }
     
     public double getLatitude() {
@@ -91,5 +93,13 @@ public class MapPoint {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void setDefaultScale(double scale) {
+        this.defaultScale =scale;
+    }
+
+    public double getDefaultScale() {
+        return defaultScale;
     }
 }

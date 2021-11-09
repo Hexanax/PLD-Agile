@@ -292,12 +292,12 @@ public class MapView extends Region implements PropertyChangeListener {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        ////System.out.println("CityMapViewCenter event " + evt);
+        System.out.println("CityMapViewCenter event " + evt);
         CityMap newCityMap = (CityMap) evt.getNewValue();
         Coordinates center = newCityMap.getCenter();
         MapPoint mapCenter = new MapPoint(center.getLatitude(), center.getLongitude());
         setCenter(mapCenter);
-        System.out.println(newCityMap.getOptimalZoom());
+        //System.out.println(newCityMap.getOptimalZoom());
         double optimalZoom = newCityMap.getOptimalZoom();
         setZoom(optimalZoom);
         setMaxZoomOut(optimalZoom-1);
