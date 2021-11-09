@@ -65,6 +65,7 @@ public class MapView extends Region implements PropertyChangeListener {
     private boolean zooming = false;
     private boolean enableDragging = false;
     private double maxZoomOut = 0.0D;
+    private double maxZoomFactor = 0.0D;
 
     /**
      * Create a MapView component.
@@ -72,7 +73,8 @@ public class MapView extends Region implements PropertyChangeListener {
     public MapView(Controller controller) {
         baseMap = new BaseMap();
         getChildren().add(baseMap);
-        registerInputListeners();
+        setMaxZoomFactor(0.05);
+        //registerInputListeners();
         controller.getPclCityMap().addPropertyChangeListener(this);
         baseMap.centerLat().addListener(o -> markDirty());
         baseMap.centerLon().addListener(o -> markDirty());
@@ -121,15 +123,27 @@ public class MapView extends Region implements PropertyChangeListener {
             logger.fine("Zoom factor = " + (t.getZoomFactor() - 1));
             boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
             boolean isZooming = t.getZoomFactor() > 0.0;
+            double zoomFactoring;
+            if (t.getZoomFactor() - 1 > 0){
+                zoomFactoring = maxZoomFactor;
+            } else {
+                zoomFactoring =  0 - maxZoomFactor;
+            }
             if (isZooming || allowDezoom) {
-                baseMap.zoom(t.getZoomFactor() - 1, t.getX(), t.getY());
+                baseMap.zoom(zoomFactoring, t.getX(), t.getY());
             }
         });
         setOnScroll(t -> {
-            final double delta = t.getDeltaY() > 1 ? .1 : t.getDeltaY() < -1 ? -.1 : 0;
-            logger.fine("Scroll factor = " + (delta));
+            double delta = t.getDeltaY() > 1 ? .1 : t.getDeltaY() < -1 ? -.1 : 0;
             boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
             boolean isZooming = delta > 0.0;
+            // the delta factor get 2 values : 0.1 & -0.1
+            // t.getDeltaY gets only 2 values : 17.77 & -17.77
+            if (delta > 0){
+                delta = maxZoomFactor;
+            } else {
+                delta = 0 - maxZoomFactor;
+            }
             if (isZooming || allowDezoom) {
                 baseMap.zoom(delta, t.getX(), t.getY());
             }
@@ -139,6 +153,9 @@ public class MapView extends Region implements PropertyChangeListener {
     public void setMaxZoomOut(double maxZoomOut) {
         this.maxZoomOut = maxZoomOut;
     }
+
+    public void setMaxZoomFactor(double maxZoomFactor){
+        this.maxZoomFactor = maxZoomFactor;    }
 
     /**
      * Get the position on the map represented by a given coordinate
@@ -292,14 +309,15 @@ public class MapView extends Region implements PropertyChangeListener {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("CityMapViewCenter event " + evt);
+        ////System.out.println("CityMapViewCenter event " + evt);
         CityMap newCityMap = (CityMap) evt.getNewValue();
         Coordinates center = newCityMap.getCenter();
         MapPoint mapCenter = new MapPoint(center.getLatitude(), center.getLongitude());
         setCenter(mapCenter);
-        //System.out.println(newCityMap.getOptimalZoom());
-        double optimalZoom = newCityMap.getOptimalZoom();
+        System.out.println(newCityMap.getOptimalZoom());
+        double optimalZoom = newCityMap.getOptimalZoom() + 1;
         setZoom(optimalZoom);
-        setMaxZoomOut(optimalZoom-1);
+        setMaxZoomOut(optimalZoom);
+        registerInputListeners();
     }
 }

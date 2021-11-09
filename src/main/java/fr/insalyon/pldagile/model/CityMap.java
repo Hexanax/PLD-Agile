@@ -89,7 +89,7 @@ public class CityMap implements Cloneable {
      * @return min/max values for latitude/longitude, corresponding to a minimum bounding rectangle for
      * the current CityMap
      */
-    private Map<String, Double> getMinimumBoundingRectangle(){
+    public Map<String, Double> getMinimumBoundingRectangle(){
 
         double minLongitude = intersections.values().iterator().next().getCoordinates().getLongitude();
         double minLatitude = intersections.values().iterator().next().getCoordinates().getLatitude();
@@ -185,7 +185,8 @@ public class CityMap implements Cloneable {
         double latitudeCentral = Math.atan2(z, squareCentral);
 
         // Create the central coordinates
-        return new Coordinates(latitudeCentral*180/Math.PI,longitudeCentral*180/Math.PI);
+        System.out.println("center : " + (latitudeCentral*180/Math.PI) + " long" + (longitudeCentral*180/Math.PI));
+        return new Coordinates(latitudeCentral*180/Math.PI,(longitudeCentral*180/Math.PI)+0.005);
 
     }
 
