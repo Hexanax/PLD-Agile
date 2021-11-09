@@ -8,13 +8,13 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-public class SimulatedAnnealing { //TODO ideally, planningRequest is updated with the new order.
+public class SimulatedAnnealing extends InterruptedException { //TODO ideally, planningRequest is updated with the new order.
 
 
     //Parameters of our Simulated Annealing algorithm
     private final double temperature = 25.0;
     private final double coolingRate = 0.99;
-    private final int numberOfIterations = 10000;
+    private final int numberOfIterations = 1000000;
 
     //Holds all the best paths from an originId to each intersection of the graph
     private Map<Long, Dijkstra> bestPaths;
@@ -33,8 +33,12 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
     private ArrayList<Long> oldIntersectionIds;
 
 
+    //
+    public boolean mustStop = false;
 
-    public SimulatedAnnealing(PlanningRequest planningRequest, CityMapGraph cityMapGraph) {
+
+
+    public SimulatedAnnealing(PlanningRequest planningRequest, CityMapGraph cityMapGraph) throws InterruptedException {
         this.planningRequest = planningRequest;
         this.cityMapGraph = cityMapGraph;
         this.bestPaths = new HashMap<>();
@@ -106,12 +110,21 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
      * @param numberOfIterations
      * @param coolingRate
      */
-    public void runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate) {
+    public void runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate) throws InterruptedException{
         boolean swapResult;
         double bestDistance = getTotalDistance();
         double t = startingTemperature;
+        long start = System.currentTimeMillis();
+        long timeElapsed=0;
 
         for (int i = 0; i < numberOfIterations; i++) {
+            if(mustStop) return;
+            timeElapsed = System.currentTimeMillis()-start;
+            if(timeElapsed > 20000){
+                System.out.println("Time elapsed:"+System.currentTimeMillis());
+                //interrompre thread et changer etat d'interface
+            return;
+            }
             if (t > 0.1) {
                 //Store the old values to revert the swap if it's not suitable
                 oldStepsIdentifiers = (ArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
@@ -136,9 +149,11 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
                 continue;
             }
             t*=coolingRate;
-
-
         }
+    }
+
+    public void stop() {
+        mustStop=true;
     }
 
     /**
@@ -283,5 +298,7 @@ public class SimulatedAnnealing { //TODO ideally, planningRequest is updated wit
         dijkstraData = new Dijkstra(cityMapGraph, idOrigin);
         bestPaths.put(dijkstraData.getOriginId(), dijkstraData);
     }
+
+
 
 }

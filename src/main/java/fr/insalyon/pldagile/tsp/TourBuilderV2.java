@@ -5,12 +5,24 @@ import fr.insalyon.pldagile.tsp.Dijkstra;
 import javafx.util.Pair;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class TourBuilderV2 {
 
     private static SimulatedAnnealing simulatedAnnealing;
+    private ExecutorService executor = Executors.newFixedThreadPool(2);
 
-    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap) throws ExceptionCityMap {
+
+//    public Future<Integer> timeElapsed(Integer input) {
+//        return executor.submit(() -> {
+//            Thread.sleep(1000);
+//            return;
+//        });
+//    }
+
+    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap) throws ExceptionCityMap, InterruptedException {
 
         //List of ordered intersections to visit during the tour
         List<Long> tourIntersections = new ArrayList<>();
