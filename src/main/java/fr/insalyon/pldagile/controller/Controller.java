@@ -54,20 +54,20 @@ public class Controller {
         return pclCityMap;
     }
 
-    protected void setCurrentState(State state) {
-        currentState = state;
-    }
-
-    protected void setCityMap(CityMap cityMap) {
-        pclCityMap.setCityMap(cityMap);
-    }
-
     public PCLPlanningRequest getPclPlanningRequest() {
         return pclPlanningRequest;
     }
 
     public PCLTour getPclTour() {
         return pclTour;
+    }
+
+    protected void setCurrentState(State state) {
+        currentState = state;
+    }
+
+    protected void setCityMap(CityMap cityMap) {
+        pclCityMap.setCityMap(cityMap);
     }
 
     protected void setPlanningRequest(PlanningRequest planningRequest) {
@@ -87,13 +87,20 @@ public class Controller {
         currentState.loadMap(this, window);
     }
 
+    /**
+     * Method called by window after a click on the button "Load requests"
+     */
     public void loadRequests() {
         currentState.loadRequests(this, pclCityMap.getCityMap(), window);
     }
 
+    /**
+     * Method called by window after a click on the button "Compute  tour"
+     */
     public void computeTour() {
         currentState.computeTour(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), window);
     }
+
 
     public void cancel() {
         currentState.cancel(this, pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), window, listOfCommands);
@@ -103,6 +110,9 @@ public class Controller {
         currentState.confirm(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), window, listOfCommands);
     }
 
+    /**
+     * Method called by window after a click on the button "Generate roadmap"
+     */
     public void generateRoadMap() {
         currentState.generateRoadMap(this, pclTour.getTour(), window);
     }
@@ -112,7 +122,7 @@ public class Controller {
     }
 
     public void modifyClick(Long id, String type, int stepIndex) {
-        currentState.modifyClick(this,pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), id, type, stepIndex, window);
+        currentState.modifyClick(this, pclPlanningRequest.getPlanningRequest(), pclTour.getTour(), id, type, stepIndex, window);
     }
 
     public void addRequest() {
@@ -141,5 +151,7 @@ public class Controller {
         currentState.keystroke(this, code, controlDown);
     }
 
-    public void intersectionClick(long id) { currentState.intersectionClick(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), id, window);}
+    public void intersectionClick(long id) {
+        currentState.intersectionClick(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), id, window);
+    }
 }
