@@ -13,7 +13,7 @@ import fr.insalyon.pldagile.view.Window;
  */
 public class RequestsDisplayedState implements State{
     @Override
-    public void loadMap(Controller controller, Window window) {
+    public void loadMap(Controller controller, Window window, ListOfCommands l) {
         controller.setCurrentState(controller.mapOverwrite2State);
         window.showValidationAlert("Load a new map",
                 "Are you sure you want to load a new map? ",
@@ -21,7 +21,7 @@ public class RequestsDisplayedState implements State{
     }
 
     @Override
-    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
+    public void loadRequests(Controller controller, CityMap cityMap, Window window, ListOfCommands l) {
         controller.setCurrentState(controller.requestsOverwrite1State);
         window.showValidationAlert("Load new requests",
                 "Are you sure you want to load new requests ? ",

@@ -4,6 +4,10 @@ import javafx.util.Pair;
 
 import java.util.Objects;
 
+/**
+ * Segment is a model class that represents a segment of a city map.
+ * A segment corresponds to a road between two intersections
+ */
 public class Segment {
 
     private Pair<Long, Long> id;
@@ -12,6 +16,14 @@ public class Segment {
     private Intersection origin;
     private Intersection destination;
 
+    /**
+     * Constructor of a segment defined by a name, an origin intersection, an destination intersection
+     * and a length
+     * @param name the name
+     * @param length the length
+     * @param origin the origin intersection
+     * @param destination the destination intersection
+     */
     public Segment(String name, double length, Intersection origin, Intersection destination) {
         this.name = name;
         this.length = length;

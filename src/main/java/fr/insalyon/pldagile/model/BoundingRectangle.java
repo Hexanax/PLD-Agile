@@ -16,10 +16,10 @@ public class BoundingRectangle {
      * Constructor of the minimum bounding rectangle.
      * Inputs are the coordinates of the min/max latitude and min/max longitude of our intersections
      *
-     * @param minLatitude
-     * @param minLongitude
-     * @param maxLatitude
-     * @param maxLongitude
+     * @param minLatitude the smallest latitude of city map
+     * @param minLongitude the smallest longitude of city map
+     * @param maxLatitude the greatest latitude of the city map
+     * @param maxLongitude the greatest latitude of the city map
      */
     public BoundingRectangle(double minLatitude, double minLongitude, double maxLatitude, double maxLongitude) {
         this.minLatitude = minLatitude;

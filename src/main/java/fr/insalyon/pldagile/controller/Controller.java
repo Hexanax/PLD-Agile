@@ -118,14 +118,14 @@ public class Controller {
      * Method called by window after a click on the button "Import map"
      */
     public void loadMap() {
-        currentState.loadMap(this, window);
+        currentState.loadMap(this, window, listOfCommands);
     }
 
     /**
      * Method called by window after a click on the button "Import requests"
      */
     public void loadRequests() {
-        currentState.loadRequests(this, pclCityMap.getCityMap(), window);
+        currentState.loadRequests(this, pclCityMap.getCityMap(), window, listOfCommands);
     }
 
     /**

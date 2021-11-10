@@ -39,7 +39,7 @@ public class AddRequestState3 implements State{
                     if(Objects.equals(type, "depot")){
                         stepIndex =0;
                     } else {
-                        Pair<Long, String> stepToFound = new Pair<Long, String>(id,type);
+                        Pair<Long, String> stepToFound = new Pair<>(id, type);
                         stepIndex = tour.getSteps().indexOf(stepToFound);
                     }
                 }

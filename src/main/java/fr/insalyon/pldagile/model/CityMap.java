@@ -3,14 +3,12 @@ package fr.insalyon.pldagile.model;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.util.Pair;
 
-import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-//TODO : switch to hashMap
 
 /**
  * CityMap is model class that represents the city we load from xml files into the application.
@@ -22,12 +20,15 @@ public class CityMap implements Cloneable {
     private Map<Long, Intersection> intersections;
     private Map<Pair<Long, Long>, Segment> segments;
 
+    /**
+     * a city map is observable
+     */
     private PropertyChangeSupport support;
 
     /**
      * Constructor of CityMap. Inputs are Map Objects that represent our intersections and segments.
-     * @param intersections
-     * @param segments
+     * @param intersections the intersections of the city map
+     * @param segments the segments of the city map
      */
     public CityMap(Map<Long, Intersection> intersections, Map<Pair<Long, Long>, Segment> segments) {
         this.intersections = intersections;
@@ -113,15 +114,6 @@ public class CityMap implements Cloneable {
         segments.put(id, segment);
     }
 
-    //DEPRECATED
-    public void buildMap(List<Intersection> intersections, List<Segment> segments) throws ExceptionXML, CloneNotSupportedException {
-        CityMap oldMap = (CityMap) this.clone();
-        addAllIntersections(intersections);
-        addAllSegments(segments);
-        support.firePropertyChange("mapLoaded", oldMap, this);
-    }
-
-
     /**
      * Computes the minimum bounding rectangle for our CityMap and returns it.
      * @return min/max values for latitude/longitude, corresponding to a minimum bounding rectangle for
@@ -134,9 +126,6 @@ public class CityMap implements Cloneable {
         double maxLatitude = intersections.values().iterator().next().getCoordinates().getLatitude();
         double maxLongitude = intersections.values().iterator().next().getCoordinates().getLongitude();
 
-        //Map<String, Double> boundingRectangle = new HashMap<String, Double>();
-
-
         for (Intersection intersection : intersections.values()) {
             // Convert each pair lat/long to a 3D vector
             double longitude = intersection.getCoordinates().getLongitude();
@@ -146,14 +135,8 @@ public class CityMap implements Cloneable {
             maxLatitude = Math.max(latitude, maxLatitude);
             maxLongitude = Math.max(longitude, maxLongitude);
         }
-//        boundingRectangle.put("minLongitude",minLongitude);
-//        boundingRectangle.put("minLatitude",minLatitude);
-//        boundingRectangle.put("maxLongitude",maxLongitude);
-//        boundingRectangle.put("maxLatitude",maxLatitude);
-        BoundingRectangle boundingRectangle = new BoundingRectangle(minLatitude, minLongitude, maxLatitude, maxLongitude);
 
-
-        return boundingRectangle;
+        return new BoundingRectangle(minLatitude, minLongitude, maxLatitude, maxLongitude);
     }
 
     /**

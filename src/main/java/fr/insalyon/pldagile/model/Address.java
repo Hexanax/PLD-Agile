@@ -2,6 +2,7 @@ package fr.insalyon.pldagile.model;
 
 /**
  * Address is a model class that represents an address.
+ * It can be in our model, a pickup, a depot or a delivery
  */
 public class Address {
 

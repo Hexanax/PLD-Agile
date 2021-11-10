@@ -41,7 +41,7 @@ public class AddRequestCommand implements Command {
         int index =0;
         for(Pair<Long,String> step : pcltour.getTour().getSteps()){
             if(Objects.equals(step.getKey(), request.getId())){
-                if(step.getValue()=="pickup"){
+                if(Objects.equals(step.getValue(), "pickup")){
                     indexBeforePickup = index-1;
                 } else {
                     indexBeforeDelivery = index -1;

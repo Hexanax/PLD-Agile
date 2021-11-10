@@ -15,7 +15,7 @@ import java.io.File;
  */
 public class MapOverwrite2State implements State{
     @Override
-    public void loadMap(Controller controller, Window window) {
+    public void loadMap(Controller controller, Window window, ListOfCommands l) {
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
@@ -37,7 +37,7 @@ public class MapOverwrite2State implements State{
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, Window window,ListOfCommands listOfCdes) {
-        this.loadMap(controller, window);
+        this.loadMap(controller, window, listOfCdes);
     }
 
     @Override

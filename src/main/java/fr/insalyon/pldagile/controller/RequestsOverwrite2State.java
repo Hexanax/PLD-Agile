@@ -16,7 +16,7 @@ import java.io.File;
  */
 public class RequestsOverwrite2State implements State{
     @Override
-    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
+    public void loadRequests(Controller controller, CityMap cityMap, Window window, ListOfCommands l) {
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if(importFile != null) {
@@ -24,6 +24,7 @@ public class RequestsOverwrite2State implements State{
                 PlanningRequest newPlanningRequest = XMLDeserializer.load(cityMap, importFile);
                 controller.setTour(new Tour());
                 controller.setPlanningRequest(newPlanningRequest);
+                l.reset();
                 window.updateRequestFileName(importFile.getName());
                 controller.setCurrentState(controller.requestsDisplayedState);
                 window.addStateFollow("New requests loaded");
@@ -38,7 +39,7 @@ public class RequestsOverwrite2State implements State{
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, Window window,ListOfCommands listOfCdes) {
-        this.loadRequests(controller, citymap, window);
+        this.loadRequests(controller, citymap, window, listOfCdes);
     }
 
     @Override
