@@ -27,6 +27,8 @@
  */
 package fr.insalyon.pldagile.view.maps;
 
+import fr.insalyon.pldagile.model.BoundingRectangle;
+import fr.insalyon.pldagile.model.Coordinates;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
@@ -83,6 +85,10 @@ public class BaseMap extends Group {
     private final DoubleProperty prefZoom = new SimpleDoubleProperty();
     
     private double zoomValue;
+
+    private BoundingRectangle boundingRectangle;
+
+
 
     public double x0, y0;
     private boolean dirty = true;
@@ -215,6 +221,15 @@ public class BaseMap extends Group {
      */
     public double getZoom() {
         return prefZoom.get();
+    }
+
+
+    public BoundingRectangle getBoundingRectangle() {
+        return boundingRectangle;
+    }
+
+    public void setBoundingRectangle(BoundingRectangle boundingRectangle) {
+        this.boundingRectangle = boundingRectangle;
     }
 
     private void doZoom(double z) {
@@ -527,5 +542,13 @@ public class BaseMap extends Group {
     public boolean canZoomOut (double maxZoomOut) {
         return zoom.get() > maxZoomOut;
     }
+
+
+
+    public boolean canMove (MapPoint mapPoint) {
+        return boundingRectangle.isInsideRectangle(new Coordinates(mapPoint.getLatitude(),mapPoint.getLongitude()));
+    }
+
+
 
 }

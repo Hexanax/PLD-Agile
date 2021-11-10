@@ -28,6 +28,7 @@
 package fr.insalyon.pldagile.view.maps;
 
 import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.model.BoundingRectangle;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.Coordinates;
 import javafx.animation.Animation.Status;
@@ -108,10 +109,18 @@ public class MapView extends Region implements PropertyChangeListener {
             if (zooming || !enableDragging) {
                 return;
             }
-            baseMap.moveX(baseMap.x0 - t.getX());
-            baseMap.moveY(baseMap.y0 - t.getY());
-            baseMap.x0 = t.getX();
-            baseMap.y0 = t.getY();
+
+            MapPoint movePrediction = baseMap.getMapPosition(baseMap.x0 - t.getX()/10, baseMap.y0 - t.getY()/10);
+            boolean allowMove = baseMap.canMove(movePrediction);
+            if(allowMove) {
+                baseMap.moveX(baseMap.x0 - t.getX());
+                baseMap.moveY(baseMap.y0 - t.getY());
+                baseMap.x0 = t.getX();
+                baseMap.y0 = t.getY();
+            }
+//            baseMap.moveX(baseMap.x0 - t.getX());
+//            baseMap.moveY(baseMap.y0 - t.getY());
+
         });
         setOnMouseReleased(t -> enableDragging = false);
         setOnZoomStarted(t -> {
@@ -187,6 +196,16 @@ public class MapView extends Region implements PropertyChangeListener {
     public double getZoom() {
         return baseMap.getZoom();
     }
+
+
+    public void setBoundingRectangle (BoundingRectangle boundingRectangle){
+        baseMap.setBoundingRectangle(boundingRectangle);
+    }
+
+    public void getBoundingRectangle (){
+        baseMap.getBoundingRectangle();
+    }
+
 
     /**
      * Request the map to position itself around the specified center
@@ -315,8 +334,10 @@ public class MapView extends Region implements PropertyChangeListener {
         MapPoint mapCenter = new MapPoint(center.getLatitude(), center.getLongitude());
         setCenter(mapCenter);
         System.out.println(newCityMap.getOptimalZoom());
+        BoundingRectangle boundingRectangle = newCityMap.getMinimumBoundingRectangle();
         double optimalZoom = newCityMap.getOptimalZoom() + 1;
         setZoom(optimalZoom);
+        setBoundingRectangle(boundingRectangle);
         setMaxZoomOut(optimalZoom);
         registerInputListeners();
     }

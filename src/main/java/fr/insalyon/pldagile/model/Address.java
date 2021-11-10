@@ -1,5 +1,8 @@
 package fr.insalyon.pldagile.model;
 
+/**
+ * Address is a model class that represents an address.
+ */
 public class Address {
 
     private Intersection intersection;
