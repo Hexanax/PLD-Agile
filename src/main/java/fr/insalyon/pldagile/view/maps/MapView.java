@@ -120,7 +120,7 @@ public class MapView extends Region implements PropertyChangeListener {
         setOnZoom(t -> {
             logger.fine("Zoom factor = " + (t.getZoomFactor() - 1));
             boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
-            boolean isZooming = t.getZoomFactor() > 0.0;
+            boolean isZooming = t.getZoomFactor() -1 > 0.0;
             double zoomFactoring;
             if (t.getZoomFactor() - 1 > 0){
                 zoomFactoring = maxZoomFactor;
