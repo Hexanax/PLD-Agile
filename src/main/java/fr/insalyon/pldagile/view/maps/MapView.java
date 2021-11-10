@@ -94,8 +94,6 @@ public class MapView extends Region implements PropertyChangeListener {
 
 
     private void registerInputListeners() {
-        logger.warning("Register listeners" +
-                "");
         setOnMousePressed(t -> {
             if (zooming) return;
             baseMap.x0 = t.getX();
