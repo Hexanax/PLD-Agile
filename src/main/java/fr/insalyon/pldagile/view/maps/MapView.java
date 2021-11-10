@@ -55,7 +55,7 @@ import java.util.logging.Logger;
  */
 public class MapView extends Region implements PropertyChangeListener {
 
-    private static final Logger logger = Logger.getLogger( MapView.class.getName() );
+    private static final Logger logger = Logger.getLogger(MapView.class.getName());
     public static final double ZOOM = 14;
     private final BaseMap baseMap;
     private Timeline timeline;
@@ -120,12 +120,12 @@ public class MapView extends Region implements PropertyChangeListener {
         setOnZoom(t -> {
             logger.fine("Zoom factor = " + (t.getZoomFactor() - 1));
             boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
-            boolean isZooming = t.getZoomFactor() > 0.0;
+            boolean isZooming = t.getZoomFactor() - 1 > 0.0;
             double zoomFactoring;
-            if (t.getZoomFactor() - 1 > 0){
+            if (t.getZoomFactor() - 1 > 0) {
                 zoomFactoring = maxZoomFactor;
             } else {
-                zoomFactoring =  0 - maxZoomFactor;
+                zoomFactoring = 0 - maxZoomFactor;
             }
             if (isZooming || allowDezoom) {
                 baseMap.zoom(zoomFactoring, t.getX(), t.getY());
@@ -137,7 +137,7 @@ public class MapView extends Region implements PropertyChangeListener {
             boolean isZooming = delta > 0.0;
             // the delta factor get 2 values : 0.1 & -0.1
             // t.getDeltaY gets only 2 values : 17.77 & -17.77
-            if (delta > 0){
+            if (delta > 0) {
                 delta = maxZoomFactor;
             } else {
                 delta = 0 - maxZoomFactor;
@@ -152,8 +152,9 @@ public class MapView extends Region implements PropertyChangeListener {
         this.maxZoomOut = maxZoomOut;
     }
 
-    public void setMaxZoomFactor(double maxZoomFactor){
-        this.maxZoomFactor = maxZoomFactor;    }
+    public void setMaxZoomFactor(double maxZoomFactor) {
+        this.maxZoomFactor = maxZoomFactor;
+    }
 
     /**
      * Get the position on the map represented by a given coordinate
@@ -303,6 +304,7 @@ public class MapView extends Region implements PropertyChangeListener {
 
     /**
      * Receives a cityMapUpdate event and centers on the cityMap center, zooms on it.
+     *
      * @param evt
      */
     @Override
