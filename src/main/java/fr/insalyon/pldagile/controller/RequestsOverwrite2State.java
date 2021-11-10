@@ -11,7 +11,7 @@ import fr.insalyon.pldagile.xml.XMLFileOpener;
 import java.io.File;
 
 /**
- *  RequestsOverwrite1State is the state when map & requests & tour
+ *  RequestsOverwrite2State is the state when map & requests & tour
  *  are loaded in the system and the user wants to load new requests
  */
 public class RequestsOverwrite2State implements State{

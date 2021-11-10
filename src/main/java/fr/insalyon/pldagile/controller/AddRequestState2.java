@@ -4,8 +4,11 @@ import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.tsp.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
 
+/**
+ * AddRequestState2 is the second state called when the user wants to add a request
+ * In this state to add a request the user must select the intersection of the delivery
+ */
 public class AddRequestState2 implements State{
-
 
     @Override
     public void intersectionClick(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Long intersectionID, Window window) {

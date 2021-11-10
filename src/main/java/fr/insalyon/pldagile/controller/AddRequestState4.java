@@ -7,14 +7,15 @@ import fr.insalyon.pldagile.view.Window;
 import javafx.util.Pair;
 
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * AddRequestState4 is the fourth state called when the user wants to add a request
+ * In this state to add a request the user must select the previous address in the tour (step) before the delivery added
+ */
 public class AddRequestState4 implements State {
 
     @Override
     public void cancel(Controller controller, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
-        System.out.println("Cancelled called " + System.currentTimeMillis());
         long idRequestDelete = planningRequest.getLastRequest().getId();
         planningRequest.deleteLastRequest();
         PlanningRequest modify = new PlanningRequest(planningRequest);
@@ -31,6 +32,8 @@ public class AddRequestState4 implements State {
 
     @Override
     public void modifyClick(Controller controller, PlanningRequest planningRequest, Tour tour, Long id, String type, int stepIndex, Window window) {
+        //If the user clicks on an address on the map, two MouseEvent are activated.
+        //The second one must be cancelled to avoid a side effect when switching to AddRequestState5 which would accept the request directly.
         validClick = false;
         if (Objects.equals(type, "Depot") && stepIndex != 0) {
             window.addWarningStateFollow("You can't add a request after the arrival of the tour");
@@ -41,6 +44,7 @@ public class AddRequestState4 implements State {
             } else {
                 boolean bufferClicks = false;
                 if (stepIndex == -1) {
+                    //We activate the double event detection because there is a click on the map
                     bufferClicks = true;
                     if (type.equals("depot")) {
                         stepIndex = 0;
@@ -55,6 +59,7 @@ public class AddRequestState4 implements State {
                     tour.addStep(stepIndex, new Pair<>(request.getId(), "delivery"));
                     controller.addRequest();
                     if (bufferClicks) {
+                        //We prepare the state to cancel the second event that we want to ignore
                         validClick = true;
                     } else {
                         window.unHighlightAddress(planningRequest.getLastRequest().getId());
@@ -73,17 +78,19 @@ public class AddRequestState4 implements State {
             window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
             window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
         } catch (Exception e) {
-            System.out.println("Exception caught, we have to the cancel the add request");
-            e.printStackTrace();
             window.addWarningStateFollow(e.getMessage());
             controller.cancel();
         }
     }
 
+    /**
+     * This variable is used to empty the application's click buffer when an address is clicked directly on the map
+     */
     private boolean validClick;
 
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
+        //Ignore the second click event on the map
         if (validClick) {
             validClick = false;
             window.unHighlightAddress(planningRequest.getLastRequest().getId());

@@ -19,7 +19,6 @@ public class MapDisplayedState implements State{
         window.showValidationAlert("Load a new map",
                 "Are you sure you want to load a new map? ",
                 null);
-
     }
 
     @Override
@@ -33,15 +32,11 @@ public class MapDisplayedState implements State{
                 window.updateRequestFileName(importFile.getName());;
                 controller.setCurrentState(controller.requestsDisplayedState);
                 window.addStateFollow("Requests loaded");
-            } else {
-                controller.setCurrentState(controller.mapDisplayedState);
             }
         } catch(Exception e) {
             window.addWarningStateFollow("Error when reading the XML requests file " +e.getMessage());
             controller.setCurrentState(controller.mapDisplayedState);
         }
     }
-
-
 
 }

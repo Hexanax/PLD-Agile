@@ -5,6 +5,12 @@ import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
 
+/**
+ * AddRequestState5 is the fifth state called when the user wants to add a request
+ * In this state to add a request the user can change the duration of the pickup or of the delivery.
+ * He has also the possibility to directly interact with the buttons clickable in the state TourComputedState
+ * in order to gain a click.
+ */
 public class AddRequestState5 implements State{
 
     @Override
@@ -42,7 +48,11 @@ public class AddRequestState5 implements State{
         }
     }
 
-
+    /**
+     * Allows checking if the string in parameter corresponds with a time in second or not
+     * @param result the string result
+     * @return true if it's a time in second
+     */
     private boolean validity(String result){
         boolean valid = false;
         int duration = 0;

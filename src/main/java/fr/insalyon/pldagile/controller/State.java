@@ -13,14 +13,14 @@ import javafx.scene.input.KeyCode;
 public interface State {
 
     /**
-     * Method called by the controller after a click on "Load a map"
+     * Method called by the controller after a click on "Import map"
      * @param controller the controller
      * @param window the window
      */
     public default void loadMap(Controller controller, Window window) {};
 
     /**
-     * Method called by the controller after a click on "Load a Request"
+     * Method called by the controller after a click on "Import Requests"
      * @param controller the controller
      * @param cityMap the city map
      * @param window the window
@@ -37,7 +37,7 @@ public interface State {
     public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window){};
 
     /**
-     * Method called by the controller after a left click
+     * Method called by the controller after a left click or a click on confirm
      * @param controller the controller
      * @param citymap the city map
      * @param planningRequest the planning request
@@ -48,7 +48,7 @@ public interface State {
     public default void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest,Tour tour, Window window, ListOfCommands l){};
 
     /**
-     * Method called by the controller after a right click
+     * Method called by the controller after a right click or a click on cancel
      * @param controller the controller
      * @param planningRequest the planning request
      * @param tour the tour
@@ -125,7 +125,7 @@ public interface State {
     public default void keystroke(Controller controller, KeyCode code, boolean isControlDown){};
 
     /**
-     * Method called by the controller after a click on a intersection
+     * Method called by the controller after a click on an intersection
      * @param controller the controller
      * @param cityMap the city map
      * @param planningRequest the planning request

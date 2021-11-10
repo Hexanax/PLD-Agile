@@ -8,6 +8,9 @@ import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
 
+/**
+ * DeleteRequestState1 is the state called when the user wants to select a request to delete
+ */
 public class DeleteRequestState1 implements State{
     @Override
     public void deleteRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, Long idRequest, Window window, ListOfCommands listOfCdes) {
@@ -19,10 +22,7 @@ public class DeleteRequestState1 implements State{
             } catch(Exception e) {
                 window.addWarningStateFollow(e.getMessage());
             }
-
-            window.mainView();
             controller.setCurrentState(controller.tourComputedState);
-
         } else {
             window.addWarningStateFollow("Request number unknown, please try again");
         }

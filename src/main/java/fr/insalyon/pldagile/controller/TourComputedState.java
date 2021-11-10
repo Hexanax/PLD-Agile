@@ -32,8 +32,6 @@ public class TourComputedState implements State{
                 "This will remove the requests already loaded and lose the calculated tour");
     }
 
-
-
     @Override
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
         try {
@@ -46,7 +44,6 @@ public class TourComputedState implements State{
         } catch (Exception e) {
             window.addWarningStateFollow(e.getMessage());
         }
-
     }
 
     @Override
