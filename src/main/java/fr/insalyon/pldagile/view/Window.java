@@ -1,24 +1,18 @@
 package fr.insalyon.pldagile.view;
 
-import fr.insalyon.pldagile.LoadingImageSupplier;
+import fr.insalyon.pldagile.view.maps.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.model.RequestType;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 

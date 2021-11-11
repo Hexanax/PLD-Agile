@@ -31,6 +31,7 @@ import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.Coordinates;
 import fr.insalyon.pldagile.services.CityMapUtils;
+import fr.insalyon.pldagile.view.maps.tile.TileImageView;
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;

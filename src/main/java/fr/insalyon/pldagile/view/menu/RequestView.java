@@ -51,7 +51,6 @@ public class RequestView extends Region {
         Button undo = new Button(UNDO);
         createButton(undo, gridPane,0, 3, 1, 1);
 
-
         requestList.setOnMouseClicked(MouseListener::mouseClicked);
         this.getChildren().add(gridPane);
     }
