@@ -40,7 +40,7 @@ public class LogView extends Region implements View {
         listView = new ListView<>();
         listView.getStyleClass().add("requests-list");
         listView.setMaxHeight(130);
-        listView.setMaxWidth(800);
+        listView.setPrefWidth(Double.POSITIVE_INFINITY);
         gridPane.add(listView, 0, 1, 2, 1);
 
         this.getChildren().add(gridPane);
@@ -50,7 +50,7 @@ public class LogView extends Region implements View {
         ObservableList<TextItem> textItems = listView.getItems();
         TextItem newLog = new TextItem(text, color);
         textItems.add(newLog);
-        textItems.get(textItems.size() - 2).setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+        textItems.get(Math.max(0, textItems.size() - 2)).setFont(Font.font("Arial", FontWeight.NORMAL, 10));
         listView.scrollTo(newLog);
     }
 
