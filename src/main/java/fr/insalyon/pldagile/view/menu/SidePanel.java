@@ -9,7 +9,7 @@ public class SidePanel extends Region {
     private static final double HEIGHT_FACTOR = 0.9f;
     private static final double PANEL_WIDTH = 350d;
 
-    private ScrollPane mainBorderPane = new ScrollPane();;
+    private ScrollPane mainBorderPane = new ScrollPane();
     private final Controller controller;
     private final RequestView requestView;
     private final ImportView importView;
@@ -46,6 +46,7 @@ public class SidePanel extends Region {
 
         mainBorderPane.getStyleClass().add("side-panel");
 
+        this.getChildren().clear();
         this.getChildren().add(mainBorderPane);
     }
 

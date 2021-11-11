@@ -66,6 +66,7 @@
 .requests-list{
     -fx-border-radius: 0px;
     -fx-background-insets: 0;
+    -fx-text-fill: black;
 }
 
 .requests-list .scroll-bar:horizontal .increment-arrow,
