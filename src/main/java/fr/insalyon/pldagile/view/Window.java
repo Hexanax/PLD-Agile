@@ -2,23 +2,18 @@ package fr.insalyon.pldagile.view;
 
 import fr.insalyon.pldagile.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.model.RequestType;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
-import javafx.event.EventHandler;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -37,10 +32,13 @@ public class Window {
     private final SidePanel sidePanel;
     private final BottomPanel bottomPanel;
 
+    private int windowWidth = (int) (Screen.getPrimary().getBounds().getWidth() * 0.75);
+    private int windowHeight = (int) (Screen.getPrimary().getBounds().getHeight() * 0.75);
+
     public Window(Controller controller) {
         this.controller = controller;
 
-        //Set the controllers inside the listener handlers
+        // Set the controllers inside the listener handlers
         ButtonListener.setController(controller);
         KeyboardListener.setController(controller);
         MouseListener.setController(controller);
@@ -56,12 +54,19 @@ public class Window {
         requestMapView.setRequestListView(requestListView);
         requestListView.setRequestMapView(requestMapView);
 
-        //Get the view layers and add them to the map view
+        // Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(tourView.getTourLineLayer());
         mapView.addLayer(tourView.getTourPointLayer());
         mapView.addLayer(tourView.getTourDirectionLayer());
         mapView.addLayer(requestMapView.getLayer());
+
+        this.requestListView.getAddressItems().addListener(new ListChangeListener<AddressItem>() {
+            @Override
+            public void onChanged(ListChangeListener.Change c) {
+                loadSidePanel();
+            }
+        });
     }
 
     public static Stage getMainStage() {
@@ -70,13 +75,11 @@ public class Window {
 
     public void render(Stage stage) {
         mainStage = stage;
-        //Title and icon
+        // Title and icon
         stage.setTitle("Picky - INSA Lyon");
         Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
-        //Window dimensions
-        int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
-        int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
+        // Window dimensions
         mapView.setZoom(3);
 
         final Label headerLabel = headerLabel();
@@ -100,7 +103,7 @@ public class Window {
         loadSidePanel();
         loadBottomPanel();
 
-        Scene scene = new Scene(mainPane, screenWidth, screenHeight);
+        Scene scene = new Scene(mainPane, windowWidth, windowHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
         scene.setOnKeyPressed(KeyboardListener::keyPressed);
         scene.setOnMouseClicked(MouseListener::mouseClicked);
@@ -112,20 +115,19 @@ public class Window {
         stage.setScene(scene);
         stage.setFullScreen(false);
 
-        //Center the map on France
+        // Center the map on France
         MapPoint mapCenter = new MapPoint(46.75, 2.80);
         mapView.setCenter(mapCenter);
         mapView.setZoom(7);
-        //Imagine placeholder when the map tiles are loading from openstreetmap
+        // Imagine placeholder when the map tiles are loading from openstreetmap
         LoadingImageSupplier loadingImageSupplier = new LoadingImageSupplier();
         MapView.setPlaceholderImageSupplier(loadingImageSupplier);
         stage.show();
     }
 
     private void loadSidePanel() {
-        sidePanel.MainSidePanel(this.requestListView.getAddressItems());
+        sidePanel.mainSidePanel(this.requestListView.getAddressItems(), windowHeight);
         AnchorPane.setTopAnchor(sidePanel, 16D);
-        AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
 
         // Removing the existing side panel
@@ -141,7 +143,7 @@ public class Window {
     }
 
     private void loadBottomPanel() {
-        AnchorPane.setTopAnchor(bottomPanel, 550D);
+        AnchorPane.setBottomAnchor(bottomPanel, 16D);
         AnchorPane.setLeftAnchor(bottomPanel, 16D);
         mainPane.getChildren().add(bottomPanel);
     }
@@ -216,7 +218,7 @@ public class Window {
     }
 
     public void mainView() {
-        //System.out.println("Main view called");
+        // System.out.println("Main view called");
         tourView.show();
         cityMapView.unHighlight();
         showCityMap();
@@ -228,11 +230,11 @@ public class Window {
         cityMapView.hide();
     }
 
-    public void showCityMap(){
+    public void showCityMap() {
         cityMapView.show();
     }
 
-    public void renderOrderedList(){
+    public void renderOrderedList() {
         requestListView.renderOrdered();
     }
 
@@ -244,7 +246,7 @@ public class Window {
         requestListView.makeLastRequestAddedEditable(editable, id);
     }
 
-    public String[] getEditableRequestDuration(){
+    public String[] getEditableRequestDuration() {
         return requestListView.getEditableDuration();
     }
 
