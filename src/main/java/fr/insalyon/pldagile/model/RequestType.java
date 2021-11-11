@@ -1,7 +1,7 @@
 package fr.insalyon.pldagile.model;
 
 /**
- * Enum to define the type of the 2 addresses in a request
+ * Enum to define the 2 types of addresses in a request
  */
 public enum RequestType {
     PICKUP,

@@ -30,6 +30,7 @@ package fr.insalyon.pldagile.view.maps;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.Coordinates;
+import fr.insalyon.pldagile.services.CityMapUtils;
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -309,13 +310,12 @@ public class MapView extends Region implements PropertyChangeListener {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        ////System.out.println("CityMapViewCenter event " + evt);
         CityMap newCityMap = (CityMap) evt.getNewValue();
-        Coordinates center = newCityMap.getCenter();
+        CityMapUtils cityMapUtils = new CityMapUtils(newCityMap);
+        Coordinates center = cityMapUtils.getCenter();
+        double optimalZoom = cityMapUtils.getOptimalZoom() + 1;
         MapPoint mapCenter = new MapPoint(center.getLatitude(), center.getLongitude());
         setCenter(mapCenter);
-        System.out.println(newCityMap.getOptimalZoom());
-        double optimalZoom = newCityMap.getOptimalZoom() + 1;
         setZoom(optimalZoom);
         setMaxZoomOut(optimalZoom);
         registerInputListeners();

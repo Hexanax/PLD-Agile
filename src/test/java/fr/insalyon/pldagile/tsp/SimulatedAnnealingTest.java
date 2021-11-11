@@ -2,6 +2,8 @@ package fr.insalyon.pldagile.tsp;
 
 import fr.insalyon.pldagile.helpers.FakeCityMapProvider;
 import fr.insalyon.pldagile.model.*;
+import fr.insalyon.pldagile.services.CityMapGraph;
+import fr.insalyon.pldagile.services.SimulatedAnnealing;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;

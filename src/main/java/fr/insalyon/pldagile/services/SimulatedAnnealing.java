@@ -128,7 +128,12 @@ public class SimulatedAnnealing extends InterruptedException {
      * Inspired from <a href ="https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman">this algorithm</a>
      * Simulated annealing algorithm to find an optimal path for our deliverer.
      *
-     * If the algorithm is running for longer than a defined MAXIMUM_TIME, it interrupts itself and returns false
+     * If the algorithm is running for longer than a defined MAXIMUM_TIME and timeoutEnabled is set to true, it interrupts itself and returns false.
+     * Otherwise, it keeps running until done and returns true.
+     *
+     * This implementation design allows us to interrupt the algorithm to ask the user if he wants the result now or if he wants to wait for a more optimized result.
+     * If he wants to keep computing, because the state is saved in the class, when re-calling the function, the algorithm will continue from where it had stopped.
+     *
      * @param startingTemperature the starting temperature for our simulated Annealing algorithm
      * @param numberOfIterations the total number of iterations
      * @param coolingRate the cooling rate of our algorithm.
@@ -172,6 +177,7 @@ public class SimulatedAnnealing extends InterruptedException {
                 continue;
             }
             t *= coolingRate;
+            startingTemperature=t;
         }
         return true;
     }
@@ -275,12 +281,6 @@ public class SimulatedAnnealing extends InterruptedException {
         stepsIntersectionId = oldIntersectionIds;
     }
 
-    public void updatePlanningRequest(){ //TODO : WIP
-        PlanningRequest newPlanning = new PlanningRequest();
-        newPlanning.setDepot(planningRequest.getDepot());
-
-    }
-
     /**
      *
      * @return ArrayList of ordered steps Pairs(RequestId, typeOfRequest)
@@ -303,7 +303,7 @@ public class SimulatedAnnealing extends InterruptedException {
 
     /**
      *
-     * @return Mapping of each originId with a Dijkstra computation result
+     * @return Mapping of each originId with a Dijkstra computation result from this originId
      */
     public Map<Long, Dijkstra> getBestPaths() {
         return bestPaths;

@@ -5,7 +5,7 @@ import javafx.util.Pair;
 import java.util.*;
 
 /**
- * Tour is model class that represents the list of ordered requests to perform compute from a planning request.
+ * Tour is model class that represents the list of ordered requests to visit computed from a planning request.
  * Tour is represented by a list of ordered requests,a depot, all visited intersections and
  * segments to build the way
  */
