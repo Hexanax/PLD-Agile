@@ -42,7 +42,7 @@ public class RequestsDisplayedState implements State{
                                 tourBuilderV2.getSimulatedAnnealing().getCoolingRate(),
                                 false
                                 );
-                    } catch (InterruptedException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 };

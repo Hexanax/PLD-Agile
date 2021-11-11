@@ -14,19 +14,12 @@ import java.util.Map;
  */
 public class CityMapUtils {
 
-    private Map<Long, Intersection> intersections;
-
-
-    public CityMapUtils(CityMap cityMap) {
-        intersections = cityMap.getIntersections();
-    }
-
-
     /**
      * Calculates the central coordinates of the map based on the intersections loaded from the XML file
      * @return coordinates of the center of our CityMap
      */
-    public Coordinates getCenter() {
+    public static Coordinates getCenter(CityMap cityMap) {
+        Map<Long, Intersection> intersections = cityMap.getIntersections();
 
         double totalCoordinates = 0;
         double latitudeIntermed = 0;
@@ -68,7 +61,10 @@ public class CityMapUtils {
      * @return min/max values for latitude/longitude, corresponding to a minimum bounding rectangle for
      * the current CityMap
      */
-    public BoundingRectangle getMinimumBoundingRectangle() {
+    public static BoundingRectangle getMinimumBoundingRectangle(CityMap cityMap) {
+
+        Map<Long, Intersection> intersections = cityMap.getIntersections();
+
         double minLatitude = intersections.values().iterator().next().getCoordinates().getLatitude();
         double minLongitude = intersections.values().iterator().next().getCoordinates().getLongitude();
         double maxLatitude = intersections.values().iterator().next().getCoordinates().getLatitude();
@@ -93,7 +89,7 @@ public class CityMapUtils {
      * @param lat a double representing our latitude in degrees
      * @return a double representing our latitude in radians
      */
-    private double latRad(double lat) {
+    private static double latRad(double lat) {
         double sin = Math.sin(lat * Math.PI / 180);
         double radX2 = Math.log((1 + sin) / (1 - sin)) / 2;
         return Math.max(Math.min(radX2, Math.PI), -Math.PI) / 2;
@@ -104,8 +100,8 @@ public class CityMapUtils {
      * of our CityMap is shown.
      * @return optimal zoom value to display the minimum bounding rectangle
      */
-    public double getOptimalZoom() {
-        BoundingRectangle boundingRectangle = getMinimumBoundingRectangle();
+    public static double getOptimalZoom(CityMap cityMap) {
+        BoundingRectangle boundingRectangle = getMinimumBoundingRectangle(cityMap);
         double minLatitude = boundingRectangle.getMinLatitude();
         double minLongitude = boundingRectangle.getMinLongitude();
         double maxLatitude = boundingRectangle.getMaxLatitude();
