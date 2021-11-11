@@ -3,7 +3,7 @@ package fr.insalyon.pldagile.controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
-import fr.insalyon.pldagile.tsp.ExceptionCityMap;
+import fr.insalyon.pldagile.services.ExceptionCityMap;
 import fr.insalyon.pldagile.services.TourBuilderV2;
 import javafx.util.Pair;
 

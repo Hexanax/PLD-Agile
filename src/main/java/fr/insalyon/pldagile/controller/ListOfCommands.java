@@ -1,6 +1,6 @@
 package fr.insalyon.pldagile.controller;
 
-import fr.insalyon.pldagile.tsp.ExceptionCityMap;
+import fr.insalyon.pldagile.services.ExceptionCityMap;
 
 import java.util.LinkedList;
 
