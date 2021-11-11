@@ -22,7 +22,6 @@ import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.util.*;
 
 public class Window {
@@ -186,11 +185,11 @@ public class Window {
     }
 
     public void addStateFollow(String message) {
-        LogView.addText(message);
+        LogView.addText(new TextItem(message, "green"));
     }
 
     public void addWarningStateFollow(String message) {
-        LogView.addText(message);
+        LogView.addText(new TextItem(message, "red"));
     }
 
     public void deleteView() {
