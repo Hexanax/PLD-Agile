@@ -29,22 +29,14 @@ public class RequestsDisplayedState implements State {
     }
 
     @Override
-    public void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window) {
+    public void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window, boolean slowModeActivated) {
         window.addStateFollow("Tour calculation ...");
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
         try {
-            Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap, () -> {
+            Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap, slowModeActivated, () -> {
                 if (window.continueTourCompute()) {
-
-                    tourBuilderV2.getSimulatedAnnealing().runSimulatedAnnealing(
-                            tourBuilderV2.getSimulatedAnnealing().getTemperature(),
-                            tourBuilderV2.getSimulatedAnnealing().getNumberOfIterations(),
-                            tourBuilderV2.getSimulatedAnnealing().getCoolingRate(),
-                            false
-                    );
+                        tourBuilderV2.getSimulatedAnnealing().runSimulatedAnnealing(false,slowModeActivated);
                 }
-                ;
-
             });
             controller.setTour(tour);
             window.addStateFollow("Tour computed");
