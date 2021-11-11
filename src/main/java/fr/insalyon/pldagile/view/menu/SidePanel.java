@@ -13,14 +13,12 @@ public class SidePanel extends Region {
     private final Controller controller;
     private final RequestView requestView;
     private final ImportView importView;
-    private LogView logView;
 
 
     public SidePanel(Controller controller) {
         this.controller=controller;
         this.importView = new ImportView();
         this.requestView = new RequestView();
-        this.logView = new LogView();
     }
 
     public void mainSidePanel(ObservableList<AddressItem> list, int height) {
@@ -31,7 +29,6 @@ public class SidePanel extends Region {
         if (list.size() > 0) {
             vb.getChildren().add(requestView);
         }
-        vb.getChildren().add(logView);
 
         mainBorderPane.setContent(vb);
         VBox.setVgrow(mainBorderPane, Priority.ALWAYS);
@@ -50,9 +47,6 @@ public class SidePanel extends Region {
         this.getChildren().add(mainBorderPane);
     }
 
-    public void updateLogView(LogView logview) {
-        this.logView = logview;
-    }
     public RequestView getRequestView() {
         return requestView;
     }

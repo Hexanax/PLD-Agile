@@ -15,6 +15,7 @@
 }
 .h1{
     -fx-font-family: Raleway;
+    -fx-text-fill: #0F213C;
     -fx-font-style: normal;
     -fx-font-weight: bold;
     -fx-font-size: 36px;
@@ -32,6 +33,7 @@
     -fx-padding: 24px 0px 0px 0px;
 }
 .request-list-element{
+    -fx-text-fill: #0F213C;
     -fx-font-family: Roboto;
     -fx-font-style: normal;
     -fx-font-weight: bold;
@@ -39,7 +41,31 @@
 }
 
 .button {
+    -fx-background-color: #DFDFDF;
+    -fx-text-fill: #0F213C;
+    -fx-background-radius: 12px;
+    -fx-padding: 8px 16px 8px 16px;
+    -fx-font-family: Roboto;
+    -fx-font-style: normal;
+    -fx-font-weight: 500;
+    -fx-font-size: 14px;
+    -fx-line-height: 16px;
+}
+.add-button {
     -fx-background-color: #D9E8FF;
+    -fx-text-fill: #0F213C;
+    -fx-background-radius: 12px;
+    -fx-padding: 8px 16px 8px 16px;
+    -fx-font-family: Roboto;
+    -fx-font-style: normal;
+    -fx-font-weight: 500;
+    -fx-font-size: 14px;
+    -fx-line-height: 16px;
+}
+
+.delete-button {
+    -fx-background-color: #FFDBD9;
+    -fx-text-fill: #A1180F;
     -fx-background-radius: 12px;
     -fx-padding: 8px 16px 8px 16px;
     -fx-font-family: Roboto;
@@ -66,7 +92,7 @@
 .requests-list{
     -fx-border-radius: 0px;
     -fx-background-insets: 0;
-    -fx-text-fill: black;
+        -fx-text-fill: #0F213C;
 }
 
 .requests-list .scroll-bar:horizontal .increment-arrow,
@@ -90,7 +116,7 @@
   .list-cell:filled:selected:focused, .list-cell:filled:selected, .list-cell:filled:hover {
     -fx-background-color: #F2F2F2;
     -fx-background-radius: 12px;
-    -fx-text-fill: black;
+        -fx-text-fill: #0F213C;
   }
 
 .side-panel{
@@ -99,7 +125,6 @@
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 22, 0, 4, 22);
     -fx-max-width: 350px;
     -fx-padding: 24px 0px 24px 0px;
-
 }
 
 .side-panel .scroll-bar:horizontal .increment-arrow,
@@ -129,16 +154,14 @@
 
 .side-panel .scroll-bar {
     -fx-background-color: transparent;
-    -fx-pref-width: 12;
-    -fx-pref-height: 12;
-    -fx-padding: 2;
+    -fx-padding: 32px 2px 32px 2px;
 }
 
 .side-panel .scroll-bar .thumb {
     -fx-background-color: rgba(0, 0, 0, .2);
     -fx-background-radius: 1000;
     -fx-pref-width: 12;
-    -fx-pref-height: 12;
+    -fx-pref-height: 70;
 }
 
 .side-panel-vbox{

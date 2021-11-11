@@ -3,8 +3,8 @@ package fr.insalyon.pldagile.view.maps;
 
 import fr.insalyon.pldagile.model.RequestType;
 import fr.insalyon.pldagile.view.Colors;
+import fr.insalyon.pldagile.view.Fonts;
 import javafx.scene.image.Image;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 public class RequestMapPin extends MapPin {
@@ -50,7 +50,7 @@ public class RequestMapPin extends MapPin {
         label.setTranslateX(iconSize * TEXT_X_TRANSLATION_FACTOR);
         label.setTranslateY(iconSize * TEXT_Y_TRANSLATION_FACTOR);
         label.setFill(Colors.getRequestIdLabelColor(this.type));
-        label.setFont(new Font("Roboto", 10.0));
+        label.setFont(Fonts.getBodyFont());
         return label;
     }
 

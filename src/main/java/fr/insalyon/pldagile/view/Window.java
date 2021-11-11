@@ -103,6 +103,7 @@ public class Window {
 
         mainPane.getChildren().add(bp);
         loadSidePanel();
+        loadBottomPanel();
 
         Scene scene = new Scene(mainPane, windowWidth, windowHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
