@@ -36,7 +36,7 @@ public interface State {
      * @param planningRequest the planning request
      * @param window the window
      */
-    public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window){};
+    public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window, boolean slowModeActivated){};
 
     /**
      * Method called by the controller after a left click or a click on confirm

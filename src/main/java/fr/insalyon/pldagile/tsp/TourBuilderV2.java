@@ -17,7 +17,7 @@ public class TourBuilderV2 {
         return simulatedAnnealing;
     }
 
-    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap, Runnable notFullyComputed) throws ExceptionCityMap, InterruptedException {
+    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap, boolean slowModeActivated, Runnable notFullyComputed) throws ExceptionCityMap, InterruptedException {
 
         //List of ordered intersections to visit during the tour
         List<Long> tourIntersections = new ArrayList<>();
@@ -26,10 +26,7 @@ public class TourBuilderV2 {
         boolean isFullyComputed = false;
         //SimulatedAnnealing runs on the planningRequest applied to the graph to find an optimized tour
         simulatedAnnealing = new SimulatedAnnealing(planningRequest, cityMapGraph);
-        isFullyComputed = simulatedAnnealing.runSimulatedAnnealing(simulatedAnnealing.getTemperature(),
-                simulatedAnnealing.getNumberOfIterations(),
-                simulatedAnnealing.getCoolingRate(),
-                true);
+        isFullyComputed = simulatedAnnealing.runSimulatedAnnealing(true, slowModeActivated);
         if (!isFullyComputed) {
             notFullyComputed.run();
         }

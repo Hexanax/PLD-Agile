@@ -11,7 +11,7 @@ import java.util.*;
 public class SimulatedAnnealing extends InterruptedException {
 
 
-    public static final int MAXIMUM_TIME = 100;
+    public static final int MAXIMUM_TIME = 500;
     //Parameters of our Simulated Annealing algorithm
     private double temperature = 25.0;
     private double coolingRate = 0.99;
@@ -118,14 +118,15 @@ public class SimulatedAnnealing extends InterruptedException {
     /**
      * Inspired from https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman
      * Simulated annealing algorithm to find an optimal path for our deliverer.
-     * @param startingTemperature
-     * @param numberOfIterations
-     * @param coolingRate
+
      */
-    public boolean runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate, boolean timeoutEnabled) throws InterruptedException{
+    public boolean runSimulatedAnnealing(boolean timeoutEnabled, boolean slowModeActivated) throws InterruptedException{
+        if(slowModeActivated && timeoutEnabled){
+            this.numberOfIterations = 1000000000;
+        }
         boolean swapResult;
         double bestDistance = getTotalDistance();
-        double t = startingTemperature;
+        double t = temperature;
         long start = System.currentTimeMillis();
         long timeElapsed=0;
 
@@ -153,7 +154,7 @@ public class SimulatedAnnealing extends InterruptedException {
                 double currentDistance = getTotalDistance();
                 if (currentDistance < bestDistance) {
                     bestDistance = currentDistance;
-                } else if ((Math.exp(bestDistance - currentDistance) / startingTemperature) < Math.random()) {
+                } else if ((Math.exp(bestDistance - currentDistance) / temperature) < Math.random()) {
                     revertSwapSteps(oldStepsIdentifiers, oldIntersectionIds);
                 }
             } else {

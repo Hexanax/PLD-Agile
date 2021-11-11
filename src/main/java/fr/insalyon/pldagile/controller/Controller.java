@@ -132,7 +132,14 @@ public class Controller {
      * Method called by window after a click on the button "Compute  tour"
      */
     public void computeTour() {
-        currentState.computeTour(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), window);
+        currentState.computeTour(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), window, false);
+    }
+
+    /**
+     * Method called by window after a click on the button "Slow compute tour"
+     */
+    public void slowComputeTour() {
+        currentState.computeTour(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), window, true);
     }
 
     /**
@@ -211,4 +218,6 @@ public class Controller {
     public void intersectionClick(long id) {
         currentState.intersectionClick(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), id, window);
     }
+
+
 }

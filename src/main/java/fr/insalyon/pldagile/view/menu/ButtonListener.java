@@ -23,6 +23,9 @@ public class ButtonListener {
             case ImportView.COMPUTE_TOUR:
                 controller.computeTour();
                 break;
+            case ImportView.SLOW_COMPUTE_TOUR:
+                controller.slowComputeTour();
+                break;
             case ImportView.GENERATE_ROADMAP:
                 controller.generateRoadMap();
                 break;
