@@ -42,7 +42,7 @@ public class RequestListView implements View, PropertyChangeListener {
         requestList.getStyleClass().add("requests-list");
         requestList.setPrefWidth(Double.POSITIVE_INFINITY);
         requestList.setOrientation(Orientation.VERTICAL);
-        requestList.setOnMouseClicked(MouseListener::mouseClicked);
+        requestList.setOnMouseClicked(RequestMouseListener::mouseClicked);
     }
 
     public void clear() {

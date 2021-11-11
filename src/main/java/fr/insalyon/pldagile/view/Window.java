@@ -59,14 +59,6 @@ public class Window {
         mapView.addLayer(tourView.getTourPointLayer());
         mapView.addLayer(tourView.getTourDirectionLayer());
         mapView.addLayer(requestMapView.getLayer());
-
-        //TODO Change
-//        this.requestListView.getAddressItems().addListener(new ListChangeListener<AddressItem>() {
-//            @Override
-//            public void onChanged(ListChangeListener.Change c) {
-//                loadSidePanel();
-//            }
-//        });
     }
 
     public static Stage getMainStage() {

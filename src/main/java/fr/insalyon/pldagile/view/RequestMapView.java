@@ -5,13 +5,11 @@ import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.RequestListView;
 import javafx.scene.Node;
-import javafx.scene.image.ImageView;
 import javafx.util.Pair;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
@@ -92,7 +90,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                 controller.modifyClick(point.getKey().getRequestId(), point.getKey().getType(), point.getKey().getStepIndex());
             });
 
-            Pair<MapPoint, Node> neighbor = searchneighbor(point);
+            Pair<MapPoint, Node> neighbor = searchNeighbor(point);
             point.getValue().setOnMouseEntered(event -> {
                 ((Node) event.getTarget()).setScaleX(1.2);
                 ((Node) event.getTarget()).setScaleY(1.2);
@@ -100,6 +98,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                     neighbor.getValue().setScaleX(1.2);
                     neighbor.getValue().setScaleY(1.2);
                 }
+                System.out.println("Set selected id = " + point.getKey().getRequestId());
                 this.requestListView.setSelected(point.getKey().getRequestId(), point.getKey().getType());
             });
 
@@ -115,7 +114,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         }
     }
 
-    private Pair<MapPoint, Node> searchneighbor(Pair<MapPoint, Node> pointHover) {
+    private Pair<MapPoint, Node> searchNeighbor(Pair<MapPoint, Node> pointHover) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if (point.getKey().getRequestId() == pointHover.getKey().getRequestId() && pointHover.getKey().getType() != point.getKey().getType()) {
                 return point;
