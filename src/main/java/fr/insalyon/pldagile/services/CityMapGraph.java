@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile.tsp;
+package fr.insalyon.pldagile.services;
 
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.Intersection;
@@ -8,8 +8,11 @@ import javafx.util.Pair;
 
 import java.util.*;
 
-import static java.lang.Double.POSITIVE_INFINITY;
-
+/**
+ * The class CityMapGraph is a set of vertices and arcs that represents our CityMap.
+ * The nodes are the intersections of our CityMap and the arcs are the segments of our CityMap.
+ * It implements the Graph Interface.
+ */
 public class CityMapGraph implements Graph {
 
     private final int nbVertices;
@@ -27,8 +30,8 @@ public class CityMapGraph implements Graph {
 
 
     /**
-     * Generate a graph from a citymap
-     * @param cityMap
+     * Constructor generating a graph from a CityMap
+     * @param cityMap the CityMap we want to build the graph from.
      */
     public CityMapGraph(CityMap cityMap) {
         Map<Long, Intersection> intersections = cityMap.getIntersections();
@@ -45,7 +48,7 @@ public class CityMapGraph implements Graph {
     }
 
     /**
-     * Generates the graph using the segments of a CityMap
+     * Method used to generate the graph using the segments of a CityMap
      */
     private void buildGraph() {
         Long originId;

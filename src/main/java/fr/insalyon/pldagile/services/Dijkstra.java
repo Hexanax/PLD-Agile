@@ -1,9 +1,6 @@
-package fr.insalyon.pldagile.tsp;
+package fr.insalyon.pldagile.services;
 
-import fr.insalyon.pldagile.model.CityMap;
-import fr.insalyon.pldagile.model.Intersection;
-import fr.insalyon.pldagile.model.Segment;
-import fr.insalyon.pldagile.tsp.CityMapGraph;
+import fr.insalyon.pldagile.services.CityMapGraph;
 
 import javafx.util.Pair;
 
@@ -11,6 +8,12 @@ import java.util.*;
 
 import static java.lang.Double.POSITIVE_INFINITY;
 
+/**
+ * The Dijkstra class stores all the data calculated from applying the Dijkstra algorithm on a CityMapGraph from a specific
+ * originId.
+ * The distances from origin are stored as a <code>Map&#60;Long,Double&#60;</code>.
+ * The predecessors are stored as a <code>Map&#60;Long,Long&#62;</code>
+ */
 public class Dijkstra {
 
     //We'll store our data in 4 structures

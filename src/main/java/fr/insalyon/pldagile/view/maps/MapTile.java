@@ -27,6 +27,7 @@
  */
 package fr.insalyon.pldagile.view.maps;
 
+import fr.insalyon.pldagile.view.maps.tile.TileImageView;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.WeakInvalidationListener;
@@ -45,7 +46,7 @@ import static java.lang.Math.floor;
  */
 class MapTile extends Region {
 
-    private static final Logger logger = Logger.getLogger( MapTile.class.getName() );
+    private static final Logger logger = Logger.getLogger(MapTile.class.getName());
 
     final int myZoom;
     final long i, j;
@@ -120,9 +121,9 @@ class MapTile extends Region {
     private void calculatePosition() {
         double currentZoom = baseMap.zoom().get();
         int visibleWindow = (int) floor(currentZoom + BaseMap.TIPPING);
-        boolean visible =  visibleWindow == myZoom ||
-                           isCovering() ||
-                           ((visibleWindow >= BaseMap.MAX_ZOOM) && (myZoom == BaseMap.MAX_ZOOM - 1));
+        boolean visible = visibleWindow == myZoom ||
+                isCovering() ||
+                ((visibleWindow >= BaseMap.MAX_ZOOM) && (myZoom == BaseMap.MAX_ZOOM - 1));
         this.setVisible(visible);
         logger.fine("visible tile " + this + "? " + this.isVisible() + (this.isVisible() ? " covering? " + isCovering() : ""));
         double sf = Math.pow(2, currentZoom - myZoom);
@@ -145,7 +146,6 @@ class MapTile extends Region {
     void addCovering(MapTile child) {
         coveredTiles.add(child);
         InvalidationListener il = createProgressListener(child);
-//        //////System.out.println("We have to cover, add "+il);
         child.progress.addListener(il);
         calculatePosition();
     }

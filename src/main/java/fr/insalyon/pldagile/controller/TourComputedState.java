@@ -17,7 +17,7 @@ import java.io.File;
  */
 public class TourComputedState implements State{
     @Override
-    public void loadMap(Controller controller, Window window) {
+    public void loadMap(Controller controller, Window window, ListOfCommands l) {
         controller.setCurrentState(controller.mapOverwrite3State);
         window.showValidationAlert("Load a new map",
                 "Are you sure you want to load a new map? ",
@@ -25,14 +25,12 @@ public class TourComputedState implements State{
     }
 
     @Override
-    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
+    public void loadRequests(Controller controller, CityMap cityMap, Window window, ListOfCommands l) {
         controller.setCurrentState(controller.requestsOverwrite2State);
         window.showValidationAlert("Load new requests",
                 "Are you sure you want to load new requests ? ",
                 "This will remove the requests already loaded and lose the calculated tour");
     }
-
-
 
     @Override
     public void generateRoadMap(Controller controller, Tour tour, Window window) {
@@ -46,7 +44,6 @@ public class TourComputedState implements State{
         } catch (Exception e) {
             window.addWarningStateFollow(e.getMessage());
         }
-
     }
 
     @Override

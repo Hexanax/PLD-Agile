@@ -3,27 +3,16 @@ package fr.insalyon.pldagile.controller;
 import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
-import fr.insalyon.pldagile.tsp.ExceptionCityMap;
-import fr.insalyon.pldagile.tsp.TourBuilderV2;
+import fr.insalyon.pldagile.services.ExceptionCityMap;
+import fr.insalyon.pldagile.services.TourBuilderV2;
 import javafx.util.Pair;
 
 import java.util.Objects;
 
+/**
+ * This class allows executing or cancel the command to add a request
+ */
 public class AddRequestCommand implements Command {
-    /*private Tour tour;
-    private CityMap cityMap;
-    private Pair<Integer, Pickup> pickup;
-    private Pair<Integer, Delivery> delivery;
-    private TourBuilderV2 tourBuilder;
-    private Request requestAdded;
-
-    public AddRequestCommand(CityMap citymap, Tour tour, Pair<Integer, Pickup> pickup, Pair<Integer, Delivery> delivery){
-        this.tour = tour;
-        this.pickup = pickup;
-        this.delivery = delivery;
-        this.tourBuilder = new TourBuilderV2();
-        this.cityMap = citymap;
-    }*/
 
     private CityMap cityMap;
     private PCLPlanningRequest pclPlanningRequest;
@@ -36,6 +25,12 @@ public class AddRequestCommand implements Command {
 
     private boolean delete;
 
+    /**
+     * Allows to prepare the undo/redo interface to add a request
+     * @param citymap the city map
+     * @param pclPlanningRequest the observable planning request
+     * @param pcltour the observable tour
+     */
     public AddRequestCommand(CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour) {
         this.request = pclPlanningRequest.getPlanningRequest().getLastRequest();
         this.cityMap = citymap;
@@ -46,7 +41,7 @@ public class AddRequestCommand implements Command {
         int index =0;
         for(Pair<Long,String> step : pcltour.getTour().getSteps()){
             if(Objects.equals(step.getKey(), request.getId())){
-                if(step.getValue()=="pickup"){
+                if(Objects.equals(step.getValue(), "pickup")){
                     indexBeforePickup = index-1;
                 } else {
                     indexBeforeDelivery = index -1;
@@ -61,8 +56,13 @@ public class AddRequestCommand implements Command {
     }
 
 
+    /**
+     * Execute the add request command
+     * @throws ExceptionCityMap
+     */
     @Override
     public void doCommand() throws ExceptionCityMap {
+        //In case the order has been cancelled once, we have to rebuild the planning request and the tour correctly before updated it
         if(delete){
             PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
             planningRequest.add(request, false);
@@ -70,6 +70,7 @@ public class AddRequestCommand implements Command {
 
             Tour tour = new Tour(pcltour.getTour());
             tour.addRequest(request);
+            //Insert in the good position the pickup and the delivery of the request
             tour.addStep(indexBeforePickup, new Pair<>(request.getId(),"pickup"));
             tour.addStep(indexBeforeDelivery, new Pair<>(request.getId(),"delivery"));
             pcltour.setTour(tour);
@@ -77,19 +78,30 @@ public class AddRequestCommand implements Command {
         }
         delete = false;
 
+        //Tour update
         pcltour.setTour(tourBuilder.addRequest(cityMap, pcltour.getTour(), request.getId()));
     }
 
+    /**
+     * Cancel the add request command
+     * @throws ExceptionCityMap
+     */
     @Override
     public void undoCommand() throws ExceptionCityMap {
-        System.out.println("Undo command for the add request");
         delete = true;
+        //Tour and planning request update
         PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
-        planningRequest.deleteLastRequest();
+        planningRequest.deleteRequest(request.getId());
         pclPlanningRequest.setPlanningRequest(planningRequest);
         pcltour.setTour(tourBuilder.deleteRequest(cityMap, pcltour.getTour(), request));
     }
 
+    /**
+     * Allows to modify the duration of the pickup and the delivery of the
+     * @param pickupDuration pickup duration edited
+     * @param deliveryDuration delivery duration edited
+     * @throws ExceptionCityMap
+     */
     @Override
     public void editRequestDuration(int pickupDuration, int deliveryDuration) throws ExceptionCityMap {
         request.getPickup().setDuration(pickupDuration);
@@ -98,6 +110,7 @@ public class AddRequestCommand implements Command {
         Tour modifyTourDuration = new Tour(pcltour.getTour());
 
         modifyTourDuration.reset();
+        //Recompute the duration of the tour
         modifyTourDuration = tourBuilder.computeTour(cityMap, modifyTourDuration, modifyTourDuration.getIntersections());
         pcltour.setTour(modifyTourDuration);
 

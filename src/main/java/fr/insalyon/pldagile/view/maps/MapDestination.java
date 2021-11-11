@@ -1,5 +1,9 @@
 package fr.insalyon.pldagile.view.maps;
 
+/**
+ * This class defines a MapDestination composed of two {@link MapPoint}
+ * A starting point and an ending point
+ */
 public class MapDestination {
 
     private MapPoint start;

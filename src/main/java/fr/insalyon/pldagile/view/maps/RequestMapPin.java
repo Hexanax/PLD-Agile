@@ -1,7 +1,8 @@
 package fr.insalyon.pldagile.view.maps;
 
 import fr.insalyon.pldagile.model.RequestType;
-import javafx.scene.control.Label;
+import fr.insalyon.pldagile.view.Colors;
+import fr.insalyon.pldagile.view.Fonts;
 import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 
@@ -16,15 +17,14 @@ public class RequestMapPin extends MapPin {
     private static final double TEXT_Y_TRANSLATION_FACTOR = -0.25;
 
     public RequestMapPin(RequestType type, Long requestId) {
-        xOffsetFactor = -0.1;
-        this.requestId = requestId;
-        double iconSize = DEFAULT_ICON_SIZE;
         this.type = type;
+        this.requestId = requestId;
+        xOffsetFactor = -0.1;
+        double iconSize = DEFAULT_ICON_SIZE;
         String imgURL, styleClass;
         if (type.equals(RequestType.PICKUP)) {
             imgURL = PICKUP_ICON_URL;
             styleClass = "pickup-pin";
-
         } else { // type.equals(RequestType.DELIVERY) == true
             imgURL = DELIVERY_ICON_URL;
             styleClass = "delivery-pin";
@@ -38,23 +38,17 @@ public class RequestMapPin extends MapPin {
         // Add style properties to the pin
         pin.getStyleClass().add(styleClass);
 
-        Label requestIdLabel = getRequestIdLabel();
+        Text requestIdLabel = getRequestIdLabel();
         getChildren().addAll(pin, requestIdLabel);
         centerCoordinates();
     }
 
-    private Label getRequestIdLabel() {
-        String styleClass;
-        Label label = new Label(this.requestId.toString());
+    private Text getRequestIdLabel() {
+        Text label = new Text(this.requestId.toString());
         label.setTranslateX(iconSize * TEXT_X_TRANSLATION_FACTOR);
         label.setTranslateY(iconSize * TEXT_Y_TRANSLATION_FACTOR);
-        if (type.equals(RequestType.PICKUP)) {
-            styleClass = "pickup-request-id";
-        } else {
-            styleClass = "delivery-request-id";
-        }
-
-        label.getStyleClass().add(styleClass);
+        label.setFill(Colors.getRequestIdLabelColor(this.type));
+        label.setFont(Fonts.getBodyFont());
         return label;
     }
 

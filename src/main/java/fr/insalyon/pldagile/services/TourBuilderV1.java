@@ -1,14 +1,14 @@
-package fr.insalyon.pldagile.tsp;
+package fr.insalyon.pldagile.services;
 
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.tsp.Dijkstra;
+import fr.insalyon.pldagile.services.CityMapGraph;
+import fr.insalyon.pldagile.services.Dijkstra;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TourBuilderV1 { //TODO Implement TourBuilder
+public class TourBuilderV1 {
 
-    //TODO Rewrite
     public List<Long> buildTour(PlanningRequest planningRequest, CityMap cityMap) {
 
 

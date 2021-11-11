@@ -7,10 +7,12 @@ import fr.insalyon.pldagile.view.maps.MapPoint;
 import java.util.ArrayList;
 import java.util.List;
 
+
 /**
  * Way is a class that represents a road composed by a list of segments having the same name.
  *
  */
+
 public class Way {
 
     private String name;
@@ -19,11 +21,13 @@ public class Way {
     private Intersection origin;
     private Intersection destination;
 
+
     /**
      * Constructor of Way.
      * Constructs a Way by adding all the segments on the list
      * @param segments a list containing the segments of the way
      */
+
     public Way(List<Segment> segments) {
         this.segments = segments;
         totalLength = 0;
@@ -31,6 +35,7 @@ public class Way {
             origin = segments.get(0).getOrigin();
             destination = segments.get(segments.size()-1).getDestination();
             name = segments.get(0).getName();
+
             if(name.equals("")) name = " road ";
             calculateLength();
         }
@@ -65,6 +70,7 @@ public class Way {
     /**
      *  Calculates the length of the way by iterating through the segments list.
      */
+
     private void calculateLength() {
         for(Segment segment : segments){
             totalLength += segment.getLength();
@@ -95,6 +101,7 @@ public class Way {
             totalLength += segment.getLength();
             if (origin ==null) origin = segment.getOrigin();
             destination = segment.getDestination();
+
         }
 
         else System.out.println("segment is null");

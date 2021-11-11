@@ -35,7 +35,7 @@ import java.util.ServiceLoader;
 public class TileRetrieverProvider {
 
     private static TileRetrieverProvider provider;
-    public static synchronized TileRetrieverProvider getInstance() {
+    public static  TileRetrieverProvider getInstance() {
         if (provider == null) {
             provider = new TileRetrieverProvider();
         }

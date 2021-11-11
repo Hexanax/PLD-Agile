@@ -4,8 +4,13 @@ import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.observer.PCLPlanningRequest;
 import fr.insalyon.pldagile.observer.PCLTour;
 import fr.insalyon.pldagile.view.Window;
-import javafx.util.Pair;
 
+/**
+ * AddRequestState5 is the fifth state called when the user wants to add a request
+ * In this state to add a request the user can change the duration of the pickup or of the delivery.
+ * He has also the possibility to directly interact with the buttons clickable in the state TourComputedState
+ * in order to gain a click.
+ */
 public class AddRequestState5 implements State{
 
     @Override
@@ -22,16 +27,16 @@ public class AddRequestState5 implements State{
     @Override
     public void confirm(Controller controller, CityMap citymap, PlanningRequest planningRequest, Tour tour, Window window, ListOfCommands l) {
         String[] values = window.getEditableRequestDuration();
-        if(values == null){
+        if(values == null) {
             window.addWarningStateFollow("Error : duration can't be null");
         } else {
             if(validity(values[0]) && validity(values[1])){
                 int pickupDuration = Integer.parseInt(values[0]);
-                int deliveryDuration = Integer.parseInt(values[0]);
+                int deliveryDuration = Integer.parseInt(values[1]);
                 try {
                     l.getLastCommand().editRequestDuration(pickupDuration, deliveryDuration);
                     window.makeLastRequestAddedEditable(false, planningRequest.getLastRequest().getId());
-                    window.addStateFollow("Request suscesfully added");
+                    window.addStateFollow("Request successfully added");
                     controller.setCurrentState(controller.tourComputedState);
                 } catch (Exception e) {
                     window.addWarningStateFollow(e.getMessage());
@@ -40,12 +45,14 @@ public class AddRequestState5 implements State{
             } else {
                 window.addWarningStateFollow("Wrong format, number must be a positive Integer, try again" );
             }
-
         }
-
     }
 
-
+    /**
+     * Allows checking if the string in parameter corresponds with a time in second or not
+     * @param result the string result
+     * @return true if it's a time in second
+     */
     private boolean validity(String result){
         boolean valid = false;
         int duration = 0;
@@ -57,19 +64,18 @@ public class AddRequestState5 implements State{
         } catch (NumberFormatException e){
             valid = false;
         }
-
         return valid;
     }
 
 
     @Override
-    public void loadMap(Controller controller, Window window) {
+    public void loadMap(Controller controller, Window window, ListOfCommands l) {
         controller.confirm();
         controller.loadMap();
     }
 
     @Override
-    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
+    public void loadRequests(Controller controller, CityMap cityMap, Window window, ListOfCommands l) {
         controller.confirm();
         controller.loadRequests();
     }

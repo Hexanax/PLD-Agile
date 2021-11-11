@@ -1,24 +1,19 @@
 package fr.insalyon.pldagile.view;
 
-import fr.insalyon.pldagile.LoadingImageSupplier;
+import fr.insalyon.pldagile.view.maps.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.model.RequestType;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
-import javafx.event.EventHandler;
+import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
@@ -27,7 +22,7 @@ import java.util.*;
 public class Window {
 
     private static Stage mainStage = null;
-    private Controller controller;
+    private final Controller controller;
     private final AnchorPane mainPane = new AnchorPane();
     private final MapView mapView;
     private final CityMapView cityMapView;
@@ -36,18 +31,17 @@ public class Window {
     private final RequestListView requestListView;
     private final SidePanel sidePanel;
     private final BottomPanel bottomPanel;
-    private boolean selectingIntersection;
 
-    private ButtonListener buttonListener;
-    private KeyboardListener keyboardListener;
-    private MouseListener mouseListener;
+    private int windowWidth = (int) (Screen.getPrimary().getBounds().getWidth() * 0.75);
+    private int windowHeight = (int) (Screen.getPrimary().getBounds().getHeight() * 0.75);
 
     public Window(Controller controller) {
         this.controller = controller;
 
-        buttonListener = new ButtonListener(controller);
-        keyboardListener = new KeyboardListener(controller);
-        mouseListener = new MouseListener(controller);
+        // Set the controllers inside the listener handlers
+        ButtonListener.setController(controller);
+        KeyboardListener.setController(controller);
+        MouseListener.setController(controller);
 
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
@@ -60,30 +54,34 @@ public class Window {
         requestMapView.setRequestListView(requestListView);
         requestListView.setRequestMapView(requestMapView);
 
-        //Get the view layers and add them to the map view
+        // Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());
         mapView.addLayer(tourView.getTourLineLayer());
         mapView.addLayer(tourView.getTourPointLayer());
         mapView.addLayer(tourView.getTourDirectionLayer());
         mapView.addLayer(requestMapView.getLayer());
+
+        this.requestListView.getAddressItems().addListener(new ListChangeListener<AddressItem>() {
+            @Override
+            public void onChanged(ListChangeListener.Change c) {
+                loadSidePanel();
+            }
+        });
     }
 
     public static Stage getMainStage() {
         return mainStage;
     }
 
-    public void render(Stage stage) throws Exception {
+    public void render(Stage stage) {
         mainStage = stage;
+        // Title and icon
         stage.setTitle("Picky - INSA Lyon");
         Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
-        // cityMap = new CityMap();
-        // planningRequest = new PlanningRequest();
-        //mapView.addLayer(pointLayer); // Add the map layer
-        //mapView.addLayer(lineLayer); // Add the line (tour) layer
-        int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
-        int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
+        // Window dimensions
         mapView.setZoom(3);
+
         final Label headerLabel = headerLabel();
         final Group copyright = createCopyright();
         StackPane bp = new StackPane() {
@@ -95,6 +93,7 @@ public class Window {
                 copyright.setLayoutY(getHeight() - copyright.prefHeight(-1));
             }
         };
+
         AnchorPane.setTopAnchor(bp, 0D);
         AnchorPane.setBottomAnchor(bp, 0D);
         AnchorPane.setLeftAnchor(bp, 0D);
@@ -104,7 +103,7 @@ public class Window {
         loadSidePanel();
         loadBottomPanel();
 
-        Scene scene = new Scene(mainPane, screenWidth, screenHeight);
+        Scene scene = new Scene(mainPane, windowWidth, windowHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
         scene.setOnKeyPressed(KeyboardListener::keyPressed);
         scene.setOnMouseClicked(MouseListener::mouseClicked);
@@ -115,18 +114,20 @@ public class Window {
         scene.getStylesheets().add("/style.css");
         stage.setScene(scene);
         stage.setFullScreen(false);
+
+        // Center the map on France
         MapPoint mapCenter = new MapPoint(46.75, 2.80);
         mapView.setCenter(mapCenter);
         mapView.setZoom(7);
+        // Imagine placeholder when the map tiles are loading from openstreetmap
         LoadingImageSupplier loadingImageSupplier = new LoadingImageSupplier();
         MapView.setPlaceholderImageSupplier(loadingImageSupplier);
         stage.show();
     }
 
     private void loadSidePanel() {
-        sidePanel.MainSidePanel(this.requestListView.getAddressItems());
+        sidePanel.mainSidePanel(this.requestListView.getAddressItems(), windowHeight);
         AnchorPane.setTopAnchor(sidePanel, 16D);
-        AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
 
         // Removing the existing side panel
@@ -142,7 +143,7 @@ public class Window {
     }
 
     private void loadBottomPanel() {
-        AnchorPane.setTopAnchor(bottomPanel, 550D);
+        AnchorPane.setBottomAnchor(bottomPanel, 16D);
         AnchorPane.setLeftAnchor(bottomPanel, 16D);
         mainPane.getChildren().add(bottomPanel);
     }
@@ -184,14 +185,25 @@ public class Window {
         }
     }
 
+    public boolean continueTourCompute() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Heavy computing task detected");
+        alert.setHeaderText("Do you want to continue looking for a more optimized path or display the one already found ?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (!result.isPresent() || result.get() != ButtonType.OK) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     public void addStateFollow(String message) {
-        TextItem item = new TextItem(message, "#000000");
-        LogView.addTextItem(item);
+        LogView.addText(message, "green");
     }
 
     public void addWarningStateFollow(String message) {
-        TextItem item = new TextItem(message, "#FF0000");
-        LogView.addTextItem(item);
+        LogView.addText(message, "red");
     }
 
     public void deleteView() {
@@ -205,7 +217,7 @@ public class Window {
     }
 
     public void mainView() {
-        System.out.println("Main view called");
+        // System.out.println("Main view called");
         tourView.show();
         cityMapView.unHighlight();
         showCityMap();
@@ -217,11 +229,11 @@ public class Window {
         cityMapView.hide();
     }
 
-    public void showCityMap(){
+    public void showCityMap() {
         cityMapView.show();
     }
 
-    public void renderOrderedList(){
+    public void renderOrderedList() {
         requestListView.renderOrdered();
     }
 
@@ -233,7 +245,15 @@ public class Window {
         requestListView.makeLastRequestAddedEditable(editable, id);
     }
 
-    public String[] getEditableRequestDuration(){
+    public String[] getEditableRequestDuration() {
         return requestListView.getEditableDuration();
+    }
+
+    public void highlightAddress(long id, String type) {
+        requestMapView.scaleUpAddress(id, type);
+    }
+
+    public void unHighlightAddress(long id) {
+        requestMapView.unScaleUpAddresses(id);
     }
 }

@@ -1,7 +1,10 @@
-package fr.insalyon.pldagile.tsp;
+package fr.insalyon.pldagile.services;
 
 import java.util.List;
 
+/**
+ * Interface defining the function for a Graph class
+ */
 public interface Graph {
     /**
      * @return the number of vertices in <code>this</code>

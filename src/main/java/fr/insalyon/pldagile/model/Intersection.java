@@ -2,11 +2,19 @@ package fr.insalyon.pldagile.model;
 
 import java.util.Objects;
 
+/**
+ * Intersection is a model class that represents an intersection of a city map.
+ */
 public class Intersection {
 
     private Long id;
     private Coordinates coordinates;
 
+    /**
+     * Constructor of an intersection defined by an id and coordinates
+     * @param id the id of the intersection
+     * @param coordinates the geographical coordinates
+     */
     public Intersection(Long id, Coordinates coordinates) {
         this.id = id;
         this.coordinates = coordinates;

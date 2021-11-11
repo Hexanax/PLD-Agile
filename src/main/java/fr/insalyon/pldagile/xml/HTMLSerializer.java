@@ -63,6 +63,7 @@ public class HTMLSerializer {
 
         //Build the pebble segments and intersections
 
+
         if(segmentIterator.hasNext() && intersectionIterator.hasNext()){
 
             Segment currentSegment = segmentIterator.next();
@@ -74,6 +75,7 @@ public class HTMLSerializer {
 
                 Segment nextSegment = segmentIterator.next();
                 Intersection nextIntersection = intersectionIterator.next();
+
 
                 //Orientation between the two segments
                 double followingAngle = getAngleFromNorth(nextSegment);
@@ -98,9 +100,11 @@ public class HTMLSerializer {
                 if(hasChangedWay){
                     int orientation = compareOrientation(currentAngle, followingAngle);
                     //Add the intersection with the direction to follow
+
                     String nextSegmentName = nextSegment.getName();
                     if(nextSegmentName.equals("")) nextSegmentName = "road";
                     rows.add(createIntersection(currentIntersection, step, depot.getIntersection().getId(),nextSegmentName, orientation));
+
                 }
 
                 currentSegment = nextSegment;
@@ -160,7 +164,7 @@ public class HTMLSerializer {
      * Allows to put a way on a road map used by pebble to compile the information in the template. Gather all the segments
      * that compose a single way.
      * @param way the way whose information we want to collect
-     * @return the segment information usable by pebble
+     * @return the way information usable by pebble
      */
     public static Map<String, Object> createWay(Way way){
         Map<String, Object> buffer = new HashMap<>();
