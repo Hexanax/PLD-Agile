@@ -162,7 +162,6 @@ public class CityMap implements Cloneable {
         double maxLatitude = boundingRectangle.getMaxLatitude();
         double maxLongitude = boundingRectangle.getMaxLongitude();
 
-        //System.out.println("minLong"+minLongitude+ "minLat"+ minLatitude+ "maxLong"+ maxLongitude+ "maxLat"+maxLatitude);
         double latDif = Math.abs(latRad(maxLatitude) - latRad(minLatitude));
         double longDif = Math.abs(maxLongitude - minLongitude);
 
@@ -172,7 +171,6 @@ public class CityMap implements Cloneable {
         double latZoom = Math.log(1 / latFrac) / Math.log(2);
         double longZoom = Math.log(1 / longFrac) / Math.log(2);
 
-        //System.out.println("longZoom"+longZoom+"latZoom"+latZoom);
         return Math.min(longZoom, latZoom);
     }
 
