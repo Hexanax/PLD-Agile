@@ -66,7 +66,7 @@ public class DeleteRequestCommand implements Command {
      */
     @Override
     public void undoCommand() throws ExceptionCityMap {
-        System.out.println("undo command for the delete request");
+        //System.out.println("undo command for the delete request");
         PlanningRequest planningRequest = new PlanningRequest(pclPlanningRequest.getPlanningRequest());
         planningRequest.add(deletedRequest, false);
 
