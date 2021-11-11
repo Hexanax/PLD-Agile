@@ -28,7 +28,6 @@ public class TourBuilderV2 {
         boolean isFullyComputed = false;
         //SimulatedAnnealing runs on the planningRequest applied to the graph to find an optimized tour
         simulatedAnnealing = new SimulatedAnnealing(planningRequest, cityMapGraph);
-        simulatedAnnealing.computeAllShortestPaths();
         isFullyComputed = simulatedAnnealing.runSimulatedAnnealing(true, slowModeActivated);
         if (!isFullyComputed) {
             notFullyComputed.run();

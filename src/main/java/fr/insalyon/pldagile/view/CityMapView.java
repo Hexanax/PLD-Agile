@@ -67,7 +67,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
     @Override
     public void render() {
         if (cityMap != null) {
-            //System.out.println("Entered");
+            ////System.out.println("Entered");
             clear();
             for (Map.Entry<Long, Intersection> entry : cityMap.getIntersections().entrySet()) {
                 Intersection intersection = entry.getValue();
@@ -87,7 +87,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        //System.out.println("CityMapView event " + evt);
+        ////System.out.println("CityMapView event " + evt);
         this.cityMap = (CityMap) evt.getNewValue();
         render();
     }
@@ -98,7 +98,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
     public void activeMapIntersectionsListener() {
         for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
             point.getValue().setOnMouseClicked(event-> {
-                //System.out.println(point.getKey().getId());
+                ////System.out.println(point.getKey().getId());
                 controller.intersectionClick(point.getKey().getId());
             });
         }

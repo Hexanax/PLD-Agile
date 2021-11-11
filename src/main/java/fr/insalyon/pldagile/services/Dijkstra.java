@@ -1,5 +1,6 @@
 package fr.insalyon.pldagile.services;
 
+import fr.insalyon.pldagile.services.CityMapGraph;
 
 import javafx.util.Pair;
 
@@ -103,7 +104,6 @@ public class Dijkstra {
 //        * all predecessors
 //        * all distances from origin
 //        So our dijkstra algorithm has found the real "cost" between to vertices and we can implement TSP.
-
 
     }
 

@@ -78,8 +78,8 @@ public class TourView implements PropertyChangeListener, View, Hideable {
                 @Override
                 public void layout(MapDestination destination, Line line, Point2D originPoint, Point2D destinationPoint) {
 
-//                    System.out.println("Line length = " + lineLength);
-//                    System.out.println("Direction image width = " + directionArrowImage.getImage().getWidth());
+//                    //System.out.println("Line length = " + lineLength);
+//                    //System.out.println("Direction image width = " + directionArrowImage.getImage().getWidth());
                     if (mapDestination == destination) {
                         ImageView directionArrowImage = IconProvider.getDirectionIcon(20);
                         double lineLength = originPoint.distance(destinationPoint);
@@ -139,7 +139,7 @@ public class TourView implements PropertyChangeListener, View, Hideable {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        //System.out.println("TourViewEvent event " + evt);
+        ////System.out.println("TourViewEvent event " + evt);
         this.tour = (Tour) evt.getNewValue();
         render();
     }

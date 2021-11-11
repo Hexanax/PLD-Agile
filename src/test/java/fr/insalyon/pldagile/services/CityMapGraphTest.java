@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile.tsp;
+package fr.insalyon.pldagile.services;
 
 import fr.insalyon.pldagile.helpers.FakeCityMapProvider;
 import fr.insalyon.pldagile.model.CityMap;

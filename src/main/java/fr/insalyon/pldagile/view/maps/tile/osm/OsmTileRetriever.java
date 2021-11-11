@@ -48,7 +48,7 @@ public class OsmTileRetriever implements TileRetriever {
 
     static String buildImageUrlString(int zoom, long i, long j) {
         String tileUrl = host + zoom + "/" + i + "/" + j + ".png";
-        //////System.out.println("Requested tile = " + tileUrl);
+        ////////System.out.println("Requested tile = " + tileUrl);
         return tileUrl;
     }
 
