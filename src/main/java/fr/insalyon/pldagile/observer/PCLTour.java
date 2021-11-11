@@ -30,7 +30,7 @@ public class PCLTour {
     }
 
     public void setTour(Tour tour) {
-        //System.out.println("notification : " + this.tour + " " + tour);
+        ////System.out.println("notification : " + this.tour + " " + tour);
         support.firePropertyChange("tourUpdate", null, tour); //TODO Check null old value, problem in UNDO deleteRequest
         this.tour = tour;
     }

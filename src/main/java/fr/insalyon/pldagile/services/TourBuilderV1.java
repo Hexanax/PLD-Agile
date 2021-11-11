@@ -30,7 +30,7 @@ public class TourBuilderV1 {
             previousIntersection = delivery.getIntersection();
         }
 
-        ////System.out.println("Running V1");
+        //////System.out.println("Running V1");
         return tourIntersections;
     }
 

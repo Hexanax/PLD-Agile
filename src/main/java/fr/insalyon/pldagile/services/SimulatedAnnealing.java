@@ -18,9 +18,12 @@ public class SimulatedAnnealing {
 
     public static final int MAXIMUM_TIME = 2000;
     //Parameters of our Simulated Annealing algorithm
-    private double temperature = 25.0;
-    private double coolingRate = 0.99;
-    private int numberOfIterations = 10000;
+    private double temperature = 1000;
+    private double coolingRate = 0.98;
+    private double finalTemperature = 0.1;
+    //lower temp every 10 iterations
+    private double lowerTempModulo = 10;
+    private int numberOfIterations = 100000;
 
     public double getTemperature() {
         return temperature;
@@ -67,6 +70,7 @@ public class SimulatedAnnealing {
         this.bestPaths = new HashMap<>();
         this.stepsIdentifiers = new ArrayList<>();
         this.stepsIntersectionId = new ArrayList<>();
+        computeAllShortestPaths();
     }
 
     /**
@@ -98,7 +102,7 @@ public class SimulatedAnnealing {
             Long requestId = request.getId();
             Pickup pickup = request.getPickup();
             Delivery delivery = request.getDelivery();
-
+            //System.out.println(requestId);
             //check if the Dijkstra has already been run from this intersection
             //to avoid re-computing for nothing...
             if (!bestPaths.containsKey(pickup.getIntersection().getId())) {
@@ -148,17 +152,20 @@ public class SimulatedAnnealing {
         long timeElapsed = 0;
 
         if (slowModeActivated && timeoutEnabled) {
-            this.numberOfIterations = 500000000;
+            this.numberOfIterations*=1000;
+            this.finalTemperature/=100;
+            this.lowerTempModulo=1000;
         }
 
         while (numberOfIterations > 0) {
             numberOfIterations--;
             timeElapsed = System.currentTimeMillis() - start;
             if (timeElapsed > MAXIMUM_TIME && timeoutEnabled) {
-                System.out.println("Time elapsed:" + System.currentTimeMillis());
+                //System.out.println("Time elapsed:" + System.currentTimeMillis());
                 return false;
             }
-            if (t > 0.1) {
+            //exit loop if t<finalTemperature
+            if (t > finalTemperature) {
                 //Store the old values to revert the swap if it's not suitable
                 oldStepsIdentifiers = (ArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
                 oldIntersectionIds = (ArrayList<Long>) stepsIntersectionId.clone();
@@ -175,14 +182,19 @@ public class SimulatedAnnealing {
                 double currentDistance = getTotalDistance();
                 if (currentDistance < bestDistance) {
                     bestDistance = currentDistance;
-                } else if ((Math.exp(bestDistance - currentDistance) / temperature) < Math.random()) {
+                } else if ((Math.exp(bestDistance - currentDistance) / t) < Math.random()) {
                     revertSwapSteps(oldStepsIdentifiers, oldIntersectionIds);
                 }
-            } else {
-                continue;
+            } else if( !(slowModeActivated && timeoutEnabled)){
+                System.out.println(numberOfIterations);
+                break;
             }
-            t *= coolingRate;
-            temperature = t;
+            if(numberOfIterations%lowerTempModulo==0){
+                t *= coolingRate;
+                temperature = t;
+            }
+
+
         }
         return true;
     }

@@ -15,6 +15,7 @@ import java.util.List;
  * Please be careful when deleting or changing lines in here as you could break a lot of tests...
  */
 public abstract class FakeCityMapProvider {
+
     static public CityMap getSmallMap() throws ExceptionXML {
         Intersection[] intersections = {
                 new Intersection(1L, new Coordinates(4, 5)),

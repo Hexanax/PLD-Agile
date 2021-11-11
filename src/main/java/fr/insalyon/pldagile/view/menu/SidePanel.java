@@ -23,7 +23,7 @@ public class SidePanel extends Region {
 
     public void mainSidePanel(ObservableList<AddressItem> list, int height) {
         this.requestView.setView(list);
-        System.out.println(height);
+        //System.out.println(height);
         VBox vb = new VBox();
         vb.getChildren().add(importView);
         if (list.size() > 0) {
