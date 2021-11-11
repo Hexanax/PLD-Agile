@@ -102,6 +102,11 @@
     -fx-padding:0;
 }
 
+.requests-list:filled:selected:focused, .requests-list:filled:selected, .requests-list:filled:hover, .requests-list:selected {
+-fx-background-color: DFDFDF;
+-fx-background-radius: 12px;
+-fx-text-fill: #0F213C;
+}
 .side-panel .scroll-bar:vertical .increment-arrow,
 .side-panel .scroll-bar:vertical .decrement-arrow,
 .side-panel .scroll-bar:vertical .increment-button,
@@ -113,11 +118,11 @@
     -fx-background-color: white;
   }
   
-  .list-cell:filled:selected:focused, .list-cell:filled:selected, .list-cell:filled:hover {
-    -fx-background-color: #F2F2F2;
+.list-cell:filled:selected:focused, .list-cell:filled:selected, .list-cell:filled:hover {
+    -fx-background-color: DFDFDF;
     -fx-background-radius: 12px;
     -fx-text-fill: #0F213C;
-  }
+}
 
 .side-panel{
     -fx-background-color: #FFFFFF;

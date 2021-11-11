@@ -101,7 +101,7 @@ public class AddressItem extends Region {
         if (date == null) {
             return addressItemHeightWithoutTour;
         }
-        if (requestNumber >= 0) {
+        if (requestNumber < 0) {
             return depotHeight;
         }
         return addressItemHeightWithTour;
