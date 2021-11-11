@@ -13,7 +13,6 @@ import java.util.Objects;
 /**
  * CityMap is model class that represents the city we load from xml files into the application.
  * A city is represented by a list of intersections and segments that connect intersections.
- *
  */
 public class CityMap implements Cloneable {
 

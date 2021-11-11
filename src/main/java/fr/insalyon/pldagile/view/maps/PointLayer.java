@@ -43,7 +43,8 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
     private final ObservableList<Pair<MapPoint, T>> points = FXCollections.observableArrayList();
     private boolean shown = true;
 
-    public PointLayer() { }
+    public PointLayer() {
+    }
 
     public void addPoint(MapPoint mapPoint, T icon) {
         addPoint(mapPoint, icon, null);
@@ -52,10 +53,24 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
     public void addPoint(MapPoint mapPoint, T icon, Effect effect) {
         icon.setEffect(effect);
         points.add(new Pair<>(mapPoint, icon));
-        if(shown) {
+        if (shown) {
             this.getChildren().add(icon);
             this.markDirty();
         }
+    }
+
+    public void removePoint(MapPoint midPoint) {
+        points.stream()
+                .filter(pair -> pair.getKey().equals(midPoint))
+                .findFirst()
+                .ifPresent(pair -> {
+                    this.getChildren().remove(pair.getValue());
+                    points.remove(pair);
+                });
+    }
+
+    public boolean containsPoint(MapPoint mapPoint) {
+        return points.stream().anyMatch(pair -> pair.getKey().equals(mapPoint));
     }
 
     public void clearPoints() {
@@ -89,11 +104,10 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
 
     @Override
     public void show() {
-        if(!shown) {
+        if (!shown) {
             points.forEach(point -> this.getChildren().add(point.getValue()));
             this.markDirty();
             shown = true;
         }
     }
-
 }
