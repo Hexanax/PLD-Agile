@@ -1,7 +1,7 @@
 package fr.insalyon.pldagile.view.menu;
 
+import fr.insalyon.pldagile.view.Fonts;
 import fr.insalyon.pldagile.view.View;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -9,8 +9,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 /**
  * This view is displayed on the lower left side of the window and is useful to
@@ -28,33 +26,33 @@ public class LogView extends Region implements View {
     @Override
     public void render() {
         GridPane gridPane = new GridPane();
-        gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(8);
-        gridPane.setVgap(16);
+        gridPane.setVgap(8);
 
         // Title Label
-        Label titleLabel = new Label("Message");
-        titleLabel.getStyleClass().add("h1");
+        Label titleLabel = new Label("History");
+        titleLabel.getStyleClass().add("h2");
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
         // Logs display
         listView = new ListView<>();
         listView.getStyleClass().add("requests-list");
-        listView.setMaxHeight(150);
-        listView.setPrefWidth(200);
+        listView.setPrefWidth(Double.POSITIVE_INFINITY);
+        listView.setPrefHeight(75);
         gridPane.add(listView, 0, 1, 2, 1);
 
+        this.getStyleClass().add("message-panel-section");
         this.getChildren().add(gridPane);
     }
 
     public static void addText(String text, String color) {
         ObservableList<TextItem> textItems = listView.getItems();
-        String formattedText = breakSpaces(text, 35);
+        String formattedText = breakSpaces(text, 80);
         TextItem newLog = new TextItem(formattedText, color);
         textItems.add(newLog);
-        textItems.get(Math.max(0, textItems.size() - 2)).setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+        textItems.get(Math.max(0, textItems.size() - 2)).setFont(Fonts.getBodyFont());
         listView.scrollTo(newLog);
     }
 
@@ -62,7 +60,7 @@ public class LogView extends Region implements View {
         int counter = 0;
         StringBuilder newStr = new StringBuilder();
         for (char c : str.toCharArray()) {
-            if(counter++ > 35 && c == ' ') {
+            if (counter++ > maxChar && c == ' ') {
                 newStr.append('\n');
                 counter = 0;
             }
