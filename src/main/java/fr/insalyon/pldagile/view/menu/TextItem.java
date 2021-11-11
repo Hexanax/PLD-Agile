@@ -1,6 +1,7 @@
 
 package fr.insalyon.pldagile.view.menu;
 
+import fr.insalyon.pldagile.view.Fonts;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,13 +10,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 public class TextItem extends Region {
     private String value;
     private Label titleLabel;
 
-    public TextItem(String value, String webColor){
+    public TextItem(String value, String webColor) {
         this.value = value;
 
         GridPane maingp = new GridPane();
@@ -25,7 +25,7 @@ public class TextItem extends Region {
         maingp.setVgap(0);
 
         titleLabel = new Label("> " + value + "\r\n");
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+        titleLabel.setFont(Fonts.getBoldBodyFont());
         titleLabel.setTextFill(Color.web(webColor));
         maingp.add(titleLabel, 0, 0, 4, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);

@@ -13,14 +13,17 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 /**
- * This view is displayed on the lower left side of the window and is useful to track the operations done by the user
- * It also displays errors that can occur with the usage so that the user can react accordingly and understand what's going on under the hood
+ * This view is displayed on the lower left side of the window and is useful to
+ * track the operations done by the user It also displays errors that can occur
+ * with the usage so that the user can react accordingly and understand what's
+ * going on under the hood
  */
 public class LogView extends Region implements View {
 
     private static ListView<TextItem> listView;
 
-    public LogView () { }
+    public LogView() {
+    }
 
     @Override
     public void render() {
@@ -30,13 +33,13 @@ public class LogView extends Region implements View {
         gridPane.setHgap(8);
         gridPane.setVgap(16);
 
-        //Title Label
+        // Title Label
         Label titleLabel = new Label("Message");
         titleLabel.getStyleClass().add("h1");
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
-        //Logs display
+        // Logs display
         listView = new ListView<>();
         listView.getStyleClass().add("requests-list");
         listView.setMaxHeight(130);

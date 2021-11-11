@@ -1,10 +1,6 @@
 package fr.insalyon.pldagile.services;
 
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.services.CityMapGraph;
-import fr.insalyon.pldagile.services.Dijkstra;
-import fr.insalyon.pldagile.services.SimulatedAnnealing;
-import fr.insalyon.pldagile.tsp.ExceptionCityMap;
 import javafx.util.Pair;
 
 import java.util.*;

@@ -1,7 +1,9 @@
 package fr.insalyon.pldagile.view.maps;
 
+
 import fr.insalyon.pldagile.model.RequestType;
-import javafx.scene.control.Label;
+import fr.insalyon.pldagile.view.Colors;
+import fr.insalyon.pldagile.view.Fonts;
 import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 
@@ -38,23 +40,17 @@ public class RequestMapPin extends MapPin {
         // Add style properties to the pin
         pin.getStyleClass().add(styleClass);
 
-        Label requestIdLabel = getRequestIdLabel();
+        Text requestIdLabel = getRequestIdLabel();
         getChildren().addAll(pin, requestIdLabel);
         centerCoordinates();
     }
 
-    private Label getRequestIdLabel() {
-        String styleClass;
-        Label label = new Label(this.requestId.toString());
+    private Text getRequestIdLabel() {
+        Text label = new Text(this.requestId.toString());
         label.setTranslateX(iconSize * TEXT_X_TRANSLATION_FACTOR);
         label.setTranslateY(iconSize * TEXT_Y_TRANSLATION_FACTOR);
-        if (type.equals(RequestType.PICKUP)) {
-            styleClass = "pickup-request-id";
-        } else {
-            styleClass = "delivery-request-id";
-        }
-
-        label.getStyleClass().add(styleClass);
+        label.setFill(Colors.getRequestIdLabelColor(this.type));
+        label.setFont(Fonts.getBodyFont());
         return label;
     }
 
