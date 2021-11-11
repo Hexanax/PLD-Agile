@@ -76,6 +76,7 @@ public class SimulatedAnnealing {
      * For every step, store in stepsIdentifiers the id of the request and its type
      * (pickup or delivery, or depot begin/end) , and store in the same index in stepsIntersectionId
      * the id of the associated intersection.
+     * </p>
      */
     public void computeAllShortestPaths() {
 
@@ -130,10 +131,11 @@ public class SimulatedAnnealing {
      * <p>
      * If the algorithm is running for longer than a defined MAXIMUM_TIME and timeoutEnabled is set to true, it interrupts itself and returns false.
      * Otherwise, it keeps running until done and returns true.
+     * </p>
      * <p>
      * This implementation design allows us to interrupt the algorithm to ask the user if he wants the result now or if he wants to wait for a more optimized result.
      * If he wants to keep computing, because the state is saved in the class, when re-calling the function, the algorithm will continue from where it had stopped.
-     *
+     * </p>
      * @param timeoutEnabled,   true if we're activating a timeout to ask the user to stop/continue
      * @param slowModeActivated true if the "slow mode" is activated for the demo
      * @return true if the algorithm has fully computed, false if the algorithm was interrupted
