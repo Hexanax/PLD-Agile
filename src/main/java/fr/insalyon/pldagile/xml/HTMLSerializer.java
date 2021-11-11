@@ -24,33 +24,84 @@ public class HTMLSerializer {
      */
     public static void renderHTMLroadMap(Tour tour, File html) throws IOException {
         List<Segment> segments = tour.getPath();
+        Iterator<Segment> segmentIterator = segments.iterator();
+
+        // List of Pairs such that Pair<Long : idStep, String :typeStep>
+        // <-1, "depot"> ; <0, "pickup"> ; <1,"delivery">
         List<Pair<Long, String>> stepsIdentifiers = tour.getSteps();
+        //stepIdentifiers  [-1=begin, 0=pickup, 0=delivery, 1=pickup, 1=delivery, 5=end]
+
+        // Remove the begin step from the identifiers
         stepsIdentifiers.remove(0);
 
         List<Intersection> intersections = tour.getIntersections();
+        Iterator<Intersection> intersectionIterator = intersections.iterator();
+
+
         Map<Long, Request> requests = tour.getRequests();
+
+
         Address nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
+
+
         List<Map<String,Object>> rows = new ArrayList<>();
         Depot depot = tour.getDepot();
 
         //Build the Pebble specific intersection
-        boolean stepindepot = false;
+        boolean stepInDepot = false;
         while(nextSpecificIntersection!= null && intersections.get(0).getId() == nextSpecificIntersection.getIntersection().getId()){
             rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
-            stepindepot=true;
+            stepInDepot=true;
+
             stepsIdentifiers.remove(0);
             nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
         }
-        if(stepindepot){
+        if(stepInDepot){
             rows.add(createIntersection(intersections.get(0), true, null, segments.get(0).getName(),-1));
         }
         intersections.remove(0);
 
         //Build the pebble segments and intersections
         double currentAngle = getAngleFromNorth(segments.get(0));
-        for(Intersection current : intersections){
 
+        // itereator avant le début de la liste
+        if(segmentIterator.hasNext()){
+            Segment currentSegment = segmentIterator.next();
+            Way currentWay = new Way(currentSegment);
+            while(segmentIterator.hasNext()){
+                Segment nextSegment = segmentIterator.next();
+                if(nextSegment.getName().equals(currentSegment.getName())){
+                    currentWay.addSegment(currentSegment);
+                }else{
+                    rows.add(createWay(currentWay));
+                    System.out.println(" Way -> " + currentWay);
+                    currentWay = new Way(nextSegment);
+                }
+                currentSegment = nextSegment;
+            }
+        }
+
+
+        for(Intersection current :intersections){
+
+            /*
             //create and add the segment
+            List<Way> wayList = new ArrayList<Way>();
+            Segment currentSegment =  segments.get(0);
+            Segment nextSegment = segments.get(1);
+
+            Way currentWay = new Way(currentSegment);
+            int index = 0;
+            while(nextSegment.getName().equals(currentSegment.getName())){
+                wayList.get(index).addSegment(nextSegment);
+                segments.remove(0); //remove current from segments
+                currentSegment = nextSegment;
+                // nextSegment = currentSegment.next(); and break;
+
+            }
+            // continue to other segment
+            rows.add(createWay(new Way()));
+            */
             rows.add(createSegment(segments.get(0)));
             segments.remove(0);
             boolean step = false;
@@ -112,6 +163,18 @@ public class HTMLSerializer {
         Map<String, Object> buffer = new HashMap<>();
         buffer.put("type", "Segment");
         buffer.put("object",segment );
+        return buffer;
+    }
+
+    /**
+     * Allows to put a segment in a map used by pebble to compile the information in the template
+     * @param way the segment whose information we want to collect
+     * @return the segment information usable by pebble
+     */
+    public static Map<String, Object> createWay(Way way){
+        Map<String, Object> buffer = new HashMap<>();
+        buffer.put("type", "Way");
+        buffer.put("object",way );
         return buffer;
     }
 
