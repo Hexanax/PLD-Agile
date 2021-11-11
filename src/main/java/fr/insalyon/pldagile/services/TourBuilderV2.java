@@ -17,7 +17,7 @@ public class TourBuilderV2 {
         return simulatedAnnealing;
     }
 
-    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap, Runnable notFullyComputed) throws ExceptionCityMap, InterruptedException {
+    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap, Runnable notFullyComputed) throws ExceptionCityMap {
 
         //List of ordered intersections to visit during the tour
         List<Long> tourIntersections = new ArrayList<>();

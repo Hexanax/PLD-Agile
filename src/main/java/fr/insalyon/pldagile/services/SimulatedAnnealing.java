@@ -14,7 +14,7 @@ import java.util.*;
  * Class used to store the result of the Simulated Annealing algorithm applied to our CityMapGraph and PlanningRequests.
  *
  */
-public class SimulatedAnnealing extends InterruptedException {
+public class SimulatedAnnealing {
 
 
     public static final int MAXIMUM_TIME = 100;
