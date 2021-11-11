@@ -70,9 +70,8 @@
         {% for row in rows %}
             <div class="path-seg">
                 {% if row.type == "Way"%}
-
                     <div class="path-seg-cnt">
-                        <div class="dir-txt">Follow the {{row.object.name}} over {{row.object.length| numberformat("#.##")}} meters </div>
+                        <div class="dir-txt">Follow the {{row.name}} over {{row.total_length| numberformat("#.##")}} meters </div>
                     </div>
                 {% elseif row.type == "Intersection"  %}
                     {% if row.step and not row.finish %}
@@ -109,7 +108,6 @@
                                 <div class="dir-chg-txt">Turn back on the road called : {{ row.segment_name }}</div>
                             {% else %}
                                 <div class="dir-chg-txt">Follow the road called : {{ row.segment_name }}</div>
-
                             {% endif %}
                         </div>
 

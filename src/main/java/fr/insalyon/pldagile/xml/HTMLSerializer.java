@@ -19,8 +19,9 @@ public class HTMLSerializer {
      * Allows by using Pebble to compile the informations of the Tour we need to create the road map
      * The road map is rendered by following an html Pebble template and saved in the html file in parameter
      * @param tour The tour
-     * @param html
-     * @throws IOException
+     * @param html The file that is going to contain the roadmap
+     * @throws IOException Exception thrown if problems with buffer and html file
+     *
      */
     public static void renderHTMLroadMap(Tour tour, File html) throws IOException {
         List<Segment> segments = tour.getPath();
@@ -52,36 +53,64 @@ public class HTMLSerializer {
         while(nextSpecificIntersection!= null && intersections.get(0).getId() == nextSpecificIntersection.getIntersection().getId()){
             rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
             stepInDepot=true;
-
             stepsIdentifiers.remove(0);
             nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
         }
         if(stepInDepot){
             rows.add(createIntersection(intersections.get(0), true, null, segments.get(0).getName(),-1));
         }
-        intersections.remove(0);
+
+        intersectionIterator.next();
 
         //Build the pebble segments and intersections
-        double currentAngle = getAngleFromNorth(segments.get(0));
 
         // itereator avant le début de la liste
-        if(segmentIterator.hasNext()){
+        if(segmentIterator.hasNext() && intersectionIterator.hasNext()){
+
             Segment currentSegment = segmentIterator.next();
+            Intersection currentIntersection  = intersectionIterator.next();
+            double currentAngle = getAngleFromNorth(currentSegment);
             Way currentWay = new Way(currentSegment);
-            while(segmentIterator.hasNext()){
+
+            while(segmentIterator.hasNext() && intersectionIterator.hasNext()){
+
                 Segment nextSegment = segmentIterator.next();
+                Intersection nextIntersection = intersectionIterator.next();
+
+                //Orientation between the two segments
+                double followingAngle = getAngleFromNorth(nextSegment);
+
+                boolean hasChangedWay= false;
                 if(nextSegment.getName().equals(currentSegment.getName())){
                     currentWay.addSegment(currentSegment);
                 }else{
                     rows.add(createWay(currentWay));
-                    System.out.println(" Way -> " + currentWay);
                     currentWay = new Way(nextSegment);
+                    hasChangedWay = true;
                 }
+                boolean step = false;
+                //Add the next specific intersection if needed
+                while(nextSpecificIntersection!= null && currentIntersection.getId() == nextSpecificIntersection.getIntersection().getId()){
+                    rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
+                    step=true;
+                    stepsIdentifiers.remove(0);
+                    nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
+                }
+                //Check the orientation of the next segment
+                if(hasChangedWay){
+                    int orientation = compareOrientation(currentAngle, followingAngle);
+                    //Add the intersection with the direction to follow
+                    rows.add(createIntersection(currentIntersection, step, depot.getIntersection().getId(), nextSegment.getName(), orientation));
+                }
+
                 currentSegment = nextSegment;
+                currentAngle = followingAngle;
+                currentIntersection = nextIntersection;
+
             }
         }
 
-
+        /*
         for(Intersection current :intersections){
 
             /*
@@ -101,32 +130,9 @@ public class HTMLSerializer {
             }
             // continue to other segment
             rows.add(createWay(new Way()));
-            */
-            rows.add(createSegment(segments.get(0)));
-            segments.remove(0);
-            boolean step = false;
 
-            //Add the next specific intersection if needed
-            while(nextSpecificIntersection!= null && current.getId() == nextSpecificIntersection.getIntersection().getId()){
-                rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
-                step=true;
-                stepsIdentifiers.remove(0);
-                nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
-            }
 
-            //Check the orientation of the next segment
-            if(segments.size()>0){
-                //Orientation between the two segments
-                double followingAngle = getAngleFromNorth(segments.get(0));
-                int orientation = compareOrientation(currentAngle, followingAngle);
-                //Add the intersection with the direction to follow
-                rows.add(createIntersection(current, step, depot.getIntersection().getId(), segments.get(0).getName(), orientation));
-                currentAngle = followingAngle;
-            } else {
-                rows.add(createIntersection(current, step, depot.getIntersection().getId(), "",-1));
-            }
-
-        }
+        }   */
 
         //Initialize the FileWriter to edit the .html file
         FileWriter fstream = new FileWriter(html.getAbsolutePath(), false);
@@ -174,7 +180,8 @@ public class HTMLSerializer {
     public static Map<String, Object> createWay(Way way){
         Map<String, Object> buffer = new HashMap<>();
         buffer.put("type", "Way");
-        buffer.put("object",way );
+        buffer.put("name",way.getName() );
+        buffer.put("total_length", way.getTotalLength());
         return buffer;
     }
 

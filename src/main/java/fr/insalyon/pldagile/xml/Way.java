@@ -26,7 +26,7 @@ public class Way {
         }
     }
     public Way(Segment segment){
-        this.segments = new ArrayList<Segment>();
+        this.segments = new ArrayList<>();
         totalLength = segment.getLength();
         origin = segment.getOrigin();
         destination = segment.getDestination();
@@ -53,6 +53,7 @@ public class Way {
 
     public void addSegment(Segment segment){
         if(segment != null){
+            if(name.length()<=0) name = segment.getName();
             segments.add(segment);
             totalLength += segment.getLength();
         }
@@ -64,10 +65,13 @@ public class Way {
     public String toString() {
         return "Way{" +
                 "name='" + name + '\'' +
-
                 ", totalLength=" + totalLength +
                 ", origin=" + origin +
                 ", destination=" + destination +
                 '}';
+    }
+
+    public String getName() {
+        return name;
     }
 }
