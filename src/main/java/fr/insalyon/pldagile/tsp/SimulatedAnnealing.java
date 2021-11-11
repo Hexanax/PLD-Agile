@@ -122,7 +122,7 @@ public class SimulatedAnnealing extends InterruptedException {
      */
     public boolean runSimulatedAnnealing(boolean timeoutEnabled, boolean slowModeActivated) throws InterruptedException{
         if(slowModeActivated && timeoutEnabled){
-            this.numberOfIterations = 1000000000;
+            this.numberOfIterations = 500000000;
         }
         boolean swapResult;
         double bestDistance = getTotalDistance();
