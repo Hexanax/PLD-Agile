@@ -31,7 +31,7 @@ public class LogView extends Region implements View {
         gridPane.setVgap(8);
 
         // Title Label
-        Label titleLabel = new Label("History");
+        Label titleLabel = new Label("Messages");
         titleLabel.getStyleClass().add("h2");
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);

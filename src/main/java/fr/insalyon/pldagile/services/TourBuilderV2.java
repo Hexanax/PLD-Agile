@@ -57,7 +57,6 @@ public class TourBuilderV2 {
 
         Tour tour = new Tour(planningRequest.getRequests(), planningRequest.getDepot());
         Map<Long, Intersection> intersections = cityMap.getIntersections();
-        Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
 
 
         for (long idIntersection : tourIntersections) {
@@ -83,7 +82,6 @@ public class TourBuilderV2 {
         Map<Long, Request> requests = tour.getRequests();
         Depot depot = tour.getDepot();
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
-        Map<Pair<Long, Long>, Segment> segments = cityMap.getSegments();
 
         /**
          * 0 -> index of the address previous the pickup to delete in the steps
