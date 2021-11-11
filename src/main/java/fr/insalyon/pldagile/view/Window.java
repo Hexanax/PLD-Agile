@@ -32,8 +32,8 @@ public class Window {
     private final SidePanel sidePanel;
     private final BottomPanel bottomPanel;
 
-    private int windowWidth = 400;
-    private int windowHeight = 400;
+    private int windowWidth = (int) (Screen.getPrimary().getBounds().getWidth() * 0.75);
+    private int windowHeight = (int) (Screen.getPrimary().getBounds().getHeight() * 0.75);
 
     public Window(Controller controller) {
         this.controller = controller;
@@ -80,8 +80,6 @@ public class Window {
         Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
         // Window dimensions
-        int windowWidth = (int) Screen.getPrimary().getBounds().getWidth();
-        int windowHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
 
         final Label headerLabel = headerLabel();
@@ -145,7 +143,7 @@ public class Window {
     }
 
     private void loadBottomPanel() {
-        AnchorPane.setTopAnchor(bottomPanel, 550D);
+        AnchorPane.setBottomAnchor(bottomPanel, 16D);
         AnchorPane.setLeftAnchor(bottomPanel, 16D);
         mainPane.getChildren().add(bottomPanel);
     }

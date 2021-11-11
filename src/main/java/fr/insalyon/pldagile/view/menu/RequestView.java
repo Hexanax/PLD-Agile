@@ -77,9 +77,6 @@ public class RequestView extends Region {
     }
 
     public void setView(ObservableList<AddressItem> list) {
-        if (list.size() == 0) {
-            return;
-        }
         addressItems.clear();
         addressItems.addAll(list);
         for (AddressItem addressItem : list) {

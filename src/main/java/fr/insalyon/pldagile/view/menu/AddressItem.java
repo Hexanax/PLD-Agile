@@ -19,6 +19,7 @@ import fr.insalyon.pldagile.view.Fonts;
 public class AddressItem extends Region {
     private static final double addressItemHeightWithoutTour = 75.0;
     private static final double addressItemHeightWithTour = 100.0;
+    private static final double depotHeight = 50;
     private Date date;
     private String type;
     private int duration;
@@ -99,6 +100,9 @@ public class AddressItem extends Region {
     public double getAddressItemHeight() {
         if (date == null) {
             return addressItemHeightWithoutTour;
+        }
+        if (requestNumber >= 0) {
+            return depotHeight;
         }
         return addressItemHeightWithTour;
     }

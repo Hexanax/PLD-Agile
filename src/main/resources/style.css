@@ -116,11 +116,12 @@
   .list-cell:filled:selected:focused, .list-cell:filled:selected, .list-cell:filled:hover {
     -fx-background-color: #F2F2F2;
     -fx-background-radius: 12px;
-        -fx-text-fill: #0F213C;
+    -fx-text-fill: #0F213C;
   }
 
 .side-panel{
     -fx-background-color: #FFFFFF;
+    -fx-text-fill: #0F213C;
     -fx-background-radius: 32px;
     -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.25), 22, 0, 4, 22);
     -fx-max-width: 350px;
