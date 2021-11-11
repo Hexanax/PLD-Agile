@@ -17,7 +17,7 @@ public class Segment {
     private Intersection destination;
 
     /**
-     * Constructor of a segment defined by a name, an origin intersection, an destination intersection
+     * Constructor of a segment defined by a name, an origin intersection, a destination intersection
      * and a length
      * @param name the name
      * @param length the length

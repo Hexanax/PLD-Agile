@@ -1,7 +1,9 @@
-package fr.insalyon.pldagile.model;
+package fr.insalyon.pldagile.services;
+
+import fr.insalyon.pldagile.model.Coordinates;
 
 /**
- * The class BoundingRectangle is the minimum bounding rectangle of our CityMap.
+ * The class BoundingRectangle represents the minimum bounding rectangle of our CityMap.
  * It represents the coordinates of the corners of a rectangle, so that all intersections in our
  * CityMap are included inside this rectangle.
  */
