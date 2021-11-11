@@ -42,8 +42,8 @@ public class LogView extends Region implements View {
         // Logs display
         listView = new ListView<>();
         listView.getStyleClass().add("requests-list");
-        listView.setMaxHeight(130);
-        listView.setPrefWidth(Double.POSITIVE_INFINITY);
+        listView.setMaxHeight(150);
+        listView.setPrefWidth(200);
         gridPane.add(listView, 0, 1, 2, 1);
 
         this.getChildren().add(gridPane);
@@ -51,10 +51,24 @@ public class LogView extends Region implements View {
 
     public static void addText(String text, String color) {
         ObservableList<TextItem> textItems = listView.getItems();
-        TextItem newLog = new TextItem(text, color);
+        String formattedText = breakSpaces(text, 35);
+        TextItem newLog = new TextItem(formattedText, color);
         textItems.add(newLog);
         textItems.get(Math.max(0, textItems.size() - 2)).setFont(Font.font("Arial", FontWeight.NORMAL, 10));
         listView.scrollTo(newLog);
+    }
+
+    public static String breakSpaces(String str, int maxChar) {
+        int counter = 0;
+        StringBuilder newStr = new StringBuilder();
+        for (char c : str.toCharArray()) {
+            if(counter++ > 35 && c == ' ') {
+                newStr.append('\n');
+                counter = 0;
+            }
+            newStr.append(c);
+        }
+        return newStr.toString();
     }
 
 }
