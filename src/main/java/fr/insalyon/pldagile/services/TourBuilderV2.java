@@ -217,7 +217,7 @@ public class TourBuilderV2 {
 
     /**
      * Allows to add the request with the id in parameter from the current computed tour.
-     * We tour will be recomputed locally by performing Dijskra between the address
+     * The tour will be recomputed locally by performing Dijskra between the address
      * that came before the pickup and the address that came after the pickup in the steps.
      * Same for the delivery.
      * @param cityMap the city map

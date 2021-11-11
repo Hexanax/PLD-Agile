@@ -199,6 +199,7 @@ public class Tour {
         pickupsDuration = 0;
         deliveriesDuration = 0;
         travelsDuration = 0;
+        length=0;
         this.path = new ArrayList<>();
     }
 
