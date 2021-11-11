@@ -4,7 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-public abstract class IconProvider {
+public class IconProvider {
 
     static public double ICON_SIZE = 35;
 

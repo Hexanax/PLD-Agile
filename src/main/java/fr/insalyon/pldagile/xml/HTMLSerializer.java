@@ -44,7 +44,6 @@ public class HTMLSerializer {
 
         Address nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
 
-
         List<Map<String,Object>> rows = new ArrayList<>();
         Depot depot = tour.getDepot();
 
@@ -64,7 +63,7 @@ public class HTMLSerializer {
 
         //Build the pebble segments and intersections
 
-        // itereator avant le début de la liste
+
         if(segmentIterator.hasNext() && intersectionIterator.hasNext()){
 
             Segment currentSegment = segmentIterator.next();
@@ -76,6 +75,7 @@ public class HTMLSerializer {
 
                 Segment nextSegment = segmentIterator.next();
                 Intersection nextIntersection = intersectionIterator.next();
+
 
                 //Orientation between the two segments
                 double followingAngle = getAngleFromNorth(nextSegment);
@@ -100,7 +100,11 @@ public class HTMLSerializer {
                 if(hasChangedWay){
                     int orientation = compareOrientation(currentAngle, followingAngle);
                     //Add the intersection with the direction to follow
-                    rows.add(createIntersection(currentIntersection, step, depot.getIntersection().getId(), nextSegment.getName(), orientation));
+
+                    String nextSegmentName = nextSegment.getName();
+                    if(nextSegmentName.equals("")) nextSegmentName = "road";
+                    rows.add(createIntersection(currentIntersection, step, depot.getIntersection().getId(),nextSegmentName, orientation));
+
                 }
 
                 currentSegment = nextSegment;
@@ -110,30 +114,6 @@ public class HTMLSerializer {
             }
         }
 
-        /*
-        for(Intersection current :intersections){
-
-            /*
-            //create and add the segment
-            List<Way> wayList = new ArrayList<Way>();
-            Segment currentSegment =  segments.get(0);
-            Segment nextSegment = segments.get(1);
-
-            Way currentWay = new Way(currentSegment);
-            int index = 0;
-            while(nextSegment.getName().equals(currentSegment.getName())){
-                wayList.get(index).addSegment(nextSegment);
-                segments.remove(0); //remove current from segments
-                currentSegment = nextSegment;
-                // nextSegment = currentSegment.next(); and break;
-
-            }
-            // continue to other segment
-            rows.add(createWay(new Way()));
-
-
-        }   */
-
         //Initialize the FileWriter to edit the .html file
         FileWriter fstream = new FileWriter(html.getAbsolutePath(), false);
         BufferedWriter out = new BufferedWriter(fstream);
@@ -142,13 +122,21 @@ public class HTMLSerializer {
         PebbleEngine engine = new PebbleEngine.Builder().loader(new ClasspathLoader()).build();
         PebbleTemplate compiledTemplate = engine.getTemplate("templates/base.html.peb");
 
-        //Contains all the information of the raod map loaded in the template by Pebble
+        //Contains all the information of the road map loaded in the template by Pebble
         Map<String, Object> context = new HashMap<>();
+
+        // Calculate the arrival time
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(tour.getDepot().getDepartureTime());
+        calendar.add(Calendar.SECOND, (int) tour.getTourDuration());
+        Date arrivalTime = calendar.getTime();
+
         context.put("travels_time", getTime(tour.getTravelsDuration()));
         context.put("pickups_time", getTime(tour.getPickupsDuration()));
         context.put("deliveries_time", getTime(tour.getDeliveriesDuration()));
         context.put("length", tour.getLength());
         context.put("total_time", getTime(tour.getTourDuration()));
+        context.put("arrival_time", arrivalTime );
         context.put("depot", tour.getDepot());
         context.put("rows", rows);
 
@@ -161,7 +149,7 @@ public class HTMLSerializer {
     }
 
     /**
-     * Allows to put a segment in a map used by pebble to compile the information in the template
+     * Allows to put a segment on a road  map used by pebble to compile the information in the template
      * @param segment the segment whose information we want to collect
      * @return the segment information usable by pebble
      */
@@ -173,9 +161,10 @@ public class HTMLSerializer {
     }
 
     /**
-     * Allows to put a segment in a map used by pebble to compile the information in the template
-     * @param way the segment whose information we want to collect
-     * @return the segment information usable by pebble
+     * Allows to put a way on a road map used by pebble to compile the information in the template. Gather all the segments
+     * that compose a single way.
+     * @param way the way whose information we want to collect
+     * @return the way information usable by pebble
      */
     public static Map<String, Object> createWay(Way way){
         Map<String, Object> buffer = new HashMap<>();

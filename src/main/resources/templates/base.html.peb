@@ -157,7 +157,10 @@
                 <div class="depot-icon icon" > {% include "templates/svg/depot.svg.peb" %} </div>
                 <div class="depot-txt icon-container-txt">
                     <div>
-                        Welcome home, you have finished your tour
+                        Welcome home, you have finished your tour.
+                    </div>
+                    <div>
+                        Expected finish time : {{ arrival_time| date("HH:mm:ss", timeZone="Europe/Paris") }}.
                     </div>
                 </div>
             </div>
