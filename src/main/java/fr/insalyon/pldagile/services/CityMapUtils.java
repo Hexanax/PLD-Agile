@@ -50,7 +50,6 @@ public class CityMapUtils {
         double latitudeCentral = Math.atan2(z, squareCentral);
 
         // Create the central coordinates
-        System.out.println("center : " + (latitudeCentral * 180 / Math.PI) + " long" + (longitudeCentral * 180 / Math.PI));
         return new Coordinates(latitudeCentral * 180 / Math.PI, (longitudeCentral * 180 / Math.PI) + 0.005);
 
     }
