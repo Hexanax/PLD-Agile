@@ -13,23 +13,28 @@ import javafx.scene.text.FontWeight;
 
 public class TextItem extends Region {
     private String value;
+    private Label titleLabel;
 
     public TextItem(String value, String webColor){
         this.value = value;
 
         GridPane maingp = new GridPane();
-        maingp.setAlignment(Pos.BASELINE_CENTER);
-        maingp.setPadding(new Insets(5, 5, 5, 5));
+        maingp.setAlignment(Pos.BASELINE_LEFT);
+        maingp.setPadding(new Insets(0, 0, 0, 0));
         maingp.setHgap(5);
-        maingp.setVgap(5);
+        maingp.setVgap(0);
 
-        Label titleLabel = new Label(value);
-        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 10));
+        titleLabel = new Label("> " + value + "\r\n");
+        titleLabel.setFont(Font.font("Arial", FontWeight.BOLD, 12));
         titleLabel.setTextFill(Color.web(webColor));
         maingp.add(titleLabel, 0, 0, 4, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
-        GridPane.setMargin(titleLabel, new Insets(10, 0, 5, 0));
+        GridPane.setMargin(titleLabel, new Insets(0, 0, 0, 0));
 
         this.getChildren().add(maingp);
+    }
+
+    public void setFont(Font font) {
+        titleLabel.setFont(font);
     }
 }
