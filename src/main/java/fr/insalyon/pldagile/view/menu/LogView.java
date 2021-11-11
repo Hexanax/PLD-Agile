@@ -1,44 +1,43 @@
 package fr.insalyon.pldagile.view.menu;
 
-import fr.insalyon.pldagile.controller.Controller;
+import fr.insalyon.pldagile.view.View;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-import java.util.List;
+/**
+ * This view is displayed on the lower left side of the window and is useful to track the operations done by the user
+ * It also displays errors that can occur with the usage so that the user can react accordingly and understand what's going on under the hood
+ */
+public class LogView extends Region implements View {
 
-public class LogView extends Region {
+    private static ListView<TextItem> listView;
 
-    private static final ObservableList<TextItem> textItems = FXCollections.observableArrayList();
-    private static ListView listView;
+    public LogView () { }
 
-    public LogView () {
-
-        //TODO larger
+    @Override
+    public void render() {
         GridPane gridPane = new GridPane();
         gridPane.getStyleClass().add("side-panel-section");
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setHgap(8);
         gridPane.setVgap(16);
 
-        // Title Label
+        //Title Label
         Label titleLabel = new Label("Message");
         titleLabel.getStyleClass().add("h1");
         gridPane.add(titleLabel, 0, 0, 2, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
-        //logs display
-
-        listView = new ListView(textItems);
+        //Logs display
+        listView = new ListView<>();
         listView.getStyleClass().add("requests-list");
         listView.setMaxHeight(130);
         listView.setMaxWidth(800);
@@ -46,15 +45,13 @@ public class LogView extends Region {
 
         this.getChildren().add(gridPane);
     }
-    
 
-    public static void addText(TextItem textItem) {
-        textItems.add(textItem);
+    public static void addText(String text, String color) {
+        ObservableList<TextItem> textItems = listView.getItems();
+        TextItem newLog = new TextItem(text, color);
+        textItems.add(newLog);
         textItems.get(textItems.size() - 2).setFont(Font.font("Arial", FontWeight.NORMAL, 10));
-        listView.scrollTo(textItem);
+        listView.scrollTo(newLog);
     }
 
-    public static void clearItems() {
-        textItems.clear();
-    }
 }

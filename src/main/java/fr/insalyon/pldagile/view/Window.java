@@ -198,11 +198,11 @@ public class Window {
     }
 
     public void addStateFollow(String message) {
-        LogView.addText(new TextItem(message, "green"));
+        LogView.addText(message, "green");
     }
 
     public void addWarningStateFollow(String message) {
-        LogView.addText(new TextItem(message, "red"));
+        LogView.addText(message, "red");
     }
 
     public void deleteView() {

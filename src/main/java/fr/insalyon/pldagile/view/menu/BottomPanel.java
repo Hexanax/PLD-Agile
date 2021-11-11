@@ -5,12 +5,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
 public class BottomPanel extends Region {
-    private GridPane mainBorderPane;
-    private LogView logView;
+
+    private final GridPane mainBorderPane;
+    private final LogView logView;
 
     public BottomPanel(){
-        this.logView = new LogView();
-        this.mainBorderPane = new GridPane();
+        logView = new LogView();
+        logView.render();
+        mainBorderPane = new GridPane();
         mainBorderPane.add(logView, 0, 0, 1, 1);
         mainBorderPane.getStyleClass().add("side-panel");
         this.getChildren().add(mainBorderPane);
