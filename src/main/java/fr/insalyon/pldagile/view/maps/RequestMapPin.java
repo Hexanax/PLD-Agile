@@ -1,23 +1,20 @@
 package fr.insalyon.pldagile.view.maps;
 
 import fr.insalyon.pldagile.model.RequestType;
-import javafx.scene.control.Label;
+import fr.insalyon.pldagile.view.Colors;
+import fr.insalyon.pldagile.view.Fonts;
 import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 
-/**
- * Extends {@link MapPin}
- * Map pin to show the location of a request entity, either {@link fr.insalyon.pldagile.model.Pickup} or {@link fr.insalyon.pldagile.model.Delivery}
- */
 public class RequestMapPin extends MapPin {
+    private RequestType type;
+    private Long requestId = 0L;
 
-    private static final String PICKUP_ICON_URL = "img/pickupPin/pickup@2x.png";
-    private static final String DELIVERY_ICON_URL = "img/deliveryPin/delivery@2x.png";
+    private final String PICKUP_ICON_URL = "img/pickupPin/pickup@2x.png";
+    private final String DELIVERY_ICON_URL = "img/deliveryPin/delivery@2x.png";
+
     private static final double TEXT_X_TRANSLATION_FACTOR = 0.22;
     private static final double TEXT_Y_TRANSLATION_FACTOR = -0.25;
-
-    private final RequestType type;
-    private final Long requestId;
 
     public RequestMapPin(RequestType type, Long requestId) {
         this.type = type;
@@ -41,18 +38,22 @@ public class RequestMapPin extends MapPin {
         // Add style properties to the pin
         pin.getStyleClass().add(styleClass);
 
-        Label requestIdLabel = getRequestIdLabel();
+        Text requestIdLabel = getRequestIdLabel();
         getChildren().addAll(pin, requestIdLabel);
         centerCoordinates();
     }
 
-    private Label getRequestIdLabel() {
-        String styleClass = type.equals(RequestType.PICKUP) ? "pickup-request-id" : "delivery-request-id";
-        Label label = new Label(this.requestId.toString());
+    private Text getRequestIdLabel() {
+        Text label = new Text(this.requestId.toString());
         label.setTranslateX(iconSize * TEXT_X_TRANSLATION_FACTOR);
         label.setTranslateY(iconSize * TEXT_Y_TRANSLATION_FACTOR);
-        label.getStyleClass().add(styleClass);
+        label.setFill(Colors.getRequestIdLabelColor(this.type));
+        label.setFont(Fonts.getBodyFont());
         return label;
+    }
+
+    public Long getRequestId() {
+        return requestId;
     }
 
     public RequestType getType() {

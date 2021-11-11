@@ -1,10 +1,6 @@
 package fr.insalyon.pldagile.services;
 
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.services.CityMapGraph;
-import fr.insalyon.pldagile.services.Dijkstra;
-import fr.insalyon.pldagile.services.SimulatedAnnealing;
-import fr.insalyon.pldagile.tsp.ExceptionCityMap;
 import javafx.util.Pair;
 
 import java.util.*;
@@ -17,7 +13,7 @@ public class TourBuilderV2 {
         return simulatedAnnealing;
     }
 
-    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap, Runnable notFullyComputed) throws ExceptionCityMap {
+    public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap, boolean slowModeActivated, Runnable notFullyComputed) throws ExceptionCityMap {
 
         //List of ordered intersections to visit during the tour
         List<Long> tourIntersections = new ArrayList<>();
@@ -27,10 +23,7 @@ public class TourBuilderV2 {
         //SimulatedAnnealing runs on the planningRequest applied to the graph to find an optimized tour
         simulatedAnnealing = new SimulatedAnnealing(planningRequest, cityMapGraph);
         simulatedAnnealing.computeAllShortestPaths();
-        isFullyComputed = simulatedAnnealing.runSimulatedAnnealing(simulatedAnnealing.getTemperature(),
-                simulatedAnnealing.getNumberOfIterations(),
-                simulatedAnnealing.getCoolingRate(),
-                true);
+        isFullyComputed = simulatedAnnealing.runSimulatedAnnealing(true, slowModeActivated);
         if (!isFullyComputed) {
             notFullyComputed.run();
         }
