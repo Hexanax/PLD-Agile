@@ -16,7 +16,7 @@ import java.util.*;
 public class SimulatedAnnealing {
 
 
-    public static final int MAXIMUM_TIME = 1000;
+    public static final int MAXIMUM_TIME = 2000;
     //Parameters of our Simulated Annealing algorithm
     private double temperature = 25.0;
     private double coolingRate = 0.99;
