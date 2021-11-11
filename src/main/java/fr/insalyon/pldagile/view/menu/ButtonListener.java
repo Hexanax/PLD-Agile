@@ -8,8 +8,8 @@ public class ButtonListener {
 
     private static Controller controller;
 
-    public ButtonListener(Controller controller) {
-        ButtonListener.controller = controller;
+    public static void setController(Controller newController) {
+        controller = newController;
     }
 
     public static void actionPerformed(ActionEvent event) {
@@ -38,8 +38,6 @@ public class ButtonListener {
             case RequestView.UNDO:
                 controller.undo();
                 break;
-
-
         }
 
     }

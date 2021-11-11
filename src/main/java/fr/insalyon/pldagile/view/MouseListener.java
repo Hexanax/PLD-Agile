@@ -8,8 +8,8 @@ import javafx.scene.input.MouseEvent;
 public class MouseListener {
     private static Controller controller;
 
-    public MouseListener(Controller controller) {
-        MouseListener.controller = controller;
+    public static void setController(Controller newController) {
+        controller = newController;
     }
 
     public static void mouseClicked(MouseEvent event) {

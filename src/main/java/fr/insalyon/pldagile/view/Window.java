@@ -28,7 +28,7 @@ import java.util.*;
 public class Window {
 
     private static Stage mainStage = null;
-    private Controller controller;
+    private final Controller controller;
     private final AnchorPane mainPane = new AnchorPane();
     private final MapView mapView;
     private final CityMapView cityMapView;
@@ -37,18 +37,14 @@ public class Window {
     private final RequestListView requestListView;
     private final SidePanel sidePanel;
     private final BottomPanel bottomPanel;
-    private boolean selectingIntersection;
-
-    private ButtonListener buttonListener;
-    private KeyboardListener keyboardListener;
-    private MouseListener mouseListener;
 
     public Window(Controller controller) {
         this.controller = controller;
 
-        buttonListener = new ButtonListener(controller);
-        keyboardListener = new KeyboardListener(controller);
-        mouseListener = new MouseListener(controller);
+        //Set the controllers inside the listener handlers
+        ButtonListener.setController(controller);
+        KeyboardListener.setController(controller);
+        MouseListener.setController(controller);
 
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
@@ -73,18 +69,17 @@ public class Window {
         return mainStage;
     }
 
-    public void render(Stage stage) throws Exception {
+    public void render(Stage stage) {
         mainStage = stage;
+        //Title and icon
         stage.setTitle("Picky - INSA Lyon");
         Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
-        // cityMap = new CityMap();
-        // planningRequest = new PlanningRequest();
-        //mapView.addLayer(pointLayer); // Add the map layer
-        //mapView.addLayer(lineLayer); // Add the line (tour) layer
+        //Window dimensions
         int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
         int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
+
         final Label headerLabel = headerLabel();
         final Group copyright = createCopyright();
         StackPane bp = new StackPane() {
@@ -96,6 +91,7 @@ public class Window {
                 copyright.setLayoutY(getHeight() - copyright.prefHeight(-1));
             }
         };
+
         AnchorPane.setTopAnchor(bp, 0D);
         AnchorPane.setBottomAnchor(bp, 0D);
         AnchorPane.setLeftAnchor(bp, 0D);
@@ -116,9 +112,12 @@ public class Window {
         scene.getStylesheets().add("/style.css");
         stage.setScene(scene);
         stage.setFullScreen(false);
+
+        //Center the map on France
         MapPoint mapCenter = new MapPoint(46.75, 2.80);
         mapView.setCenter(mapCenter);
         mapView.setZoom(7);
+        //Imagine placeholder when the map tiles are loading from openstreetmap
         LoadingImageSupplier loadingImageSupplier = new LoadingImageSupplier();
         MapView.setPlaceholderImageSupplier(loadingImageSupplier);
         stage.show();
