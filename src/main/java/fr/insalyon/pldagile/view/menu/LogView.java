@@ -11,13 +11,15 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.util.List;
 
 public class LogView extends Region {
 
     private static final ObservableList<TextItem> textItems = FXCollections.observableArrayList();
-    private static TextArea textarea;
+    private static ListView listView;
 
     public LogView () {
 
@@ -35,30 +37,24 @@ public class LogView extends Region {
         GridPane.setHalignment(titleLabel, HPos.LEFT);
 
         //logs display
-        textarea = new TextArea();
-        textarea.setEditable(false);
-        textarea.getStyleClass().add("requests-list");
-        textarea.setMaxHeight(130);
-        textarea.setMaxWidth(800);
-        gridPane.add(textarea, 0, 1, 2, 1);
+
+        listView = new ListView(textItems);
+        listView.getStyleClass().add("requests-list");
+        listView.setMaxHeight(130);
+        listView.setMaxWidth(800);
+        gridPane.add(listView, 0, 1, 2, 1);
 
         this.getChildren().add(gridPane);
     }
     
 
-    public static void addText(String text) {
-        textarea.appendText("> ");
-        while (text.length() > 50) {
-            textarea.appendText(text.substring(0, 50));
-            text = text.substring(50);
-            textarea.appendText("\n\r");
-            textarea.setScrollTop(Double.MAX_VALUE);
-        }
-        textarea.appendText(text + "\r\n");
-        textarea.setScrollTop(Double.MAX_VALUE);
+    public static void addText(TextItem textItem) {
+        textItems.add(textItem);
+        textItems.get(textItems.size() - 2).setFont(Font.font("Arial", FontWeight.NORMAL, 10));
+        listView.scrollTo(textItem);
     }
 
     public static void clearItems() {
-        textarea.clear();
+        textItems.clear();
     }
 }
