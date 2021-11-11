@@ -53,5 +53,15 @@ public class BoundingRectangle {
         }
         return false;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof BoundingRectangle) {
+            BoundingRectangle candidate = (BoundingRectangle) obj;
+            return this.minLatitude == candidate.minLatitude && this.minLongitude == candidate.minLongitude
+                    && this.maxLatitude == candidate.maxLatitude && this.maxLongitude == candidate.maxLongitude;
+        }
+        return false;
+    }
 }
 

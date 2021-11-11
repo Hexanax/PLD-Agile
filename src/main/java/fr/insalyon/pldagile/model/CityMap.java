@@ -20,10 +20,6 @@ public class CityMap implements Cloneable {
     private Map<Long, Intersection> intersections;
     private Map<Pair<Long, Long>, Segment> segments;
 
-    /**
-     * a city map is observable
-     */
-    private PropertyChangeSupport support;
 
     /**
      * Constructor of CityMap. Inputs are Map Objects that represent our intersections and segments.
@@ -33,7 +29,6 @@ public class CityMap implements Cloneable {
     public CityMap(Map<Long, Intersection> intersections, Map<Pair<Long, Long>, Segment> segments) {
         this.intersections = intersections;
         this.segments = segments;
-        support = new PropertyChangeSupport(this);
     }
 
     /**
@@ -42,7 +37,6 @@ public class CityMap implements Cloneable {
     public CityMap() {
         this.intersections = new HashMap<Long, Intersection>();
         this.segments = new HashMap<Pair<Long, Long>, Segment>();
-        support = new PropertyChangeSupport(this);
     }
 
     /**

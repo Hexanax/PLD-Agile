@@ -21,8 +21,7 @@ public class CityMapGraph implements Graph {
     public static Double NO_ARC_COST = -1D;
     private List<Long> pathIds;
 
-    /*
-        Map< vertexId, ArrayList<Pair<adjacentVertexId, length>>>
+    /**
         "Adjacency list", for each Intersection, the list contains a pair of (origin
         and length between origin and destination)
         */

@@ -105,13 +105,6 @@ public class Dijkstra {
 //        * all distances from origin
 //        So our dijkstra algorithm has found the real "cost" between to vertices and we can implement TSP.
 
-//        List<Long> shortestPath = computeShortestPath(destinationId);
-//        returnedObject.put("shortestPath",shortestPath);
-//        returnedObject.put("shortestPathCost",distancesFromOrigin.get(destinationId));
-//        //////System.out.println(returnedObject);
-        //return returnedObject;
-
-
     }
 
     /**

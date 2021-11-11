@@ -1,6 +1,5 @@
 package fr.insalyon.pldagile.view.maps;
 
-
 import fr.insalyon.pldagile.model.RequestType;
 import fr.insalyon.pldagile.view.Colors;
 import fr.insalyon.pldagile.view.Fonts;
@@ -18,15 +17,14 @@ public class RequestMapPin extends MapPin {
     private static final double TEXT_Y_TRANSLATION_FACTOR = -0.25;
 
     public RequestMapPin(RequestType type, Long requestId) {
-        xOffsetFactor = -0.1;
-        this.requestId = requestId;
-        double iconSize = DEFAULT_ICON_SIZE;
         this.type = type;
+        this.requestId = requestId;
+        xOffsetFactor = -0.1;
+        double iconSize = DEFAULT_ICON_SIZE;
         String imgURL, styleClass;
         if (type.equals(RequestType.PICKUP)) {
             imgURL = PICKUP_ICON_URL;
             styleClass = "pickup-pin";
-
         } else { // type.equals(RequestType.DELIVERY) == true
             imgURL = DELIVERY_ICON_URL;
             styleClass = "delivery-pin";

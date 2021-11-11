@@ -50,7 +50,7 @@ public class CityMapUtils {
         double latitudeCentral = Math.atan2(z, squareCentral);
 
         // Create the central coordinates
-        //System.out.println("center : " + (latitudeCentral * 180 / Math.PI) + " long" + (longitudeCentral * 180 / Math.PI));
+        System.out.println("center : " + (latitudeCentral * 180 / Math.PI) + " long" + (longitudeCentral * 180 / Math.PI));
         return new Coordinates(latitudeCentral * 180 / Math.PI, (longitudeCentral * 180 / Math.PI) + 0.005);
 
     }
@@ -107,7 +107,7 @@ public class CityMapUtils {
         double maxLatitude = boundingRectangle.getMaxLatitude();
         double maxLongitude = boundingRectangle.getMaxLongitude();
 
-        ////System.out.println("minLong"+minLongitude+ "minLat"+ minLatitude+ "maxLong"+ maxLongitude+ "maxLat"+maxLatitude);
+        //System.out.println("minLong"+minLongitude+ "minLat"+ minLatitude+ "maxLong"+ maxLongitude+ "maxLat"+maxLatitude);
         double latDif = Math.abs(latRad(maxLatitude) - latRad(minLatitude));
         double longDif = Math.abs(maxLongitude - minLongitude);
 
@@ -117,7 +117,7 @@ public class CityMapUtils {
         double latZoom = Math.log(1 / latFrac) / Math.log(2);
         double longZoom = Math.log(1 / longFrac) / Math.log(2);
 
-        ////System.out.println("longZoom"+longZoom+"latZoom"+latZoom);
+        //System.out.println("longZoom"+longZoom+"latZoom"+latZoom);
         return Math.min(longZoom, latZoom);
     }
 }

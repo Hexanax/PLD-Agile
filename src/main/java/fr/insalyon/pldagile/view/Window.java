@@ -1,6 +1,6 @@
 package fr.insalyon.pldagile.view;
 
-import fr.insalyon.pldagile.LoadingImageSupplier;
+import fr.insalyon.pldagile.view.maps.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;

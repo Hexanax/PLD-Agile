@@ -19,62 +19,99 @@ public class HTMLSerializer {
      * Allows by using Pebble to compile the informations of the Tour we need to create the road map
      * The road map is rendered by following an html Pebble template and saved in the html file in parameter
      * @param tour The tour
-     * @param html
-     * @throws IOException
+     * @param html The file that is going to contain the roadmap
+     * @throws IOException Exception thrown if problems with buffer and html file
+     *
      */
     public static void renderHTMLroadMap(Tour tour, File html) throws IOException {
         List<Segment> segments = tour.getPath();
+        Iterator<Segment> segmentIterator = segments.iterator();
+
+        // List of Pairs such that Pair<Long : idStep, String :typeStep>
+        // <-1, "depot"> ; <0, "pickup"> ; <1,"delivery">
         List<Pair<Long, String>> stepsIdentifiers = tour.getSteps();
+        //stepIdentifiers  [-1=begin, 0=pickup, 0=delivery, 1=pickup, 1=delivery, 5=end]
+
+        // Remove the begin step from the identifiers
         stepsIdentifiers.remove(0);
 
         List<Intersection> intersections = tour.getIntersections();
+        Iterator<Intersection> intersectionIterator = intersections.iterator();
+
+
         Map<Long, Request> requests = tour.getRequests();
+
+
         Address nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
+
         List<Map<String,Object>> rows = new ArrayList<>();
         Depot depot = tour.getDepot();
 
         //Build the Pebble specific intersection
-        boolean stepindepot = false;
+        boolean stepInDepot = false;
         while(nextSpecificIntersection!= null && intersections.get(0).getId() == nextSpecificIntersection.getIntersection().getId()){
             rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
-            stepindepot=true;
+            stepInDepot=true;
             stepsIdentifiers.remove(0);
             nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
         }
-        if(stepindepot){
+        if(stepInDepot){
             rows.add(createIntersection(intersections.get(0), true, null, segments.get(0).getName(),-1));
         }
-        intersections.remove(0);
+
+        intersectionIterator.next();
 
         //Build the pebble segments and intersections
-        double currentAngle = getAngleFromNorth(segments.get(0));
-        for(Intersection current : intersections){
 
-            //create and add the segment
-            rows.add(createSegment(segments.get(0)));
-            segments.remove(0);
-            boolean step = false;
 
-            //Add the next specific intersection if needed
-            while(nextSpecificIntersection!= null && current.getId() == nextSpecificIntersection.getIntersection().getId()){
-                rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
-                step=true;
-                stepsIdentifiers.remove(0);
-                nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
-            }
+        if(segmentIterator.hasNext() && intersectionIterator.hasNext()){
 
-            //Check the orientation of the next segment
-            if(segments.size()>0){
+            Segment currentSegment = segmentIterator.next();
+            Intersection currentIntersection  = intersectionIterator.next();
+            double currentAngle = getAngleFromNorth(currentSegment);
+            Way currentWay = new Way(currentSegment);
+
+            while(segmentIterator.hasNext() && intersectionIterator.hasNext()){
+
+                Segment nextSegment = segmentIterator.next();
+                Intersection nextIntersection = intersectionIterator.next();
+
+
                 //Orientation between the two segments
-                double followingAngle = getAngleFromNorth(segments.get(0));
-                int orientation = compareOrientation(currentAngle, followingAngle);
-                //Add the intersection with the direction to follow
-                rows.add(createIntersection(current, step, depot.getIntersection().getId(), segments.get(0).getName(), orientation));
-                currentAngle = followingAngle;
-            } else {
-                rows.add(createIntersection(current, step, depot.getIntersection().getId(), "",-1));
-            }
+                double followingAngle = getAngleFromNorth(nextSegment);
 
+                boolean hasChangedWay= false;
+                if(nextSegment.getName().equals(currentSegment.getName())){
+                    currentWay.addSegment(currentSegment);
+                }else{
+                    rows.add(createWay(currentWay));
+                    currentWay = new Way(nextSegment);
+                    hasChangedWay = true;
+                }
+                boolean step = false;
+                //Add the next specific intersection if needed
+                while(nextSpecificIntersection!= null && currentIntersection.getId() == nextSpecificIntersection.getIntersection().getId()){
+                    rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
+                    step=true;
+                    stepsIdentifiers.remove(0);
+                    nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
+                }
+                //Check the orientation of the next segment
+                if(hasChangedWay){
+                    int orientation = compareOrientation(currentAngle, followingAngle);
+                    //Add the intersection with the direction to follow
+
+                    String nextSegmentName = nextSegment.getName();
+                    if(nextSegmentName.equals("")) nextSegmentName = "road";
+                    rows.add(createIntersection(currentIntersection, step, depot.getIntersection().getId(),nextSegmentName, orientation));
+
+                }
+
+                currentSegment = nextSegment;
+                currentAngle = followingAngle;
+                currentIntersection = nextIntersection;
+
+            }
         }
 
         //Initialize the FileWriter to edit the .html file
@@ -85,13 +122,21 @@ public class HTMLSerializer {
         PebbleEngine engine = new PebbleEngine.Builder().loader(new ClasspathLoader()).build();
         PebbleTemplate compiledTemplate = engine.getTemplate("templates/base.html.peb");
 
-        //Contains all the information of the raod map loaded in the template by Pebble
+        //Contains all the information of the road map loaded in the template by Pebble
         Map<String, Object> context = new HashMap<>();
+
+        // Calculate the arrival time
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(tour.getDepot().getDepartureTime());
+        calendar.add(Calendar.SECOND, (int) tour.getTourDuration());
+        Date arrivalTime = calendar.getTime();
+
         context.put("travels_time", getTime(tour.getTravelsDuration()));
         context.put("pickups_time", getTime(tour.getPickupsDuration()));
         context.put("deliveries_time", getTime(tour.getDeliveriesDuration()));
         context.put("length", tour.getLength());
         context.put("total_time", getTime(tour.getTourDuration()));
+        context.put("arrival_time", arrivalTime );
         context.put("depot", tour.getDepot());
         context.put("rows", rows);
 
@@ -104,7 +149,7 @@ public class HTMLSerializer {
     }
 
     /**
-     * Allows to put a segment in a map used by pebble to compile the information in the template
+     * Allows to put a segment on a road  map used by pebble to compile the information in the template
      * @param segment the segment whose information we want to collect
      * @return the segment information usable by pebble
      */
@@ -112,6 +157,20 @@ public class HTMLSerializer {
         Map<String, Object> buffer = new HashMap<>();
         buffer.put("type", "Segment");
         buffer.put("object",segment );
+        return buffer;
+    }
+
+    /**
+     * Allows to put a way on a road map used by pebble to compile the information in the template. Gather all the segments
+     * that compose a single way.
+     * @param way the way whose information we want to collect
+     * @return the way information usable by pebble
+     */
+    public static Map<String, Object> createWay(Way way){
+        Map<String, Object> buffer = new HashMap<>();
+        buffer.put("type", "Way");
+        buffer.put("name",way.getName() );
+        buffer.put("total_length", way.getTotalLength());
         return buffer;
     }
 
