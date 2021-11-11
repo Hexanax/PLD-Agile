@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * Delivery is a model class that represents a delivery. It is a type of address.
- * A delivery is the address where the deliverer will finish a request
+ * A delivery is the address where the deliverer will end a request
  */
 public class Delivery extends Address {
 

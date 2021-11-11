@@ -1,14 +1,20 @@
-package fr.insalyon.pldagile.tsp;
+package fr.insalyon.pldagile.services;
 
 import fr.insalyon.pldagile.model.Delivery;
 import fr.insalyon.pldagile.model.Pickup;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.model.Request;
+import fr.insalyon.pldagile.services.CityMapGraph;
+import fr.insalyon.pldagile.services.Dijkstra;
 import javafx.util.Pair;
 
 import java.util.*;
 
-public class SimulatedAnnealing extends InterruptedException {
+/**
+ * Class used to store the result of the Simulated Annealing algorithm applied to our CityMapGraph and PlanningRequests.
+ *
+ */
+public class SimulatedAnnealing {
 
 
     public static final int MAXIMUM_TIME = 100;
@@ -50,14 +56,17 @@ public class SimulatedAnnealing extends InterruptedException {
     public boolean mustStop = false;
 
 
-
-    public SimulatedAnnealing(PlanningRequest planningRequest, CityMapGraph cityMapGraph) throws InterruptedException {
+    /**
+     * Constructor of a SimulatedAnnealing object from a PlanningRequest and CityMapGraph
+     * @param planningRequest the planningRequest loaded into the application
+     * @param cityMapGraph the cityMapGraph loaded into the application
+     */
+    public SimulatedAnnealing(PlanningRequest planningRequest, CityMapGraph cityMapGraph)  {
         this.planningRequest = planningRequest;
         this.cityMapGraph = cityMapGraph;
         this.bestPaths = new HashMap<>();
         this.stepsIdentifiers = new ArrayList<>();
         this.stepsIntersectionId = new ArrayList<>();
-        computeAllShortestPaths();
     }
 
     /**
@@ -116,13 +125,21 @@ public class SimulatedAnnealing extends InterruptedException {
     }
 
     /**
-     * Inspired from https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman
+     * Inspired from <a href ="https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman">this algorithm</a>
      * Simulated annealing algorithm to find an optimal path for our deliverer.
-     * @param startingTemperature
-     * @param numberOfIterations
-     * @param coolingRate
+     *
+     * If the algorithm is running for longer than a defined MAXIMUM_TIME and timeoutEnabled is set to true, it interrupts itself and returns false.
+     * Otherwise, it keeps running until done and returns true.
+     *
+     * This implementation design allows us to interrupt the algorithm to ask the user if he wants the result now or if he wants to wait for a more optimized result.
+     * If he wants to keep computing, because the state is saved in the class, when re-calling the function, the algorithm will continue from where it had stopped.
+     *
+     * @param startingTemperature the starting temperature for our simulated Annealing algorithm
+     * @param numberOfIterations the total number of iterations
+     * @param coolingRate the cooling rate of our algorithm.
+     * @return true if the algorithm has fully computed, false if the algorithm was interrupted
      */
-    public boolean runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate, boolean timeoutEnabled) throws InterruptedException{
+    public boolean runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate, boolean timeoutEnabled) {
         boolean swapResult;
         double bestDistance = getTotalDistance();
         double t = startingTemperature;
@@ -160,6 +177,7 @@ public class SimulatedAnnealing extends InterruptedException {
                 continue;
             }
             t *= coolingRate;
+            startingTemperature=t;
         }
         return true;
     }
@@ -263,12 +281,6 @@ public class SimulatedAnnealing extends InterruptedException {
         stepsIntersectionId = oldIntersectionIds;
     }
 
-    public void updatePlanningRequest(){ //TODO : WIP
-        PlanningRequest newPlanning = new PlanningRequest();
-        newPlanning.setDepot(planningRequest.getDepot());
-
-    }
-
     /**
      *
      * @return ArrayList of ordered steps Pairs(RequestId, typeOfRequest)
@@ -291,7 +303,7 @@ public class SimulatedAnnealing extends InterruptedException {
 
     /**
      *
-     * @return Mapping of each originId with a Dijkstra computation result
+     * @return Mapping of each originId with a Dijkstra computation result from this originId
      */
     public Map<Long, Dijkstra> getBestPaths() {
         return bestPaths;

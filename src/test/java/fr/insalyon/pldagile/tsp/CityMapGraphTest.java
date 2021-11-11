@@ -2,6 +2,8 @@ package fr.insalyon.pldagile.tsp;
 
 import fr.insalyon.pldagile.helpers.FakeCityMapProvider;
 import fr.insalyon.pldagile.model.CityMap;
+import fr.insalyon.pldagile.services.CityMapGraph;
+import fr.insalyon.pldagile.services.Dijkstra;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

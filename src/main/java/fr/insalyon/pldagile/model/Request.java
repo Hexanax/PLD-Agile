@@ -2,8 +2,9 @@ package fr.insalyon.pldagile.model;
 
 /**
  * Request is a model class that represents a request.
- * A request is defined by a package to take at a pickup
- * and to deliver at a delivery
+ * A request is identified by its ID and represents a Pickup location where
+ * our driver must pick up a package as well as a delivery location where our
+ * driver must deliver our package.
  */
 public class Request {
 

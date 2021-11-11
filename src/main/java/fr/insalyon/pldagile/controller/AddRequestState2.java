@@ -1,7 +1,7 @@
 package fr.insalyon.pldagile.controller;
 
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.tsp.TourBuilderV2;
+import fr.insalyon.pldagile.services.TourBuilderV2;
 import fr.insalyon.pldagile.view.Window;
 
 /**
