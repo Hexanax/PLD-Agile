@@ -148,7 +148,7 @@ public class RequestListView implements View, PropertyChangeListener {
 
     public void setFirstFocus(AddressItem item, int index) {
         requestList.scrollTo(item);
-        requestList.getSelectionModel().select(index + 2);
+        requestList.getSelectionModel().select(index );
     }
 
     public void setHover(AddressItem item) {
