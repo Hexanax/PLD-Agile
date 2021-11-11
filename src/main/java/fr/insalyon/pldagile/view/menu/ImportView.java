@@ -17,6 +17,7 @@ public class ImportView extends Region {
     private final Button importMapButton;
     private final Button importPickupButton;
     private final Button computeButton;
+    private final Button slowComputeButton;
     private final Button generateRoadMap;
 
     protected static final String IMPORT_TITLE = "Imports";
@@ -24,6 +25,8 @@ public class ImportView extends Region {
     protected static final String LOAD_MAP = "Import map";
     protected static final String LOAD_REQUESTS = "Import Requests";
     protected static final String COMPUTE_TOUR = "Compute tour";
+    protected static final String SLOW_COMPUTE_TOUR = "Compute tour slowly";
+
     protected static final String GENERATE_ROADMAP = "Generate the Road Map";
 
     protected static final String NO_FILE_IMPORTED_MESSAGE = "No file imported yet";
@@ -66,9 +69,13 @@ public class ImportView extends Region {
         computeButton = new Button(COMPUTE_TOUR);
         createButton(computeButton, gridPane, 0,3,2,1, true);
 
+        // SLOW COMPUTE BUTTON
+        slowComputeButton = new Button(SLOW_COMPUTE_TOUR);
+        createButton(slowComputeButton, gridPane, 0,4,2,1, true);
+
         //Generate roadmap button
         generateRoadMap = new Button(GENERATE_ROADMAP);
-        createButton(generateRoadMap, gridPane, 0,4,2,1, true);
+        createButton(generateRoadMap, gridPane, 0,5,2,1, true);
 
 
         this.getChildren().add(gridPane);

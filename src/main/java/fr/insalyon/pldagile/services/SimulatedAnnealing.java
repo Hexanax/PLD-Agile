@@ -1,17 +1,22 @@
-package fr.insalyon.pldagile.tsp;
+package fr.insalyon.pldagile.services;
 
 import fr.insalyon.pldagile.model.Delivery;
 import fr.insalyon.pldagile.model.Pickup;
 import fr.insalyon.pldagile.model.PlanningRequest;
 import fr.insalyon.pldagile.model.Request;
+import fr.insalyon.pldagile.services.CityMapGraph;
+import fr.insalyon.pldagile.services.Dijkstra;
 import javafx.util.Pair;
 
 import java.util.*;
 
-public class SimulatedAnnealing extends InterruptedException {
+/**
+ * Class used to store the result of the Simulated Annealing algorithm applied to our CityMapGraph and PlanningRequests.
+ */
+public class SimulatedAnnealing {
 
 
-    public static final int MAXIMUM_TIME = 100;
+    public static final int MAXIMUM_TIME = 2000;
     //Parameters of our Simulated Annealing algorithm
     private double temperature = 25.0;
     private double coolingRate = 0.99;
@@ -50,23 +55,28 @@ public class SimulatedAnnealing extends InterruptedException {
     public boolean mustStop = false;
 
 
-
-    public SimulatedAnnealing(PlanningRequest planningRequest, CityMapGraph cityMapGraph) throws InterruptedException {
+    /**
+     * Constructor of a SimulatedAnnealing object from a PlanningRequest and CityMapGraph
+     *
+     * @param planningRequest the planningRequest loaded into the application
+     * @param cityMapGraph    the cityMapGraph loaded into the application
+     */
+    public SimulatedAnnealing(PlanningRequest planningRequest, CityMapGraph cityMapGraph) {
         this.planningRequest = planningRequest;
         this.cityMapGraph = cityMapGraph;
         this.bestPaths = new HashMap<>();
         this.stepsIdentifiers = new ArrayList<>();
         this.stepsIntersectionId = new ArrayList<>();
-        computeAllShortestPaths();
     }
 
     /**
      * For every step the TSM has to visit, run Dijkstra from this intersectionId
      * and store the results in bestPaths
-     *
+     * <p>
      * For every step, store in stepsIdentifiers the id of the request and its type
      * (pickup or delivery, or depot begin/end) , and store in the same index in stepsIntersectionId
      * the id of the associated intersection.
+     * </p>
      */
     public void computeAllShortestPaths() {
 
@@ -91,7 +101,7 @@ public class SimulatedAnnealing extends InterruptedException {
 
             //check if the Dijkstra has already been run from this intersection
             //to avoid re-computing for nothing...
-            if(!bestPaths.containsKey(pickup.getIntersection().getId())) {
+            if (!bestPaths.containsKey(pickup.getIntersection().getId())) {
                 dijkstraData = new Dijkstra(cityMapGraph, pickup.getIntersection().getId());
                 bestPaths.put(pickup.getIntersection().getId(), dijkstraData);
             }
@@ -116,20 +126,32 @@ public class SimulatedAnnealing extends InterruptedException {
     }
 
     /**
-     * Inspired from https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman
+     * Inspired from <a href ="https://www.baeldung.com/java-simulated-annealing-for-traveling-salesman">this algorithm</a>
      * Simulated annealing algorithm to find an optimal path for our deliverer.
-     * @param startingTemperature
-     * @param numberOfIterations
-     * @param coolingRate
+     * <p>
+     * If the algorithm is running for longer than a defined MAXIMUM_TIME and timeoutEnabled is set to true, it interrupts itself and returns false.
+     * Otherwise, it keeps running until done and returns true.
+     * </p>
+     * <p>
+     * This implementation design allows us to interrupt the algorithm to ask the user if he wants the result now or if he wants to wait for a more optimized result.
+     * If he wants to keep computing, because the state is saved in the class, when re-calling the function, the algorithm will continue from where it had stopped.
+     * </p>
+     * @param timeoutEnabled,   true if we're activating a timeout to ask the user to stop/continue
+     * @param slowModeActivated true if the "slow mode" is activated for the demo
+     * @return true if the algorithm has fully computed, false if the algorithm was interrupted
      */
-    public boolean runSimulatedAnnealing(double startingTemperature, int numberOfIterations, double coolingRate, boolean timeoutEnabled) throws InterruptedException{
+    public boolean runSimulatedAnnealing(boolean timeoutEnabled, boolean slowModeActivated) {
         boolean swapResult;
         double bestDistance = getTotalDistance();
-        double t = startingTemperature;
+        double t = temperature;
         long start = System.currentTimeMillis();
-        long timeElapsed=0;
+        long timeElapsed = 0;
 
-        while(numberOfIterations>0) {
+        if (slowModeActivated && timeoutEnabled) {
+            this.numberOfIterations = 500000000;
+        }
+
+        while (numberOfIterations > 0) {
             numberOfIterations--;
             timeElapsed = System.currentTimeMillis() - start;
             if (timeElapsed > MAXIMUM_TIME && timeoutEnabled) {
@@ -153,19 +175,19 @@ public class SimulatedAnnealing extends InterruptedException {
                 double currentDistance = getTotalDistance();
                 if (currentDistance < bestDistance) {
                     bestDistance = currentDistance;
-                } else if ((Math.exp(bestDistance - currentDistance) / startingTemperature) < Math.random()) {
+                } else if ((Math.exp(bestDistance - currentDistance) / temperature) < Math.random()) {
                     revertSwapSteps(oldStepsIdentifiers, oldIntersectionIds);
                 }
             } else {
                 continue;
             }
             t *= coolingRate;
+            temperature = t;
         }
         return true;
     }
 
     /**
-     *
      * @return total distance of the travel
      */
     public double getTotalDistance() {
@@ -182,6 +204,7 @@ public class SimulatedAnnealing extends InterruptedException {
     /**
      * If the swap is allowed, stepsIdentifiers and stepsIntersectionId elements are swapped
      * in a new order
+     *
      * @return false if the swap is not allowed / true if the swap is allowed
      */
     public boolean swapSteps(int swapFirstIndex, int swapSecondIndex) {
@@ -255,22 +278,16 @@ public class SimulatedAnnealing extends InterruptedException {
 
     /**
      * reverts a swap using the old values of stepsIdentifiers and stepsIntersectionId
+     *
      * @param oldStepsIdentifiers
      * @param oldIntersectionIds
      */
-    public void revertSwapSteps(ArrayList<Pair<Long,String>> oldStepsIdentifiers, ArrayList<Long> oldIntersectionIds) {
+    public void revertSwapSteps(ArrayList<Pair<Long, String>> oldStepsIdentifiers, ArrayList<Long> oldIntersectionIds) {
         stepsIdentifiers = oldStepsIdentifiers;
         stepsIntersectionId = oldIntersectionIds;
     }
 
-    public void updatePlanningRequest(){ //TODO : WIP
-        PlanningRequest newPlanning = new PlanningRequest();
-        newPlanning.setDepot(planningRequest.getDepot());
-
-    }
-
     /**
-     *
      * @return ArrayList of ordered steps Pairs(RequestId, typeOfRequest)
      */
     public ArrayList<Pair<Long, String>> getStepsIdentifiers() {
@@ -278,7 +295,6 @@ public class SimulatedAnnealing extends InterruptedException {
     }
 
     /**
-     *
      * @return ArrayList of ordered steps intersection Ids
      */
     public ArrayList<Long> getStepsIntersectionId() {
@@ -290,7 +306,6 @@ public class SimulatedAnnealing extends InterruptedException {
     }
 
     /**
-     *
      * @return Mapping of each originId with a Dijkstra computation result
      */
     public Map<Long, Dijkstra> getBestPaths() {
@@ -299,14 +314,14 @@ public class SimulatedAnnealing extends InterruptedException {
 
     /**
      * adds to this.bestPaths the result of Dijkstra computation from idOrigin
+     *
      * @param idOrigin
      */
-    public void addBestPath(long idOrigin){
+    public void addBestPath(long idOrigin) {
         Dijkstra dijkstraData;
         dijkstraData = new Dijkstra(cityMapGraph, idOrigin);
         bestPaths.put(dijkstraData.getOriginId(), dijkstraData);
     }
-
 
 
 }

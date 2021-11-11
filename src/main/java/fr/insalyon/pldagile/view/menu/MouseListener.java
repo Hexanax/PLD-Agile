@@ -16,8 +16,6 @@ public class MouseListener {
         MouseListener.controller = controller;
     }
 
-
-
     public static void mouseClicked(MouseEvent event) {
         AddressItem item = ((ListView<AddressItem>) event.getSource()).getSelectionModel().getSelectedItem();
         if(item != null && event.getClickCount()==1 && event.getButton()==MouseButton.PRIMARY){

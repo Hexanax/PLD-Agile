@@ -118,21 +118,28 @@ public class Controller {
      * Method called by window after a click on the button "Import map"
      */
     public void loadMap() {
-        currentState.loadMap(this, window);
+        currentState.loadMap(this, window, listOfCommands);
     }
 
     /**
      * Method called by window after a click on the button "Import requests"
      */
     public void loadRequests() {
-        currentState.loadRequests(this, pclCityMap.getCityMap(), window);
+        currentState.loadRequests(this, pclCityMap.getCityMap(), window, listOfCommands);
     }
 
     /**
      * Method called by window after a click on the button "Compute  tour"
      */
     public void computeTour() {
-        currentState.computeTour(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), window);
+        currentState.computeTour(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), window, false);
+    }
+
+    /**
+     * Method called by window after a click on the button "Slow compute tour"
+     */
+    public void slowComputeTour() {
+        currentState.computeTour(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), window, true);
     }
 
     /**
@@ -211,4 +218,6 @@ public class Controller {
     public void intersectionClick(long id) {
         currentState.intersectionClick(this, pclCityMap.getCityMap(), pclPlanningRequest.getPlanningRequest(), id, window);
     }
+
+
 }

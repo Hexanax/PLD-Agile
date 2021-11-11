@@ -1,11 +1,22 @@
 package fr.insalyon.pldagile.model;
 
+/**
+ * Request is a model class that represents a request.
+ * A request is identified by its ID and represents a Pickup location where
+ * our driver must pick up a package as well as a delivery location where our
+ * driver must deliver our package.
+ */
 public class Request {
 
     private Long id;
     private Pickup pickup;
     private Delivery delivery;
 
+    /**
+     * Constructor of an intersection defined by a pickup and a delivery
+     * @param pickup
+     * @param delivery
+     */
     public Request(Pickup pickup, Delivery delivery) {
         this.pickup = pickup;
         this.delivery = delivery;

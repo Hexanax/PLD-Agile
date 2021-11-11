@@ -8,8 +8,8 @@ public class KeyboardListener {
 
     private static Controller controller;
 
-    public KeyboardListener(Controller controller) {
-        KeyboardListener.controller = controller;
+    public static void setController(Controller newController) {
+        controller = newController;
     }
 
     public static void keyPressed(KeyEvent event) {

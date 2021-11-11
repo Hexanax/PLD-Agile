@@ -1,4 +1,4 @@
-package fr.insalyon.pldagile;
+package fr.insalyon.pldagile.view.maps;
 
 import javafx.scene.image.Image;
 

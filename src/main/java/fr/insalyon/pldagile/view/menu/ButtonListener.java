@@ -8,8 +8,8 @@ public class ButtonListener {
 
     private static Controller controller;
 
-    public ButtonListener(Controller controller) {
-        ButtonListener.controller = controller;
+    public static void setController(Controller newController) {
+        controller = newController;
     }
 
     public static void actionPerformed(ActionEvent event) {
@@ -22,6 +22,9 @@ public class ButtonListener {
                 break;
             case ImportView.COMPUTE_TOUR:
                 controller.computeTour();
+                break;
+            case ImportView.SLOW_COMPUTE_TOUR:
+                controller.slowComputeTour();
                 break;
             case ImportView.GENERATE_ROADMAP:
                 controller.generateRoadMap();
@@ -38,8 +41,6 @@ public class ButtonListener {
             case RequestView.UNDO:
                 controller.undo();
                 break;
-
-
         }
 
     }

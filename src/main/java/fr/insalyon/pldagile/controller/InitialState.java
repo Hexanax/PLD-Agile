@@ -13,13 +13,13 @@ import java.io.File;
  */
 public class InitialState implements State {
     @Override
-    public void loadMap(Controller controller, Window window) {
+    public void loadMap(Controller controller, Window window, ListOfCommands l) {
         try {
             File importFile = XMLFileOpener.getInstance().open(FileChooseOption.READ);
             if (importFile != null) {
                 window.addStateFollow("Loading the map ...");
 
-                //Service call to read an xml file
+                //Service call to read a xml file
                 CityMap newCityMap = XMLDeserializer.load(importFile);
                 controller.setCityMap(newCityMap);
                 window.updateMapFileName(importFile.getName());

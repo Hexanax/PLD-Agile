@@ -16,16 +16,18 @@ public interface State {
      * Method called by the controller after a click on "Import map"
      * @param controller the controller
      * @param window the window
+     * @param l the current list of commands
      */
-    public default void loadMap(Controller controller, Window window) {};
+    public default void loadMap(Controller controller, Window window, ListOfCommands l) {};
 
     /**
      * Method called by the controller after a click on "Import Requests"
      * @param controller the controller
      * @param cityMap the city map
      * @param window the window
+     * @param l the current list of commands
      */
-    public default void loadRequests(Controller controller, CityMap cityMap, Window window){};
+    public default void loadRequests(Controller controller, CityMap cityMap, Window window, ListOfCommands l){};
 
     /**
      * Method called by the controller after a click on "Compute Tour"
@@ -34,7 +36,7 @@ public interface State {
      * @param planningRequest the planning request
      * @param window the window
      */
-    public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window){};
+    public default void computeTour(Controller controller, CityMap cityMap, PlanningRequest planningRequest, Window window, boolean slowModeActivated){};
 
     /**
      * Method called by the controller after a left click or a click on confirm

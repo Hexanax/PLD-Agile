@@ -49,7 +49,7 @@ public class AddRequestState4 implements State {
                     if (type.equals("depot")) {
                         stepIndex = 0;
                     } else {
-                        Pair<Long, String> stepToFound = new Pair<Long, String>(id, type);
+                        Pair<Long, String> stepToFound = new Pair<>(id, type);
                         stepIndex = tour.getSteps().indexOf(stepToFound);
                     }
                 }

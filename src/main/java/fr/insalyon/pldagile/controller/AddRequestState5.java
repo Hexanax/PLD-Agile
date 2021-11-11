@@ -32,7 +32,7 @@ public class AddRequestState5 implements State{
         } else {
             if(validity(values[0]) && validity(values[1])){
                 int pickupDuration = Integer.parseInt(values[0]);
-                int deliveryDuration = Integer.parseInt(values[0]);
+                int deliveryDuration = Integer.parseInt(values[1]);
                 try {
                     l.getLastCommand().editRequestDuration(pickupDuration, deliveryDuration);
                     window.makeLastRequestAddedEditable(false, planningRequest.getLastRequest().getId());
@@ -69,13 +69,13 @@ public class AddRequestState5 implements State{
 
 
     @Override
-    public void loadMap(Controller controller, Window window) {
+    public void loadMap(Controller controller, Window window, ListOfCommands l) {
         controller.confirm();
         controller.loadMap();
     }
 
     @Override
-    public void loadRequests(Controller controller, CityMap cityMap, Window window) {
+    public void loadRequests(Controller controller, CityMap cityMap, Window window, ListOfCommands l) {
         controller.confirm();
         controller.loadRequests();
     }

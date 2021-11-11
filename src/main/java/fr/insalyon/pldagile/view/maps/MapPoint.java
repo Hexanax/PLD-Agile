@@ -44,16 +44,16 @@ public class MapPoint {
         this.latitude = lat;
         this.longitude = lon;
         this.type = "Intersection";
-        special_id=-1;
-        request_id=-1;
-        stepIndex=-1;
+        special_id = -1;
+        request_id = -1;
+        stepIndex = -1;
         this.defaultScale = 1.0;
     }
-    
+
     public double getLatitude() {
         return this.latitude;
     }
-    
+
     public double getLongitude() {
         return this.longitude;
     }
@@ -96,7 +96,7 @@ public class MapPoint {
     }
 
     public void setDefaultScale(double scale) {
-        this.defaultScale =scale;
+        this.defaultScale = scale;
     }
 
     public double getDefaultScale() {

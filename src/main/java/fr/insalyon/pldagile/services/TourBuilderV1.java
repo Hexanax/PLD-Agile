@@ -1,14 +1,25 @@
-package fr.insalyon.pldagile.tsp;
+package fr.insalyon.pldagile.services;
 
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.tsp.Dijkstra;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class TourBuilderV1 { //TODO Implement TourBuilder
+/**
+ * WARNING : No longer used
+ * Class used to compute the tour in a non-optimal way by taking the requests
+ * of the planning request in an ordered way from pair to pair and
+ * by making dijskra between each address composing these requests.
+ */
+public class TourBuilderV1 {
 
-    //TODO Rewrite
+    /**
+     * Allows to browse the requests of the planning and to perform dijskra
+     * between the intersections composing the addresses in an even way.
+     * @param planningRequest the planning request
+     * @param cityMap the city map
+     * @return List of intersections id to visit in order
+     */
     public List<Long> buildTour(PlanningRequest planningRequest, CityMap cityMap) {
 
 
@@ -30,7 +41,6 @@ public class TourBuilderV1 { //TODO Implement TourBuilder
             previousIntersection = delivery.getIntersection();
         }
 
-        ////System.out.println("Running V1");
         return tourIntersections;
     }
 
