@@ -11,6 +11,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 import java.util.List;
 
@@ -48,6 +50,7 @@ public class LogView extends Region {
 
     public static void addText(TextItem textItem) {
         textItems.add(textItem);
+        textItems.get(textItems.size() - 2).setFont(Font.font("Arial", FontWeight.NORMAL, 10));
         listView.scrollTo(textItem);
     }
 
