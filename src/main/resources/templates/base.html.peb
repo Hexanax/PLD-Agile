@@ -62,95 +62,91 @@
             <div class="depot icon-container">
                     <div class="icon"> {% include "templates/svg/depot.svg.peb" %} </div>
                 <div class="depot-txt icon-container-txt">
-                    <div> Departure from the depot at intersection no. {{ depot.intersection.id }} </div>
+                    <div> Departure from the depot</div>
                     <div> Departure scheduled at <span class="estimated-val">{{ depot.departureTime| date("HH:mm:ss", timeZone="Europe/Paris") }} </span></div>
                 </div>
             </div>
         </div>
-    {% for row in rows %}
+        {% for row in rows %}
             <div class="path-seg">
-                {% if row.type == "Segment"%}
-
+                {% if row.type == "Way"%}
                     <div class="path-seg-cnt">
-                        <div class="dir-txt">Follow the {{row.object.name}} over {{row.object.length| numberformat("#.##")}} meters to the intersection no.{{ row.object.destination.id}}</div>
+                        <div class="dir-txt">Follow the {{row.name}} over {{row.total_length| numberformat("#.##")}} meters </div>
                     </div>
                 {% elseif row.type == "Intersection"  %}
-        {% if row.step and not row.finish %}
-                            <div class="dir-chg">
-                                {% if row.orientation==0 %}
-                                    <div class = "arrow icon"> {% include "templates/svg/north.svg.peb" %} </div>
-                                    <div class="dir-txt">After dealing with deliveries go straight ahead on the road called : {{ row.segment_name }}</div>
-                                {% elseif row.orientation==1 %}
-                                    <div class = "arrow icon"> {% include "templates/svg/east.svg.peb" %} </div>
-                                    <div class="dir-txt">After dealing with deliveries turn right on the road called : {{ row.segment_name }}</div>
-                                {% elseif row.orientation==2 %}
-                                    <div class = "arrow icon"> {% include "templates/svg/west.svg.peb" %} </div>
-                                    <div class="dir-txt">After dealing with deliveries turn left on the road called : {{ row.segment_name }}</div>
-                                {% elseif row.orientation==3 %}
-                                    <div class = "arrow icon"> {% include "templates/svg/south.svg.peb" %} </div>
-                                    <div class="dir-txt">After dealing with deliveries turn back on the road called : {{ row.segment_name }}</div>
-                                {% else %}
-                                    <div class="dir-txt"> After dealing with deliveries follow the road called : {{ row.segment_name }}</div>
-                                {% endif %}
-                            </div>
-
+                    {% if row.step and not row.finish %}
+                        <div class="dir-chg">
+                            {% if row.orientation==0 %}
+                                <div class = "arrow icon"> {% include "templates/svg/north.svg.peb" %} </div>
+                                <div class="dir-txt">After dealing with deliveries go straight ahead on the road called : {{ row.segment_name }}</div>
+                            {% elseif row.orientation==1 %}
+                                <div class = "arrow icon"> {% include "templates/svg/east.svg.peb" %} </div>
+                                <div class="dir-txt">After dealing with deliveries turn right on the road called : {{ row.segment_name }}</div>
+                            {% elseif row.orientation==2 %}
+                                <div class = "arrow icon"> {% include "templates/svg/west.svg.peb" %} </div>
+                                <div class="dir-txt">After dealing with deliveries turn left on the road called : {{ row.segment_name }}</div>
+                            {% elseif row.orientation==3 %}
+                                <div class = "arrow icon"> {% include "templates/svg/south.svg.peb" %} </div>
+                                <div class="dir-txt">After dealing with deliveries turn back on the road called : {{ row.segment_name }}</div>
+                            {% else %}
+                                <div class="dir-txt"> After dealing with deliveries follow the road called : {{ row.segment_name }}</div>
+                            {% endif %}
+                        </div>
                     {% elseif not row.finish  %}
                         <div class="dir-chg">
                             {% if row.orientation==0 %}
-
                                 <div class = "arrow icon"> {% include "templates/svg/north.svg.peb" %} </div>
-                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} go straight ahead on the road called : {{ row.segment_name }}</div>
+                                <div class="dir-chg-txt">Go straight ahead on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==1 %}
                                 <div class = "arrow icon"> {% include "templates/svg/east.svg.peb" %} </div>
-                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} turn right on the road called : {{ row.segment_name }}</div>
+                                <div class="dir-chg-txt">Turn right on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==2 %}
                                 <div class = "arrow icon"> {% include "templates/svg/west.svg.peb" %} </div>
-                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} turn left on the road called : {{ row.segment_name }}</div>
+                                <div class="dir-chg-txt">Turn left on the road called : {{ row.segment_name }}</div>
                             {% elseif row.orientation==3 %}
                                 <div class = " arrow icon"> {% include "templates/svg/south.svg.peb" %} </div>
-                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} turn back on the road called : {{ row.segment_name }}</div>
+                                <div class="dir-chg-txt">Turn back on the road called : {{ row.segment_name }}</div>
                             {% else %}
-                                <div class="dir-chg-txt">At the intersection no {{row.object.id}} follow the road called : {{ row.segment_name }}</div>
-
+                                <div class="dir-chg-txt">Follow the road called : {{ row.segment_name }}</div>
                             {% endif %}
                         </div>
 
                     {% endif %}
-        {% else %}
-                <div class="stop-container">
-                    <div class= "stop-txt"> At the intersection no {{row.object.intersection.id}}</div>
-                    {% if row.subtype == "pickup" %}
+                {% else %}
+                    <div class="stop-container">
+                        <div class= "stop-txt"></div>
+                        {% if row.subtype == "pickup" %}
 
-                        <div class="pickup icon-container">
-                            <div class="pickup-icon icon">
-                                {% include "templates/svg/pickup.svg.peb" %}
-                            </div>
-                            <div class="pickup-txt icon-container-txt">
-                                <div>
-                                    Arrival expected at about {{ row.object.arrivalTime| date("HH:mm:ss", timeZone="Europe/Paris") }}
+                            <div class="pickup icon-container">
+                                <div class="pickup-icon icon">
+                                    {% include "templates/svg/pickup.svg.peb" %}
                                 </div>
-                                <div>
-                                    You have a package to pick up (request n°{{ row.request }}). This will take about <span class="estimated-val">{{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s</span>
-                                </div>
-                            </div>
-                        </div>
-                    {% else %}
-                        <div class="delivery icon-container">
-                            <div class="delivery-icon icon" >
-                                {% include "templates/svg/dropoff.svg.peb" %}
-                            </div>
-                            <div class="delivery-txt icon-container-txt">
-                                <div>
-                                    Arrival expected at about {{ row.object.arrivalTime| date("HH:mm:ss", timeZone="Europe/Paris") }}
-                                </div>
-                                <div>
-                                    You have a package to deliver(request n°{{ row.request }}). This will take about <span class="estimated-val"> {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s </span>
+                                <div class="pickup-txt icon-container-txt">
+                                    <div>
+                                        Arrival expected at about {{ row.object.arrivalTime| date("HH:mm:ss", timeZone="Europe/Paris") }}
+                                    </div>
+                                    <div>
+                                        You have a package to pick up (request n°{{ row.request }}). This will take about <span class="estimated-val">{{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s</span>
+                                    </div>
                                 </div>
                             </div>
+                        {% else %}
+                            <div class="delivery icon-container">
+                                <div class="delivery-icon icon" >
+                                    {% include "templates/svg/dropoff.svg.peb" %}
+                                </div>
+                                <div class="delivery-txt icon-container-txt">
+                                    <div>
+                                        Arrival expected at about {{ row.object.arrivalTime| date("HH:mm:ss", timeZone="Europe/Paris") }}
+                                    </div>
+                                    <div>
+                                        You have a package to deliver(request n°{{ row.request }}). This will take about <span class="estimated-val"> {{ row.object.duration/60 }}min {{ (row.object.duration - (row.object.duration/60)*60) }}s </span>
+                                    </div>
+                                </div>
 
-                        </div>
-                    {% endif %}
-                </div>
+                            </div>
+                        {% endif %}
+                    </div>
                 {% endif %}
             </div>
         {% endfor %}
