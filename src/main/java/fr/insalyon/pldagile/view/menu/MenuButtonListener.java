@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 /**
  * Static button listener, listening to the actions related to the button clicks, depending on the target
  */
-public class ButtonListener {
+public class MenuButtonListener {
 
     private static Controller controller;
 

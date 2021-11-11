@@ -45,7 +45,7 @@ public class ImportView extends Region implements View {
         }
 
         gridPane.add(button, columnIndex, rowIndex, colspan, rowspan);
-        button.setOnAction(ButtonListener::actionPerformed);
+        button.setOnAction(MenuButtonListener::actionPerformed);
     }
 
     public static void setImportMapLabel(String fileName) {

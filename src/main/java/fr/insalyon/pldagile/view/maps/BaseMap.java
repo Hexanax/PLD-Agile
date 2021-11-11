@@ -235,7 +235,6 @@ public class BaseMap extends Group {
     public void zoom(double delta, double pivotX, double pivotY) {
         double dz = delta;// > 0 ? .1 : -.1;
         double zp = zoom.get();
-        System.out.println("Zoom called, zp = " + zp + ", delta = " + delta + ", px = " + pivotX + ", py = " + pivotY);
         double txold = getTranslateX();
         double t1x = pivotX - getTranslateX();
         double t2x = 1. - Math.pow(2, dz);

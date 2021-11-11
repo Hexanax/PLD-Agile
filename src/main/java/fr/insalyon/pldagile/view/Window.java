@@ -38,7 +38,7 @@ public class Window {
         this.controller = controller;
 
         // Set the controllers inside the listener handlers
-        ButtonListener.setController(controller);
+        MenuButtonListener.setController(controller);
         KeyboardListener.setController(controller);
         MouseListener.setController(controller);
         RequestMouseListener.setController(controller);

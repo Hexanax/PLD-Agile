@@ -32,7 +32,9 @@ public class SidePanelView extends Region implements View {
         requestListView.addUpdateCallback(() -> {
             System.out.println("Update callback sidepannel to request list view");
             if (requestListView.getAddressItems().size() > 0) {
-                verticalBox.getChildren().add(requestView);
+               if(!verticalBox.getChildren().contains(requestView)) {
+                    verticalBox.getChildren().add(requestView);
+                }
             }
         });
 

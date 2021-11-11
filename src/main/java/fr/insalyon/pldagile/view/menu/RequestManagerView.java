@@ -1,24 +1,14 @@
 package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.model.PlanningRequest;
-import fr.insalyon.pldagile.model.Tour;
 import fr.insalyon.pldagile.view.IconProvider;
 import fr.insalyon.pldagile.view.View;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
-
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.Objects;
 
 public class RequestManagerView extends Region implements View {
 
@@ -39,7 +29,7 @@ public class RequestManagerView extends Region implements View {
 
     private void createButton(Button button, GridPane gridPane, int columnIndex, int rowIndex, int colspan, int rowspan) {
         gridPane.add(button, columnIndex, rowIndex, colspan, rowspan);
-        button.setOnAction(ButtonListener::actionPerformed);
+        button.setOnAction(MenuButtonListener::actionPerformed);
     }
 
     public GridPane getGridPane() {
