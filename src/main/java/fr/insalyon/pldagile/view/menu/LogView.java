@@ -1,6 +1,5 @@
 package fr.insalyon.pldagile.view.menu;
 
-import fr.insalyon.pldagile.view.Fonts;
 import fr.insalyon.pldagile.view.View;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

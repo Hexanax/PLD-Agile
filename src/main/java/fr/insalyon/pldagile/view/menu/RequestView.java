@@ -100,8 +100,6 @@ public class RequestView extends Region {
     public void setFirstFocus(AddressItem item, int index) {
         requestList.scrollTo(item);
         requestList.getSelectionModel().select(index + 2);
-        // requestList.getSelectionModel().getSelectedItem().setStyle("-fx-background-color:
-        // #3C8AFF");
     }
 
     public void setHover(AddressItem item) {

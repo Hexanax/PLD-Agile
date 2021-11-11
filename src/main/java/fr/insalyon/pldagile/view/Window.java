@@ -80,8 +80,8 @@ public class Window {
         Image desktopIcon = new Image("/img/desktop-icon.png");
         stage.getIcons().add(desktopIcon);
         // Window dimensions
-        int screenWidth = (int) Screen.getPrimary().getBounds().getWidth();
-        int screenHeight = (int) Screen.getPrimary().getBounds().getHeight();
+        int windowWidth = (int) Screen.getPrimary().getBounds().getWidth();
+        int windowHeight = (int) Screen.getPrimary().getBounds().getHeight();
         mapView.setZoom(3);
 
         final Label headerLabel = headerLabel();
@@ -130,7 +130,6 @@ public class Window {
     private void loadSidePanel() {
         sidePanel.mainSidePanel(this.requestListView.getAddressItems(), windowHeight);
         AnchorPane.setTopAnchor(sidePanel, 16D);
-        AnchorPane.setBottomAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
 
         // Removing the existing side panel
