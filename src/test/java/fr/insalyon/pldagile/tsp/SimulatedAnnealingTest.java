@@ -64,7 +64,7 @@ public class SimulatedAnnealingTest {
     }
 
     @Test
-    void getTotalDistance() {
+    void getTotalDistance() throws InterruptedException {
         class TestCase {
             final Double expectedResult;
             final SimulatedAnnealing simulatedAnnealing;
@@ -88,7 +88,7 @@ public class SimulatedAnnealingTest {
     @Disabled
     @Test
     @DisplayName("swapStepsTest")
-    public void swapSteps() {
+    public void swapSteps() throws InterruptedException {
 
         class TestCase {
             final boolean expectedResult;
