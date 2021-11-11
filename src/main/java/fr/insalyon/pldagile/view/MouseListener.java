@@ -6,6 +6,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 public class MouseListener {
+
     private static Controller controller;
 
     public static void setController(Controller newController) {
@@ -22,7 +23,4 @@ public class MouseListener {
 
     }
 
-    public static void MouseHover(MouseEvent event){
-
-    }
 }

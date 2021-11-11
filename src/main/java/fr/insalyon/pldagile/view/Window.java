@@ -4,7 +4,6 @@ import fr.insalyon.pldagile.view.maps.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -28,9 +27,9 @@ public class Window {
     private final CityMapView cityMapView;
     private final RequestMapView requestMapView;
     private final TourView tourView;
-    private final RequestListView requestListView;
-    private final SidePanel sidePanel;
-    private final BottomPanel bottomPanel;
+//    private final RequestListView requestListView;
+    private final SidePanelView sidePanel;
+    private final LeftPanel leftPanel;
 
     private int windowWidth = (int) (Screen.getPrimary().getBounds().getWidth() * 0.75);
     private int windowHeight = (int) (Screen.getPrimary().getBounds().getHeight() * 0.75);
@@ -42,17 +41,17 @@ public class Window {
         ButtonListener.setController(controller);
         KeyboardListener.setController(controller);
         MouseListener.setController(controller);
+        RequestMouseListener.setController(controller);
 
         this.cityMapView = new CityMapView(controller);
         this.requestMapView = new RequestMapView(controller);
         this.mapView = new MapView(controller);
         this.tourView = new TourView(controller);
-        this.requestListView = new RequestListView(controller);
-        this.sidePanel = new SidePanel(controller);
-        this.bottomPanel = new BottomPanel();
+        this.sidePanel = new SidePanelView(windowHeight, this, controller);
+        this.leftPanel = new LeftPanel();
 
-        requestMapView.setRequestListView(requestListView);
-        requestListView.setRequestMapView(requestMapView);
+        requestMapView.setRequestListView(sidePanel.getRequestListView()); //TODO Check later
+        sidePanel.getRequestListView().setRequestMapView(requestMapView); //TODO CHeck later
 
         // Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());
@@ -61,12 +60,13 @@ public class Window {
         mapView.addLayer(tourView.getTourDirectionLayer());
         mapView.addLayer(requestMapView.getLayer());
 
-        this.requestListView.getAddressItems().addListener(new ListChangeListener<AddressItem>() {
-            @Override
-            public void onChanged(ListChangeListener.Change c) {
-                loadSidePanel();
-            }
-        });
+        //TODO Change
+//        this.requestListView.getAddressItems().addListener(new ListChangeListener<AddressItem>() {
+//            @Override
+//            public void onChanged(ListChangeListener.Change c) {
+//                loadSidePanel();
+//            }
+//        });
     }
 
     public static Stage getMainStage() {
@@ -101,7 +101,7 @@ public class Window {
 
         mainPane.getChildren().add(bp);
         loadSidePanel();
-        loadBottomPanel();
+        loadLeftPanel();
 
         Scene scene = new Scene(mainPane, windowWidth, windowHeight);
         scene.getRoot().setStyle("-fx-font-family: 'Roboto'");
@@ -126,26 +126,25 @@ public class Window {
     }
 
     private void loadSidePanel() {
-        sidePanel.mainSidePanel(this.requestListView.getAddressItems(), windowHeight);
+        sidePanel.render();
         AnchorPane.setTopAnchor(sidePanel, 16D);
         AnchorPane.setRightAnchor(sidePanel, 16D);
 
         // Removing the existing side panel
         for (int i = 0; i < mainPane.getChildren().size(); i++) {
-            if (mainPane.getChildren().get(i).getClass() == SidePanel.class) {
+            if (mainPane.getChildren().get(i).getClass() == SidePanelView.class) {
                 mainPane.getChildren().remove(i);
                 break;
             }
         }
-
-        requestListView.setRequestView(sidePanel.getRequestView());
+//        requestListView.setRequestView(sidePanel.getRequestView());
         mainPane.getChildren().add(sidePanel);
     }
 
-    private void loadBottomPanel() {
-        AnchorPane.setBottomAnchor(bottomPanel, 16D);
-        AnchorPane.setLeftAnchor(bottomPanel, 16D);
-        mainPane.getChildren().add(bottomPanel);
+    private void loadLeftPanel() {
+        AnchorPane.setBottomAnchor(leftPanel, 16D);
+        AnchorPane.setLeftAnchor(leftPanel, 16D);
+        mainPane.getChildren().add(leftPanel);
     }
 
     private Label headerLabel() {
@@ -213,7 +212,7 @@ public class Window {
     public void addView() {
         hideTour();
         cityMapView.highlight();
-        requestListView.renderUnordered();
+        sidePanel.getRequestListView().renderUnordered();
     }
 
     public void mainView() {
@@ -234,7 +233,7 @@ public class Window {
     }
 
     public void renderOrderedList() {
-        requestListView.renderOrdered();
+        sidePanel.getRequestListView().renderOrdered();
     }
 
     public void hideTour() {
@@ -242,11 +241,11 @@ public class Window {
     }
 
     public void makeLastRequestAddedEditable(boolean editable, long id) {
-        requestListView.makeLastRequestAddedEditable(editable, id);
+        sidePanel.getRequestListView().makeLastRequestAddedEditable(editable, id);
     }
 
     public String[] getEditableRequestDuration() {
-        return requestListView.getEditableDuration();
+        return sidePanel.getRequestListView().getEditableDuration();
     }
 
     public void highlightAddress(long id, String type) {

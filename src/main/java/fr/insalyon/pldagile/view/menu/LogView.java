@@ -62,7 +62,7 @@ public class LogView extends Region implements View {
         int counter = 0;
         StringBuilder newStr = new StringBuilder();
         for (char c : str.toCharArray()) {
-            if(counter++ > 35 && c == ' ') {
+            if (counter++ > 35 && c == ' ') {
                 newStr.append('\n');
                 counter = 0;
             }
