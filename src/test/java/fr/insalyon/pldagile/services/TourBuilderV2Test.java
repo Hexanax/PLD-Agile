@@ -199,5 +199,8 @@ class TourBuilderV2Test {
 
     @Test
     void deadEndIntersection() {
+        TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
+        assertEquals(true,tourBuilderV2.deadEndIntersection(cityMap,7L));
+
     }
 }
