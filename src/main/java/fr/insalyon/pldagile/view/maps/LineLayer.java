@@ -1,19 +1,14 @@
 package fr.insalyon.pldagile.view.maps;
 
-import fr.insalyon.pldagile.view.Colors;
 import fr.insalyon.pldagile.view.Hideable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Point2D;
-import javafx.scene.Node;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**

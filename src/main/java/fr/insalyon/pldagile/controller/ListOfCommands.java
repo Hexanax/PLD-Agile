@@ -10,12 +10,12 @@ import java.util.LinkedList;
  * <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
  */
 public class ListOfCommands {
-    private LinkedList<Command> list;
+    private final LinkedList<Command> list;
     private int currentIndex;
 
     public ListOfCommands() {
         currentIndex = -1;
-        list = new LinkedList<Command>();
+        list = new LinkedList<>();
     }
 
     /**

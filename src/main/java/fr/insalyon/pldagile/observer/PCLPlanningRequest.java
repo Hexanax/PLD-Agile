@@ -1,10 +1,8 @@
 package fr.insalyon.pldagile.observer;
 
 
-import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.PlanningRequest;
 
-import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
@@ -14,7 +12,7 @@ import java.beans.PropertyChangeSupport;
 public class PCLPlanningRequest {
 
     private PlanningRequest planningRequest;
-    private PropertyChangeSupport support = new PropertyChangeSupport(this);
+    private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
     public PCLPlanningRequest() { }
     public PCLPlanningRequest(PlanningRequest planningRequest) {

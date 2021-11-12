@@ -3,7 +3,6 @@ package fr.insalyon.pldagile.view.menu;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.View;
 import fr.insalyon.pldagile.view.Window;
-import javafx.collections.ObservableList;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 
@@ -57,10 +56,6 @@ public class SidePanelView extends Region implements View {
     public void render() {
         verticalBox = new VBox();
         verticalBox.getChildren().add(importView);
-//        System.out.println("Side panel try to show request view show size = " + requestListView.getAddressItems().size());
-//        if (requestListView.getAddressItems().size() > 0) {
-//            verticalBox.getChildren().add(requestView);
-//        }
 
         mainBorderPane.setContent(verticalBox);
         VBox.setVgrow(mainBorderPane, Priority.ALWAYS);

@@ -1,6 +1,5 @@
 package fr.insalyon.pldagile.view;
 
-import fr.insalyon.pldagile.view.maps.LoadingImageSupplier;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.maps.*;
 import fr.insalyon.pldagile.view.menu.*;
@@ -31,8 +30,8 @@ public class Window {
     private final SidePanelView sidePanel;
     private final LeftPanel leftPanel;
 
-    private int windowWidth = (int) (Screen.getPrimary().getBounds().getWidth() * 0.75);
-    private int windowHeight = (int) (Screen.getPrimary().getBounds().getHeight() * 0.75);
+    private final int windowWidth = (int) (Screen.getPrimary().getBounds().getWidth() * 0.75);
+    private final int windowHeight = (int) (Screen.getPrimary().getBounds().getHeight() * 0.75);
 
     /**
      * creates a window component
@@ -226,11 +225,7 @@ public class Window {
         alert.setHeaderText("Continue looking for a more optimized path or display the one already found ?");
 
         Optional<ButtonType> result = alert.showAndWait();
-        if (!result.isPresent() || result.get() != ButtonType.OK) {
-            return false;
-        } else {
-            return true;
-        }
+        return result.isPresent() && result.get() == ButtonType.OK;
     }
 
     /**

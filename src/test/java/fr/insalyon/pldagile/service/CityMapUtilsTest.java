@@ -7,7 +7,6 @@ import fr.insalyon.pldagile.services.BoundingRectangle;
 import fr.insalyon.pldagile.services.CityMapUtils;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CityMapUtilsTest {
     CityMap cityMap;
 
-    private static double tolerance = 0.01;
+    private static final double tolerance = 0.01;
 
     @BeforeEach
     void setup() throws ExceptionXML {
