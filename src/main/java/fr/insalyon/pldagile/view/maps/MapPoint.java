@@ -30,7 +30,8 @@ package fr.insalyon.pldagile.view.maps;
 import javafx.beans.NamedArg;
 
 /**
- *
+ * This class implements a map point with information related to its position, connected request and
+ * step index in the computed tour
  */
 public class MapPoint {
 

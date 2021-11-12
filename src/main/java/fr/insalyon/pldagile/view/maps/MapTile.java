@@ -42,7 +42,7 @@ import java.util.logging.Logger;
 import static java.lang.Math.floor;
 
 /**
- *
+ * This class implements the map tiles m
  */
 class MapTile extends Region {
 
@@ -118,6 +118,9 @@ class MapTile extends Region {
         return myZoom;
     }
 
+    /**
+     * Calculates new position {@link Scale} and translates the map based on the zoom level
+     */
     private void calculatePosition() {
         double currentZoom = baseMap.zoom().get();
         int visibleWindow = (int) floor(currentZoom + BaseMap.TIPPING);
@@ -140,7 +143,6 @@ class MapTile extends Region {
 
     /**
      * This tile is covering for the child tile that is still being loaded.
-     *
      * @param child
      */
     void addCovering(MapTile child) {
@@ -150,6 +152,11 @@ class MapTile extends Region {
         calculatePosition();
     }
 
+    /**
+     * Creates an invalidation listener
+     * @param child the input MapTile
+     * @return
+     */
     private InvalidationListener createProgressListener(MapTile child) {
         return new InvalidationListener() {
             @Override

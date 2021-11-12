@@ -7,6 +7,9 @@ import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 
 @SuppressWarnings("FieldCanBeLocal")
+/**
+ * This class implements the request's icon and displays their request's ID
+ */
 public class RequestMapPin extends MapPin {
     private final RequestType type;
     private Long requestId = 0L;
@@ -17,6 +20,11 @@ public class RequestMapPin extends MapPin {
     private static final double TEXT_X_TRANSLATION_FACTOR = 0.22;
     private static final double TEXT_Y_TRANSLATION_FACTOR = -0.25;
 
+    /**
+     * Creates a delivery or pickup icon with its request ID
+     * @param type delivery or pickup
+     * @param requestId request's ID
+     */
     public RequestMapPin(RequestType type, Long requestId) {
         this.type = type;
         this.requestId = requestId;

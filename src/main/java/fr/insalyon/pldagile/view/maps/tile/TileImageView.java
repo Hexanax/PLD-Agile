@@ -36,11 +36,20 @@ import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
+/**
+ * This View class implements the image tile
+ */
 public class TileImageView extends ImageView {
 
     private static final Logger logger = Logger.getLogger(TileImageView.class.getName());
     private static final TileRetriever TILE_RETRIEVER = TileRetrieverProvider.getInstance().load();
 
+    /**
+     * creates a tile image view
+     * @param zoom
+     * @param i
+     * @param j
+     */
     public TileImageView(int zoom, long i, long j) {
         setFitHeight(256);
         setFitWidth(256);

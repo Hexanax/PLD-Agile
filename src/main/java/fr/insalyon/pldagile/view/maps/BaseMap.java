@@ -135,6 +135,10 @@ public class BaseMap extends Group {
         prefCenterLon.set(lon);
     }
 
+    /**
+     * Moves the map's center to the specified 2D point
+     * @param center the 2D central Point
+     */
     public void setCenter(Point2D center) {
         prefCenterLat.set(center.getX());
         prefCenterLon.set(center.getY());
@@ -494,12 +498,22 @@ public class BaseMap extends Group {
         super.layoutChildren();
     }
 
+    /**
+     * Calculates the central coordinates
+     */
     private void calculateCenterCoords() {
         double x = ((MapView) this.getParent()).getWidth() / 2 - this.getTranslateX();
         double y = ((MapView) this.getParent()).getHeight() / 2 - this.getTranslateY();
         calculateCoords(x, y, centerLat, centerLon);
     }
 
+    /**
+     * Sets the longitude and latitude of the baseMap
+     * @param x
+     * @param y
+     * @param lat
+     * @param lon
+     */
     private void calculateCoords(double x, double y, SimpleDoubleProperty lat, SimpleDoubleProperty lon) {
         double z = zoom.get();
         double latrad = Math.PI - (2.0 * Math.PI * y) / (Math.pow(2, z) * 256.);
@@ -531,6 +545,11 @@ public class BaseMap extends Group {
         return this.getParent().getLayoutBounds().getHeight();
     }
 
+    /**
+     * tells if the user can zoom out based on the maximum zoom level
+     * @param maxZoomOut limit zoom level
+     * @return
+     */
     public boolean canZoomOut(double maxZoomOut) {
         return zoom.get() > maxZoomOut;
     }
