@@ -52,9 +52,6 @@ public class SimulatedAnnealing {
     //used for the revert function
     private ArrayList<Pair<Long, String>> oldStepsIdentifiers;
     private ArrayList<Long> oldIntersectionIds;
-
-
-    //
     public boolean mustStop = false;
 
 

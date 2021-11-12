@@ -83,9 +83,6 @@ public class TourView implements PropertyChangeListener, View, Hideable {
             tourLineLayer.addLineLayoutEffect(new LineLayoutEffect() {
                 @Override
                 public void layout(MapDestination destination, Line line, Point2D originPoint, Point2D destinationPoint) {
-
-//                    //System.out.println("Line length = " + lineLength);
-//                    //System.out.println("Direction image width = " + directionArrowImage.getImage().getWidth());
                     if (mapDestination == destination) {
                         ImageView directionArrowImage = IconProvider.getDirectionIcon(20);
                         double lineLength = originPoint.distance(destinationPoint);

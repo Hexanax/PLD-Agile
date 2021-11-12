@@ -35,13 +35,15 @@ import javafx.scene.Node;
 import javafx.scene.effect.Effect;
 import javafx.util.Pair;
 
+import java.util.HashMap;
+
 /**
  * A {@link MapLayer} that allows to visualise points of interest.
  * The point of interest will be displayed with the provided Node that can be typed (generic usage)
  */
 public class PointLayer<T extends Node> extends MapLayer implements Hideable {
 
-    private final ObservableList<Pair<MapPoint, T>> points = FXCollections.observableArrayList();
+    private final HashMap<Long, Pair<MapPoint, T>> points = new HashMap<>();
     private boolean shown = true;
 
     public PointLayer() {
@@ -63,7 +65,7 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
      */
     public void addPoint(MapPoint mapPoint, T icon, Effect effect) {
         icon.setEffect(effect);
-        points.add(new Pair<>(mapPoint, icon));
+        points.put(mapPoint.getId(), new Pair<>(mapPoint, icon));
         if (shown) {
             this.getChildren().add(icon);
             this.markDirty();
@@ -76,13 +78,7 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
      * @param midPoint
      */
     public void removePoint(MapPoint midPoint) {
-        points.stream()
-                .filter(pair -> pair.getKey().equals(midPoint))
-                .findFirst()
-                .ifPresent(pair -> {
-                    this.getChildren().remove(pair.getValue());
-                    points.remove(pair);
-                });
+        points.remove(midPoint.getId());
     }
 
     /**
@@ -91,7 +87,7 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
      * @param mapPoint
      */
     public boolean containsPoint(MapPoint mapPoint) {
-        return points.stream().anyMatch(pair -> pair.getKey().equals(mapPoint));
+        return points.containsKey(mapPoint.getId());
     }
 
     /**
@@ -106,7 +102,7 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
     /**
      * @return the points of the layer
      */
-    public ObservableList<Pair<MapPoint, T>> getPoints() {
+    public HashMap<Long, Pair<MapPoint,T>> getPoints() {
         return points;
     }
 
