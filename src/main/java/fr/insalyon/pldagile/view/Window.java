@@ -17,6 +17,9 @@ import javafx.stage.Stage;
 
 import java.util.*;
 
+/**
+ * This class implements the loading, showing and hiding of the different elements on the window
+ */
 public class Window {
 
     private static Stage mainStage = null;

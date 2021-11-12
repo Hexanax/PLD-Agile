@@ -33,9 +33,9 @@ import javafx.scene.Parent;
 /**
  * A MapLayer can be added on top a BaseMap (which provides the map tiles).
  * MapLayers contain specific functionality that is rendered by overriding the
- * {@link #layoutLayer()} method.
+ * layout layer method.
  * <p>
- * There are 2 reasons why the {@link #layoutLayer() } will be called:
+ * There are 2 reasons why the layout layer will be called:
  * <ul>
  * <li>The MapLayer {@link #layoutLayer() } method will be called by the MapView
  * in case the coordinates (center/zoom) are changed.

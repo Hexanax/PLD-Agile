@@ -15,6 +15,9 @@ import javafx.scene.shape.Line;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * This class implements the tour view, its points, directions and linking segments
+ */
 public class TourView implements PropertyChangeListener, View, Hideable {
 
     private final PointLayer<ImageView> tourDirectionLayer = new PointLayer<>();
