@@ -18,7 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class HTMLSerializerTest {
     private List<Segment> segments;
+    private Request[] requests;
     private List<Intersection> intersections;
+    private CityMap cityMap;
     private Depot depot;
     private PlanningRequest planningRequest;
 
@@ -27,24 +29,24 @@ public class HTMLSerializerTest {
     @BeforeEach
     public void firstSetup() throws ParseException, ExceptionXML {
 
-        CityMap cityMap = FakeCityMapProvider.getSmallMap();
+        cityMap = FakeCityMapProvider.getSmallMap();
         intersections = FakeIntersectionProvider.getFakeIntersections();
         // Request creation
-        Request[] requests = {
-                new Request(
-                        new Pickup(cityMap.getIntersection(2L) , 420),
-                        new Delivery(cityMap.getIntersection(5L), 600)
-                ),
-                new Request(
-                        new Pickup(cityMap.getIntersection(4L) , 420),
-                        new Delivery(cityMap.getIntersection(7L), 480)
-                ),
-                new Request(
-                        new Pickup(cityMap.getIntersection(2L) , 420),
-                        new Delivery(cityMap.getIntersection(7L), 600)
-                ),
+         this.requests = new Request[]{
+                 new Request(
+                         new Pickup(cityMap.getIntersection(2L), 420),
+                         new Delivery(cityMap.getIntersection(5L), 600)
+                 ),
+                 new Request(
+                         new Pickup(cityMap.getIntersection(4L), 420),
+                         new Delivery(cityMap.getIntersection(7L), 480)
+                 ),
+                 new Request(
+                         new Pickup(cityMap.getIntersection(2L), 420),
+                         new Delivery(cityMap.getIntersection(7L), 600)
+                 ),
 
-        };
+         };
 
 
         this.segments = List.of(
@@ -207,21 +209,21 @@ public class HTMLSerializerTest {
         Address address1 = new Address(intersections.get(0));
         Map<String, Object> buffer = new HashMap<>();
         buffer.put("type", "Address");
-        buffer.put("request", 0);
+        buffer.put("request", 0L);
         buffer.put("subtype", "depot");
         buffer.put("object",address1 );
 
         Address address2 = new Address(intersections.get(1));
         Map<String, Object> buffer1 = new HashMap<>();
         buffer1.put("type", "Address");
-        buffer1.put("request", 1);
+        buffer1.put("request", 2L);
         buffer1.put("subtype", "pickup");
         buffer1.put("object",address2 );
 
         Address address3 = new Address(intersections.get(2));
         Map<String, Object> buffer2 = new HashMap<>();
         buffer2.put("type", "Address");
-        buffer2.put("request", 1);
+        buffer2.put("request", 2L);
         buffer2.put("subtype", "delivery");
         buffer2.put("object",address3 );
 
@@ -236,38 +238,85 @@ public class HTMLSerializerTest {
                         buffer1,
                         address2,
                         "pickup",
-                        0
+                        1
                 ),
                 new TestCase(
                         buffer2,
                         address3,
                         "delivery",
-                        0
+                        1
                 ),
         };
         for (TestCase tc: testCases ) {
-            assertEquals(tc.expectedResult,
-                    HTMLSerializer.createSpecificIntersection(tc.address, tc.subtype, tc.requestID));
+
+            Map<String, Object> result = HTMLSerializer.createSpecificIntersection(tc.address, tc.subtype, tc.requestID);
+
+            assertEquals(tc.expectedResult.get("subtype"),result.get("subtype"));
+            assertEquals(tc.expectedResult.get("request"),result.get("request"));
+            assertEquals(tc.expectedResult.get("object"),result.get("object"));
+
         }
     }
 
     @Test
     @DisplayName("Test getNextSpecificIntersection works")
-    public void test_getNextSpecificIntersection(){
+    public void test_getNextSpecificIntersection() throws InterruptedException {
         class TestCase {
             final Address expectedResult;
             final Map<Long, Request> requests;
-            final ArrayList<Pair<Long, String>> step;
+            final Pair<Long, String> step;
 
-            public TestCase(Address expectedResult, Tour tour ) throws InterruptedException {
+            public TestCase(Address expectedResult, Map<Long, Request> requests, Pair<Long, String> step ) throws InterruptedException {
                 this.expectedResult = expectedResult;
-                this.requests = tour.getRequests();
-                this.step = tour.getSteps();
+                this.requests =requests;
+                this.step = step;
             }
+        }
+
+        Address address1 = new Pickup(cityMap.getIntersection(2L), 420);
+        Address address2 = new Delivery(cityMap.getIntersection(5L), 600);
+
+        Pair<Long, String> step1 =  new Pair(1L, "pickup");
+        Pair<Long, String> step2 = new Pair(1L,"delivery");
+
+        Request request0 = requests[0];
+        request0.setId(1L);
+
+        Map<Long, Request> mapRequests = new HashMap<>();
+        mapRequests.put(1L, request0);
+
+        TestCase[] testCases = {
+                new TestCase(
+                        address1,
+                        mapRequests,
+                        step1
+                ),
+                new TestCase(
+                        address2,
+                        mapRequests,
+                        step2
+                )
+        };
+        for (TestCase tc: testCases ) {
+
+            Address result = HTMLSerializer.getNextSpecificIntersection(tc.requests, tc.step);
+
+            assertEquals(tc.expectedResult,result);
 
         }
 
     }
+
+
+    @Test
+    @DisplayName("Test getTime works")
+    public void test_getAngleFromNorth(){
+        double angle0;
+        angle0 =  -2.690889897942206;
+
+        assertEquals(angle0,HTMLSerializer.getAngleFromNorth(segments.get(0)));
+    }
+
 
     @Test
     @DisplayName("Test getTime works")
