@@ -4,7 +4,10 @@ import fr.insalyon.pldagile.controller.Controller;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 
-public class ButtonListener {
+/**
+ * Static button listener, listening to the actions related to the button clicks, depending on the target
+ */
+public class MenuButtonListener {
 
     private static Controller controller;
 
@@ -12,6 +15,11 @@ public class ButtonListener {
         controller = newController;
     }
 
+    /**
+     * Performed action handler and dispatcher to the controller
+     *
+     * @see ActionEvent
+     */
     public static void actionPerformed(ActionEvent event) {
         switch (((Button) event.getTarget()).getText()) {
             case ImportView.LOAD_MAP:
@@ -29,16 +37,16 @@ public class ButtonListener {
             case ImportView.GENERATE_ROADMAP:
                 controller.generateRoadMap();
                 break;
-            case RequestView.DELETE_REQUEST:
+            case RequestManagerView.DELETE_REQUEST:
                 controller.deleteRequest(null);
                 break;
-            case RequestView.ADD_REQUEST:
+            case RequestManagerView.ADD_REQUEST:
                 controller.addRequest();
                 break;
-            case RequestView.REDO:
+            case RequestManagerView.REDO:
                 controller.redo();
                 break;
-            case RequestView.UNDO:
+            case RequestManagerView.UNDO:
                 controller.undo();
                 break;
         }

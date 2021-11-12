@@ -18,20 +18,20 @@ public class TextItem extends Region {
     public TextItem(String value, String webColor) {
         this.value = value;
 
-        GridPane maingp = new GridPane();
-        maingp.setAlignment(Pos.BASELINE_LEFT);
-        maingp.setPadding(new Insets(0, 0, 0, 0));
-        maingp.setHgap(5);
-        maingp.setVgap(0);
+        GridPane mainGridPane = new GridPane();
+        mainGridPane.setAlignment(Pos.BASELINE_LEFT);
+        mainGridPane.setPadding(new Insets(0, 0, 0, 0));
+        mainGridPane.setHgap(5);
+        mainGridPane.setVgap(0);
 
         titleLabel = new Label("> " + value + "\r\n");
         titleLabel.setFont(Fonts.getBoldBodyFont());
         titleLabel.setTextFill(Color.web(webColor));
-        maingp.add(titleLabel, 0, 0, 4, 1);
+        mainGridPane.add(titleLabel, 0, 0, 4, 1);
         GridPane.setHalignment(titleLabel, HPos.LEFT);
         GridPane.setMargin(titleLabel, new Insets(0, 0, 0, 0));
 
-        this.getChildren().add(maingp);
+        this.getChildren().add(mainGridPane);
     }
 
     public void setFont(Font font) {

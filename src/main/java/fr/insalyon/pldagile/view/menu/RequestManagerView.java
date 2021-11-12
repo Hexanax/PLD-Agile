@@ -1,18 +1,17 @@
 package fr.insalyon.pldagile.view.menu;
 
+import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.view.IconProvider;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import fr.insalyon.pldagile.view.View;
 import javafx.geometry.HPos;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
-public class RequestView extends Region {
+public class RequestManagerView extends Region implements View {
+
     protected static final String DELETE_REQUEST = "Delete Request";
     protected static final String ADD_REQUEST = "Add Request";
     protected static final String REDO = "Redo";
@@ -21,12 +20,25 @@ public class RequestView extends Region {
     protected static final String DELETE_REQUEST_ICON = "delete";
     protected static final String UNDO_ICON = "undo";
     protected static final String REDO_ICON = "redo";
-    private ObservableList<AddressItem> addressItems = FXCollections.observableArrayList();
 
-    private final ListView<AddressItem> requestList;
+    private GridPane gridPane;
 
-    public RequestView(){
-        GridPane gridPane = new GridPane();
+    public RequestManagerView(Controller controller) {
+        render();
+    }
+
+    private void createButton(Button button, GridPane gridPane, int columnIndex, int rowIndex, int colspan, int rowspan) {
+        gridPane.add(button, columnIndex, rowIndex, colspan, rowspan);
+        button.setOnAction(MenuButtonListener::actionPerformed);
+    }
+
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+    @Override
+    public void render() {
+        gridPane = new GridPane();
         gridPane.getStyleClass().add("side-panel-section");
         gridPane.setPrefWidth(Double.POSITIVE_INFINITY);
         gridPane.setAlignment(Pos.CENTER);
@@ -57,48 +69,7 @@ public class RequestView extends Region {
         createButton(redo, gridPane, 1, 2, 1, 1);
         redo.setGraphic(IconProvider.getIcon(REDO_ICON, 17));
 
-        // List of steps
-        requestList = new ListView<>();
-        requestList.getStyleClass().add("requests-list");
-        requestList.setPrefWidth(Double.POSITIVE_INFINITY);
-        requestList.setOrientation(Orientation.VERTICAL);
-
-        gridPane.add(requestList, 0, 3, 2, 1);
-
-        requestList.setOnMouseClicked(MouseListener::mouseClicked);
         this.getChildren().add(gridPane);
     }
 
-    private void createButton(Button button, GridPane gridPane, int columnIndex, int rowIndex, int colspan,
-            int rowspan) {
-        gridPane.add(button, columnIndex, rowIndex, colspan, rowspan);
-        button.setOnAction(ButtonListener::actionPerformed);
-    }
-
-    public void setView(ObservableList<AddressItem> list) {
-        addressItems.clear();
-        addressItems.addAll(list);
-        for (AddressItem addressItem : list) {
-            addressItem.enforceHeight();
-        }
-        double listHeight = 0;
-        for (AddressItem addressItem : list) {
-            listHeight += addressItem.getAddressItemHeight();
-        }
-        requestList.setPrefHeight(listHeight * 1.1);
-        requestList.setItems(addressItems);
-    }
-
-    public ListView<AddressItem> getRequestList() {
-        return requestList;
-    }
-
-    public void setFirstFocus(AddressItem item, int index) {
-        requestList.scrollTo(item);
-        requestList.getSelectionModel().select(index + 2);
-    }
-
-    public void setHover(AddressItem item) {
-        requestList.getSelectionModel().select(item);
-    }
 }
