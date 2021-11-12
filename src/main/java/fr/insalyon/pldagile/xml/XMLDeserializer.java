@@ -198,7 +198,7 @@ public class XMLDeserializer {
         int pickupDuration = Integer.parseInt(request.getAttribute("pickupDuration"));
         int deliveryDuration = Integer.parseInt(request.getAttribute("deliveryDuration"));
         if (pickupDuration < 0) {
-            throw new ExceptionXML(ExceptionXML.DELIVERY_CITY_MAP_MISMATCH);
+            throw new ExceptionXML(ExceptionXML.NEGATIVE_PICKUP_DURATION);
         }
         if (deliveryDuration < 0) {
             throw new ExceptionXML(ExceptionXML.NEGATIVE_DELIVERY_DURATION);
