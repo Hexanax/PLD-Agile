@@ -73,6 +73,7 @@ public class HTMLSerializer {
             double currentAngle = getAngleFromNorth(currentSegment);
             Way currentWay = new Way(currentSegment);
 
+
             while(segmentIterator.hasNext() && intersectionIterator.hasNext()){
 
                 Segment nextSegment = segmentIterator.next();
@@ -81,23 +82,26 @@ public class HTMLSerializer {
 
                 //Orientation between the two segments
                 double followingAngle = getAngleFromNorth(nextSegment);
-
+                boolean step = false;
+                //Add the next specific intersection if needed
+                if(nextSpecificIntersection!= null && currentIntersection.getId() == nextSpecificIntersection.getIntersection().getId()){
+                    step=true;
+                }
                 boolean hasChangedWay= false;
-                if(nextSegment.getName().equals(currentSegment.getName())){
+                if(nextSegment.getName().equals(currentSegment.getName()) && !step){
                     currentWay.addSegment(currentSegment);
                 }else{
                     rows.add(createWay(currentWay));
+                    if(step){
+                        rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
+                        stepsIdentifiers.remove(0);
+                        nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
+                    }
+
                     currentWay = new Way(nextSegment);
                     hasChangedWay = true;
                 }
-                boolean step = false;
-                //Add the next specific intersection if needed
-                while(nextSpecificIntersection!= null && currentIntersection.getId() == nextSpecificIntersection.getIntersection().getId()){
-                    rows.add(createSpecificIntersection(nextSpecificIntersection,stepsIdentifiers.get(0).getValue(), stepsIdentifiers.get(0).getKey()));
-                    step=true;
-                    stepsIdentifiers.remove(0);
-                    nextSpecificIntersection = getNextSpecificIntersection(requests, stepsIdentifiers.get(0));
-                }
+
                 //Check the orientation of the next segment
                 if(hasChangedWay){
                     int orientation = compareOrientation(currentAngle, followingAngle);
