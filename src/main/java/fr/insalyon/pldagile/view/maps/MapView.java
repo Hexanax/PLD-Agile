@@ -94,7 +94,10 @@ public class MapView extends Region implements PropertyChangeListener {
         });
     }
 
-
+    /**
+     * sets the Mouse input listeners on the {@link MapView}, slows the zoom in and zoom out,
+     * and blocks the zoom out within a rectangle initially centered on the map
+     */
     private void registerInputListeners() {
         setOnMousePressed(t -> {
             if (zooming) return;
@@ -150,10 +153,18 @@ public class MapView extends Region implements PropertyChangeListener {
         });
     }
 
+    /**
+     * Sets the limit of zoom out
+     * @param maxZoomOut input value
+     */
     public void setMaxZoomOut(double maxZoomOut) {
         this.maxZoomOut = maxZoomOut;
     }
 
+    /**
+     * Sets the maximum zoom factor (speed of zoom)
+     * @param maxZoomFactor input value
+     */
     public void setMaxZoomFactor(double maxZoomFactor) {
         this.maxZoomFactor = maxZoomFactor;
     }

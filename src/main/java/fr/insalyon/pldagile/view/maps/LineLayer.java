@@ -60,6 +60,9 @@ public class LineLayer extends MapLayer implements Hideable {
         this.markDirty();
     }
 
+    /**
+     * layers the tour's itinerary line linking all related intersections
+     */
     @Override
     protected void layoutLayer() {
         for (Pair<MapDestination, Line> candidate : lines) {
