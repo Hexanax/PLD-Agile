@@ -58,7 +58,6 @@ public class TourView implements PropertyChangeListener, View, Hideable {
     public void render() {
         clear();
         Tour tour = this.tour;
-
         //if the tour is a null object, we just clear
         if (tour.getDepot() == null) {
             return;
@@ -141,7 +140,6 @@ public class TourView implements PropertyChangeListener, View, Hideable {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        ////System.out.println("TourViewEvent event " + evt);
         this.tour = (Tour) evt.getNewValue();
         render();
     }

@@ -105,7 +105,6 @@ public class Way {
 
         }
 
-        else System.out.println("segment is null");
     }
 
     @Override

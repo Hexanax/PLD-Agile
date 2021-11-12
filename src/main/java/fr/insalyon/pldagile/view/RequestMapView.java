@@ -113,7 +113,6 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                     neighbor.getValue().setScaleX(1.2);
                     neighbor.getValue().setScaleY(1.2);
                 }
-                System.out.println("Set selected id = " + point.getKey().getRequestId());
                 this.requestListView.setSelected(point.getKey().getRequestId(), point.getKey().getType());
             });
 

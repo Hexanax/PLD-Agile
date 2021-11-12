@@ -57,7 +57,7 @@ public class Window {
         this.leftPanel = new LeftPanel();
 
         requestMapView.setRequestListView(sidePanel.getRequestListView());
-        sidePanel.getRequestListView().setRequestMapView(requestMapView); 
+        sidePanel.getRequestListView().setRequestMapView(requestMapView);
 
         // Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());
@@ -130,7 +130,6 @@ public class Window {
 
     /**
      * loads the {@link SidePanelView}
-     * by settting the {@link AnchorPane} side panels
      */
     private void loadSidePanel() {
         sidePanel.render();
