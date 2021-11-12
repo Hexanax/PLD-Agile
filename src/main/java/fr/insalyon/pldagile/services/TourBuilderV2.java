@@ -244,6 +244,7 @@ public class TourBuilderV2 {
         simulatedAnnealing.addBestPath(pickup.getIntersection().getId());
         simulatedAnnealing.addBestPath(delivery.getIntersection().getId());
         Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
+        simulatedAnnealing.runSimulatedAnnealing(false,false);
 
         int indexStep = 0;
         int indexIntersection = 0;

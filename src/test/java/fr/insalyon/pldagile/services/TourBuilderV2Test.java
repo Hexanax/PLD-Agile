@@ -61,6 +61,7 @@ class TourBuilderV2Test {
         planningRequest = new PlanningRequest(List.of(requests), depot);
         cityMapGraph = new CityMapGraph(cityMap);
         simulatedAnnealing = new SimulatedAnnealing(planningRequest,cityMapGraph);
+        simulatedAnnealing.runSimulatedAnnealing(false,false);
 
     }
 
@@ -115,16 +116,18 @@ class TourBuilderV2Test {
         planningRequest = new PlanningRequest(List.of(requests), depot);
         cityMapGraph = new CityMapGraph(cityMap);
         simulatedAnnealing = new SimulatedAnnealing(planningRequest,cityMapGraph);
+        simulatedAnnealing.runSimulatedAnnealing(false,false);
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
         Tour actualTour = tourBuilderV2.buildTour(planningRequest,cityMap,false,null);
 
-        Request newRequest = new Request(
+        Request request = new Request(
                 new Pickup(cityMap.getIntersection(3L), 420),
                 new Delivery(cityMap.getIntersection(4L), 600)
         );
+        request.setId(2L);
 //        planningRequest.add(newRequest,true);
 
-        Request request = planningRequest.getLastRequest();
+//        Request request = planningRequest.getLastRequest();
         int index =0;
         for(Pair<Long,String> step : actualTour.getSteps()){
             if(Objects.equals(step.getKey(), 1L)){
@@ -138,7 +141,7 @@ class TourBuilderV2Test {
         }
 
 
-        actualTour.addRequest(planningRequest.getLastRequest());
+        actualTour.addRequest(request);
         actualTour.addStep(indexBeforePickup, new Pair<>(request.getId(),"pickup"));
         actualTour.addStep(indexBeforeDelivery, new Pair<>(request.getId(),"delivery"));
 
