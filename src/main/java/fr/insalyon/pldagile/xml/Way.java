@@ -63,7 +63,9 @@ public class Way {
      */
     public Way() {
         segments = new ArrayList<>();
-        name = "road";
+
+        name = "";
+
         totalLength = 0;
     }
 

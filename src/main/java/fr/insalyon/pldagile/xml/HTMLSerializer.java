@@ -29,7 +29,9 @@ public class HTMLSerializer {
 
         // List of Pairs such that Pair<Long : idStep, String :typeStep>
         // <-1, "depot"> ; <0, "pickup"> ; <1,"delivery">
+
         List<Pair<Long, String>> stepsIdentifiers = new ArrayList<>(tour.getSteps());
+
         //stepIdentifiers  [-1=begin, 0=pickup, 0=delivery, 1=pickup, 1=delivery, 5=end]
 
         // Remove the begin step from the identifiers
@@ -101,6 +103,7 @@ public class HTMLSerializer {
                     int orientation = compareOrientation(currentAngle, followingAngle);
                     //Add the intersection with the direction to follow
 
+
                     String nextSegmentName = nextSegment.getName();
                     if(nextSegmentName.equals("")) nextSegmentName = "road";
                     rows.add(createIntersection(currentIntersection, step, depot.getIntersection().getId(),nextSegmentName, orientation));
@@ -164,6 +167,7 @@ public class HTMLSerializer {
      * Allows to put a way on a road map used by pebble to compile the information in the template. Gather all the segments
      * that compose a single way.
      * @param way the way whose information we want to collect
+
      * @return the way information usable by pebble
      */
     public static Map<String, Object> createWay(Way way){
@@ -214,12 +218,12 @@ public class HTMLSerializer {
     }
 
     /**
-     * Allows to compute the azimut of a segment
+     * Allows to compute the azimuth of a segment
      * We use the geographical north
      * Inspired from <a> https://www.dcode.fr/azimut </a> method
-     * The azimut is the angle between the direction on the earth and the north by using 2 GPS points
-     * @param segment the segment that we want to know the azimut
-     * @return the azimut of the segment
+     * The azimuth is the angle between the direction on the earth and the north by using 2 GPS points
+     * @param segment the segment that we want to know the azimuth
+     * @return the azimuth of the segment
      */
     public static double getAngleFromNorth(Segment segment){
         Coordinates origin = segment.getOrigin().getCoordinates();
@@ -245,12 +249,12 @@ public class HTMLSerializer {
      * @return an int corresponding to the next orientation to follow
      */
     public static int compareOrientation(double angle1, double angle2) {
-        int res = 0;
+
         double diff = (angle1 - angle2);
         //diff goes from -180° to 180°
         //We use the horary direction
-        if(diff < 35 && diff > -35) return 0;
-        if(diff > 145 || diff < -145) return 3;
+        if(diff > -20 && diff < 20) return 0;
+        if(diff > 155 || diff < -155) return 3;
         if(diff>0) return 1;
         return 2;
 
