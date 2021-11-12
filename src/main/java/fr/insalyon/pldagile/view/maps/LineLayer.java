@@ -8,6 +8,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.Effect;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.util.Pair;
@@ -24,25 +25,41 @@ public class LineLayer extends MapLayer implements Hideable {
     private final ArrayList<LineLayoutEffect> layoutEffects = new ArrayList<>();
     private boolean shown = true;
 
-    public LineLayer() { }
+    public LineLayer() {
+    }
 
+    /**
+     * Add a {@link LineLayoutEffect} to be called when rendering the lines
+     *
+     * @see LineLayoutEffect
+     */
     public void addLineLayoutEffect(LineLayoutEffect lineLayoutEffect) {
         layoutEffects.add(lineLayoutEffect);
     }
 
+    /**
+     * Add a line to the layer and schedule a re-rendering
+     *
+     * @param mapDestination the {@link MapDestination} from which the line starts and ends
+     * @param effect         additional {@link Effect}
+     * @param strokeWidth    of the line
+     */
     public void addLine(MapDestination mapDestination, Color color, Effect effect, double strokeWidth) {
         Line line = new Line();
         line.setStroke(color);
         line.setStrokeWidth(strokeWidth);
         line.setEffect(effect);
         lines.add(new Pair<>(mapDestination, line));
-        if(shown) {
+        if (shown) {
             this.getChildren().add(line);
             this.markDirty();
         }
     }
 
-    public void clearPoints() {
+    /**
+     * Clear all the lines and schedule a re-rendering
+     */
+    public void clearLines() {
         lines.clear();
         this.getChildren().clear();
         this.markDirty();
@@ -70,6 +87,10 @@ public class LineLayer extends MapLayer implements Hideable {
         }
     }
 
+    /**
+     * Visually hide the lines until the show function is called
+     * @see Hideable
+     */
     @Override
     public void hide() {
         this.getChildren().clear();
@@ -77,9 +98,13 @@ public class LineLayer extends MapLayer implements Hideable {
         shown = false;
     }
 
+    /**
+     * Visually show the lines until the hide function is called
+     * @see Hideable
+     */
     @Override
     public void show() {
-        if(!shown) {
+        if (!shown) {
             lines.forEach(line -> this.getChildren().add(line.getValue()));
             this.markDirty();
             shown = true;

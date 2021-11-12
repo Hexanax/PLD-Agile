@@ -49,13 +49,12 @@ import static java.lang.Math.ceil;
 import static java.lang.Math.floor;
 
 /**
- *
- * The BaseMap provides the underlying maptiles.
+ * The BaseMap provides the underlying map tiles.
  * On top of this, additional layers can be rendered.
  */
 public class BaseMap extends Group {
 
-    private static final Logger logger = Logger.getLogger( BaseMap.class.getName() );
+    private static final Logger logger = Logger.getLogger(BaseMap.class.getName());
 
     /**
      * When the zoom-factor is less than TIPPING below an integer, we will use
@@ -77,18 +76,18 @@ public class BaseMap extends Group {
     private final ReadOnlyDoubleWrapper centerLon = new ReadOnlyDoubleWrapper();
     private final ReadOnlyDoubleWrapper centerLat = new ReadOnlyDoubleWrapper();
     private final ReadOnlyDoubleWrapper zoom = new ReadOnlyDoubleWrapper();
-    
+
     private final DoubleProperty prefCenterLon = new SimpleDoubleProperty();
     private final DoubleProperty prefCenterLat = new SimpleDoubleProperty();
     private final DoubleProperty prefZoom = new SimpleDoubleProperty();
-    
+
     private double zoomValue;
 
     public double x0, y0;
     private boolean dirty = true;
 
     private final ChangeListener<Number> resizeListener = (o, oldValue, newValue) -> markDirty();
-    private ChangeListener<Scene> sceneListener;   
+    private ChangeListener<Scene> sceneListener;
 
     public BaseMap() {
         for (int i = 0; i < tiles.length; i++) {
@@ -96,7 +95,7 @@ public class BaseMap extends Group {
         }
         area = new Rectangle(-10, -10, 810, 610);
         area.setVisible(false);
-       
+
         prefCenterLat.addListener(o -> doSetCenter(prefCenterLat.get(), prefCenterLon.get()));
         prefCenterLon.addListener(o -> doSetCenter(prefCenterLat.get(), prefCenterLon.get()));
         prefZoom.addListener(o -> doZoom(prefZoom.get()));
@@ -108,25 +107,26 @@ public class BaseMap extends Group {
 
         if (sceneListener == null) {
             sceneListener = (o, oldScene, newScene) -> {
-                    if (newScene != null) {
-                        //TODO Do we need to unbind from previous scene?
-                        getParent().layoutBoundsProperty().addListener(e -> {
-                            area.setWidth(getParent().getLayoutBounds().getWidth());
-                            area.setHeight(getParent().getLayoutBounds().getHeight());
-                        });
-                        markDirty();
-                    }
-                    if (abortedTileLoad) {
-                        abortedTileLoad = false;
-                        doSetCenter(lat, lon);
-                    }
+                if (newScene != null) {
+                    //TODO Do we need to unbind from previous scene?
+                    getParent().layoutBoundsProperty().addListener(e -> {
+                        area.setWidth(getParent().getLayoutBounds().getWidth());
+                        area.setHeight(getParent().getLayoutBounds().getHeight());
+                    });
+                    markDirty();
+                }
+                if (abortedTileLoad) {
+                    abortedTileLoad = false;
+                    doSetCenter(lat, lon);
+                }
             };
         }
         this.sceneProperty().addListener(sceneListener);
     }
-    
+
     /**
      * Move the center of this map to the specified coordinates
+     *
      * @param lat the latitude of the new center
      * @param lon the longitude of the new center
      */
@@ -202,6 +202,7 @@ public class BaseMap extends Group {
 
     /**
      * set the zoom level of the map to the specified value
+     *
      * @param z the new zoom level
      */
     public void setZoom(double z) {
@@ -211,6 +212,7 @@ public class BaseMap extends Group {
 
     /**
      * Returns the preferred zoom level of this map.
+     *
      * @return the zoom level
      */
     public double getZoom() {
@@ -225,14 +227,14 @@ public class BaseMap extends Group {
 
     /**
      * Only called internally when a zoom around a specific point is requested.
+     *
      * @param delta
      * @param pivotX
-     * @param pivotY 
+     * @param pivotY
      */
     public void zoom(double delta, double pivotX, double pivotY) {
         double dz = delta;// > 0 ? .1 : -.1;
         double zp = zoom.get();
-        logger.fine("Zoom called, zp = " + zp + ", delta = " + delta + ", px = " + pivotX + ", py = " + pivotY);
         double txold = getTranslateX();
         double t1x = pivotX - getTranslateX();
         double t2x = 1. - Math.pow(2, dz);
@@ -265,14 +267,13 @@ public class BaseMap extends Group {
     }
 
 
-
     public MapPoint getMapPosition(double sceneX, double sceneY) {
         final SimpleDoubleProperty _lat = new SimpleDoubleProperty();
         final SimpleDoubleProperty _lon = new SimpleDoubleProperty();
-        calculateCoords(sceneX - getTranslateX(), sceneY - getTranslateY(), _lat, _lon);  
+        calculateCoords(sceneX - getTranslateX(), sceneY - getTranslateY(), _lat, _lon);
         return new MapPoint(_lat.get(), _lon.get());
     }
-    
+
     public Point2D getMapPoint(double lat, double lon) {
         return getMapPoint(zoom.get(), lat, lon);
     }
@@ -302,19 +303,19 @@ public class BaseMap extends Group {
     public ReadOnlyDoubleProperty centerLat() {
         return centerLat.getReadOnlyProperty();
     }
-    
+
     public ReadOnlyDoubleProperty zoom() {
         return zoom.getReadOnlyProperty();
     }
-    
+
     public DoubleProperty prefCenterLon() {
         return prefCenterLon;
     }
-    
+
     public DoubleProperty prefCenterLat() {
         return prefCenterLat;
     }
-    
+
     private final void loadTiles() {
         logger.fine("[JVDBG] loadTiles");
         if (getScene() == null) {
@@ -393,8 +394,8 @@ public class BaseMap extends Group {
      * Return a specific tile
      *
      * @param zoom the zoomlevel
-     * @param i the x-index
-     * @param j the y-index
+     * @param i    the x-index
+     * @param j    the y-index
      * @return the tile, only if it is still in the cache
      */
     private MapTile findTile(int zoom, long i, long j) {
@@ -486,27 +487,27 @@ public class BaseMap extends Group {
         }
         super.layoutChildren();
     }
-    
+
     private void calculateCenterCoords() {
-        double x = ((MapView)this.getParent()).getWidth()/2-this.getTranslateX();
-        double y = ((MapView)this.getParent()).getHeight()/2 - this.getTranslateY();
+        double x = ((MapView) this.getParent()).getWidth() / 2 - this.getTranslateX();
+        double y = ((MapView) this.getParent()).getHeight() / 2 - this.getTranslateY();
         calculateCoords(x, y, centerLat, centerLon);
     }
-    
-    private void calculateCoords(double x, double y, SimpleDoubleProperty lat, SimpleDoubleProperty lon) {        
+
+    private void calculateCoords(double x, double y, SimpleDoubleProperty lat, SimpleDoubleProperty lon) {
         double z = zoom.get();
-        double latrad = Math.PI - (2.0 * Math.PI * y) / (Math.pow(2, z)*256.);
+        double latrad = Math.PI - (2.0 * Math.PI * y) / (Math.pow(2, z) * 256.);
         double mlat = Math.toDegrees(Math.atan(Math.sinh(latrad)));
-        double mlon = x / (256*Math.pow(2, z)) * 360 - 180;
+        double mlon = x / (256 * Math.pow(2, z)) * 360 - 180;
         lon.set(mlon);
         lat.set(mlat);
     }
-    
+
     /**
-     * When something changes that would lead to a change in UI representation 
+     * When something changes that would lead to a change in UI representation
      * (e.g. map is dragged or zoomed), this method should be called.
-     * This method will NOT update the map immediately, but it will set a 
-     * flag and request a next pulse. 
+     * This method will NOT update the map immediately, but it will set a
+     * flag and request a next pulse.
      * This is much more performant than redrawing the map on each input event.
      */
     private void markDirty() {
@@ -524,7 +525,7 @@ public class BaseMap extends Group {
         return this.getParent().getLayoutBounds().getHeight();
     }
 
-    public boolean canZoomOut (double maxZoomOut) {
+    public boolean canZoomOut(double maxZoomOut) {
         return zoom.get() > maxZoomOut;
     }
 

@@ -3,13 +3,15 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.controller.Controller;
 import javafx.scene.input.KeyEvent;
 
-
+/**
+ * Static keyboard listener meant to handle
+ */
 public class KeyboardListener {
 
     private static Controller controller;
 
-    public KeyboardListener(Controller controller) {
-        KeyboardListener.controller = controller;
+    public static void setController(Controller newController) {
+        controller = newController;
     }
 
     public static void keyPressed(KeyEvent event) {

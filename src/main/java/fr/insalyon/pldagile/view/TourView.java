@@ -29,8 +29,11 @@ public class TourView implements PropertyChangeListener, View, Hideable {
         controller.getPclTour().addPropertyChangeListener(this);
     }
 
+    /**
+     * Clear the points and lines of the map
+     */
     public void clear() {
-        tourLineLayer.clearPoints();
+        tourLineLayer.clearLines();
         tourPointLayer.clearPoints();
         tourDirectionLayer.clearPoints();
     }
@@ -47,6 +50,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
         return tourDirectionLayer;
     }
 
+    /**
+     * Rendering the points and segments between them
+     */
     @Override
     public void render() {
         clear();
@@ -72,30 +78,40 @@ public class TourView implements PropertyChangeListener, View, Hideable {
 
             MapPoint midPoint = new MapPoint(originPoint.getLatitude() + (destinationPoint.getLatitude() - originPoint.getLatitude()) / 2,
                     originPoint.getLongitude() + (destinationPoint.getLongitude() - originPoint.getLongitude()) / 2);
-            ImageView directionArrowImage = IconProvider.getDirectionIcon(20);
-            tourDirectionLayer.addPoint(midPoint, directionArrowImage);
 
             //Line layout effect as a callback to compute the angle to rotate the direction point
             tourLineLayer.addLineLayoutEffect(new LineLayoutEffect() {
                 @Override
                 public void layout(MapDestination destination, Line line, Point2D originPoint, Point2D destinationPoint) {
+
+//                    //System.out.println("Line length = " + lineLength);
+//                    //System.out.println("Direction image width = " + directionArrowImage.getImage().getWidth());
                     if (mapDestination == destination) {
-                        //Rotate the image of the arrow, so it points in the direction of the end point
-                        double rotateAngle = originPoint.angle(new Point2D(originPoint.getX() + 1, originPoint.getY()),
-                                destinationPoint);
-                        /*
-                         * Point2D.angle() will compute the smallest angle possible between the angle in
-                         * the counter clockwise and the clockwise directions. However, the
-                         * ImageView.rotate function rotates counter clockwise only. If the start point
-                         * (startProjected) is below (has a lower y value) than the end point
-                         * (endProjected), Point2D.angle(), will use the angle for the clockwise
-                         * direction, thus, we must convert it to an angle in the counter clockwise
-                         * direction.
-                         */
-                        if (destinationPoint.getY() < originPoint.getY()) {
-                            rotateAngle = -rotateAngle;
+                        ImageView directionArrowImage = IconProvider.getDirectionIcon(20);
+                        double lineLength = originPoint.distance(destinationPoint);
+                        if (lineLength >= directionArrowImage.getImage().getWidth()) {
+                            if (!tourDirectionLayer.containsPoint(midPoint)) {
+                                tourDirectionLayer.addPoint(midPoint, directionArrowImage);
+                            }
+                            //Rotate the image of the arrow, so it points in the direction of the end point
+                            double rotateAngle = originPoint.angle(new Point2D(originPoint.getX() + 1, originPoint.getY()),
+                                    destinationPoint);
+                            /*
+                             * Point2D.angle() will compute the smallest angle possible between the angle in
+                             * the counter clockwise and the clockwise directions. However, the
+                             * ImageView.rotate function rotates counter clockwise only. If the start point
+                             * (startProjected) is below (has a lower y value) than the end point
+                             * (endProjected), Point2D.angle(), will use the angle for the clockwise
+                             * direction, thus, we must convert it to an angle in the counter clockwise
+                             * direction.
+                             */
+                            if (destinationPoint.getY() < originPoint.getY()) {
+                                rotateAngle = -rotateAngle;
+                            }
+                            directionArrowImage.setRotate(rotateAngle);
+                        } else {
+                            tourDirectionLayer.removePoint(midPoint);
                         }
-                        directionArrowImage.setRotate(rotateAngle);
                     }
                 }
             });
@@ -113,6 +129,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
 
     }
 
+    /**
+     * Hide the points and segments
+     */
     @Override
     public void hide() {
         tourPointLayer.hide();
@@ -120,6 +139,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
         tourDirectionLayer.hide();
     }
 
+    /**
+     * Show the points and segments
+     */
     @Override
     public void show() {
         tourLineLayer.show();
@@ -127,9 +149,13 @@ public class TourView implements PropertyChangeListener, View, Hideable {
         tourDirectionLayer.show();
     }
 
+    /**
+     * Update the event passed in parameter
+     * @param evt
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("TourViewEvent event " + evt);
+        ////System.out.println("TourViewEvent event " + evt);
         this.tour = (Tour) evt.getNewValue();
         render();
     }

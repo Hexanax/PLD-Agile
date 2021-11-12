@@ -2,6 +2,9 @@ package fr.insalyon.pldagile.model;
 
 import java.util.Objects;
 
+/**
+ * Coordinates is a model class that represents a geographical coordinate.
+ */
 public class Coordinates {
 
     private double latitude;
@@ -23,6 +26,11 @@ public class Coordinates {
         this.longitude = longitude;
     }
 
+    /**
+     * Constructor of a coordinate defined by it latitude and longitude
+     * @param latitude the latitude
+     * @param longitude the longitude
+     */
     public Coordinates(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;

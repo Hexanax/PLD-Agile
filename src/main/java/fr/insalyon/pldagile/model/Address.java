@@ -1,5 +1,9 @@
 package fr.insalyon.pldagile.model;
 
+/**
+ * Address is a model class that represents an address.
+ * It can be in our model, a pickup, a depot or a delivery
+ */
 public class Address {
 
     private Intersection intersection;
@@ -22,5 +26,22 @@ public class Address {
     @Override
     public String toString() {
         return intersection.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Address other = (Address) obj;
+        if (intersection == null) {
+            if (other.intersection != null)
+                return false;
+        } else if (!intersection.equals(other.intersection))
+            return false;
+        return true;
     }
 }

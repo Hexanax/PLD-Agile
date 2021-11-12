@@ -25,7 +25,6 @@ import java.text.SimpleDateFormat;
  * <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
  */
 public class XMLDeserializer {
-
     /**
      * Simple date format to get a time of a day
      */
@@ -45,7 +44,7 @@ public class XMLDeserializer {
         if (root.getNodeName().equals("map")) {
             return buildFromDOMXML(root);
         } else {
-            throw new ExceptionXML("Wrong format");
+            throw new ExceptionXML(ExceptionXML.FILE_WRONG_FORMAT);
         }
     }
 
@@ -86,24 +85,24 @@ public class XMLDeserializer {
         long destinationID = Long.parseLong(elt.getAttribute("destination"));
         long originID = Long.parseLong(elt.getAttribute("origin"));
         if (destinationID < 0) {
-            throw new ExceptionXML("Error when reading file: Wrong destination ID");
+            throw new ExceptionXML(ExceptionXML.INCORRECT_DESTINATION_ID);
         }
         Intersection destination = intersections.get(destinationID);
         if (destination == null) {
-            throw new ExceptionXML("Error when reading file: An intersection is unknown");
+            throw new ExceptionXML(ExceptionXML.UNKNOWN_INTERSECTION);
         }
         if (originID < 0) {
-            throw new ExceptionXML("Error when reading file: Wrong origin ID");
+            throw new ExceptionXML(ExceptionXML.WRONG_ORIGIN_ID);
         }
         Intersection origin = intersections.get(originID);
         if (origin == null) {
-            throw new ExceptionXML("Error when reading file: An intersection is unknown");
+            throw new ExceptionXML(ExceptionXML.UNKNOWN_INTERSECTION);
         }
 
         String name = elt.getAttribute("name");
         double length = Double.parseDouble(elt.getAttribute("length"));
         if (length <= 0) {
-            throw new ExceptionXML("Error when reading file: Wrong length");
+            throw new ExceptionXML(ExceptionXML.WRONG_LENGTH);
         }
         return new Segment(name, length, origin, destination);
     }
@@ -120,7 +119,7 @@ public class XMLDeserializer {
         Coordinates coordinates = new Coordinates(latitude, longitude);
         long id = Long.parseLong(elt.getAttribute("id"));
         if (id < 0) {
-            throw new ExceptionXML("Error when reading file: id must be null or positive");
+            throw new ExceptionXML(ExceptionXML.INVALID_ID);
         }
         return new Intersection(id, coordinates);
     }
@@ -141,7 +140,7 @@ public class XMLDeserializer {
         if (root.getNodeName().equals("planningRequest")) {
             return buildFromDOMXML(root, map);
         } else {
-            throw new ExceptionXML("Wrong format");
+            throw new ExceptionXML(ExceptionXML.FILE_WRONG_FORMAT);
         }
     }
 
@@ -160,7 +159,7 @@ public class XMLDeserializer {
         //build the depot
         NodeList depotNodeList = rootNode.getElementsByTagName("depot");
         if (depotNodeList.getLength() != 1) {
-            throw new ExceptionXML("Error when reading file : Depot is undefined");
+            throw new ExceptionXML(ExceptionXML.UNDEFINED_DEPOT);
         }
         Map<Long, Intersection> intersections = map.getIntersections();
         Depot depot = createDepot((Element) depotNodeList.item(0), intersections);
@@ -185,24 +184,24 @@ public class XMLDeserializer {
         long pickupAddressId = Long.parseLong(request.getAttribute("pickupAddress"));
         long deliveryAddressId = Long.parseLong(request.getAttribute("deliveryAddress"));
         if (pickupAddressId == deliveryAddressId) {
-            throw new ExceptionXML("Error when reading file: pickup address can't be at the same place as delivery address");
+            throw new ExceptionXML(ExceptionXML.PICKUP_SAME_AS_DELIVERY);
         }
         Intersection pickup = intersections.get(pickupAddressId);
         Intersection delivery = intersections.get(deliveryAddressId);
         if (pickup == null) {
-            throw new ExceptionXML("Error when reading file: The pickup address doesn't match with the current city map");
+            throw new ExceptionXML(ExceptionXML.PICKUP_CITY_MAP_MISMATCH);
         }
         if (delivery == null) {
-            throw new ExceptionXML("Error when reading file: The delivery address doesn't match with the current city map");
+            throw new ExceptionXML(ExceptionXML.DELIVERY_CITY_MAP_MISMATCH);
         }
 
         int pickupDuration = Integer.parseInt(request.getAttribute("pickupDuration"));
         int deliveryDuration = Integer.parseInt(request.getAttribute("deliveryDuration"));
         if (pickupDuration < 0) {
-            throw new ExceptionXML("Error when reading file: The pickup duration can't be negative");
+            throw new ExceptionXML(ExceptionXML.NEGATIVE_PICKUP_DURATION);
         }
         if (deliveryDuration < 0) {
-            throw new ExceptionXML("Error when reading file: The delivery duration can't be negative");
+            throw new ExceptionXML(ExceptionXML.NEGATIVE_DELIVERY_DURATION);
         }
 
         Delivery deliveryPoint = new Delivery(delivery, deliveryDuration);
@@ -222,13 +221,13 @@ public class XMLDeserializer {
         Long intersectionId = Long.parseLong(depot.getAttribute("address"));
         Intersection intersection = intersections.get(intersectionId);
         if (intersection == null) {
-            throw new ExceptionXML("Error when reading file : The depot address doesn't match with the current city map");
+            throw new ExceptionXML(ExceptionXML.DEPOT_CITY_MAP_MISMATCH);
         }
         Date departureTime;
         try {
             departureTime = simpleDateFormat.parse(depot.getAttribute("departureTime"));
         } catch (ParseException e) {
-            throw new ExceptionXML("Error when reading file : Wrong departureTime format");
+            throw new ExceptionXML(ExceptionXML.WRONG_DEPARTURE_TIME_FORMAT);
         }
         return new Depot(intersection, departureTime);
     }
@@ -244,7 +243,7 @@ public class XMLDeserializer {
      */
     private static Element getRootElement(File xmlFile) throws ParserConfigurationException, SAXException, IOException, ExceptionXML{
         if(xmlFile == null){
-            throw new ExceptionXML("Error file is null");
+            throw new ExceptionXML(ExceptionXML.FILE_NULL_ERROR);
         }
         DocumentBuilder docBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         //Initialize the Dom element

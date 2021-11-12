@@ -1,9 +1,14 @@
 package fr.insalyon.pldagile.controller;
 
-import fr.insalyon.pldagile.tsp.ExceptionCityMap;
+import fr.insalyon.pldagile.services.ExceptionCityMap;
 
 import java.util.LinkedList;
 
+/**
+ * This class allows the management of the different commands executed by the user in order to undo/redo them
+ * This interface is based on the example of the 4IF course - Object Oriented Design and AGILE software development by Mrs Solnon
+ * <a href="https://moodle.insa-lyon.fr/mod/resource/view.php?id=110978"> Placo source code </a>
+ */
 public class ListOfCommands {
     private LinkedList<Command> list;
     private int currentIndex;

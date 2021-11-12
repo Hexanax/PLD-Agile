@@ -25,4 +25,15 @@ public class FakeIntersectionProvider {
         };
         return List.of(intersections);
     }
+
+    static public List<Intersection> getSmallFakeIntersections() {
+        Intersection[] intersections = { new Intersection(1L, new Coordinates(4, 5)),
+                new Intersection(2L, new Coordinates(5, 8)), new Intersection(3L, new Coordinates(6, 9)),
+                new Intersection(4L, new Coordinates(6, 3)), new Intersection(5L, new Coordinates(2, 7)),
+                new Intersection(6L, new Coordinates(3, 3)), new Intersection(7L, new Coordinates(5, 1)),
+                new Intersection(8L, new Coordinates(1, 3)),
+
+        };
+        return List.of(intersections);
+    }
 }

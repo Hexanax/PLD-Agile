@@ -92,11 +92,12 @@ public class MapLayer extends Parent {
             layoutLayer();
         }
     }
+
     /**
      * This method is called when a Pulse is running and it is detected that
      * the layer should be redrawn, as a consequence of an earlier call to
      * {@link #markDirty() } (which should happen in case the info in the
-     * specific layer has changed) or when the {@link com.gluonhq.maps.MapView}
+     * specific layer has changed) or when the {@link MapView}
      * has its dirty flag set to true (which happens when the map is moved/zoomed).
      * The default implementation doesn't do anything. It is up to specific
      * layers to add layer-specific rendering.
@@ -107,6 +108,7 @@ public class MapLayer extends Parent {
     /**
      * This method returns a point in pixel coordinates for a given latitude and
      * longitude coordinates
+     *
      * @param lat the latitude
      * @param lon the longitude
      * @return a Point2D in pixels

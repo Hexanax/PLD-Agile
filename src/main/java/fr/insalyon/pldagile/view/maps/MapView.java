@@ -30,6 +30,8 @@ package fr.insalyon.pldagile.view.maps;
 import fr.insalyon.pldagile.controller.Controller;
 import fr.insalyon.pldagile.model.CityMap;
 import fr.insalyon.pldagile.model.Coordinates;
+import fr.insalyon.pldagile.services.CityMapUtils;
+import fr.insalyon.pldagile.view.maps.tile.TileImageView;
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -55,7 +57,7 @@ import java.util.logging.Logger;
  */
 public class MapView extends Region implements PropertyChangeListener {
 
-    private static final Logger logger = Logger.getLogger( MapView.class.getName() );
+    private static final Logger logger = Logger.getLogger(MapView.class.getName());
     public static final double ZOOM = 14;
     private final BaseMap baseMap;
     private Timeline timeline;
@@ -65,6 +67,7 @@ public class MapView extends Region implements PropertyChangeListener {
     private boolean zooming = false;
     private boolean enableDragging = false;
     private double maxZoomOut = 0.0D;
+    private double maxZoomFactor = 0.0D;
 
     /**
      * Create a MapView component.
@@ -72,7 +75,8 @@ public class MapView extends Region implements PropertyChangeListener {
     public MapView(Controller controller) {
         baseMap = new BaseMap();
         getChildren().add(baseMap);
-        registerInputListeners();
+        setMaxZoomFactor(0.05);
+        //registerInputListeners();
         controller.getPclCityMap().addPropertyChangeListener(this);
         baseMap.centerLat().addListener(o -> markDirty());
         baseMap.centerLon().addListener(o -> markDirty());
@@ -92,8 +96,6 @@ public class MapView extends Region implements PropertyChangeListener {
 
 
     private void registerInputListeners() {
-        logger.warning("Register listeners" +
-                "");
         setOnMousePressed(t -> {
             if (zooming) return;
             baseMap.x0 = t.getX();
@@ -120,16 +122,28 @@ public class MapView extends Region implements PropertyChangeListener {
         setOnZoom(t -> {
             logger.fine("Zoom factor = " + (t.getZoomFactor() - 1));
             boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
-            boolean isZooming = t.getZoomFactor() > 0.0;
+            boolean isZooming = t.getZoomFactor() - 1 > 0.0;
+            double zoomFactoring;
+            if (t.getZoomFactor() - 1 > 0) {
+                zoomFactoring = maxZoomFactor;
+            } else {
+                zoomFactoring = 0 - maxZoomFactor;
+            }
             if (isZooming || allowDezoom) {
-                baseMap.zoom(t.getZoomFactor() - 1, t.getX(), t.getY());
+                baseMap.zoom(zoomFactoring, t.getX(), t.getY());
             }
         });
         setOnScroll(t -> {
-            final double delta = t.getDeltaY() > 1 ? .1 : t.getDeltaY() < -1 ? -.1 : 0;
-            logger.fine("Scroll factor = " + (delta));
+            double delta = t.getDeltaY() > 1 ? .1 : t.getDeltaY() < -1 ? -.1 : 0;
             boolean allowDezoom = baseMap.canZoomOut(maxZoomOut);
             boolean isZooming = delta > 0.0;
+            // the delta factor get 2 values : 0.1 & -0.1
+            // t.getDeltaY gets only 2 values : 17.77 & -17.77
+            if (delta > 0) {
+                delta = maxZoomFactor;
+            } else {
+                delta = 0 - maxZoomFactor;
+            }
             if (isZooming || allowDezoom) {
                 baseMap.zoom(delta, t.getX(), t.getY());
             }
@@ -138,6 +152,10 @@ public class MapView extends Region implements PropertyChangeListener {
 
     public void setMaxZoomOut(double maxZoomOut) {
         this.maxZoomOut = maxZoomOut;
+    }
+
+    public void setMaxZoomFactor(double maxZoomFactor) {
+        this.maxZoomFactor = maxZoomFactor;
     }
 
     /**
@@ -288,18 +306,18 @@ public class MapView extends Region implements PropertyChangeListener {
 
     /**
      * Receives a cityMapUpdate event and centers on the cityMap center, zooms on it.
+     *
      * @param evt
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        ////System.out.println("CityMapViewCenter event " + evt);
         CityMap newCityMap = (CityMap) evt.getNewValue();
-        Coordinates center = newCityMap.getCenter();
+        Coordinates center = CityMapUtils.getCenter(newCityMap);
+        double optimalZoom = CityMapUtils.getOptimalZoom(newCityMap) + 1;
         MapPoint mapCenter = new MapPoint(center.getLatitude(), center.getLongitude());
         setCenter(mapCenter);
-        System.out.println(newCityMap.getOptimalZoom());
-        double optimalZoom = newCityMap.getOptimalZoom();
         setZoom(optimalZoom);
-        setMaxZoomOut(optimalZoom-1);
+        setMaxZoomOut(optimalZoom);
+        registerInputListeners();
     }
 }

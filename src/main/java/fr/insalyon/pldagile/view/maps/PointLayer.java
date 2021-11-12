@@ -36,34 +36,76 @@ import javafx.scene.effect.Effect;
 import javafx.util.Pair;
 
 /**
- * A layer that allows to visualise points of interest.
+ * A {@link MapLayer} that allows to visualise points of interest.
+ * The point of interest will be displayed with the provided Node that can be typed (generic usage)
  */
 public class PointLayer<T extends Node> extends MapLayer implements Hideable {
 
     private final ObservableList<Pair<MapPoint, T>> points = FXCollections.observableArrayList();
     private boolean shown = true;
 
-    public PointLayer() { }
+    public PointLayer() {
+    }
 
+    /**
+     * Add a point at the given {@link MapPoint} and display an icon, schedules a re-rendering
+     *
+     * @param mapPoint the point location on the map
+     * @param icon     the icon extending {@link Node} to be displayed at the point
+     */
     public void addPoint(MapPoint mapPoint, T icon) {
         addPoint(mapPoint, icon, null);
     }
 
+    /**
+     * @param effect extra {@link Effect} to add
+     * @see #addPoint(MapPoint, Node)
+     */
     public void addPoint(MapPoint mapPoint, T icon, Effect effect) {
         icon.setEffect(effect);
         points.add(new Pair<>(mapPoint, icon));
-        if(shown) {
+        if (shown) {
             this.getChildren().add(icon);
             this.markDirty();
         }
     }
 
+    /**
+     * Remove a point and its associated {@link Node}, schedules a re-render
+     *
+     * @param midPoint
+     */
+    public void removePoint(MapPoint midPoint) {
+        points.stream()
+                .filter(pair -> pair.getKey().equals(midPoint))
+                .findFirst()
+                .ifPresent(pair -> {
+                    this.getChildren().remove(pair.getValue());
+                    points.remove(pair);
+                });
+    }
+
+    /**
+     * Checks if the given {@link MapPoint} is contained
+     *
+     * @param mapPoint
+     */
+    public boolean containsPoint(MapPoint mapPoint) {
+        return points.stream().anyMatch(pair -> pair.getKey().equals(mapPoint));
+    }
+
+    /**
+     * Clear the points
+     */
     public void clearPoints() {
         points.clear();
         this.getChildren().clear();
         this.markDirty();
     }
 
+    /**
+     * @return the points of the layer
+     */
     public ObservableList<Pair<MapPoint, T>> getPoints() {
         return points;
     }
@@ -80,6 +122,11 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
         }
     }
 
+    /**
+     * Visually hide the lines until the show function is called
+     *
+     * @see Hideable
+     */
     @Override
     public void hide() {
         this.getChildren().clear();
@@ -87,13 +134,17 @@ public class PointLayer<T extends Node> extends MapLayer implements Hideable {
         shown = false;
     }
 
+    /**
+     * Visually show the lines until the hide function is called
+     *
+     * @see Hideable
+     */
     @Override
     public void show() {
-        if(!shown) {
+        if (!shown) {
             points.forEach(point -> this.getChildren().add(point.getValue()));
             this.markDirty();
             shown = true;
         }
     }
-
 }

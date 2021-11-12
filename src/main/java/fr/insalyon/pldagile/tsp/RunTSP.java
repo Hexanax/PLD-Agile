@@ -4,7 +4,7 @@ public class RunTSP {
     public static void main(String[] args) {
         TSP tsp = new TSP1();
         for (int nbVertices = 8; nbVertices <= 16; nbVertices += 2){
-            ////System.out.println("Graphs with "+nbVertices+" vertices:");
+            //////System.out.println("Graphs with "+nbVertices+" vertices:");
             GraphTemplate g = new CompleteGraph(nbVertices);
             long startTime = System.currentTimeMillis();
             tsp.searchSolution(20000, g);
@@ -12,7 +12,7 @@ public class RunTSP {
                     +(System.currentTimeMillis() - startTime)+"ms : ");
             for (int i=0; i<nbVertices; i++)
                 System.out.print(tsp.getSolution(i)+" ");
-            ////System.out.println("0");
+            //////System.out.println("0");
         }
     }
 

@@ -1,7 +1,7 @@
 package fr.insalyon.pldagile.model;
 
 import fr.insalyon.pldagile.helpers.FakeCityMapProvider;
-import fr.insalyon.pldagile.xml.ExceptionXML;
+import fr.insalyon.pldagile.services.CityMapUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -23,10 +23,10 @@ public class CityMapTest {
                 this.expectedResult = expectedResult;
             }
         }
-        TestCase[] tests = {new TestCase(new Coordinates(45.61117752676385,4.977950632220205)),
+        TestCase[] tests = {new TestCase(new Coordinates(45.61117752676385,4.982950632220205)),
         };
         for (TestCase tc : tests) {
-            Coordinates actualResult = cityMap.getCenter();
+            Coordinates actualResult = CityMapUtils.getCenter(cityMap);
             assertEquals(tc.expectedResult, actualResult);
         }
     }

@@ -2,10 +2,19 @@ package fr.insalyon.pldagile.model;
 
 import java.util.Date;
 
+/**
+ * Depot is a model class that represents a depot. It is a type of address.
+ * A depot is the address where the deliverer will start and finish a tour
+ */
 public class Depot extends Address {
 
     private Date departureTime;
 
+    /**
+     * Constructor of a depot defined by an intersection and the departure time of a tour
+     * @param intersection the intersection on the city map
+     * @param departureTime the departure time for the tour
+     */
     public Depot(Intersection intersection, Date departureTime) {
         super(intersection);
         this.departureTime = departureTime;
@@ -23,4 +32,22 @@ public class Depot extends Address {
     public String toString() {
         return "Depot: \n " + super.toString();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Depot other = (Depot) obj;
+        if (departureTime == null) {
+            if (other.departureTime != null)
+                return false;
+        } else if (!departureTime.equals(other.departureTime))
+            return false;
+        return true;
+    }
+
 }
