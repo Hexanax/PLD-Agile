@@ -11,6 +11,9 @@ import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+/**
+ * TextItem is an item part of the LogView list {@link LogView}
+ */
 public class TextItem extends Region {
     private String value;
     private Label titleLabel;

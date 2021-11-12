@@ -10,6 +10,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
+/**
+ * RequestManagerView {@link View} contains editing tools to delete or add extra requests to the RequestListView {@link RequestListView}
+ */
 public class RequestManagerView extends Region implements View {
 
     protected static final String DELETE_REQUEST = "Delete Request";
@@ -27,6 +30,15 @@ public class RequestManagerView extends Region implements View {
         render();
     }
 
+    /**
+     * Create a normalized button and add it to the correct pane at the correct place
+     * @param button the button to add
+     * @param gridPane the pane where the button has to be added
+     * @param columnIndex index column
+     * @param rowIndex index row
+     * @param colspan span column
+     * @param rowspan span row
+     */
     private void createButton(Button button, GridPane gridPane, int columnIndex, int rowIndex, int colspan, int rowspan) {
         gridPane.add(button, columnIndex, rowIndex, colspan, rowspan);
         button.setOnAction(MenuButtonListener::actionPerformed);
@@ -36,6 +48,9 @@ public class RequestManagerView extends Region implements View {
         return gridPane;
     }
 
+    /**
+     * Render the Item
+     */
     @Override
     public void render() {
         gridPane = new GridPane();

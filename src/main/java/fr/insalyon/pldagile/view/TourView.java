@@ -29,6 +29,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
         controller.getPclTour().addPropertyChangeListener(this);
     }
 
+    /**
+     * Clear the points and lines of the map
+     */
     public void clear() {
         tourLineLayer.clearLines();
         tourPointLayer.clearPoints();
@@ -47,6 +50,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
         return tourDirectionLayer;
     }
 
+    /**
+     * Rendering the points and segments between them
+     */
     @Override
     public void render() {
         clear();
@@ -123,6 +129,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
 
     }
 
+    /**
+     * Hide the points and segments
+     */
     @Override
     public void hide() {
         tourPointLayer.hide();
@@ -130,6 +139,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
         tourDirectionLayer.hide();
     }
 
+    /**
+     * Show the points and segments
+     */
     @Override
     public void show() {
         tourLineLayer.show();
@@ -137,6 +149,10 @@ public class TourView implements PropertyChangeListener, View, Hideable {
         tourDirectionLayer.show();
     }
 
+    /**
+     * Update the event passed in parameter
+     * @param evt
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         ////System.out.println("TourViewEvent event " + evt);
