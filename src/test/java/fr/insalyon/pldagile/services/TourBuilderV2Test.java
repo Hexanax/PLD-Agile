@@ -129,7 +129,7 @@ class TourBuilderV2Test {
         newRequest1.setId(2L);
 
         Request newRequest2 = new Request(
-                new Pickup(cityMap.getIntersection(3L), 420),
+                new Pickup(cityMap.getIntersection(4L), 420),
                 new Delivery(cityMap.getIntersection(5L), 600)
         );
         newRequest2.setId(2L);
@@ -150,10 +150,15 @@ class TourBuilderV2Test {
                 //False because swap beginning depot
                 new TestCase(false, requests1, newRequest1, 1L),
                 //False because can't swap ending depot
-                new TestCase(false, requests2, newRequest2, 1L),
+                new TestCase(false, requests2, newRequest2, -2L),
         };
 
         for (TestCase tc : tests) {
+            Long i = 0L;
+            for (Request request : tc.requests) {
+                request.setId(i);
+                i++;
+            }
             Date departureTime = simpleDateFormat.parse("8:0:0");
             Depot depot = new Depot(cityMap.getIntersection(1L), departureTime);
             planningRequest = new PlanningRequest(List.of(requests1), depot);
@@ -162,11 +167,8 @@ class TourBuilderV2Test {
             simulatedAnnealing.runSimulatedAnnealing(false, false);
             TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
             Tour actualTour = tourBuilderV2.buildTour(planningRequest, cityMap, false, null);
-            Long i = 0L;
-            for (Request request : tc.requests) {
-                request.setId(i);
-                i++;
-            }
+            actualTour.addRequest(tc.newRequest);
+
             int index = 0;
             for (Pair<Long, String> step : actualTour.getSteps()) {
                 if (Objects.equals(step.getKey(), tc.targetRequestNumber)) {
@@ -179,7 +181,6 @@ class TourBuilderV2Test {
                 index++;
             }
 
-            actualTour.addRequest(tc.newRequest);
             actualTour.addStep(indexBeforePickup, new Pair<>(newRequest1.getId(), "pickup"));
             actualTour.addStep(indexBeforeDelivery, new Pair<>(newRequest1.getId(), "delivery"));
 

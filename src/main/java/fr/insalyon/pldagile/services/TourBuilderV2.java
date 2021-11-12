@@ -258,15 +258,15 @@ public class TourBuilderV2 {
         /**
          * We go around to find the steps we want to remove
          * We add accordingly the intersections that we do not seek to modify
-         * If we fall on one of the two addresses that we want to delete,
-         * then we recalculate locally the tour by fanning dijskra between the address
+         * If we find one of the two addresses that we want to add,
+         * then we recalculate locally the tour by runnning dijkstra between the address
          * before and the one after and we remove the old intersections between these 2 points.
          */
         for (Pair<Long, String> step : tour.getSteps()) {
 
             /**
              * If we find the pickup there can be 2 possibilities
-             * The first is if the delivery to be deleted is the step that comes after the pickup.
+             * The first is if the delivery to be added is the step that comes after the pickup.
              * In this case you have to go and find the step after to recompute.
              * The second one is the other cases
              */
