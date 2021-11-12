@@ -152,8 +152,8 @@ public class TourBuilderV2 {
         /**
          * Recomputes locally the tour
          * There are 3 possible cases :
-         * First the pickup is just befor the delivery to delete
-         * Second there is only one adress between the pickup and the delivery
+         * First the pickup is just before the delivery to delete
+         * Second there is only one address between the pickup and the delivery
          * Third all other cases
          */
         if (indexAroundStep[0] == indexAroundStep[2]) {
@@ -217,7 +217,7 @@ public class TourBuilderV2 {
 
     /**
      * Allows to add the request with the id in parameter from the current computed tour.
-     * We tour will be recomputed locally by performing Dijskra between the address
+     * The tour will be recomputed locally by performing Dijskra between the address
      * that came before the pickup and the address that came after the pickup in the steps.
      * Same for the delivery.
      * @param cityMap the city map
