@@ -102,4 +102,8 @@ public class MapPoint {
     public double getDefaultScale() {
         return defaultScale;
     }
+
+    public double getDistSquared(MapPoint mapPoint) {
+        return Math.pow((this.latitude - mapPoint.latitude), 2) + Math.pow((this.longitude - mapPoint.longitude), 2);
+    }
 }

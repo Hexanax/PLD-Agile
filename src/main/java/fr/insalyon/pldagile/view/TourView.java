@@ -67,8 +67,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
             MapPoint destinationPoint = new MapPoint(destinationIntersection.getCoordinates().getLatitude(), destinationIntersection.getCoordinates().getLongitude());
             MapDestination mapDestination = new MapDestination(originPoint, destinationPoint);
 
-            DropShadow borderEffect = new DropShadow(BlurType.THREE_PASS_BOX, Colors.getTourLineStrokeColor(), 2, 1, 0, 0);
-            tourLineLayer.addLine(mapDestination, Colors.getTourLineColor(), borderEffect, 4);
+            // DropShadow borderEffect = new DropShadow(BlurType.THREE_PASS_BOX,
+            // Colors.getTourLineStrokeColor(), 2, 1, 0, 0);
+            tourLineLayer.addLine(mapDestination, Colors.getTourLineColor(), null, 8);
 
             DropShadow tourPointBorderEffect = new DropShadow(BlurType.THREE_PASS_BOX, Colors.getTourLineColor(), 2, 3, 0, 0);
             tourPointLayer.addPoint(originPoint, new Circle(2, Colors.getTourLinePointColor()), tourPointBorderEffect);
@@ -76,7 +77,7 @@ public class TourView implements PropertyChangeListener, View, Hideable {
 
             MapPoint midPoint = new MapPoint(originPoint.getLatitude() + (destinationPoint.getLatitude() - originPoint.getLatitude()) / 2,
                     originPoint.getLongitude() + (destinationPoint.getLongitude() - originPoint.getLongitude()) / 2);
-
+            if (originPoint.getDistSquared(destinationPoint) > 8E-7) {
             ImageView directionArrowImage = IconProvider.getDirectionIcon(20);
             tourDirectionLayer.addPoint(midPoint, directionArrowImage);
 
@@ -104,7 +105,7 @@ public class TourView implements PropertyChangeListener, View, Hideable {
                     }
                 }
             });
-
+        }
             //Update prev intersection
             previousIntersection = destinationIntersection;
         }
