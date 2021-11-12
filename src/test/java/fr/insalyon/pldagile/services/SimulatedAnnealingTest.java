@@ -84,6 +84,7 @@ public class SimulatedAnnealingTest {
     }
 
     @Test
+    @DisplayName("runSimulatedAnnealing test")
     void runSimulatedAnnealing() {
 
         SimulatedAnnealing simulatedAnnealing = new SimulatedAnnealing(planningRequest, cityMapGraph);
@@ -108,6 +109,7 @@ public class SimulatedAnnealingTest {
      * Testing the total distance computation
      */
     @Test
+    @DisplayName("getTotalDistance test")
     void getTotalDistance() {
         class TestCase {
             final Double expectedResult;
