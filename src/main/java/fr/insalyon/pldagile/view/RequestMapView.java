@@ -101,7 +101,7 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
     public void activeRequestIntersectionsListener() {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             point.getValue().setOnMouseClicked(event -> {
-                if (event.getClickCount() > 1) return; //TODO Check usage
+                if (event.getClickCount() > 1) return;
                 controller.modifyClick(point.getKey().getRequestId(), point.getKey().getType(), point.getKey().getStepIndex());
             });
 

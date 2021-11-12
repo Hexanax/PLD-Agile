@@ -58,7 +58,7 @@ public class TourView implements PropertyChangeListener, View, Hideable {
     public void render() {
         clear();
         Tour tour = this.tour;
-        // TODO Update RequestView
+
         //if the tour is a null object, we just clear
         if (tour.getDepot() == null) {
             return;

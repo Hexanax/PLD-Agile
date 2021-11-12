@@ -38,7 +38,7 @@ public class RequestListView implements View, PropertyChangeListener {
         controller.getPclTour().addPropertyChangeListener(this);
         this.updateCallbacks = new ArrayList<>();
 
-        //TODO Move elsewhere? => render()
+
         //Add request list view to the provided grid pane
         gridPane.add(requestList, 0, 3, 2, 1);
         requestList.getStyleClass().add("requests-list");
