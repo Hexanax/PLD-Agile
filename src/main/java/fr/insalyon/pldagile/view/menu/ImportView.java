@@ -10,6 +10,10 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 
+/**
+ * Import view {@link View} is the superior part of the sidePanel {@link SidePanelView} and contains the button to import
+ * map and request files, compute the tour (fats and slow) and generate a roadmap
+ */
 public class ImportView extends Region implements View {
 
     public static final String IMPORT_TITLE = "Imports";
@@ -33,6 +37,16 @@ public class ImportView extends Region implements View {
         render();
     }
 
+    /**
+     * Create a normalized button and add it to the correct pane at the correct place
+     * @param button the button to add
+     * @param gridPane the pane where the button has to be added
+     * @param columnIndex index column
+     * @param rowIndex index row
+     * @param colspan span column
+     * @param rowspan span row
+     * @param defaultButton if the button has to be a default button or not
+     */
     private void createButton(Button button, GridPane gridPane, int columnIndex, int rowIndex, int colspan, int rowspan, boolean defaultButton) {
         if (defaultButton) {
             button.setDefaultButton(true);
@@ -56,6 +70,9 @@ public class ImportView extends Region implements View {
         importPickupLabel.setText(fileName);
     }
 
+    /**
+     * Render the importView item
+     */
     @Override
     public void render() {
         GridPane gridPane = new GridPane();

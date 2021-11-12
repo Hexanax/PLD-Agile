@@ -29,7 +29,7 @@ public class HTMLSerializer {
 
         // List of Pairs such that Pair<Long : idStep, String :typeStep>
         // <-1, "depot"> ; <0, "pickup"> ; <1,"delivery">
-        List<Pair<Long, String>> stepsIdentifiers = tour.getSteps();
+        List<Pair<Long, String>> stepsIdentifiers = new ArrayList<>(tour.getSteps());
         //stepIdentifiers  [-1=begin, 0=pickup, 0=delivery, 1=pickup, 1=delivery, 5=end]
 
         // Remove the begin step from the identifiers

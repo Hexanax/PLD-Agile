@@ -17,6 +17,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+/**
+ * RequestListView is the lower part of the side panel {@link SidePanelView} and contains all the pickup and delivery
+ * details for the tour.
+ */
 public class RequestListView implements View, PropertyChangeListener {
 
     private PlanningRequest planningRequest;
@@ -45,10 +49,16 @@ public class RequestListView implements View, PropertyChangeListener {
         requestList.setOnMouseClicked(RequestMouseListener::mouseClicked);
     }
 
+    /**
+     * Clear the list
+     */
     public void clear() {
         addressItems.clear();
     }
 
+    /**
+     * Render the list without ordering it
+     */
     public void renderUnordered() {
         clear();
         for (Request request : planningRequest.getRequests()) {
@@ -66,6 +76,9 @@ public class RequestListView implements View, PropertyChangeListener {
         activeHoverEvent();
     }
 
+    /**
+     * Render the list after ordering it
+     */
     public void renderOrdered() {
         clear();
         Depot depot = tour.getDepot();
@@ -94,6 +107,11 @@ public class RequestListView implements View, PropertyChangeListener {
         return addressItems;
     }
 
+    /**
+     * Set the AddressItem selected editable
+     * @param editable if it has to be editable or not
+     * @param id the id of the item
+     */
     public void makeLastRequestAddedEditable(boolean editable, long id) {
         for (AddressItem item : addressItems) {
             if (item.getRequestNumber() == id) {
@@ -112,6 +130,10 @@ public class RequestListView implements View, PropertyChangeListener {
         }
     }
 
+    /**
+     * get the time during the item is editable
+     * @return an array of string with the durations of pickup and delivery items
+     */
     public String[] getEditableDuration() {
         if (pickupObserver != null && deliveryObserver != null) {
             return new String[]{pickupObserver.getValue(), deliveryObserver.getValue()};
@@ -123,6 +145,11 @@ public class RequestListView implements View, PropertyChangeListener {
         this.requestMapView = view;
     }
 
+    /**
+     * Set the AddressItem selected
+     * @param requestId item id
+     * @param type type of addressItem
+     */
     public void setSelected(long requestId, String type) {
         type = type.substring(0, 1).toUpperCase() + type.substring(1);
         int index = 0;
@@ -134,6 +161,9 @@ public class RequestListView implements View, PropertyChangeListener {
         }
     }
 
+    /**
+     * Hover the requests corresponding to the address items hovered by the mouse
+     */
     private void activeHoverEvent() {
         for (AddressItem item : addressItems) {
             item.setOnMouseEntered(event -> {
@@ -146,6 +176,11 @@ public class RequestListView implements View, PropertyChangeListener {
         }
     }
 
+    /**
+     * Scroll to the item in parameter
+     * @param item
+     * @param index
+     */
     public void setFirstFocus(AddressItem item, int index) {
         requestList.scrollTo(item);
         requestList.getSelectionModel().select(index );
@@ -155,6 +190,9 @@ public class RequestListView implements View, PropertyChangeListener {
         requestList.getSelectionModel().select(item);
     }
 
+    /**
+     * Render the item
+     */
     @Override
     public void render() {
         System.out.println("Address list size = " + addressItems.size());
@@ -169,6 +207,10 @@ public class RequestListView implements View, PropertyChangeListener {
         updateCallbacks.forEach(Runnable::run);
     }
 
+    /**
+     * Update the RequestList event
+     * @param evt
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("Request list view update");
@@ -186,6 +228,10 @@ public class RequestListView implements View, PropertyChangeListener {
         render();
     }
 
+    /**
+     * Update the ListView callback
+     * @param runnable
+     */
     public void addUpdateCallback(Runnable runnable) {
         updateCallbacks.add(runnable);
     }

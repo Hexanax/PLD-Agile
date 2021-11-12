@@ -27,7 +27,7 @@ public class AddRequestState1 implements State {
                 PlanningRequest modify = new PlanningRequest(planningRequest);
                 controller.setPlanningRequest(modify);
                 controller.setCurrentState(controller.addRequestState2);
-                window.addStateFollow("Pickup intersection selected, Now left click on the intersection where the delivery will take place or right click to cancel");
+                window.addStateFollow("Pickup intersection selected. Left click on the delivery intersection or right click to cancel");
             }
         }
     }

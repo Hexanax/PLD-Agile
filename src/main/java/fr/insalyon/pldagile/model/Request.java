@@ -55,4 +55,31 @@ public class Request {
         this.delivery = delivery;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Request other = (Request) obj;
+        if (delivery == null) {
+            if (other.delivery != null)
+                return false;
+        } else if (!delivery.equals(other.delivery))
+            return false;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (pickup == null) {
+            if (other.pickup != null)
+                return false;
+        } else if (!pickup.equals(other.pickup))
+            return false;
+        return true;
+    }
+
 }
