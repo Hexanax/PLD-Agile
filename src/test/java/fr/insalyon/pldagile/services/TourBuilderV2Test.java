@@ -5,7 +5,6 @@ import fr.insalyon.pldagile.model.*;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -130,9 +129,7 @@ class TourBuilderV2Test {
                 new Delivery(cityMap.getIntersection(4L), 600)
         );
         request.setId(2L);
-//        planningRequest.add(newRequest,true);
 
-//        Request request = planningRequest.getLastRequest();
         int index =0;
         for(Pair<Long,String> step : actualTour.getSteps()){
             if(Objects.equals(step.getKey(), 1L)){

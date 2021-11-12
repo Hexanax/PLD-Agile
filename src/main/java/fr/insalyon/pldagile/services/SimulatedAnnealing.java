@@ -19,7 +19,7 @@ public class SimulatedAnnealing {
     public static final int MAXIMUM_TIME = 2000;
     //Parameters of our Simulated Annealing algorithm
     private double temperature = 1000;
-    private double coolingRate = 0.98;
+    private final double coolingRate = 0.98;
     private double finalTemperature = 0.1;
     //lower temp every 10 iterations
     private double lowerTempModulo = 10;
@@ -38,13 +38,13 @@ public class SimulatedAnnealing {
     }
 
     //Holds all the best paths from an originId to each intersection of the graph
-    private Map<Long, Dijkstra> bestPaths;
+    private final Map<Long, Dijkstra> bestPaths;
 
     //our segments/intersections in form of a graph
-    private CityMapGraph cityMapGraph;
+    private final CityMapGraph cityMapGraph;
 
     //The steps the Traveling Salesman has to visit
-    private PlanningRequest planningRequest;
+    private final PlanningRequest planningRequest;
 
     private ArrayList<Pair<Long, String>> stepsIdentifiers;
     private ArrayList<Long> stepsIntersectionId;
@@ -177,7 +177,7 @@ public class SimulatedAnnealing {
                     swapResult = swapSteps(swapFirstIndex, swapSecondIndex);
 
                     //If the swap is not allowed (can't have delivery X prior to pickup X, we retry to swap)
-                } while (swapResult == false);
+                } while (!swapResult);
 
                 double currentDistance = getTotalDistance();
                 if (currentDistance < bestDistance) {
@@ -224,8 +224,6 @@ public class SimulatedAnnealing {
 
         ArrayList<Pair<Long, String>> cloneIdentifier = (ArrayList<Pair<Long, String>>) stepsIdentifiers.clone();
         int stepsSize = stepsIntersectionId.size();
-        //int swapFirstIndex = 1 + (int) (Math.random() * stepsSize);
-        //int swapSecondIndex = 1 + (int) (Math.random() * stepsSize);
         if (swapFirstIndex == 0 || swapFirstIndex == stepsSize - 1 || swapSecondIndex == 0 || swapSecondIndex == stepsSize - 1) {
             return false;
         }

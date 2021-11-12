@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class DeleteRequestCommand implements Command {
 
-    private Request deletedRequest;
+    private final Request deletedRequest;
     private final CityMap cityMap;
     private final PCLTour pclTour;
     private final PCLPlanningRequest pclPlanningRequest;

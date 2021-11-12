@@ -19,7 +19,7 @@ public class CityMapGraph implements Graph {
     private final Map<Pair<Long, Long>,Segment> segments;
     private final Set<Long> vertexIds;
     public static Double NO_ARC_COST = -1D;
-    private List<Long> pathIds;
+    private final List<Long> pathIds;
 
     /**
         "Adjacency list", for each Intersection, the list contains a pair of (origin
@@ -51,8 +51,8 @@ public class CityMapGraph implements Graph {
      */
     private void buildGraph() {
         Long originId;
-        Long destinationId;
-        Double length;
+        long destinationId;
+        double length;
         Pair<Long, Double> adjacentVertex;
         ArrayList<Pair<Long, Double>> adjacentVertices;
         for (Segment s : segments.values()) {

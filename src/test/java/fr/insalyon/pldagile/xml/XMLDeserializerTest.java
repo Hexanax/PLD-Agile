@@ -30,9 +30,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadCityMap_NullFileException() throws Exception {
         File inputFile = null;
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(inputFile));
         String expectedMessage = ExceptionXML.FILE_NULL_ERROR;
         String actualMessage = exception.getMessage();
 
@@ -42,9 +40,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadCityMap_WrongFormatException() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testXML_invalid_1.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(inputFile));
         String expectedMessage = ExceptionXML.FILE_WRONG_FORMAT;
         String actualMessage = exception.getMessage();
 
@@ -54,9 +50,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadCityMap_INVALID_ID() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testMap_invalid_2.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(inputFile));
         String expectedMessage = ExceptionXML.INVALID_ID;
         String actualMessage = exception.getMessage();
 
@@ -66,9 +60,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadCityMap_INCORRECT_DESTINATION_ID() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testMap_invalid_3.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(inputFile));
         String expectedMessage = ExceptionXML.INCORRECT_DESTINATION_ID;
         String actualMessage = exception.getMessage();
 
@@ -78,9 +70,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadCityMap_UNKNOWN_INTERSECTION_BadDestination() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testMap_invalid_4.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(inputFile));
         String expectedMessage = ExceptionXML.UNKNOWN_INTERSECTION;
         String actualMessage = exception.getMessage();
 
@@ -90,9 +80,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadCityMap_UNKNOWN_INTERSECTION_BadOrigin() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testMap_invalid_5.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(inputFile));
         String expectedMessage = ExceptionXML.UNKNOWN_INTERSECTION;
         String actualMessage = exception.getMessage();
 
@@ -102,9 +90,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadCityMap_WRONG_ORIGIN_ID() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testMap_invalid_6.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(inputFile));
         String expectedMessage = ExceptionXML.WRONG_ORIGIN_ID;
         String actualMessage = exception.getMessage();
 
@@ -114,9 +100,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadCityMap_WRONG_LENGTH() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testMap_invalid_7.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(inputFile));
         String expectedMessage = ExceptionXML.WRONG_LENGTH;
         String actualMessage = exception.getMessage();
 
@@ -145,9 +129,7 @@ public class XMLDeserializerTest {
 
     @Test
     public void loadRequests_FILE_NULL_ERROR() throws Exception {
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, null);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, null));
         String expectedMessage = ExceptionXML.FILE_NULL_ERROR;
         String actualMessage = exception.getMessage();
 
@@ -157,9 +139,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_FILE_WRONG_FORMAT() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testXML_invalid_1.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.FILE_WRONG_FORMAT;
         String actualMessage = exception.getMessage();
 
@@ -169,9 +149,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_UNDEFINED_DEPOT() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testRequest_invalid_1.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.UNDEFINED_DEPOT;
         String actualMessage = exception.getMessage();
 
@@ -181,9 +159,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_DEPOT_CITY_MAP_MISMATCH() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testRequest_invalid_2.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.DEPOT_CITY_MAP_MISMATCH;
         String actualMessage = exception.getMessage();
 
@@ -193,9 +169,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_WRONG_DEPARTURE_TIME_FORMAT() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testRequest_invalid_3.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.WRONG_DEPARTURE_TIME_FORMAT;
         String actualMessage = exception.getMessage();
 
@@ -205,9 +179,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_PICKUP_SAME_AS_DELIVERY() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testRequest_invalid_4.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.PICKUP_SAME_AS_DELIVERY;
         String actualMessage = exception.getMessage();
 
@@ -217,9 +189,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_PICKUP_CITY_MAP_MISMATCH() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testRequest_invalid_5.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.PICKUP_CITY_MAP_MISMATCH;
         String actualMessage = exception.getMessage();
 
@@ -229,9 +199,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_DELIVERY_CITY_MAP_MISMATCH() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testRequest_invalid_6.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.DELIVERY_CITY_MAP_MISMATCH;
         String actualMessage = exception.getMessage();
 
@@ -241,9 +209,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_NEGATIVE_PICKUP_DURATION() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testRequest_invalid_7.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.NEGATIVE_PICKUP_DURATION;
         String actualMessage = exception.getMessage();
 
@@ -253,9 +219,7 @@ public class XMLDeserializerTest {
     @Test
     public void loadRequests_NEGATIVE_DELIVERY_DURATION() throws Exception {
         File inputFile = new File(getClass().getClassLoader().getResource("xml/testRequest_invalid_8.xml").toURI());
-        Exception exception = assertThrows(ExceptionXML.class, () -> {
-            XMLDeserializer.load(cityMap, inputFile);
-        });
+        Exception exception = assertThrows(ExceptionXML.class, () -> XMLDeserializer.load(cityMap, inputFile));
         String expectedMessage = ExceptionXML.NEGATIVE_DELIVERY_DURATION;
         String actualMessage = exception.getMessage();
 

@@ -1,9 +1,7 @@
 package fr.insalyon.pldagile.view.menu;
 
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.controller.ListOfCommands;
 import fr.insalyon.pldagile.model.*;
-import fr.insalyon.pldagile.view.MouseListener;
 import fr.insalyon.pldagile.view.RequestMapView;
 import fr.insalyon.pldagile.view.View;
 import javafx.collections.FXCollections;
@@ -170,9 +168,7 @@ public class RequestListView implements View, PropertyChangeListener {
                 this.setHover(item);
                 requestMapView.hoverRequest(item.getRequestNumber());
             });
-            item.setOnMouseExited(event -> {
-                requestMapView.unHoverRequest(item.getRequestNumber());
-            });
+            item.setOnMouseExited(event -> requestMapView.unHoverRequest(item.getRequestNumber()));
         }
     }
 

@@ -17,18 +17,18 @@ import static java.lang.Double.POSITIVE_INFINITY;
 public class Dijkstra {
 
     //We'll store our data in 4 structures
-    private Map<Long, Double> distancesFromOrigin;
+    private final Map<Long, Double> distancesFromOrigin;
 
     //Stores the predecessor of each vertice id
-    private Map<Long, Long> predecessor;
+    private final Map<Long, Long> predecessor;
     //Maps a vertice ID to an integer such that { 0 => white, 1 => grey, 2 => black}
-    private Map<Long, Integer> color;
+    private final Map<Long, Integer> color;
     //Represents "grey" vertices, ie vertices visited, but we're not sure if we've found the shortest path yet
-    private Map<Long,Double> grey;
+    private final Map<Long,Double> grey;
 
     //Graph of our cityMap
-    private CityMapGraph cityMapGraph;
-    private Long originId;
+    private final CityMapGraph cityMapGraph;
+    private final Long originId;
 
 
 
