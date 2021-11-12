@@ -56,8 +56,8 @@ public class Window {
         this.sidePanel = new SidePanelView(windowHeight, this, controller);
         this.leftPanel = new LeftPanel();
 
-        requestMapView.setRequestListView(sidePanel.getRequestListView()); //TODO Check later
-        sidePanel.getRequestListView().setRequestMapView(requestMapView); //TODO CHeck later
+        requestMapView.setRequestListView(sidePanel.getRequestListView());
+        sidePanel.getRequestListView().setRequestMapView(requestMapView);
 
         // Get the view layers and add them to the map view
         mapView.addLayer(cityMapView.getLayer());

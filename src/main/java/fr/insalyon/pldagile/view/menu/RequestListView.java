@@ -38,7 +38,6 @@ public class RequestListView implements View, PropertyChangeListener {
         controller.getPclTour().addPropertyChangeListener(this);
         this.updateCallbacks = new ArrayList<>();
 
-        //TODO Move elsewhere? => render()
         //Add request list view to the provided grid pane
         gridPane.add(requestList, 0, 3, 2, 1);
         requestList.getStyleClass().add("requests-list");
@@ -191,7 +190,6 @@ public class RequestListView implements View, PropertyChangeListener {
      */
     @Override
     public void render() {
-        System.out.println("Address list size = " + addressItems.size());
         //Dynamically compute the list's height
         double listHeight = 0;
         for (AddressItem addressItem : addressItems) {
@@ -209,7 +207,6 @@ public class RequestListView implements View, PropertyChangeListener {
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("Request list view update");
         String propertyName = evt.getPropertyName();
         if (Objects.equals(propertyName, "tourUpdate")) {
             this.tour = (Tour) evt.getNewValue();

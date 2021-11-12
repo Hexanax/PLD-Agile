@@ -102,7 +102,6 @@ public class SimulatedAnnealing {
             Long requestId = request.getId();
             Pickup pickup = request.getPickup();
             Delivery delivery = request.getDelivery();
-            //System.out.println(requestId);
             //check if the Dijkstra has already been run from this intersection
             //to avoid re-computing for nothing...
             if (!bestPaths.containsKey(pickup.getIntersection().getId())) {
@@ -161,7 +160,6 @@ public class SimulatedAnnealing {
             numberOfIterations--;
             timeElapsed = System.currentTimeMillis() - start;
             if (timeElapsed > MAXIMUM_TIME && timeoutEnabled) {
-                //System.out.println("Time elapsed:" + System.currentTimeMillis());
                 return false;
             }
             //exit loop if t<finalTemperature
@@ -186,7 +184,6 @@ public class SimulatedAnnealing {
                     revertSwapSteps(oldStepsIdentifiers, oldIntersectionIds);
                 }
             } else if( !(slowModeActivated && timeoutEnabled)){
-                System.out.println(numberOfIterations);
                 break;
             }
             if(numberOfIterations%lowerTempModulo==0){

@@ -108,7 +108,6 @@ public class BaseMap extends Group {
         if (sceneListener == null) {
             sceneListener = (o, oldScene, newScene) -> {
                 if (newScene != null) {
-                    //TODO Do we need to unbind from previous scene?
                     getParent().layoutBoundsProperty().addListener(e -> {
                         area.setWidth(getParent().getLayoutBounds().getWidth());
                         area.setHeight(getParent().getLayoutBounds().getHeight());
