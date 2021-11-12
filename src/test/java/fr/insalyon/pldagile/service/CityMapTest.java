@@ -1,6 +1,8 @@
-package fr.insalyon.pldagile.model;
+package fr.insalyon.pldagile.service;
 
 import fr.insalyon.pldagile.helpers.FakeCityMapProvider;
+import fr.insalyon.pldagile.model.CityMap;
+import fr.insalyon.pldagile.model.Coordinates;
 import fr.insalyon.pldagile.services.CityMapUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
