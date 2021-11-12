@@ -6,6 +6,7 @@ import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.text.ParseException;
@@ -67,6 +68,7 @@ class TourBuilderV2Test {
     }
 
     @Test
+    @DisplayName("buildTour test")
     void buildTour() throws ExceptionCityMap {
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
         Tour actualTour = tourBuilderV2.buildTour(planningRequest,cityMap,false,null);
@@ -78,6 +80,7 @@ class TourBuilderV2Test {
     }
 
     @Test
+    @DisplayName("deleteRequest test")
     void deleteRequest() throws ExceptionCityMap {
         TourBuilderV2 tourBuilderV2 = new TourBuilderV2();
         Tour actualTour = tourBuilderV2.buildTour(planningRequest,cityMap,false,null);
@@ -92,6 +95,7 @@ class TourBuilderV2Test {
     //TODO not working
     @Disabled
     @Test
+    @DisplayName("addRequest test")
     void addRequest() throws ExceptionXML, ParseException, ExceptionCityMap {
         cityMap = FakeCityMapProvider.getSmallMap();
 
