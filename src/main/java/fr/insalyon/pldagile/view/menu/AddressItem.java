@@ -40,6 +40,10 @@ public class AddressItem extends Region {
         render(editable);
     }
 
+    /**
+     * Render the address item and set it editable in function of the parameter
+     * @param editable
+     */
     public void render(boolean editable) {
         GridPane mainGridPane = new GridPane();
         mainGridPane.setAlignment(Pos.BASELINE_CENTER);
@@ -96,6 +100,11 @@ public class AddressItem extends Region {
         this.getChildren().add(mainGridPane);
     }
 
+
+    /**
+     * get the item height in javafx
+     * @return address height
+     */
     public double getAddressItemHeight() {
         if (requestNumber < 0) {
             return DEPOT_HEIGHT;
@@ -126,6 +135,9 @@ public class AddressItem extends Region {
         this.value.setEditable(b);
     }
 
+    /**
+     * Resize the item's height
+     */
     public void enforceHeight() {
         this.setPrefHeight(this.getAddressItemHeight());
     }
