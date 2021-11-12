@@ -24,7 +24,6 @@ public class AddRequestState4 implements State {
         Tour modifyTour = new Tour(tour);
         modifyTour.deleteRequest(idRequestDelete);
         controller.setTour(modifyTour);
-        validClick = false;
 
         window.mainView();
         window.addStateFollow("Add request cancel");
@@ -59,9 +58,7 @@ public class AddRequestState4 implements State {
                 } else {
                     tour.addStep(stepIndex, new Pair<>(request.getId(), "delivery"));
                     controller.addRequest();
-                    if(emergencyCancel){
-                        controller.cancel();
-                    } else if (bufferClicks) {
+                    if (bufferClicks) {
                         //We prepare the state to cancel the second event that we want to ignore
                         validClick = true;
                     } else {
@@ -75,22 +72,16 @@ public class AddRequestState4 implements State {
 
     @Override
     public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
-        Tour modifyTour = new Tour(pcltour.getTour());
         try {
             l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
             window.mainView();
             window.addStateFollow("You have successfully selected the address before your new delivery. You can now modify the duration in second of the pickup and the delivery or click out of the requests list to confirm your modifications");
             window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
-            emergencyCancel = false;
         } catch (Exception e) {
-            pcltour.setTour(modifyTour);
-            emergencyCancel = true;
             window.addWarningStateFollow(e.getMessage());
             controller.cancel();
         }
     }
-
-    private boolean emergencyCancel;
 
     /**
      * This variable is used to empty the application's click buffer when an address is clicked directly on the map
