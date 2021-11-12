@@ -222,7 +222,7 @@ public class Window {
     public boolean continueTourCompute() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Heavy computing task detected");
-        alert.setHeaderText("Continue looking for a more optimized path or display the one already found ?");
+        alert.setHeaderText("Press OK to search for a more optimized way or cancel to display the current computed tour");
 
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == ButtonType.OK;
