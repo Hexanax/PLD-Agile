@@ -35,6 +35,8 @@ public abstract class FakeCityMapProvider {
                 new Segment("1to5", 4.5, intersections[0], intersections[4]),
                 new Segment("5to6", 2.5, intersections[4], intersections[5]),
                 new Segment("6to3", 2.0, intersections[5], intersections[2]),
+                new Segment("6to7", 2.0, intersections[5], intersections[6]),
+
 
         };
         CityMap cityMap = new CityMap();

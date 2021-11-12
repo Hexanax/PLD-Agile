@@ -19,6 +19,22 @@ public class TourBuilderV2 {
         return simulatedAnnealing;
     }
 
+    /**
+     * Build tour takes as parameters our planningRequest and CityMap and returns
+     * an optimized tour computed with a simulatedAnnealing algorithm.
+     * If the computing time reaches a timeout, the algorithm is paused and the user
+     * chooses whether or not to continue the calculations for a more optimized tour.
+     *
+     * Once the optimized path has been computed, this function calls the <code>ComputeTour</code>
+     * function to generate data related to the durations and length of the tour.
+     *
+     * @param planningRequest planningRequest for our Tour
+     * @param cityMap cityMap for our Tour
+     * @param slowModeActivated true if the demo mode is activated
+     * @param notFullyComputed function to execute when the timeout was reached
+     * @return An optimized Tour for our delivery person
+     * @throws ExceptionCityMap
+     */
     public Tour buildTour(PlanningRequest planningRequest, CityMap cityMap, boolean slowModeActivated, Runnable notFullyComputed) throws ExceptionCityMap {
 
         //List of ordered intersections to visit during the tour
@@ -258,7 +274,7 @@ public class TourBuilderV2 {
         /*
           We go around to find the steps we want to remove
           We add accordingly the intersections that we do not seek to modify
-          If we fall on one of the two addresses that we want to delete,
+          If we find one of the two addresses that we want to delete,
           then we recalculate locally the tour by fanning dijskra between the address
           before and the one after and we remove the old intersections between these 2 points.
          */
