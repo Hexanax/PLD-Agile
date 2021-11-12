@@ -316,6 +316,9 @@ public class BaseMap extends Group {
         return prefCenterLat;
     }
 
+    /**
+     * loads the tiles
+     */
     private void loadTiles() {
         logger.fine("[JVDBG] loadTiles");
         if (getScene() == null) {
@@ -404,6 +407,9 @@ public class BaseMap extends Group {
         return (exists == null) ? null : exists.get();
     }
 
+    /**
+     * Cleans-up the tiles
+     */
     private void cleanupTiles() {
         logger.fine("START CLEANUP, zp = " + zoom.get());
         double zp = zoom.get();
