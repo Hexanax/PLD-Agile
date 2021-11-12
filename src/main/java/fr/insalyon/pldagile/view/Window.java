@@ -292,31 +292,53 @@ public class Window {
     }
 
     /**
-     * renders the ordered list of requests in the {@link SidePanelView}
+     * Renders the ordered list of requests in the {@link SidePanelView}
      */
     public void renderOrderedList() {
         sidePanel.getRequestListView().renderOrdered();
     }
 
     /**
-     * hides the tour {@link fr.insalyon.pldagile.model.Tour}
+     * Hides the tour {@link TourView}
      */
     public void hideTour() {
         tourView.hide();
     }
 
+
+    /**
+     * Makes the duration field of the item's request (that has the same id as the one
+     * in entry) editable inside the {@link SidePanelView}
+     * @param editable boolean to indicate if we can edit or not
+     * @param id request's ID
+     */
     public void makeLastRequestAddedEditable(boolean editable, long id) {
         sidePanel.getRequestListView().makeLastRequestAddedEditable(editable, id);
     }
 
+    /**
+     * Gets the text input of the request duration field
+     * @return
+     */
     public String[] getEditableRequestDuration() {
         return sidePanel.getRequestListView().getEditableDuration();
     }
 
+    /**
+     * Highlights the request's icon that has the same id as the one in entry accrording to its type
+     * in the {@link RequestMapView}
+     * @param id request's id
+     * @param type request's type (delivery or pickup)
+     */
     public void highlightAddress(long id, String type) {
         requestMapView.scaleUpAddress(id, type);
     }
 
+    /**
+     * Unhighlights the request's icon that has the same id as the one in entry in
+     * the {@link RequestMapView}
+     * @param id request's id
+     */
     public void unHighlightAddress(long id) {
         requestMapView.unScaleUpAddresses(id);
     }
