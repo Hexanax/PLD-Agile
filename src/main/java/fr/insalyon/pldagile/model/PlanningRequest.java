@@ -39,7 +39,7 @@ public class PlanningRequest {
      * Constructor of an empty PlanningRequest.
      */
     public PlanningRequest() {
-        requests = new ArrayList<Request>();
+        requests = new ArrayList<>();
         this.currentID = 0;
     }
 

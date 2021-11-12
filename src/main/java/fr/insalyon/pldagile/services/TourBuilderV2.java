@@ -99,17 +99,17 @@ public class TourBuilderV2 {
         Depot depot = tour.getDepot();
         Map<Long, Intersection> intersectionsMap = cityMap.getIntersections();
 
-        /**
-         * 0 -> index of the address previous the pickup to delete in the steps
-         * 1 -> index of the address next the pickup to delete in the steps
-         * 2 -> index of the address previous the delivery to delete in the steps
-         * 3 -> index of the address next the delivery to delete in the steps
+        /*
+          0 -> index of the address previous the pickup to delete in the steps
+          1 -> index of the address next the pickup to delete in the steps
+          2 -> index of the address previous the delivery to delete in the steps
+          3 -> index of the address next the delivery to delete in the steps
          */
         int[] indexAroundStep = new int[4];
 
         List<Intersection> intersections = tour.getIntersections();
         List<Intersection> newIntersections = new ArrayList<>();
-        List<Pair<Long, String>> steps = new ArrayList<Pair<Long, String>>(tour.getSteps());
+        List<Pair<Long, String>> steps = new ArrayList<>(tour.getSteps());
         steps.remove(0);
 
         boolean found = false;
@@ -118,10 +118,10 @@ public class TourBuilderV2 {
         int lastFoundIndex = 0;
         int index = 0;
 
-        /**
-         * iterate over intersections to find the 2 intersections with the same IDs as the ones
-         * in the request we want to delete.
-         * in indexAroundStep we store the index of the intersections before/after the pickup/delivery
+        /*
+          iterate over intersections to find the 2 intersections with the same IDs as the ones
+          in the request we want to delete.
+          in indexAroundStep we store the index of the intersections before/after the pickup/delivery
          */
         long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(0));
         while (!found) {
@@ -169,12 +169,12 @@ public class TourBuilderV2 {
             index++;
         }
 
-        /**
-         * Recomputes locally the tour
-         * There are 3 possible cases :
-         * First the pickup is just before the delivery to delete
-         * Second there is only one address between the pickup and the delivery
-         * Third all other cases
+        /*
+          Recomputes locally the tour
+          There are 3 possible cases :
+          First the pickup is just before the delivery to delete
+          Second there is only one address between the pickup and the delivery
+          Third all other cases
          */
         if (indexAroundStep[0] == indexAroundStep[2]) {
             Map<Long, Dijkstra> bestPaths = simulatedAnnealing.getBestPaths();
@@ -271,20 +271,20 @@ public class TourBuilderV2 {
         boolean complete = false;
         boolean pickupDone = false;
 
-        /**
-         * We go around to find the steps we want to remove
-         * We add accordingly the intersections that we do not seek to modify
-         * If we find one of the two addresses that we want to add,
-         * then we recalculate locally the tour by runnning dijkstra between the address
-         * before and the one after and we remove the old intersections between these 2 points.
+        /*
+          We go around to find the steps we want to remove
+          We add accordingly the intersections that we do not seek to modify
+          If we find one of the two addresses that we want to delete,
+          then we recalculate locally the tour by fanning dijskra between the address
+          before and the one after and we remove the old intersections between these 2 points.
          */
         for (Pair<Long, String> step : tour.getSteps()) {
 
-            /**
-             * If we find the pickup there can be 2 possibilities
-             * The first is if the delivery to be added is the step that comes after the pickup.
-             * In this case you have to go and find the step after to recompute.
-             * The second one is the other cases
+            /*
+              If we find the pickup there can be 2 possibilities
+              The first is if the delivery to be deleted is the step that comes after the pickup.
+              In this case you have to go and find the step after to recompute.
+              The second one is the other cases
              */
             if (Objects.equals(step.getKey(), request.getId()) && !pickupDone) {
                 pickupDone = true;

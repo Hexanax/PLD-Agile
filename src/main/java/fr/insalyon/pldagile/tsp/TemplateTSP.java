@@ -17,9 +17,9 @@ public abstract class TemplateTSP implements TSP {
         this.timeLimit = timeLimit;
         this.g = g;
         bestSol = new Integer[g.getNbVertices()];
-        Collection<Integer> unvisited = new ArrayList<Integer>(g.getNbVertices()-1);
+        Collection<Integer> unvisited = new ArrayList<>(g.getNbVertices() - 1);
         for (int i=1; i<g.getNbVertices(); i++) unvisited.add(i);
-        Collection<Integer> visited = new ArrayList<Integer>(g.getNbVertices());
+        Collection<Integer> visited = new ArrayList<>(g.getNbVertices());
         visited.add(0); // The first visited vertex is 0
         bestSolCost = Integer.MAX_VALUE;
         branchAndBound(0, unvisited, visited, 0);

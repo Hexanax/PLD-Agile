@@ -15,11 +15,9 @@ import javafx.scene.text.Font;
  * TextItem is an item part of the LogView list {@link LogView}
  */
 public class TextItem extends Region {
-    private String value;
-    private Label titleLabel;
+    private final Label titleLabel;
 
     public TextItem(String value, String webColor) {
-        this.value = value;
 
         GridPane mainGridPane = new GridPane();
         mainGridPane.setAlignment(Pos.BASELINE_LEFT);

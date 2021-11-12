@@ -10,7 +10,7 @@ import java.util.Objects;
  */
 public class Segment {
 
-    private Pair<Long, Long> id;
+    private final Pair<Long, Long> id;
     private String name;
     private double length;
     private Intersection origin;

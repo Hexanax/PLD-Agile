@@ -9,7 +9,7 @@ package fr.insalyon.pldagile.model;
 public class Request {
 
     private Long id;
-    private Pickup pickup;
+    private final Pickup pickup;
     private Delivery delivery;
 
     /**
@@ -75,11 +75,8 @@ public class Request {
         } else if (!id.equals(other.id))
             return false;
         if (pickup == null) {
-            if (other.pickup != null)
-                return false;
-        } else if (!pickup.equals(other.pickup))
-            return false;
-        return true;
+            return other.pickup == null;
+        } else return pickup.equals(other.pickup);
     }
 
 }

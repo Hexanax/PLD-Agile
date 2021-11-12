@@ -2,7 +2,6 @@ package fr.insalyon.pldagile.xml;
 
 import fr.insalyon.pldagile.model.Intersection;
 import fr.insalyon.pldagile.model.Segment;
-import fr.insalyon.pldagile.view.maps.MapPoint;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +15,7 @@ import java.util.List;
 public class Way {
 
     private String name;
-    private List<Segment> segments;
+    private final List<Segment> segments;
     private double totalLength;
     private Intersection origin;
     private Intersection destination;

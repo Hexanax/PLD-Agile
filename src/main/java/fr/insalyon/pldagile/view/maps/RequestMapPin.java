@@ -6,8 +6,9 @@ import fr.insalyon.pldagile.view.Fonts;
 import javafx.scene.image.Image;
 import javafx.scene.text.Text;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class RequestMapPin extends MapPin {
-    private RequestType type;
+    private final RequestType type;
     private Long requestId = 0L;
 
     private final String PICKUP_ICON_URL = "img/pickupPin/pickup@2x.png";

@@ -1,10 +1,8 @@
 package fr.insalyon.pldagile.model;
 
-import fr.insalyon.pldagile.services.BoundingRectangle;
 import fr.insalyon.pldagile.xml.ExceptionXML;
 import javafx.util.Pair;
 
-import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +15,8 @@ import java.util.Objects;
  */
 public class CityMap implements Cloneable {
 
-    private Map<Long, Intersection> intersections;
-    private Map<Pair<Long, Long>, Segment> segments;
+    private final Map<Long, Intersection> intersections;
+    private final Map<Pair<Long, Long>, Segment> segments;
 
 
     /**
@@ -35,8 +33,8 @@ public class CityMap implements Cloneable {
      * Constructor of an empty CityMap.
      */
     public CityMap() {
-        this.intersections = new HashMap<Long, Intersection>();
-        this.segments = new HashMap<Pair<Long, Long>, Segment>();
+        this.intersections = new HashMap<>();
+        this.segments = new HashMap<>();
     }
 
     /**

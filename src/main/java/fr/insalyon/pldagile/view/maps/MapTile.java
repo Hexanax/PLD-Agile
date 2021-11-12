@@ -65,7 +65,7 @@ class MapTile extends Region {
     }
 
     private final InvalidationListener zl = o -> calculatePosition();
-    private ReadOnlyDoubleProperty progress;
+    private final ReadOnlyDoubleProperty progress;
 
     MapTile(BaseMap baseMap, int nearestZoom, long i, long j) {
         this.baseMap = baseMap;
