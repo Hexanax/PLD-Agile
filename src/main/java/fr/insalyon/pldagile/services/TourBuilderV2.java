@@ -100,7 +100,7 @@ public class TourBuilderV2 {
         boolean pickup = false;
         boolean delivery = false;
         int lastFoundIndex = 0;
-        int index = 1;
+        int index = 0;
 
         /**
          * iterate over intersections to find the 2 intersections with the same IDs as the ones
@@ -379,7 +379,29 @@ public class TourBuilderV2 {
 
         int stepIndex = 1;
         long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(stepIndex));
+
         long previous = copyIntersections.get(0).getId();
+        boolean finish = false;
+        while(nextSpecificIntersection == previous && !finish){
+            double tourDuration = tour.getTourDuration() * 1000;
+            if (Objects.equals( steps.get(stepIndex).getValue(), "pickup")) {
+                Pickup pickup = requests.get( steps.get(stepIndex).getKey()).getPickup();
+                tour.addPickupTime(pickup.getDuration());
+                pickup.setArrivalTime((int) (depot.getDepartureTime().getTime() + tourDuration));
+                stepIndex++;
+            }
+            if (Objects.equals( steps.get(stepIndex).getValue(), "delivery")) {
+                Delivery delivery = requests.get( steps.get(stepIndex).getKey()).getDelivery();
+                tour.addDeliveryTime(delivery.getDuration());
+                delivery.setArrivalTime((int) (depot.getDepartureTime().getTime() + tourDuration));
+                stepIndex++;
+            }
+            nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(stepIndex));
+            if(stepIndex == steps.size() - 1){
+                finish= true;
+            }
+        }
+
         copyIntersections.remove(0);
         for (Intersection intersection : copyIntersections) {
             long current = intersection.getId();
@@ -391,7 +413,7 @@ public class TourBuilderV2 {
 
 
             tour.addSegment(currentSegment);
-            if (current == nextSpecificIntersection) {
+            while (current == nextSpecificIntersection && !finish) {
                 double tourDuration = tour.getTourDuration() * 1000;
                 Pair<Long, String> step = steps.get(stepIndex);
                 if (Objects.equals(step.getValue(), "pickup")) {
@@ -407,6 +429,9 @@ public class TourBuilderV2 {
                     stepIndex++;
                 }
                 nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(stepIndex));
+                if(stepIndex == steps.size() - 1){
+                    finish= true;
+                }
             }
 
             previous = current;

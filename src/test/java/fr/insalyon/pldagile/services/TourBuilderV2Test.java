@@ -92,8 +92,6 @@ class TourBuilderV2Test {
         assertEquals(9,actualTour.getPath().size());
     }
 
-    //TODO not working
-    @Disabled
     @Test
     @DisplayName("addRequest test")
     void addRequest() throws ExceptionXML, ParseException, ExceptionCityMap {
