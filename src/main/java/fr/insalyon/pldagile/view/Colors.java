@@ -3,6 +3,9 @@ package fr.insalyon.pldagile.view;
 import fr.insalyon.pldagile.model.RequestType;
 import javafx.scene.paint.Color;
 
+/**
+ * This class implements the color providing service for the different icons
+ */
 public class Colors {
     private static final String MAIN_BLUE = "3C8AFF";
     private static final String DARK_MAIN_BLUE = "3373D3";
