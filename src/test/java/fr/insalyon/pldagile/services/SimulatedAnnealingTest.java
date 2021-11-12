@@ -6,7 +6,6 @@ import fr.insalyon.pldagile.services.CityMapGraph;
 import fr.insalyon.pldagile.services.SimulatedAnnealing;
 import javafx.util.Pair;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -91,14 +90,14 @@ public class SimulatedAnnealingTest {
         boolean isFullyComputed = simulatedAnnealing.runSimulatedAnnealing(false,false);
 
         ArrayList<Pair<Long, String>> expectedTestIdentifiers = new ArrayList<>();
-        expectedTestIdentifiers.add(new Pair<Long, String>(-1L,"begin"));
-        expectedTestIdentifiers.add(new Pair<Long, String>(0L,"pickup"));
-        expectedTestIdentifiers.add(new Pair<Long, String>(1L,"pickup"));
-        expectedTestIdentifiers.add(new Pair<Long, String>(0L,"delivery"));
-        expectedTestIdentifiers.add(new Pair<Long, String>(1L,"delivery"));
-        expectedTestIdentifiers.add(new Pair<Long, String>(2L,"pickup"));
-        expectedTestIdentifiers.add(new Pair<Long, String>(2L,"delivery"));
-        expectedTestIdentifiers.add(new Pair<Long, String>(-2L,"end"));
+        expectedTestIdentifiers.add(new Pair<>(-1L, "begin"));
+        expectedTestIdentifiers.add(new Pair<>(0L, "pickup"));
+        expectedTestIdentifiers.add(new Pair<>(1L, "pickup"));
+        expectedTestIdentifiers.add(new Pair<>(0L, "delivery"));
+        expectedTestIdentifiers.add(new Pair<>(1L, "delivery"));
+        expectedTestIdentifiers.add(new Pair<>(2L, "pickup"));
+        expectedTestIdentifiers.add(new Pair<>(2L, "delivery"));
+        expectedTestIdentifiers.add(new Pair<>(-2L, "end"));
 
         assertEquals(expectedTestIdentifiers,simulatedAnnealing.getStepsIdentifiers());
         assertEquals(isFullyComputed,true);
@@ -113,7 +112,7 @@ public class SimulatedAnnealingTest {
     void getTotalDistance() {
         class TestCase {
             final Double expectedResult;
-            SimulatedAnnealing simulatedAnnealing;
+            final SimulatedAnnealing simulatedAnnealing;
 
             public TestCase(Double expectedResult) {
                 this.expectedResult = expectedResult;

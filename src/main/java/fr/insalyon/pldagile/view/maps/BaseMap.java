@@ -316,7 +316,7 @@ public class BaseMap extends Group {
         return prefCenterLat;
     }
 
-    private final void loadTiles() {
+    private void loadTiles() {
         logger.fine("[JVDBG] loadTiles");
         if (getScene() == null) {
             logger.fine("[JVDBG] can't load tiles, scene null");

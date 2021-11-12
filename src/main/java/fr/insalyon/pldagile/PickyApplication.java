@@ -1,7 +1,6 @@
 package fr.insalyon.pldagile;
 
 import fr.insalyon.pldagile.controller.Controller;
-import fr.insalyon.pldagile.view.Window;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -6,8 +6,8 @@ package fr.insalyon.pldagile.view.maps;
  */
 public class MapDestination {
 
-    private MapPoint start;
-    private MapPoint end;
+    private final MapPoint start;
+    private final MapPoint end;
 
     public MapDestination(MapPoint start, MapPoint end) {
         this.start = start;

@@ -20,11 +20,9 @@ public class TourView implements PropertyChangeListener, View, Hideable {
     private final PointLayer<ImageView> tourDirectionLayer = new PointLayer<>();
     private final PointLayer<Circle> tourPointLayer = new PointLayer<>();
     private final LineLayer tourLineLayer = new LineLayer();
-    private Controller controller;
     private Tour tour;
 
     public TourView(Controller controller) {
-        this.controller = controller;
         this.tour = controller.getPclTour().getTour();
         controller.getPclTour().addPropertyChangeListener(this);
     }

@@ -9,10 +9,10 @@ import fr.insalyon.pldagile.model.Coordinates;
  */
 public class BoundingRectangle {
 
-    private double minLatitude;
-    private double minLongitude;
-    private double maxLatitude;
-    private double maxLongitude;
+    private final double minLatitude;
+    private final double minLongitude;
+    private final double maxLatitude;
+    private final double maxLongitude;
 
     /**
      * Constructor of the minimum bounding rectangle.

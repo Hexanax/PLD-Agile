@@ -35,7 +35,7 @@ public class RequestsDisplayedState implements State {
         try {
             Tour tour = tourBuilderV2.buildTour(planningRequest, cityMap, slowModeActivated, () -> {
                 if (window.continueTourCompute()) {
-                        tourBuilderV2.getSimulatedAnnealing().runSimulatedAnnealing(false,slowModeActivated);
+                        TourBuilderV2.getSimulatedAnnealing().runSimulatedAnnealing(false,slowModeActivated);
                 }
             });
             controller.setTour(tour);

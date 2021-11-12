@@ -103,7 +103,7 @@ public class TileImageView extends ImageView {
 
     private ReadOnlyObjectWrapper<Exception> exceptionPropertyImpl() {
         if (exception == null) {
-            exception = new ReadOnlyObjectWrapper<Exception>(this, "exception");
+            exception = new ReadOnlyObjectWrapper<>(this, "exception");
         }
         return exception;
     }

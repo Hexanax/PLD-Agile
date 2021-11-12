@@ -14,11 +14,11 @@ import java.util.Objects;
  */
 public class AddRequestCommand implements Command {
 
-    private CityMap cityMap;
-    private PCLPlanningRequest pclPlanningRequest;
-    private PCLTour pcltour;
-    private Request request;
-    private TourBuilderV2 tourBuilder;
+    private final CityMap cityMap;
+    private final PCLPlanningRequest pclPlanningRequest;
+    private final PCLTour pcltour;
+    private final Request request;
+    private final TourBuilderV2 tourBuilder;
 
     private int indexBeforePickup;
     private int indexBeforeDelivery;

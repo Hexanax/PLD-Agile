@@ -38,10 +38,7 @@ public class Address {
             return false;
         Address other = (Address) obj;
         if (intersection == null) {
-            if (other.intersection != null)
-                return false;
-        } else if (!intersection.equals(other.intersection))
-            return false;
-        return true;
+            return other.intersection == null;
+        } else return intersection.equals(other.intersection);
     }
 }

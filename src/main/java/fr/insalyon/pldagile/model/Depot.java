@@ -43,11 +43,8 @@ public class Depot extends Address {
             return false;
         Depot other = (Depot) obj;
         if (departureTime == null) {
-            if (other.departureTime != null)
-                return false;
-        } else if (!departureTime.equals(other.departureTime))
-            return false;
-        return true;
+            return other.departureTime == null;
+        } else return departureTime.equals(other.departureTime);
     }
 
 }

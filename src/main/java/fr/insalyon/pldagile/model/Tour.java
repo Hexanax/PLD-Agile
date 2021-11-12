@@ -9,6 +9,7 @@ import java.util.*;
  * Tour is represented by a list of ordered requests,a depot, all visited intersections and
  * segments to build the way
  */
+@SuppressWarnings("ALL")
 public class Tour {
     /**
      * speed of the deliverer in km/h
@@ -189,7 +190,7 @@ public class Tour {
     }
 
     public void setIntersections(List<Intersection> intersections) {
-        this.intersections = new ArrayList<Intersection>(intersections);
+        this.intersections = new ArrayList<>(intersections);
     }
 
     /**
