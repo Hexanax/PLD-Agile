@@ -8,6 +8,8 @@ public class Colors {
     private static final String DARK_MAIN_BLUE = "3373D3";
     private static final String DARKER_MAIN_BLUE = "002153";
 
+    private static final String MAIN_ORANGE = "FF6F42";
+
     private static final String LIGHT_GREY = "9A9A9A";
     private static final String RED = "FF0000";
 
@@ -34,7 +36,11 @@ public class Colors {
     }
 
     public static Color getMapIntersectionSelectColor() {
-        return Color.web(RED);
+        return Color.WHITE;
+    }
+
+    public static Color getMapIntersectionSelectStrokeColor() {
+        return Color.web(MAIN_ORANGE);
     }
 
     public static Color getTourLineStrokeColor() {

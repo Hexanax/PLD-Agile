@@ -8,6 +8,7 @@ import fr.insalyon.pldagile.view.maps.MapPoint;
 import fr.insalyon.pldagile.view.maps.PointLayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.StrokeType;
 import javafx.util.Pair;
 
 
@@ -52,8 +53,11 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
 
     public void highlight(){
         for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
-            point.getValue().setRadius(4);
+            point.getValue().setRadius(2);
             point.getValue().setFill(Colors.getMapIntersectionSelectColor());
+            point.getValue().setStroke(Colors.getMapIntersectionSelectStrokeColor());
+            point.getValue().setStrokeWidth(3);
+            point.getValue().setStrokeType(StrokeType.OUTSIDE);
         }
     }
 
@@ -61,6 +65,7 @@ public class CityMapView implements PropertyChangeListener, View, Hideable {
         for (Pair<MapPoint, Circle> point : cityPointLayer.getPoints()) {
             point.getValue().setRadius(2);
             point.getValue().setFill(Colors.getMapIntersectionColor());
+            point.getValue().setStrokeWidth(0);
         }
     }
 

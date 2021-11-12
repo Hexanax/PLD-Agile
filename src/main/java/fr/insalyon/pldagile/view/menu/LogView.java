@@ -49,7 +49,7 @@ public class LogView extends Region implements View {
 
     public static void addText(String text, String color) {
         ObservableList<TextItem> textItems = listView.getItems();
-        String formattedText = breakSpaces(text, 80);
+        String formattedText = breakSpaces(text, 70);
         TextItem newLog = new TextItem(formattedText, color);
         textItems.add(newLog);
         textItems.get(Math.max(0, textItems.size() - 2)).setFont(Fonts.getBodyFont());
