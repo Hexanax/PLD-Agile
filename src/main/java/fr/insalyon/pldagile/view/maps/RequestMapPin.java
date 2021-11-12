@@ -52,6 +52,10 @@ public class RequestMapPin extends MapPin {
         centerCoordinates();
     }
 
+    /**
+     * Get the request's ID label
+     * @return
+     */
     private Text getRequestIdLabel() {
         Text label = new Text(this.requestId.toString());
         label.setTranslateX(iconSize * TEXT_X_TRANSLATION_FACTOR);

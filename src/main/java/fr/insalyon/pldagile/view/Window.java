@@ -130,6 +130,7 @@ public class Window {
 
     /**
      * loads the {@link SidePanelView}
+     * by settting the {@link AnchorPane} side panels
      */
     private void loadSidePanel() {
         sidePanel.render();

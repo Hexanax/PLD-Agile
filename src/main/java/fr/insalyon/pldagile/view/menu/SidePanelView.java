@@ -21,6 +21,12 @@ public class SidePanelView extends Region implements View {
     private final double windowHeight;
     private VBox verticalBox;
 
+    /**
+     * Creates a side panel view component 
+     * @param windowHeight
+     * @param window
+     * @param controller
+     */
     public SidePanelView(double windowHeight, Window window, Controller controller) {
         this.controller = controller;
         this.importView = new ImportView();
@@ -45,6 +51,10 @@ public class SidePanelView extends Region implements View {
         return requestView;
     }
 
+    /**
+     * gets the request list view {@link RequestListView}
+     * @return
+     */
     public RequestListView getRequestListView() {
         return requestListView;
     }
