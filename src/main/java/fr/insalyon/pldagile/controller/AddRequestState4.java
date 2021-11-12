@@ -75,7 +75,7 @@ public class AddRequestState4 implements State {
         try {
             l.add(new AddRequestCommand(citymap, pclPlanningRequest, pcltour));
             window.mainView();
-            window.addStateFollow("Delivery previous address selected, you can now modify the duration in second of the pickup and the delivery or click where you want out of the requests list to valid the creation");
+            window.addStateFollow("You have successfully selected the address before your new delivery. You can now modify the duration in second of the pickup and the delivery or click out of the requests list to confirm your modifications");
             window.makeLastRequestAddedEditable(true, pclPlanningRequest.getPlanningRequest().getLastRequest().getId());
         } catch (Exception e) {
             window.addWarningStateFollow(e.getMessage());
