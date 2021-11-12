@@ -19,6 +19,10 @@ public class RequestMouseListener {
         controller = newController;
     }
 
+    /**
+     * Update the controller when a click happen
+     * @param event
+     */
     public static void mouseClicked(MouseEvent event) {
         if (event.getSource() instanceof ListView) {
             ListView<AddressItem> addressItemListView = (ListView<AddressItem>) event.getSource();

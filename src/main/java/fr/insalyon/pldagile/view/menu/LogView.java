@@ -23,6 +23,10 @@ public class LogView extends Region implements View {
     public LogView() {
     }
 
+
+    /**
+     * Render the LogView item
+     */
     @Override
     public void render() {
         GridPane gridPane = new GridPane();
@@ -47,15 +51,26 @@ public class LogView extends Region implements View {
         this.getChildren().add(gridPane);
     }
 
+    /**
+     * Add a new line with the content and color demanded
+     * @param text
+     * @param color
+     */
     public static void addText(String text, String color) {
         ObservableList<TextItem> textItems = listView.getItems();
-        String formattedText = breakSpaces(text, 80);
+        String formattedText = breakSpaces(text, 70);
         TextItem newLog = new TextItem(formattedText, color);
         textItems.add(newLog);
         textItems.get(Math.max(0, textItems.size() - 2)).setFont(Fonts.getBodyFont());
         listView.scrollTo(newLog);
     }
 
+    /**
+     * Add supplementary lines to the string if it's too long
+     * @param str
+     * @param maxChar the max character to not overcome
+     * @return the reworked string
+     */
     public static String breakSpaces(String str, int maxChar) {
         int counter = 0;
         StringBuilder newStr = new StringBuilder();

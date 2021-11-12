@@ -60,7 +60,7 @@ public class TourComputedState implements State{
     @Override
     public void addRequest(Controller controller, CityMap citymap, PCLPlanningRequest pclPlanningRequest, PCLTour pcltour, ListOfCommands l, Window window) {
         controller.setCurrentState(controller.addRequestState1);
-        window.addStateFollow("Left click on the intersection where the pickup will take place or right click to cancel");
+        window.addStateFollow("Left click on the pickup intersection or right click to cancel");
         window.addView();
     }
 

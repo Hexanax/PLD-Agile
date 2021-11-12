@@ -11,6 +11,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 
+
+/**
+ * This class stores, displays, hides, highlights and unhighlights the requests' icons on the map,
+ * it also makes the connection between the requests' icons and their items in the list view
+ */
 public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
     private final PointLayer<Node> planningRequestPoints = new PointLayer<>();
@@ -19,12 +24,21 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
 
     private RequestListView requestListView;
 
+    /**
+     * Creates a RequestMapView component
+     * @param controller
+     */
     public RequestMapView(Controller controller) {
         this.controller = controller;
         this.planningRequest = controller.getPclPlanningRequest().getPlanningRequest();
         controller.getPclPlanningRequest().addPropertyChangeListener(this);
     }
 
+    /**
+     * Loops through the planning requests and adds their corresponding icons to {@link PointLayer},
+     * ids and request's ids to the created {@link MapPoint}
+     * to
+     */
     @Override
     public void render() {
         planningRequestPoints.clearPoints();
@@ -71,18 +85,19 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         return planningRequestPoints;
     }
 
+    /**
+     * updates the {@link PlanningRequest} when an event occurs
+     * @param evt
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        ////System.out.println("RequestMapView event " + evt);
         this.planningRequest = (PlanningRequest) evt.getNewValue();
-        //System.out.println(this.planningRequest.getRequests().toString());
         render();
     }
 
     /**
-     * Makes request points clickable
+     * Makes the request's delivery and pickup icons bigger when hovering over a single icon
      */
-    //TODO Always listen for the request points click and just handle it depending on the test in the controller/state
     public void activeRequestIntersectionsListener() {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             point.getValue().setOnMouseClicked(event -> {
@@ -114,6 +129,12 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         }
     }
 
+    /**
+     * looks for the hovered icon's neighbor in the request, a neighbor is either a
+     * delivery (or pickup) that is in the same request as a pickup (or delivery)
+     * @param pointHover the hovered icon
+     * @return
+     */
     private Pair<MapPoint, Node> searchNeighbor(Pair<MapPoint, Node> pointHover) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if (point.getKey().getRequestId() == pointHover.getKey().getRequestId() && pointHover.getKey().getType() != point.getKey().getType()) {
@@ -123,20 +144,32 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         return null;
     }
 
+    /**
+     * hides the requests' icons from the map
+     */
     @Override
     public void hide() {
         planningRequestPoints.hide();
     }
 
+
+    /**
+     * shows the requests' icons in the map
+     */
     @Override
     public void show() {
         planningRequestPoints.show();
     }
 
+
     public void setRequestListView(RequestListView view) {
         this.requestListView = view;
     }
 
+    /**
+     * highlights the request's 2 icons when hovering the corresponding (same request id) item
+     * @param requestNumber request's id
+     */
     public void hoverRequest(long requestNumber) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if (point.getKey().getRequestId() == requestNumber) {
@@ -146,6 +179,11 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         }
     }
 
+
+    /**
+     * unhighlights the request's 2 icons that correspond to the request id given in entry
+     * @param requestNumber request's id
+     */
     public void unHoverRequest(long requestNumber) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if (point.getKey().getRequestId() == requestNumber) {
@@ -155,6 +193,11 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         }
     }
 
+    /**
+     * highlights the icon that has the same request id and type as the ones in entry
+     * @param id request's id
+     * @param type type of the {@link MapPoint} : pickup or delivery
+     */
     public void scaleUpAddress(long id, String type) {
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if (point.getKey().getRequestId() == id && Objects.equals(point.getKey().getType(), type)) {
@@ -171,6 +214,10 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
         }
     }
 
+    /**
+     * unhighlights the icon that has the same request id as the one in entry
+     * @param id request's id
+     */
     public void unScaleUpAddresses(long id){
         for (Pair<MapPoint, Node> point : planningRequestPoints.getPoints()) {
             if (point.getKey().getRequestId() == id ) {
@@ -178,8 +225,6 @@ public class RequestMapView implements PropertyChangeListener, View, Hideable {
                 point.getValue().setScaleX(1.0);
                 point.getValue().setScaleY(1.0);
             }
-
-
         }
     }
 }

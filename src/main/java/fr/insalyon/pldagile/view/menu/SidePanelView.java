@@ -8,7 +8,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 
 /**
- * Side panel
+ * Side panel {@link View}
  */
 public class SidePanelView extends Region implements View {
     private static final double HEIGHT_FACTOR = 0.9f;
@@ -50,6 +50,9 @@ public class SidePanelView extends Region implements View {
         return requestListView;
     }
 
+    /**
+     * Render the Item
+     */
     @Override
     public void render() {
         verticalBox = new VBox();

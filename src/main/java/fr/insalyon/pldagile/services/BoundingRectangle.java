@@ -53,7 +53,6 @@ public class BoundingRectangle {
         }
         return false;
     }
-
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof BoundingRectangle) {

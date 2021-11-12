@@ -26,7 +26,7 @@ public class AddRequestState2 implements State{
                 PlanningRequest modify = new PlanningRequest(planningRequest);
                 controller.setPlanningRequest(modify);
                 controller.setCurrentState(controller.addRequestState3);
-                window.addStateFollow("Delivery intersection selected, Now left click on the depot, pickup or delivery visiting before the pickup");
+                window.addStateFollow("Delivery intersection selected. Left click on the map pin to visit before the pickup");
                 window.hideCityMap();
                 window.renderOrderedList();
                 window.highlightAddress(planningRequest.getLastRequest().getId(), "pickup");

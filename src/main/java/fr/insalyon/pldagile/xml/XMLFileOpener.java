@@ -25,7 +25,8 @@ public class XMLFileOpener extends FileFilter {
     /**
      * Create the singleton
      */
-    private XMLFileOpener(){}
+    XMLFileOpener() {
+    }
 
     /**
      * Allows to retrieve the instance of the XMLFileOpener class by creating the singleton if needed

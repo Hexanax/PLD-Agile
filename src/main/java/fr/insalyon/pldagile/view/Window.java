@@ -34,6 +34,10 @@ public class Window {
     private int windowWidth = (int) (Screen.getPrimary().getBounds().getWidth() * 0.75);
     private int windowHeight = (int) (Screen.getPrimary().getBounds().getHeight() * 0.75);
 
+    /**
+     * creates a window component
+     * @param controller
+     */
     public Window(Controller controller) {
         this.controller = controller;
 
@@ -65,6 +69,11 @@ public class Window {
         return mainStage;
     }
 
+    /**
+     * renders the {@link Stage} with the project's adequats information
+     * and centers the map around France
+     * @param stage
+     */
     public void render(Stage stage) {
         mainStage = stage;
         // Title and icon
@@ -117,6 +126,9 @@ public class Window {
         stage.show();
     }
 
+    /**
+     * loads the {@link SidePanelView}
+     */
     private void loadSidePanel() {
         sidePanel.render();
         AnchorPane.setTopAnchor(sidePanel, 16D);
@@ -129,22 +141,33 @@ public class Window {
                 break;
             }
         }
-//        requestListView.setRequestView(sidePanel.getRequestView());
+
         mainPane.getChildren().add(sidePanel);
     }
 
+    /**
+     * loads the {@link LeftPanel}
+     */
     private void loadLeftPanel() {
         AnchorPane.setBottomAnchor(leftPanel, 16D);
         AnchorPane.setLeftAnchor(leftPanel, 16D);
         mainPane.getChildren().add(leftPanel);
     }
 
+    /**
+     * sets the header label to "Picky - INSA Lyon"
+     * @return
+     */
     private Label headerLabel() {
         final Label header = new Label("Picky - INSA Lyon");
         header.getStyleClass().add("header");
         return header;
     }
 
+    /**
+     * creates the {@link Group} copyright with the right ingo
+     * @return
+     */
     private Group createCopyright() {
         final Label copyright = new Label("Map data © OpenStreetMap contributors, CC-BY-SA.\n"
                 + "Imagery  © OpenStreetMap, for non-commercial use only.");
@@ -154,14 +177,29 @@ public class Window {
         return new Group(copyright);
     }
 
+    /**
+     * updates the map file's name when loading a file
+     * @param fileName the loaded map file's name
+     */
     public void updateMapFileName(String fileName) {
         ImportView.setImportMapLabel(fileName);
     }
 
+    /**
+     * updates the requests file's name when loading a file
+     * @param fileName the loaded requests file's name
+     */
     public void updateRequestFileName(String fileName) {
         ImportView.setImportRequestLabel(fileName);
     }
 
+    /**
+     * displays an alert of type CONFIRMATION, that will guide the {@link Controller} in confirming
+     * or cancelling the action
+     * @param title the alert's title
+     * @param header the alert's header
+     * @param text the alert's text
+     */
     public void showValidationAlert(String title, String header, String text) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
@@ -176,6 +214,12 @@ public class Window {
         }
     }
 
+    /**
+     * display the alert of type CONFIRMATION to ask the user if he wants to
+     * Continue looking for a more optimized path or display the one already found
+     * This occurs when the user clicks on "Compute Slowly" button
+     * @return
+     */
     public boolean continueTourCompute() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Heavy computing task detected");
@@ -189,45 +233,74 @@ public class Window {
         }
     }
 
+    /**
+     * Adds the state text in the {@link LogView}
+     * @param message the state's message
+     */
     public void addStateFollow(String message) {
         LogView.addText(message, "green");
     }
 
+    /**
+     * Adds state's warning in the {@link LogView}
+     * @param message the state's message
+     */
     public void addWarningStateFollow(String message) {
         LogView.addText(message, "red");
     }
 
+    /**
+     * Deletes the view by hiding the tour
+     */
     public void deleteView() {
         hideTour();
     }
 
+    /**
+     * highlights the {@link CityMapView} intersections and renders the request list of {@link SidePanelView}
+     */
     public void addView() {
         hideTour();
         cityMapView.highlight();
         sidePanel.getRequestListView().renderUnordered();
     }
 
+    /**
+     * Sets the main view by showing the {@link TourView} and showing the city map
+     * it also unhighlights the map's intersections
+     */
     public void mainView() {
-        // //System.out.println("Main view called");
         tourView.show();
         cityMapView.unHighlight();
         showCityMap();
         renderOrderedList();
     }
 
+    /**
+     * hides the city map by first unhghlighting its intersections
+     */
     public void hideCityMap() {
         cityMapView.unHighlight();
         cityMapView.hide();
     }
 
+    /**
+     * displays the city map
+     */
     public void showCityMap() {
         cityMapView.show();
     }
 
+    /**
+     * renders the ordered list of requests in the {@link SidePanelView}
+     */
     public void renderOrderedList() {
         sidePanel.getRequestListView().renderOrdered();
     }
 
+    /**
+     * hides the tour {@link fr.insalyon.pldagile.model.Tour}
+     */
     public void hideTour() {
         tourView.hide();
     }
