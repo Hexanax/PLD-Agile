@@ -109,6 +109,10 @@ public class TourBuilderV2 {
          */
         long nextSpecificIntersection = getValueOfNextIntersection(depot, requests, steps.get(0));
         while (!found) {
+            if(index == (intersections.size())){
+                indexAroundStep[3] = intersections.size()-1;
+                break;
+            }
             if (intersections.get(index).getId() == nextSpecificIntersection) {
                 if (Objects.equals(steps.get(0).getKey(), request.getId())) {
                     if (steps.get(0).getValue() == "pickup") {
