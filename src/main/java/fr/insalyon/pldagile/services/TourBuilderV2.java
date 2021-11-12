@@ -152,8 +152,8 @@ public class TourBuilderV2 {
         /**
          * Recomputes locally the tour
          * There are 3 possible cases :
-         * First the pickup is just befor the delivery to delete
-         * Second there is only one adress between the pickup and the delivery
+         * First the pickup is just before the delivery to delete
+         * Second there is only one address between the pickup and the delivery
          * Third all other cases
          */
         if (indexAroundStep[0] == indexAroundStep[2]) {
